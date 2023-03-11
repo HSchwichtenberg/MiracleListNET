@@ -18,14 +18,14 @@
 </ul>
 
 <img src="https://user-images.githubusercontent.com/3673169/224502226-42708662-4fc6-4acd-bc66-caa277dcbb9b.png">
-Abbildung: MiracleList im Browser mit Blazor WebAssembly
+<p>Abbildung: MiracleList im Browser mit Blazor WebAssembly</p>
 
 <img src="https://user-images.githubusercontent.com/3673169/224502120-1e4a7310-b574-49f5-b7dd-72b240f9fe92.png">
-Abbildung: MiracleList als hybride App in Blazor MAUI
+<p>Abbildung: MiracleList als hybride App in Blazor MAUI</p>
 
 <h2>Architektur der Blazor-Implementierungen der MiracleList</h2>
 <img src="https://user-images.githubusercontent.com/3673169/224501737-dbe842a5-4db4-455f-a287-655c71b73967.png">
-Abbildung: Die vier Blazor-Implementierungen der MiracleList verwenden sehr viel gemeinsamen Code.
+<p>Abbildung: Die vier Blazor-Implementierungen der MiracleList verwenden sehr viel gemeinsamen Code.</p>
 
 <h2>Features der Blazor-Implementierung der MiracleList</h2>
 

@@ -70,33 +70,6 @@ Frontend:
 - Windows Presentation Foundation (WPF) mit Blazor Desktop
 - .NET MAUI mit Blazor MAUI
 
-## Erstellen Sie die Datenbank (nur für Backend und 2-Tier-Varianten notwendig!)
-- Ändern Sie die Verbindungszeichenfolge in: DA/Context.cs
-- Projektmappen Explorer: Als Startprojekt festlegen = EFCTools
-- Package Manager Console: Standardprojekt = DA
-- Package Manager Console: Ausführen: Update-Database
-
-## Setzen Sie die Verbindungszeichenfolge auf Ihre Datenbank (nur für Backend und 2-Tier-Varianten notwendig!)
-- in: MiracleList_BD/appsettings.json
-- in: MiracleList_BS/appsettings.json
-- in: MiracleList_Backend/appsettings.json
-- in: EFC_Tools/appsettings.json
-- in: Tests/appsettings.json
-
-## Nur für MiracleList_BW und MiracleList_BM, wenn Sie das vorhandene Cloud-Backend verwenden wollen
-- Öffnen Sie https://miraclelistbackend.azurewebsites.net/
-- Füllen Sie das Formular „Kunden-ID beantragen“ aus
-- Holen Sie sich die Client-ID aus dem E-Mail-Konto
-- Setzen Sie die Client-ID in der Datei MiracleList_BW/wwwRoot/appSettings.json
-
-## Nur für MiracleList_BW und MiracleList_BM, wenn diese auf Ihrem lokalen Server laufen
-1. Starten Sie den Server MiracleList_Backend
-2. Öffnen Sie die laufende Site im Browser
-3. Füllen Sie das Formular „Kunden-ID beantragen“ aus
-4. Holen Sie sich die Client-ID aus dem E-Mail-Konto. Wenn Sie keine E-Mail erhalten haben: Öffnen Sie die Tabelle "Client" in der Datenbank, um die erstellte Client-ID zu erhalten
-5. Legen Sie die Client-ID in der Datei MiracleList_BW/wwwRoot/appSettings.json fest
-6. Setzen Sie Ihre Server-URL in „Backend/DebugURL“ in der Datei MiracleList_BW/wwwRoot/appsettings.json
-
 ## Entwicklerdokumentation
 
 Die Entwicklerdokumentation zu den vier MiracleList-Frontends mit Blazor finden im <a href="https://it-visions.de/blazorbuch">Blazor-Buch von Dr. Holger Schwichtenberg</a>.
@@ -116,6 +89,35 @@ Die Entwicklerdokumentation zu den vier MiracleList-Frontends mit Blazor finden 
  <li>MacOS-Client TypeScript/Angular/Electron: <a href="https://Miraclelist.azurewebsites.net/download/MiracleListElectron-darwin-x64.rar" rel="nofollow">https://Miraclelist.azurewebsites.net/download/MiracleListElectron-darwin-x64.rar</a></li>
  <li>Linux-Client TypeScript/Angular/Electron: <a href="https://Miraclelist.azurewebsites.net/download/MiracleListElectron-linux-x64.rar" rel="nofollow">https://Miraclelist.azurewebsites.net/download/MiracleListElectron-linux-x64.rar</a></li>
 </ul>
+
+## Erste Schritte zur Einrichtung auf Ihrem Entwickler-PC
+
+### Erstellen Sie die Datenbank (nur für Backend und 2-Tier-Varianten notwendig!)
+- Ändern Sie die Verbindungszeichenfolge in: DA/Context.cs
+- Projektmappen Explorer: Als Startprojekt festlegen = EFCTools
+- Package Manager Console: Standardprojekt = DA
+- Package Manager Console: Ausführen: Update-Database
+
+### Setzen Sie die Verbindungszeichenfolge auf Ihre Datenbank (nur für Backend und 2-Tier-Varianten notwendig!)
+- in: MiracleList_BD/appsettings.json
+- in: MiracleList_BS/appsettings.json
+- in: MiracleList_Backend/appsettings.json
+- in: EFC_Tools/appsettings.json
+- in: Tests/appsettings.json
+
+### Nur für MiracleList_BW und MiracleList_BM, wenn Sie das vorhandene Cloud-Backend verwenden wollen
+- Öffnen Sie https://miraclelistbackend.azurewebsites.net/
+- Füllen Sie das Formular „Kunden-ID beantragen“ aus
+- Holen Sie sich die Client-ID aus dem E-Mail-Konto
+- Setzen Sie die Client-ID in der Datei MiracleList_BW/wwwRoot/appSettings.json
+
+### Nur für MiracleList_BW und MiracleList_BM, wenn diese auf Ihrem lokalen Server laufen
+1. Starten Sie den Server MiracleList_Backend
+2. Öffnen Sie die laufende Site im Browser
+3. Füllen Sie das Formular „Kunden-ID beantragen“ aus
+4. Holen Sie sich die Client-ID aus dem E-Mail-Konto. Wenn Sie keine E-Mail erhalten haben: Öffnen Sie die Tabelle "Client" in der Datenbank, um die erstellte Client-ID zu erhalten
+5. Legen Sie die Client-ID in der Datei MiracleList_BW/wwwRoot/appSettings.json fest
+6. Setzen Sie Ihre Server-URL in „Backend/DebugURL“ in der Datei MiracleList_BW/wwwRoot/appsettings.json
 
 <h2>Weitere Informationen</h2>
 <ul>

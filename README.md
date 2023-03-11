@@ -67,7 +67,7 @@ Backend:
 - HTTP-Tests mit Postman
 
 Frontend:
-- .NETZ
+- .NET
 - ASP.NET Core Blazor-Server
 - ASP.NET Core Blazor-Webassembly
 - Windows Presentation Foundation (WPF) mit Blazor Desktop

@@ -1,0 +1,88 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+  <NoWarn>$(NoWarn);NU1605</NoWarn>
+  <Version>7.11.0.0</Version>
+  <AssemblyVersion>7.11.0.0</AssemblyVersion>
+  <FileVersion>7.11.0.0</FileVersion>
+  <InformationalVersion>7.11.0.0-03/09/2023 21:01:33</InformationalVersion>
+  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
+ </PropertyGroup>
+
+ <PropertyGroup Label="Globals">
+  <SccProjectName>SAK</SccProjectName>
+  <SccProvider>SAK</SccProvider>
+  <SccAuxPath>SAK</SccAuxPath>
+  <SccLocalPath>SAK</SccLocalPath>
+ </PropertyGroup>
+
+ <PropertyGroup>
+  <TargetFramework>net7.0</TargetFramework>
+  <DebugType>Full</DebugType>
+  <AssemblyName>UnitTests</AssemblyName>
+  <PackageId>UnitTests</PackageId>
+  <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+
+  <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+  <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+  <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  <Authors>Dr. Holger Schwichtenberg</Authors>
+  <UserSecretsId>2fa0c0fb-e56f-48b7-90f6-3ca4d6e15422</UserSecretsId>
+ </PropertyGroup>
+
+ <ItemGroup>
+  <None Remove="appsettings.json" />
+ </ItemGroup>
+
+ <ItemGroup>
+  <Content Include="appsettings.json">
+   <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+   <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+  </Content>
+ </ItemGroup>
+
+ <ItemGroup>
+  <ProjectReference Include="..\..\src\DA\DA.csproj" />
+  <ProjectReference Include="..\..\src\BL\BL.csproj" />
+  <ProjectReference Include="..\..\src\BO\BO.csproj" />
+ </ItemGroup>
+
+ <ItemGroup>
+  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="7.0.*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="7.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
+  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+  <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+  <PackageReference Include="NHibernateProfiler.Appender" Version="6.0.6040" />
+  <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+  <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+   <PrivateAssets>all</PrivateAssets>
+   <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+  </PackageReference>
+  <PackageReference Include="xunit" Version="2.4.2" />
+  <PackageReference Include="Xunit.SkippableFact" Version="1.4.13" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.4.1" />
+  <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
+ </ItemGroup>
+
+ <ItemGroup>
+  <Reference Include="HibernatingRhinos.Profiler.Appender">
+   <HintPath>..\..\Lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
+  </Reference>
+
+ </ItemGroup>
+
+ <ItemGroup>
+  <None Update="Properties\launchSettings.json">
+   <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+ </ItemGroup>
+
+ <ItemGroup>
+  <PackageReference Update="Microsoft.NETCore.App" Version="2.0.0" />
+ </ItemGroup>
+
+</Project>

@@ -1,0 +1,2 @@
+﻿#BO.User;City;System.String
+#BO.User;Important;System.Nullable`1[System.Boolean]

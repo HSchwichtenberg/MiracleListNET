@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "EFCTools": {
+      "commandName": "Project",
+      "commandLineArgs": "migrate createtestuser"
+    }
+  }
+}

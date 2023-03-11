@@ -1,0 +1,38 @@
+﻿
+
+
+ <div class="panel panel-default">
+  <div class="panel-heading" @onclick="@Toggle">
+   @if (Collapsed)
+   {
+    @HeadlineCollapsed
+   }
+   else
+   {
+    @HeadlineExpanded
+   }
+  </div>
+  @if (!Collapsed)
+  {
+   <div class="panel-body">
+    @Content
+   </div>
+  }
+ </div>
+
+
+ @code {
+  [Parameter]
+  public RenderFragment HeadlineCollapsed { get; set; }
+  [Parameter]
+  public RenderFragment HeadlineExpanded { get; set; }
+  [Parameter]
+  public RenderFragment Content { get; set; }
+  [Parameter]
+  public bool Collapsed { get; set; }
+  string Ueberschrift { get => Collapsed ? "Details anzeigen" : "Details verbergen"; }
+  void Toggle()
+  {
+   Collapsed = !Collapsed;
+  }
+ }

@@ -1,0 +1,106 @@
+<!--Projektdatei der MiracleList Blazor Desktop App-->
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+ <!--Runtime-->
+ <PropertyGroup>
+  <TargetFramework>net7.0-windows</TargetFramework>
+  <OutputType>WinExe</OutputType>
+  <UseWPF>true</UseWPF>
+  <IsShippingPackage>false</IsShippingPackage>
+  <RootNamespace>BD</RootNamespace>
+ </PropertyGroup>
+
+ <!--Namen-->
+ <PropertyGroup>
+  <Description>Blazor Desktop (Blazor Hybrid) Version of the MiracleList Web Frontend</Description>
+  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
+  <Authors>Dr. Holger Schwichtenberg, www.IT-Visions.de</Authors>
+  <Company>www.IT-Visions.de</Company>
+  <Product>MiracleList</Product>
+  <RootNamespace>BD</RootNamespace>
+  <StartupObject>BD.Desktop.WPFApp</StartupObject>
+ </PropertyGroup>
+
+ <!--Versionsinfos-->
+ <PropertyGroup>
+  <Version>7.11.0.0</Version>
+  <AssemblyVersion>7.11.0.0</AssemblyVersion>
+  <FileVersion>7.11.0.0</FileVersion>
+  <InformationalVersion>7.11.0.0-03/09/2023 21:01:32</InformationalVersion>
+ </PropertyGroup>
+
+ <!--Grafiken-->
+ <PropertyGroup>
+  <ApplicationIcon>Desktop/MiracleList.ico</ApplicationIcon>
+  <UserSecretsId>6f1a0d90-5d1c-470b-bb9a-2864e88e326b</UserSecretsId>
+ </PropertyGroup>
+ <ItemGroup>
+   <Page Remove="Desktop\App.xaml" />
+ </ItemGroup>
+ <ItemGroup>
+   <ApplicationDefinition Include="Desktop\App.xaml" />
+ </ItemGroup>
+ <ItemGroup>
+  <EmbeddedResource Include="Desktop\MiracleList.ico" />
+ </ItemGroup>
+ 
+ <!--Projektreferenzen-->
+ <ItemGroup>
+  <ProjectReference Include="..\MiracleList_Interfaces\MiracleList_Interfaces.csproj" />
+  <ProjectReference Include="..\BL\BL.csproj" />
+  <ProjectReference Include="..\BO\BO.csproj" />
+  <ProjectReference Include="..\ITVisions.Blazor\ITVisions.Blazor.csproj" />
+  <ProjectReference Include="..\MLBlazorRCL\MLBlazorRCL.csproj" />
+  <ProjectReference Include="..\SamplesRCL\SamplesRCL.csproj" />
+ </ItemGroup>
+
+ <!--Nuget-Pakete-->
+ <ItemGroup>
+  <!--Standardreferenzen für BD-->
+  <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="7.0.59" />
+
+  <!--Zusätzliche Pakete von Microsoft -->
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
+  <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.*" />
+  <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+
+  <!--Zusätzliche Pakete von Anderen-->
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.4.1" />
+  <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
+  <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
+  <PackageReference Include="Blazored.Toast" Version="4.1.0" />
+  <PackageReference Include="UAParser" Version="3.1.47" />
+ </ItemGroup>
+
+ <!--COM-Referenzen für Word-Interop-->
+ <ItemGroup>
+  <COMReference Include="Microsoft.Office.Interop.Word">
+   <WrapperTool>tlbimp</WrapperTool>
+   <VersionMinor>7</VersionMinor>
+   <VersionMajor>8</VersionMajor>
+   <Guid>00020905-0000-0000-c000-000000000046</Guid>
+   <Lcid>0</Lcid>
+   <Isolated>false</Isolated>
+   <EmbedInteropTypes>true</EmbedInteropTypes>
+  </COMReference>
+ </ItemGroup>
+
+ <!--Einstellungen für BD -->
+ <ItemGroup>
+  <None Include="Web\wwwRoot\**">
+   <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+ </ItemGroup>
+ <ItemGroup>
+   <Compile Remove="bin2\**" />
+   <Content Remove="bin2\**" />
+   <EmbeddedResource Remove="bin2\**" />
+   <None Remove="bin2\**" />
+   <Page Remove="bin2\**" />
+ </ItemGroup>
+ <ItemGroup>
+   <Compile Include="..\MiracleList_BS\Authentication\MLAuthenticationStateProvider2Tier.cs" Link="Web\Authentication\MLAuthenticationStateProvider2Tier.cs" />
+ </ItemGroup>
+
+</Project>

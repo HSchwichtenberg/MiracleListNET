@@ -1,0 +1,347 @@
+﻿@page "/Samples/interop"
+@using System.Linq.Expressions
+@using System.Reflection
+@using System.IO
+@implements IAsyncDisposable
+@inject IJSRuntime JSRuntime
+@inject ITVisions.Blazor.BlazorUtil Util
+
+<h3>Interop .NET &lt;-&gt; JavaScript</h3>
+<br />
+<b>Active IJSRuntime:</b> <span class="info">@JSRuntime.GetType().FullName</span>
+<br>
+
+@code {
+
+ IJSObjectReference script;
+
+ #region Live Cycle Events
+ protected async override Task OnInitializedAsync()
+ {
+  Util.Log("OnInitializedAsync");
+  //await JSRuntime.InvokeVoidAsync("console.log", "Interop.OnInitializedAsync"); // Im Render-Mode "Static" oder "ServerPrerendered" bei der Startkomponente: InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+
+  SetContentAction = (string s) =>
+  {
+   //Util.Log("SetContent: " + s);
+   this.input = s;
+   this.StateHasChanged();
+  };
+ }
+
+ protected async override Task OnAfterRenderAsync(bool firstRender)
+ {
+  Util.Log("OnAfterRenderAsync");
+  if (script == null) script = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/_content/SamplesRCL/Interop/Interop.razor.js");
+ }
+
+
+ #endregion
+}
+
+
+<hr />
+<h4>JS-Module</h4>
+<button @onclick="LoadJS">Lade JavaScript Interop.razor.js</button>
+<button @onclick="StartJS">Starte JavaScript</button>
+<button @onclick="LoadStartJS">Laden und Starten von JavaScript</button>
+<br />
+<div class="alert alert-success">
+ @Gruss
+</div>
+
+@inject IJSRuntime jsRuntime
+@code
+{
+ public string Gruss { get; set; }
+
+ IJSObjectReference skript;
+
+ async Task LoadJS()
+ {
+  Console.WriteLine("Lade Interop.razor.js...");
+  // Laden aus "JS behind Razor"
+  skript = await jsRuntime.InvokeAsync<IJSObjectReference>("import", "/_content/SamplesRCL/Interop/Interop.razor.js");
+
+  Gruss = "Interop.razor.js geladen!";
+ }
+
+ async Task StartJS()
+ {
+  if (!await CheckJSLoaded()) return;
+  Console.WriteLine("Aufruf showPrompt()");
+  string name = await skript.InvokeAsync<string>("getName", "Bitte Ihren Namen eingeben!");
+  Gruss = "Hallo " + name + "!";
+ }
+
+ async Task LoadStartJS()
+ {
+  await LoadJS();
+  await StartJS();
+ }
+
+
+ // Hilfsroutine
+ async Task<bool> CheckJSLoaded()
+ {
+  if (skript == null) { await jsRuntime.InvokeVoidAsync("alert", "Du hast Interop.razor.js noch nicht geladen :-("); return false; }
+  return true;
+ }
+
+ // für Garbage Collection!
+ async ValueTask IAsyncDisposable.DisposeAsync()
+ {
+  if (script is not null)
+  {
+   await script.DisposeAsync();
+  }
+ }
+}
+
+<hr />
+<h4>TS-Module</h4>
+<button @onclick="LoadStartTS">Laden und Starten von TypeScript</button>
+<br />
+
+@code {
+ async Task LoadStartTS()
+ {
+  Console.WriteLine("Lade SamplesTS.js...");
+  // Laden aus wwwRoot
+  skript = await jsRuntime.InvokeAsync<IJSObjectReference>("import", "/_content/SamplesRCL/SamplesTS.js");
+  Gruss = "SamplesJS.js geladen!";
+  string t = await skript.InvokeAsync<string>("TSUtil.TSFunction");
+  Gruss = t;
+ }
+}
+
+
+
+@*-----------------------------------------------------------------------------------*@
+<h4>Calls from .NET to JavaScript</h4>
+<button @onclick="LogTest">Log Test (.NET -> JS)</button>
+<button @onclick="Dialoge">Modual browser dialog (.NET -> JS)</button>
+<button @onclick="SetFocus">Set focus on textbox 'Input' (.NET -> JS)</button>
+<button @onclick="Clipboard">Set Text in Clipboard</button>
+<button onclick="alert(Util.getBrowserInfo());">Get browser info (.NET -> JS)</button>
+<br />
+<br />
+<div class="row">
+ <div class="col-xs-2">
+
+  <button @onclick="ToggleDropdown" class="btn btn-primary">Toggle Dropdown</button>
+ </div>
+ <div class="col-xs-4">
+  <select @ref="C_DropDown" class="form-control">
+   <option>www.IT-Visions.de</option>
+   <option>www.dotnet-doktor.de</option>
+   <option>www.dotnet6.de</option>
+   <option>www.dotnetframework.de</option>
+   <option>www.entityframeworkcore.net</option>
+  </select>
+ </div>
+</div>
+<br />
+<br />
+@*-----------------------------------------------------------------------------------*@
+<h4>Calls from .NET to JavaScript - set content in JS</h4>
+<button @onclick="SetContentInJS">Get Browser Info with Timer (.NET -> JS, Set content in JavaScript)</button>
+<br />
+@*<button onclick="SetContentInJS(document.getElementById('C_Input'),'Samples', 'CallbackFromJS')">Get Browser Info with Timer (JS -> .NET -> JS, Set content in JavaScript)</button>
+ <br />
+ <button onclick="SetContentInJS2(document.getElementById('C_Input'),'Samples', 'CallbackFromJS')">Get Browser + .NET Info with Timer (JS -> .NET -> JS, Set content in JavaScript)</button>
+ <br />
+ <br />*@
+@*-----------------------------------------------------------------------------------*@
+<h4>Calls from .NET to JavaScript with Callback to .NET </h4>
+<button @onclick="SetContentInDOTNET">
+ Get Browser Info with Timer (.NET -> JS -> .NET, s
+ et content in .NET, using a static method)
+</button>
+<br />
+@*<button onclick="SetContentInDOTNET('Samples', 'SetContentStatic')">Get Browser Info with Timer (JS -> .NET, Set content in .NET)</button>
+ <br />*@
+
+<button @onclick="SetContentInDOTNETInstance">Get Browser Info with Timer (.NET -> JS -> .NET, set content in .NET, using a instance method)</button>
+<br />
+ Input:
+<br />
+<textarea id="C_Input"
+          @ref="C_Input"
+          rows="10" cols="80" @bind="this.input" />
+@*<textarea id="C_Input"
+ @ref="C_Input"
+ rows="10" cols="80" @onchange="((arg) => OnChange(arg, this, inputModel => this.input))" />*@
+<button @onclick="Copy">Copy Input to Output in C# (will not work for content set by JS!)</button>
+<br />
+ Output:
+<br />
+<div id="C_Output" @ref="C_Output">@((MarkupString)output)</div>
+
+@code
+{
+
+ void OnChange<TObject, TValue>(ChangeEventArgs uIChangeEventArgs, TObject target, Expression<Func<TObject, TValue>> propertyGetter)
+ {
+  if (uIChangeEventArgs?.Value != null)
+  {
+   var expression = (MemberExpression)propertyGetter.Body;
+   var property = (PropertyInfo)expression.Member;
+   property.SetValue(target, uIChangeEventArgs.Value);
+
+   // Do your own stuff here
+   this.StateHasChanged();
+  }
+ }
+
+ private ElementReference C_Input;
+ private ElementReference C_Output;
+ private ElementReference C_DropDown;
+ string output { get; set; } = "...";
+ string input { get; set; } = "...";
+
+ private static Action<string> SetContentAction;
+
+
+ protected override void OnInitialized()
+ {
+  Util.Log("OnInitializedAsync");
+ }
+
+ public void LogTest()
+ {
+  Util.Log("Logtest");
+  Util.Log(123.45);
+  var o = new { Name = "Holger Schwichtenberg", Ort = "Essen" };
+  Util.Log(o);
+  Util.Warn("Warnung", 123);
+  Util.Error("Fehler", 123);
+ }
+
+ public async void Dialoge()
+ {
+  //await Util.Alert("Alert mit Hilfe von " + this.Util.GetType().FullName);
+  //await Util.Confirm("Confirm");
+  bool antwort = await JSRuntime.InvokeAsync<bool>("confirm", "Nachfrage");
+  await JSRuntime.InvokeVoidAsync("alert", "Antwort war: " + antwort);
+ }
+
+ public async void Clipboard()
+ {
+  string s = "Datum: " + DateTime.Now.ToLongDateString() +
+  "\nUhrzeit: " + DateTime.Now.ToShortTimeString()
+  ; // new ITVisions.EnvInfo().GetString();
+  await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", s);
+  await JSRuntime.InvokeVoidAsync("alert", "Text in Zwischenablage gelegt:\n\n" + s);
+ }
+
+ public async void SetFocus()
+ {
+  if (!await CheckJSLoaded()) return;
+  await JSRuntime.InvokeAsync<object>(
+          "Util.focusElement", C_Input);
+  this.StateHasChanged();
+  Util.Log("DemoCallback: Input=" + this.input);
+ }
+
+ public async void ToggleDropdown()
+ {
+  await jsRuntime.InvokeVoidAsync("toggleDropdown", C_DropDown);
+
+ }
+
+ public async void SetContentInJS()
+ {
+  if (!await CheckJSLoaded()) return;
+  await script.InvokeAsync<object>("SetContentInJS", C_Input);
+  this.StateHasChanged();
+  Util.Log("DemoCallback: Input=" + this.input);
+ }
+
+ public async void SetContentInDOTNET()
+ {
+  if (!await CheckJSLoaded()) return;
+  await script.InvokeAsync<object>("SetContentInDOTNET", Assembly.GetExecutingAssembly().GetName().Name, "SetContentStatic");
+ }
+
+ // Alternative with Instanzmethode
+ private DotNetObjectReference<Interop> objRef;
+ public async void SetContentInDOTNETInstance()
+ {
+  if (!await CheckJSLoaded()) return;
+  objRef = DotNetObjectReference.Create(this);
+  await script.InvokeVoidAsync("SetContentInDOTNETInstance", objRef, nameof(SetContent));
+ }
+
+ [JSInvokable]
+ public static Task<string[]> CallbackFromJS()
+ {
+  return Task.FromResult(new string[] { "### Information from .NET:", ".NET Version: " + System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription, "App Version: " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() });
+ }
+
+ [JSInvokable]
+ public static void SetContentStatic(string s)
+ {
+  SetContentAction(s);
+ }
+
+ [JSInvokable]
+ public void SetContent(string s)
+ {
+  this.input = s;
+  this.StateHasChanged();
+ }
+
+ public async void Copy()
+ {
+  this.output = this.input.Replace("\n", "<br>");
+  this.StateHasChanged();
+ }
+
+}
+
+<hr />
+
+<h4>Streaming with IJSStreamReference (since Blazor 6)</h4>
+Bytes:
+<input type="number" @bind="Bytes" />
+Empty?
+<input type="checkbox" @bind="Empty" />
+<button @onclick="StreamToFile">Stream To File</button>
+<br />
+@OutputStreaming
+<br />
+<br />
+@code
+{
+ bool Empty = true;
+ long Bytes = 40000000;
+ string OutputStreaming;
+ public async void StreamToFile()
+ {
+  var sw = new System.Diagnostics.Stopwatch();
+  sw.Start();
+  if (skript == null) { OutputStreaming = "Fehler: JavaScript-Modul nicht geladen!"; return; }
+  Util.Log("StreamToFile");
+  OutputStreaming = "Getting Stream from JavaScript...";
+  Util.Log(OutputStreaming);
+  this.StateHasChanged();
+
+  // Get stream from JS
+  var dataReference = await skript.InvokeAsync<IJSStreamReference>("GetTextAsStream", Empty, Bytes);
+  using var dataReferenceStream = await dataReference.OpenReadStreamAsync(maxAllowedSize: Bytes);
+
+  // Write JS Stream to disk
+  var outputPath = Path.Combine(Path.GetTempPath(), "file.txt");
+  OutputStreaming = ($"Saving stream with {dataReferenceStream.Length / 1024d:0.##} KB to: " + outputPath);
+  Util.Log(OutputStreaming);
+  this.StateHasChanged();
+  using var outputFileStream = File.OpenWrite(outputPath);
+  await dataReferenceStream.CopyToAsync(outputFileStream);
+  sw.Stop();
+  OutputStreaming = ($"Saved stream with {dataReferenceStream.Length / 1024d:0.##} KB to: " + outputPath + ": " + sw.ElapsedMilliseconds + "ms");
+  this.StateHasChanged();
+  Util.Log(OutputStreaming);
+ }
+
+}

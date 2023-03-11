@@ -1,0 +1,21 @@
+﻿@inherits TestContext
+@using BlazorTests.Teststyles
+
+ @code
+  {
+  [Fact]
+  void HelloWorldComponentRendersCorrectly()
+  {
+   // Act
+   // Arrange
+   using var ctx = new TestContext();
+
+   // Act
+   var cut = ctx.Render(@<HelloWorld />);
+
+var e = cut.Find(".content"); // . = css class
+
+// Assert
+e.InnerHtml.MarkupMatches("<h1>Hello world from Blazor</h1>");
+}
+ }

@@ -1,0 +1,21 @@
+﻿@page "/Samples/BlazorArchitecture"
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+
+<h3>Blazor-Typ ermitteln</h3>
+@((MarkupString)Ausgabe)
+
+@code {
+
+ string Ausgabe = "";
+
+
+ protected override void OnInitialized()
+ {
+  Ausgabe += "System.OperatingSystem.IsWindows(): " + System.OperatingSystem.IsWindows() + "<br>";
+  Ausgabe += "System.OperatingSystem.IsBrowser(): " + System.OperatingSystem.IsBrowser() + "<br>";
+  Ausgabe += "über eigene Funktion: " + Util.GetBlazorVersionInfo();
+  if (Util.IsWebAssembly) Console.WriteLine("In Blazor WebAssembly geht Console.WriteLine() in die Browserkonsole!");
+ }
+
+}

@@ -1,0 +1,103 @@
+﻿@page "/Samples/chart"
+@inject IJSRuntime JSRuntime
+
+<h3>Nutzung von CHARTIST.JS</h3>
+
+<a href="http://gionkunz.github.io/chartist-js/getting-started.html">http://gionkunz.github.io/chartist-js/getting-started.html</a>
+<style>
+ .ct-label {
+  font-size: 15px !important;
+ }
+
+ .ct-series-b .ct-bar, .ct-series-b .ct-line, .ct-series-b .ct-point, .ct-series-b .ct-slice-donut {
+  stroke: green !important;
+ }
+</style>
+
+<button @onclick="PaintLine">Linien-Diagramm malen (.NET -> JS)</button>
+<button @onclick="PaintPie">Kuchen-Diagramm malen (.NET -> JS)</button>
+<hr />
+
+@if (ShowLineChart)
+{
+ <div style="width:800px;text-align:center">
+  <span style="background:green;color:white;padding:3px">Optimalfall</span>
+  <span style="background:#d70206;color:white;padding:3px">Schlechtester Fall</span>
+ </div>
+}
+
+<div class="ct-chart ct-perfect-fourth" style="width:800px;height:400px"></div>
+
+@code {
+ //IJSObjectReference chartist;
+ IJSObjectReference script;
+ bool ShowLineChart = false;
+
+ protected override async Task OnInitializedAsync()
+ {
+  // hier nicht JSRuntime.InvokeAsync() bei BS möglich: "InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method."
+ }
+
+ protected override async Task OnAfterRenderAsync(bool firstRender)
+ {
+  if (script == null)
+  {
+   script = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/_content/SamplesRCL/Interop_Chat.js");
+  }
+ }
+
+ record DataForline
+ {
+  public List<string> labels { get; set; } = new();
+  public List<List<int>> series { get; set; } = new();
+ }
+
+ async void PaintLine()
+ {
+  ShowLineChart = true;
+
+  // Chartist.js erwartet die Daten so:
+  //var data = {
+  // // A labels array that can contain any sort of values
+  // labels: ['A', 'B', 'C', 'D', 'E'],
+  // // Our series array that contains series objects or in this case series data arrays
+  // series: [
+  //  [15, 2, 4, 2, 10]
+  // ]
+  //};
+
+  // Daten für Chartist.js in anonymen .NET-Objekt definieren
+  //var data = new { labels = new List<string> { "A", "B", "C", "D", "E" }, series = new List<object>() };
+  //data.series.Add(new List<int>() { 15, 2, 4, 2, 10 });
+
+  // Daten für Chartist.js in typisiertem Objekt speichern
+  DataForline data = new DataForline();
+  data.labels = new List<string> { "Bochum", "Dortmund", "Duisburg", "Essen", "Gelsenkirchen" };
+  data.series.Add(new List<int>() { 15, 18, 4, 20, 19, 2 });
+  data.series.Add(new List<int>() { 24, 27, 20, 28, 27, 5 });
+
+  // Aufruf von PaintLine() in SamplesRCL.js
+  await script.InvokeVoidAsync("paintLine", data);
+ }
+
+ async void PaintPie()
+ {
+  ShowLineChart = false;
+  // Chartist.js erwartet die Daten so:
+  // series:[10, 20, 50, 20, 5, 50, 15],
+  // labels:[1, 2, 3, 4, 5, 6, 7]
+
+  // Daten für Chartist.js in anonymen .NET-Objekt definieren
+  var data = new
+  {
+   labels = new List<string>
+ { "A", "B", "C", "D", "E" },
+   series = new List<int>
+   () { 15, 2, 4, 2, 10 }
+  };
+
+  // Aufruf von PaintPie() in SamplesRCL.js
+  await script.InvokeVoidAsync("paintPie", data);
+ }
+
+}

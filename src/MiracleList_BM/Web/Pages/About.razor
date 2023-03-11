@@ -1,0 +1,52 @@
+﻿@page "/about"
+@using ITVisions.Blazor
+@inject HybridSharedState AppState
+@inject MiracleList.IMiracleListProxy proxy
+
+<div class="row">
+
+ <div class="col-xs-6">
+
+  <h2>Technische Daten</h2>
+  @*Dies ist ein Steuerelement aus RCL ITVisions.Blazor*@
+  <SystemInfo Assembly="@typeof(Web.App).Assembly"></SystemInfo>
+  <b>Managed Thread ID: </b>@System.Threading.Thread.CurrentThread.ManagedThreadId
+  <h2>Backend-Server</h2>
+  @ServerUrl
+  <br />
+  @ServerAppVersion
+  <br />
+  @ServerFramework
+
+  <h2>WebView </h2>
+  @AppState.HostControl.GetType().FullName
+  @((MarkupString)AppState.HostControl.ToNameValueString(attributeSeparator: "<br><b>", nameValueSeparator: "</b>: "))
+ </div>
+
+ <div class="col-xs-6">
+  <MoreInformationAboutMiracleList />
+ </div>
+
+</div>
+
+
+@code {
+ public string ServerUrl { get; set; }
+ public string ServerAppVersion { get; set; } = "Server-Version: unknown";
+ public string ServerFramework { get; set; } = "Server-Framework: unknown";
+
+ protected override async Task OnInitializedAsync()
+ {
+  try
+  {
+   ServerUrl = "URL: " + (!String.IsNullOrEmpty(proxy.BaseUrl) ? proxy.BaseUrl : "not set");
+   var serverData = await proxy.AboutAsync();
+   ServerAppVersion = serverData[6];
+   ServerFramework = serverData[8];
+  }
+  catch (Exception)
+  {
+
+  }
+ }
+}

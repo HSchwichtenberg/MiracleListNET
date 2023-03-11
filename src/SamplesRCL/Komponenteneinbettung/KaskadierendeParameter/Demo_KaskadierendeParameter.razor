@@ -1,0 +1,29 @@
+﻿@page "/Samples/KaskadierendeParameter"
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+
+<h3>Kaskadierende Parameter</h3>
+
+<input type="number" @bind="settings.Count" class="form-control" />
+<select @bind="@settings.Color" class="form-control">
+ <option>red</option>
+ <option>green</option>
+ <option>blue</option>
+</select>
+
+<select @bind="@settings.Align" class="form-control">
+ <option>left</option>
+ <option>center</option>
+ <option>right</option>
+</select>
+
+
+<hr />
+
+<CascadingValue Value="settings">
+ <Ebene1></Ebene1>
+</CascadingValue>
+
+@code {
+ private Settings settings = new Settings { Color = "red", Align="left", Count=1 };
+}

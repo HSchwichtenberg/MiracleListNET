@@ -1,0 +1,157 @@
+﻿@page "/Samples/DynamicControls"
+@inject ITVisions.Blazor.BlazorUtil Util
+
+
+
+<div class="row">
+
+ <div class="col-xs-4">
+  <h3>Dynamic Controls: Create new controls</h3>
+  <hr />
+  Type of new control:
+  <select @bind="SelectedControlType" class="form-control">
+   <option>text</option>
+   <option>date</option>
+   <option>number</option>
+   <option>button</option>
+  </select>
+
+  <button @onclick="Create" class="btn btn-primary">Add Control</button>
+
+
+  @code {
+
+   public string SelectedControlType { get; set; } = "text";
+
+   List<DynamicControl> controls = new List<DynamicControl>();
+
+   class DynamicControl
+   {
+    public string Type { get; set; }
+    public Action Callback { get; set; }
+
+    ITVisions.Blazor.BlazorUtil Util;
+    public DynamicControl(string type, string data, Action callback, ITVisions.Blazor.BlazorUtil util)
+    {
+     this.Util = util;
+     this.Type = type;
+     this.Data = data;
+     this.Callback = callback;
+    }
+    private string data;
+    public string Data
+    {
+     get => data;
+     set
+     {
+      Util.Log(Type + ": " + value);
+      data = value;
+     }
+    }
+
+    public RenderFragment Render() => __builder =>
+    {
+     __builder.OpenElement(1, "input");
+     __builder.AddAttribute(2, "type", this.Type);
+     if (this.Type == "button")
+     {
+      __builder.AddAttribute(2, "class", "btn btn-default");
+      this.Data = "Click me!";
+      __builder.AddAttribute(12, "onclick", EventCallback.Factory.Create<Microsoft.AspNetCore.Components.Web.MouseEventArgs>(this, Callback
+             ));
+     }
+     else
+     {
+      __builder.AddAttribute(2, "class", "form-control");
+     }
+     __builder.AddAttribute(3, "value", BindConverter.FormatValue(this.Data, culture: global::System.Globalization.CultureInfo.InvariantCulture));
+     __builder.AddAttribute(4, "onchange", EventCallback.Factory.CreateBinder(this, __value => this.Data = __value, this.Data, culture: global::System.Globalization.CultureInfo.InvariantCulture));
+     __builder.SetUpdatesAttributeName("value");
+
+     __builder.CloseElement();
+    };
+   }
+
+
+   void Create()
+   {
+    controls.Add(new DynamicControl(SelectedControlType, "", Callback, Util));
+   }
+
+   void Callback()
+   {
+    Util.Log("Callback!");
+   }
+
+   public int X { get; set; }
+   protected RenderFragment DynamicFragment;
+  }
+
+
+  <hr />
+  <h4>Controls created at runtime</h4>
+  <table class="table table-bordered table-condensed">
+   <tbody>
+    @foreach (var c in controls)
+    {
+     <tr><td width="100px">@c.Type</td><td>@c.Render()</td></tr>
+    }
+   </tbody>
+  </table>
+
+  <hr />
+  <h4>Data from controls created at runtime</h4>
+  <table class="table table-bordered table-condensed">
+   <tbody>
+    @foreach (var c in controls)
+    {
+     <tr><td width="100px">@c.Type</td><td>@c.Data</td></tr>
+    }
+   </tbody>
+  </table>
+ </div>
+ <div class="col-xs-4">
+  <h3>Dynamic Controls: Update controls</h3>
+  <hr />
+  Anzahl der Elemente:
+  <input type="number" @bind="NumberOfElements" class="form-control" />
+
+
+  <select @bind="SelectedElement" class="form-control">
+   @foreach (var e in Elements)
+   {
+    <option>@e</option>
+   }
+
+  </select>
+
+  <p>Gewähltes Element: @SelectedElement</p>
+
+  @code
+  {
+   public int _NumberOfElements;
+
+   public int NumberOfElements
+   {
+    get { return _NumberOfElements; }
+    set
+    {
+     _NumberOfElements = value;
+
+     Elements.Clear();
+     for (int i = 1; i <= _NumberOfElements; i++)
+     {
+      Elements.Add("Element " + i);
+     }
+
+    }
+   }
+
+   public string SelectedElement { get; set; }
+
+   public List<string> Elements { get; set; } = new();
+
+  }
+
+ </div>
+</div>

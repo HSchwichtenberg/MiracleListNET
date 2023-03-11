@@ -1,0 +1,154 @@
+﻿@page "/Samples/APIs"
+@inject BlazorUtil Util
+@using Microsoft.Data.SqlClient
+@using System.DirectoryServices
+
+<h3>API-Zugriffe</h3>
+
+<button @onclick="@(()=> APITest("Console.ReadLine()",StartReadline))">Console.ReadLine()</button>
+<br />
+<button @onclick="@(()=> APITest("Thread.Start()",StartThread))">Thread.Start()</button>
+<br />
+<button @onclick="@(()=> APITest("DriveInfo",StartDriveInfo))">Filesystem (DriveInfo, DirectoryInfo, FileInfo)</button>
+<br />
+<button @onclick="@(()=> APITest("AppDomain",StartAppDomain))">AppDomain.CreateDomain()</button>
+<br />
+<button @onclick="@(()=> APITest("LDAP",StartLDAP))">LDAP (Active Directory) using System.DirectoryServices</button>
+<br />
+<button @onclick="@(()=> APITest("SQLconnection",StartTDS))">TDS (SQL Server Database) using  Microsoft.Data.SqlClient</button>
+<br />
+<hr />
+<h3>Testausführung</h3>
+@Ausgabe
+
+<h3>Testergebnisse</h3>
+<table class="table table-bordered">
+ <tr><th>Test</th><th>Ergebnis</th></tr>
+ @foreach (var t in APITests)
+ {
+  <tr>
+   <td>@t.Key</td>
+   <td>@((MarkupString)t.Value)</td>
+  </tr>
+ }
+</table>
+
+@code {
+
+
+ string Ausgabe = "";
+ SortedDictionary<string, string> APITests = new SortedDictionary<string, string>();
+
+ async void APITest(string TestName, Func<string> apiTestFunc)
+ {
+  Util.Log("Starte Test: " + TestName);
+  Ausgabe = "Test " + TestName + " läuft...";
+  string TestResult = "";
+
+  if (!APITests.ContainsKey(TestName)) APITests.Add(TestName, "...");
+  else APITests[TestName] = "...";
+  this.StateHasChanged();
+  await Task.Delay(1);
+  await Task.Run(() =>
+  {
+   try
+   {
+    TestResult = apiTestFunc();
+   }
+   catch (Exception ex)
+   {
+    TestResult = "Fehler: " + ex.GetType().Name + ": " + ex.Message;
+   }
+   APITests[TestName] = TestResult;
+   this.InvokeAsync(
+   () =>
+   {
+    Util.Log("Test: " + TestName + " = " + TestResult);
+    Ausgabe = "Test " + TestName + " beendet: " + TestResult;
+    this.StateHasChanged();
+   });
+  });
+ }
+
+ string StartLDAP()
+ {
+  DirectoryEntry directoryEntry = new DirectoryEntry("LDAP://E30");
+  DirectorySearcher searcher = new DirectorySearcher(directoryEntry)
+  {
+   PageSize = int.MaxValue,
+   Filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=AnAccountName))"
+  };
+
+  searcher.PropertiesToLoad.Add("sn");
+
+  var result = searcher.FindOne();
+
+  if (result == null)
+  {
+   return "OK: Kein Eintrag gefunden!";
+  }
+
+  if (result.Properties.Contains("sn"))
+  {
+   return "OK: " + result.Properties["sn"][0].ToString();
+  }
+
+  return "OK: unbekant";
+
+ }
+
+ string StartTDS()
+ {
+  SqlConnection conn = new SqlConnection(
+"Data Source=D120;Initial Catalog=WWWings66_VieleDaten;Integrated Security=SSPI");
+  conn.Open();
+  return "Verbindungszustand: " + conn.State;
+ }
+
+ string StartReadline()
+ {
+  return Console.ReadLine();
+ }
+
+ public void Doit()
+ {
+
+ }
+
+ string StartThread()
+ {
+  var t = new System.Threading.Thread(Doit);
+  t.Start();
+  return t.ManagedThreadId.ToString();
+ }
+
+ string StartAppDomain()
+ {
+  // Das geht nicht in .NET Core/.NET 5 ff; steht hier nur, um die Warnung zu zeigen! ;-)
+  //    //Creating and unloading AppDomains is not supported and throws an exception.' 
+  //var d = System.AppDomain.CreateDomain("xx");
+  //return d.Id.ToString();
+  return "";
+ }
+
+ string StartDriveInfo()
+ {
+  var e = "";
+  var drives = System.IO.DriveInfo.GetDrives();
+  if (drives.Length == 0) return "No drives found";
+  foreach (var d in drives)
+  {
+   e += "DRIVE: " + d.Name + " (" + d.DriveType + ") Size=" + d.TotalSize + "<br>";
+   foreach (var f in d.RootDirectory.GetFiles())
+   {
+    e += f.FullName + "<br>";
+   }
+   foreach (var dir in d.RootDirectory.GetDirectories())
+   {
+    e += dir.FullName + "<br>";
+   }
+  }
+  return e;
+ }
+
+}

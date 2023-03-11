@@ -1,0 +1,399 @@
+﻿@page "/Samples/Events"
+@inherits EventsModel;
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+@inject IJSRuntime JSRuntime
+
+@code {
+ // normaler Code-Scope
+ int start = 0;
+ IEnumerable<int> liste { get; set; }
+
+ protected override void OnInitialized()
+ {
+  liste = Enumerable.Range(start, 10);
+ }
+}
+<ul>
+  @for(int i=1; i < 5; i++)
+  {
+    <li @onclick="()=>Klick(i)">@i</li>
+  }
+</ul>
+<h1>@Auswahl</h1>
+
+@code{
+  public int Auswahl { get; set; }
+
+  void Klick(int x)
+  {
+    Auswahl = x;
+  }
+
+}
+
+<hr />
+
+<div class="bg-primary">
+ <h3>
+  Ereignisbehandlung / Basiswissen
+ </h3>
+</div>
+<div class="alert alert-warning"> @Ausgabe</div>
+
+<div class="row">
+ <div class="col-xs-6">
+  Falsch: (bitte ein Element anklicken)
+  <ul>
+   @foreach (var i in liste)
+   {
+    @*<li @onclick="KlickB1">@i</li>*@
+    <li @onclick="async () => await KlickB1Async()">@i</li>
+   }
+  </ul>
+ </div>
+ <div class="col-xs-6">
+  Richtig: (bitte eine Element anklicken)
+  <ul>
+   @foreach (var i in liste)
+   {
+       @*<li @onclick="() => KlickB2(i)">@i</li>*@
+    <li @onclick="async () => await KlickB2Async(i)">@i</li>
+    @*<li @onclick="new Action(() => KlickB2(i))">@i</li>*@
+
+   }
+  </ul>
+ </div>
+</div>
+
+@code {
+ string Ausgabe;
+ void KlickB1()
+ {
+  Ausgabe = "Irgendein Element wurde geklickt, ich weiß aber nicht welches :-(";
+ }
+
+ async Task KlickB1Async()
+ {
+  Ausgabe = "Irgendein Element wurde geklickt, ich weiß aber nicht welches :-(";
+  await SaveAsync();
+ }
+
+
+ void KlickB2(int x)
+ {
+  Ausgabe = $"Element {x} geklickt.";
+ }
+
+ async Task KlickB2Async(int x)
+ {
+  Ausgabe = $"Element {x} geklickt.";
+  await SaveAsync();
+ }
+
+ async Task SaveAsync()
+ {
+  // TODO: irgendwas :-)
+ }
+}
+
+@*-----------------------------------------------------------------------------------------*@
+
+@{
+ // lokaler Scope
+ var datum = DateTime.Now;
+ int start2 = 10;
+ IEnumerable<int> liste2 = Enumerable.Range(start2, 10);
+}
+
+
+<div class="bg-primary">
+ <h3>
+  Ereignisbehandlung / Code-Scope
+ </h3>
+</div>
+
+<h4>@datum Startwert für Spalte1: @start Startwert für Spalte2: @start2</h4>
+<div class="row">
+
+ <div class="col-xs-6">
+  <button class="btn btn-primary" @onclick="Klick1">Klick mich!</button>
+  <ul>
+   @foreach (var i in liste)
+   {
+    <li>@i</li>
+   }
+  </ul>
+
+ </div>
+
+ <div class="col-xs-6">
+  <button class="btn btn-primary" @onclick="Klick2">Klick mich! (funkttioniert nicht richtig)</button>
+  <ul>
+   @foreach (var i in liste2)
+   {
+    <li>@i</li>
+   }
+  </ul>
+ </div>
+</div>
+
+@code {
+ void Klick1()
+ {
+  // Findet datum hier nicht!  datum = DateTime.Now;
+  start += 10;
+  liste = Enumerable.Range(start, 10);
+  //Util.Confirm("Nachfrage");
+ }
+}
+
+@{
+ void Klick2()
+ { // datum in UI wird aktualisiert, nicht aber start2 und Liste2, weil diese Variable nicht im @code-Block sind, sondern lokal in @{ ... }
+  datum = DateTime.Now;
+  start2 += 20;
+  liste2 = Enumerable.Range(start2, 10);
+  Util.Log("start2 = " + start2 + " Datum =" + datum.ToString());
+ }
+}
+@*-----------------------------------------------------------------------------------------*@
+<div class="bg-primary">
+ <h3>
+  Ereignisse ohne explizite Eventhandlerroutine (Inline-Event-Handler mit Lambda-Ausdruck)
+ </h3>
+</div>
+
+Zähler 1: @counter1
+<br />
+Zähler 2: @counter2
+<br />
+
+<button class="btn btn-primary" @onclick="() => counter1++">Nur Zähler 1</button>
+<button class="btn btn-primary" @onclick="() => counter2--">Nur Zähler 2</button>
+<button class="btn btn-primary" @onclick="() => { counter1++; counter2--; }">Beide Zähler</button>
+<br />
+@code
+{
+ int counter1 = 100;
+ int counter2 = 100;
+}
+@*-----------------------------------------------------------------------------------------*@
+<div class="bg-primary">
+ <h3>
+  Eventargs
+ </h3>
+</div>
+
+Zähler 3: @counter3
+<br />
+Zähler 4: @counter4
+<br />
+
+<button class="btn btn-primary" @onclick="(e) => Count3(e)">Zähler 3</button>
+<button class="btn btn-primary" @onclick="(e) => Count4(e,counter4)">Zähler 4</button>
+
+<br />
+@code
+{
+ int counter3 = 100;
+ int counter4 = 100;
+
+ void Count3(MouseEventArgs args)
+ {
+  Util.Log("MouseEventArgs", args);
+  counter3++;
+ }
+ void Count4(MouseEventArgs args, int value)
+ {
+  Util.Log("MouseEventArgs", args);
+  counter4 = value + 1;
+ }
+}@*-----------------------------------------------------------------------------------------*@
+<div class="bg-primary">
+ <h3>
+  Tastaturereignisse
+ </h3>
+</div>
+
+@code
+{
+ public int CurrentID { get; set; } = 123;
+ public string Texteingabe { get; set; }
+ public string Tasten { get; set; }
+
+
+ public void OnInput(ChangeEventArgs args)
+ {
+  Util.Log($"OnInput: {args.Value} / {this.Texteingabe}");
+  Tasten = args.Value.ToString();
+ }
+
+ public void KeyPressWithoutDefaultArgs(KeyboardEventArgs args)
+ {
+  Util.Log($"KeyPress: {args.Key} / {this.Texteingabe}");
+  Tasten += args.Key;
+ }
+
+ public void KeyPressWithCustomArgs(KeyboardEventArgs args, int id = 123)
+ {
+  Util.Log($"KeyPress for {id}: {args.Key} / {this.Texteingabe}");
+  Tasten += args.Key;
+ }
+
+}
+
+@*<button @onclick="() => Test()">Test</button>*@
+
+<div class="row">
+ <div class="col-xs-6">
+
+  Bind für onchange, zusätzlich oninput
+  <input type="text" @bind="Texteingabe" @oninput="OnInput" />
+  <br />Bind für onchange, zusätzlich onkeypress
+  <input type="text" @bind="Texteingabe" @onkeypress="KeyPressWithoutDefaultArgs" />
+  <br />Bind mit oninput statt onchange :
+  <input type="text" @bind="Texteingabe" @bind:event="oninput">
+  <br />Alternative Syntax mit Lambda:
+  <input type="text" @bind="Texteingabe" @onkeypress="(e) => KeyPressWithoutDefaultArgs(e)" />
+  <br />Alternative Syntax mit Lambda und Zusatzparameter:
+  <input type="text" @bind="Texteingabe" @onkeypress="(e) => KeyPressWithCustomArgs(e, CurrentID)" />
+ </div>
+ <div class="col-xs-6">
+
+  <div class="panel panel-default">
+   <div class="panel-heading">Ergebnisse</div>
+   <div class="panel-body">
+    Zwischenstand: @Tasten
+    <br />
+    Inhalt des Property nach Datenbindung: @Texteingabe
+   </div>
+  </div>
+
+ </div>
+</div>
+@*-----------------------------------------------------------------------------------------*@
+<div class="bg-primary">
+ <h3>
+  Mauseignisse
+ </h3>
+</div>
+
+<div @onpointermove="Pointer" @onwheel="Wheel">
+ Beim Überfahren dieses Textes<br />
+ werden Mausereignisse ausgelöst!
+</div>
+
+@code {
+ Queue<string> MausEreignisse = new Queue<string>();
+ int MausEreignisseCount = 0;
+
+ void Pointer(PointerEventArgs args)
+ {
+  AddMausEreignis(args.ClientX + "/" + args.ClientY + ": " + args.Type + "/" + args.Detail);
+ }
+ void Wheel(WheelEventArgs args)
+ {
+  AddMausEreignis(args.ClientX + "/" + args.ClientY + ": " + args.Type + "/" + args.Detail);
+ }
+
+ void AddMausEreignis(string s)
+ {
+  MausEreignisseCount++;
+  while (MausEreignisse.Count > 10) { MausEreignisse.Dequeue(); }
+  MausEreignisse.Enqueue($"{MausEreignisseCount:0000} {DateTime.Now.ToLongTimeString()}: {s}");
+ }
+
+}
+
+
+<h4>Ausgabe:</h4>
+@((MarkupString)(String.Join("<br>", MausEreignisse)))
+@*-----------------------------------------------------------------------------------------*@
+<div class="bg-primary">
+ <h3>
+  Verhindern der Standardaktionen (Beispiel von Microsoft, modifiziert)
+ </h3>
+</div>
+
+ Erlaubt in der Textbox: +, -und 0
+<input value="@counter" @onkeypress="KeyHandler" @onkeypress:preventDefault />
+
+@code {
+ private int counter = 0;
+
+ private void KeyHandler(KeyboardEventArgs e)
+ {
+  if (e.Key == "+")
+  {
+   counter++;
+  }
+  if (e.Key == "-")
+  {
+   counter--;
+  }
+  if (e.Key == "0")
+  {
+   counter = 0;
+  }
+ }
+}
+
+<div class="bg-primary">
+ <h3>
+  Verhindern der Standardaktionen (eigenes Beispiel)
+ </h3>
+</div>
+
+Bitte eine GUID eingeben(nur erlaubt in der Textbox: @string.Join(", ", erlaubteZeichen))
+<br />
+<input value="@guid" @onkeypress="GuidEingabeKeyHandler" @onkeypress:preventDefault />
+
+@code {
+ List<char> erlaubteZeichen = new List<char>() { '{', '}', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+
+ private string guid = "";
+
+ private void GuidEingabeKeyHandler(KeyboardEventArgs e)
+ {
+  if (erlaubteZeichen.Contains(e.Key[0]))
+  {
+   guid += e.Key;
+  }
+ }
+}
+
+<div class="bg-primary">
+ <h3>Ereignisweitergabe / Event Propagation</h3>
+</div>
+<label>
+ <input @bind="ereignisWeitergabe" type="checkbox" />
+ Ereignis weitergeben?
+</label>
+
+<div @onclick="KlickGruen" style="background-color:greenyellow;width:300px;padding-bottom:10px;">
+ <h3>grüner Kasten</h3>
+
+ <div @onclick="KlickGelb" @onclick:stopPropagation="!ereignisWeitergabe" style="background-color:lightyellow; margin: 20px;">
+  gelber Kasten
+ </div>
+
+ <div @onclick="KlickBlau" @onclick:stopPropagation="!ereignisWeitergabe" style="background-color:lightblue; margin: 20px;">
+  blauer Kasten
+ </div>
+</div>
+
+@code {
+ string ausgeloesteKlickEreignisse = "";
+ private bool ereignisWeitergabe = true;
+
+ private void KlickGruen() =>
+    ausgeloesteKlickEreignisse += ($"grün ");
+ private void KlickGelb() =>
+    ausgeloesteKlickEreignisse += ($"gelb ");
+ private void KlickBlau() =>
+    ausgeloesteKlickEreignisse += ($"blau ");
+}
+
+<h4>Klick-Ereignisse:</h4>
+@((MarkupString)ausgeloesteKlickEreignisse)

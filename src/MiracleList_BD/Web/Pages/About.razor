@@ -1,0 +1,25 @@
+﻿@page "/about"
+@using ITVisions.Blazor.Controls
+@using ITVisions.Web
+@inject HybridSharedState HybridSharedState
+@*@using Microsoft.AspNetCore.Hosting*@
+
+<div class="row">
+
+ <div class="col-xs-6">
+
+  <h2>Technische Daten</h2>
+  @*Dies ist ein Steuerelement aus ITVisions.Blazor*@
+  <SystemInfo Assembly="@typeof(Web.App).Assembly"></SystemInfo>
+  <b>Managed Thread ID: </b>@System.Threading.Thread.CurrentThread.ManagedThreadId
+
+  <h2>WebView</h2>
+
+  @((MarkupString)HybridSharedState.HostControl.WebView.ToNameValueString(attributeSeparator: "<br><b>", nameValueSeparator: "</b>: "))
+ </div>
+
+ <div class="col-xs-6">
+  <MoreInformationAboutMiracleList />
+ </div>
+
+</div>

@@ -1,0 +1,88 @@
+﻿@attribute [Authorize]
+@inject BlazorUtil Util
+@using BO
+@using Microsoft.AspNetCore.Components.Forms
+@using Blazored.FluentValidation @*Install-Package Blazored.FluentValidation*@
+@using Web;
+
+@{
+ /* DEMO: 21. Unterkomponente mit EditForm / ohne Route */
+}
+
+@if (Task != null) {
+ <div style="padding: 0">
+  <div>
+   <h4>Task</h4>
+   <EditForm EditContext="@editContext">
+    @*<DataAnnotationsValidator />*@
+    <FluentValidationValidator />
+    <!--Schaltflächen-->
+    <button id="save" type="button" title="Änderungen speichern"
+           @onclick="Save" class="btn btn-success" disabled="@(!editContext.Validate())">
+     <span class="glyphicon glyphicon-floppy-save"></span> <span class="hidden-xs" i18n>Save</span>
+    </button>
+    <button id="cancel" type="button" title="Änderungen verwerfen" @onclick="Cancel" class="btn btn-warning"><span class="glyphicon glyphicon-remove"></span> <span class="hidden-xs" i18n>Cancel</span></button>
+    <!--Validierungsausgabe-->
+    @if (!editContext.Validate()) {
+     <div class="alert alert-danger" role="alert">
+      <h5 class="alert-heading text-danger">There are validation errors in this form:</h5>
+      <ValidationSummary class="text-danger"></ValidationSummary>
+     </div>
+    }
+
+    <!--Titel-->
+    <div class='form-group has-feedback @(IsValid("Title")?"has-error":"")'>
+     <label for="tasktitle">Title</label>
+     <InputText id="tasktitle" @bind-Value="Task.Title" required class="form-control" />
+     @if (IsValid("Title")) {
+      <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+     }
+     <ValidationMessage class="text-danger" For="@(() => Task.Title)" />
+    </div>
+    <div class="row">
+     <!--Wichtigkeit-->
+     <div class="col-xs-3" style="padding-right: 2px">
+      <div class="form-group">
+       <label for="taskimportance" i18n>Importance</label>
+       <InputSelect id="taskimportance" name="taskimportance" @bind-Value="Task.ImportanceNN" class="form-control">
+        @foreach (object s in System.Enum.GetValues(typeof(BO.Importance))) {
+         <option value="@s">@s</option>
+        }
+       </InputSelect>
+      </div>
+     </div>
+     <!--Aufwand-->
+     <div class="col-xs-4" style="padding-left: 2px; padding-right: 2px">
+      <div class='form-group @(IsValid("Effort")?"has-error":"")'>
+       <label for="taskeffort " i18n>Effort</label>
+       <InputNumber id="taskeffort" min="0" name="taskeffort" @bind-Value="Task.Effort" class="form-control" />
+ 
+       <ValidationMessage class="text-danger" For="@(() => Task.Effort)" />
+      </div>
+     </div>
+     <!--Fälligkeit-->
+     <div class="col-xs-5" style="padding-left: 2px; ">
+      <div class='form-group @(IsValid("Due")?"has-error":"")'>
+       <label for="taskDue" i18n>Due</label>
+       <InputDate id="taskdue" name="taskdue" @bind-Value="Task.Due" class="form-control" />
+   
+       <ValidationMessage class="text-danger" For="@(() => Task.Due)" />
+      </div>
+     </div>
+    </div>  <!--Ende row-->
+    <!--Unteraufgaben-->
+    <MLBlazorRCL.SubTaskList Task="Task"></MLBlazorRCL.SubTaskList>
+    <!--Notiz-->
+    <div class="form-group ">
+     <label for="tasknote" i18n>Note</label>
+     <InputTextArea id="tasknote" name="tasknote" rows="5" @bind-Value="Task.Note" class="form-control ">
+     </InputTextArea>
+    </div>
+   </EditForm>
+
+   @if (AdditionalComponents.TaskEditAdditionalComponent != null) {
+    <DynamicComponent Type="@AdditionalComponents.TaskEditAdditionalComponent"></DynamicComponent>
+   }
+  </div>
+ </div>
+}

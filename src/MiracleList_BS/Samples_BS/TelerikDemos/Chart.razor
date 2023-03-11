@@ -1,0 +1,95 @@
+﻿@page "/Samples_BS/telerikChart"
+
+<a href="https://docs.telerik.com/blazor-ui/introduction.html?_ga=2.25038650.1664076158.1569321188-268324218.1518300003">Telerik Blazor</a> Basic chart and common settings/elements
+
+<h3>Erst Telerik-Komponenten einbinden, siehe auskommentierter Code in dieser Komponente und Startup.cs und _Imports.razor sowie MainLayout.razor</h3>
+
+@*<TelerikChart>
+  <ChartSeriesItems>
+   <ChartSeries Type="ChartSeriesType.Line" Name="Product 1 (bound to simple data)" Data="@simpleData">
+   </ChartSeries>
+   <ChartSeries Type="ChartSeriesType.Line" Name="Product 2 (bound to model)" Data="@modelData" Field="@nameof(MyDataModel.SecondSeriesValue)">
+    <ChartSeriesLabels Template="#=value# in #=dataItem.ExtraData# quarter" Visible="true"></ChartSeriesLabels>
+   </ChartSeries>
+  </ChartSeriesItems>
+
+  <ChartValueAxes>
+   <ChartValueAxis Color="red"></ChartValueAxis>
+  </ChartValueAxes>
+
+  <ChartCategoryAxes>
+   <ChartCategoryAxis Categories="@xAxisItems"></ChartCategoryAxis>
+  </ChartCategoryAxes>
+
+  <ChartTitle Text="Quarterly sales trend"></ChartTitle>
+
+  <ChartLegend Position="Telerik.Blazor.ChartLegendPosition.Bottom">
+  </ChartLegend>
+ </TelerikChart>*@
+
+@code {
+ public class MyDataModel
+ {
+  public int SecondSeriesValue { get; set; }
+  public string ExtraData { get; set; }
+
+ }
+}
+
+@code {
+
+ public List<MyDataModel>
+modelData = new List<MyDataModel>
+()
+{
+  new MyDataModel() { SecondSeriesValue = 1, ExtraData = "first" },
+  new MyDataModel() { SecondSeriesValue = 5, ExtraData = "second" },
+  new MyDataModel() { SecondSeriesValue = 3, ExtraData = "third" },
+  new MyDataModel() { SecondSeriesValue = 2, ExtraData = "fourth" },
+   };
+
+ public List<object>
+  simpleData = new List<object>
+() { 22, 2, 7, 5 };
+
+ public string[] xAxisItems = new string[] { "Q1", "Q2", "Q3", "Q4" };
+}
+
+<hr />
+
+@*Use property binding to control the state of the window programmatically*@
+<div>
+
+ <a href="https://docs.telerik.com/blazor-ui/introduction.html?_ga=2.25038650.1664076158.1569321188-268324218.1518300003">Telerik Blazor</a> Window
+</div>
+
+<button @onclick="ShowWindow">Show the Window</button>
+<button @onclick="CloseWindow">Close the Window</button>
+
+@*<TelerikWindow @bind-Visible="@isVisible">
+  <WindowTitle>
+   <strong>The Title</strong>
+  </WindowTitle>
+  <WindowContent>
+   This is my window <strong>popup</strong> content.
+  </WindowContent>
+  <WindowActions>
+   <WindowAction Name="Minimize"></WindowAction>
+   <WindowAction Name="Maximize"></WindowAction>
+   <WindowAction Name="Close"></WindowAction>
+  </WindowActions>
+ </TelerikWindow>*@
+
+@code {
+ bool isVisible { get; set; }
+
+ public void ShowWindow()
+ {
+  isVisible = true;
+ }
+
+ public void CloseWindow()
+ {
+  isVisible = false;
+ }
+}

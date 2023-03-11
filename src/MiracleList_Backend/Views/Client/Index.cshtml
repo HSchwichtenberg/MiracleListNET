@@ -1,0 +1,69 @@
+﻿@*
+ For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@*@addTagHelper *,Miraclelist_WebAPI*@
+@{
+}
+
+<div class="container">
+ <div class="row">
+
+  <xs3>
+   @*<div class="col-xs-3">*@
+   <img src="/MiracleListLogo.jpg">
+  </xs3>
+  <xs9 style="background: white; margin-bottom: 10px">
+   @*<div class="col-xs-9">*@
+
+   <h2>Beantragung für Client-ID</h2>
+
+   <div>
+    Sie benötigen eine personalisierte Client-ID, wenn Sie selbst einen Client für das MiracleList-Backend schreiben wollen. Die Client-ID ist bei der Login-Operation zu übergeben. Sie erhalten die Client-ID per E-Mail.
+    Bitte beachten Sie, dass eine Client-ID jederzeit widerrufen werden kann, wenn Sie diese missbrauchen.
+   </div>
+   <br />
+   <div>
+
+    Das ist mit dem MiracleList-Backend NICHT erlaubt:
+    <ul>
+     <li>Speicherung gesetzeswidriger Texte</li>
+     <li>Speicherung von mehr als 100 Aufgaben pro Client-ID</li>
+     <li>Einsatz für produktive Zwecke (weder für kommerzielle noch nicht-kommerzielle Anwendungen! Sie dürfen nur Beispielcode mit dem MiracleList-Backend schreiben!)</li>
+     <li>Weitergabe der Client-ID an andere Menschen</li>
+    </ul>
+
+   </div>
+   <br />
+   <div>
+    <form method="post" action="/client/create">
+     <input name="C_Quelle" type="hidden" value="@ViewBag?.Quelle" class="form-control" />
+
+     <label>
+      Ihr vollständiger Name:
+     </label> <input name="C_Name" type="text" value="@ViewBag?.name" class="form-control" />
+
+     <label>
+      Ihre Firma:
+     </label> <input name="C_Firma" type="text" value="@ViewBag?.firma" class="form-control" />
+
+     <label> Ihre gültige E-Mail-Adresse: </label> <input type="text" class="form-control" name="C_EMail" value="@ViewBag?.email" />
+
+     <div class="checkbox">
+      <label>
+       <input type="checkbox" style="width: 15px; height: 15px;" name="C_Einverstanden" value="Ja" />
+       Mit den o.g. Bedingungen bin ich einverstanden.
+
+      </label>
+     </div>
+
+     <input type="submit" class="btn btn-info" value="Client-ID jetzt beantragen" />
+     <br /><br />
+     @Html.ValidationSummary("", new { @class = "text-danger" })
+
+     @*<div asp-validation-summary="All"  asp- class="text-danger"></div>*@
+    </form>
+    </div>
+  </xs9>
+ </div>
+</div>

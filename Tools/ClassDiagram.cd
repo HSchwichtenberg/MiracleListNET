@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BO.User">
+    <Position X="3" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AADAAEAAAAIAAAAAAAAAAAgAAAAAAAQCAQAAAAABAAQ=</HashCode>
+      <FileName>H:\TFS\Demos\Web\Miraclelist\src\BO\All.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Client" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="CategorySet" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BO.Category">
+    <Position X="5.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABgAACAAAAAAAAAAAAAAwAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>H:\TFS\Demos\Web\Miraclelist\src\BO\All.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="User" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="TaskSet" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BO.Task">
+    <Position X="8" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIFAAAACAAAAAEAAAAAAAAAIAAoAAAQAAAAAAAEACAA=</HashCode>
+      <FileName>H:\TFS\Demos\Web\Miraclelist\src\BO\All.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Importance" />
+      <Property Name="Category" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="SubTaskSet" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BO.SubTask">
+    <Position X="10.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAACAEAAAAAAAAAAAAgAAAQAAEAAAAAAAAA=</HashCode>
+      <FileName>H:\TFS\Demos\Web\Miraclelist\src\BO\All.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Task" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BO.Client">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAIAAEAQAACAAAAQAAAAABAAAAAA=</HashCode>
+      <FileName>H:\TFS\Demos\Web\Miraclelist\src\BO\All.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="UserSet" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Enum Name="BO.Importance">
+    <Position X="5.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoAEAAAA=</HashCode>
+      <FileName>H:\TFS\Demos\Web\Miraclelist\src\BO\All.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="8.25" />
+</ClassDiagram>

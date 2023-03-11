@@ -1,0 +1,41 @@
+﻿@page "/Samples_BS/ProtectedBrowserStorage/CounterWithProtectedBrowserStorage"
+
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedSessionStorage ProtectedSessionStorage
+@inject ProtectedLocalStorage ProtectedLocalStorage
+
+<h1>Counter</h1>
+
+<p>Session count: @(sessionCount == null ? "Loading..." : sessionCount.ToString())  </p>
+<p>Local count: @(localCount == null ? "Loading..." : localCount.ToString())</p>
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+ int? sessionCount = null;
+ int? localCount = null;
+
+ protected override async Task OnInitializedAsync()
+ {
+  // geht hier nicht in BS ("JavaScript interop calls cannot be issued at this time")
+  // sessionCount = (await ProtectedSessionStorage.GetAsync<int>("count")).Value;
+ }
+
+ protected override async Task OnAfterRenderAsync(bool first)
+ {
+  if (first)
+  {
+   sessionCount = (await ProtectedSessionStorage.GetAsync<int>("count")).Value;
+   localCount = (await ProtectedLocalStorage.GetAsync<int>("count")).Value;
+   this.StateHasChanged();
+  }
+ }
+
+ async void IncrementCount()
+ {
+  sessionCount = (sessionCount ?? 0) + 1;
+  localCount = (localCount ?? 0) + 1;
+
+  await ProtectedSessionStorage.SetAsync("count", sessionCount);
+  await ProtectedLocalStorage.SetAsync("count", localCount);
+ }
+}

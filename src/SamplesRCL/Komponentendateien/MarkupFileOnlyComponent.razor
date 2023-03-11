@@ -1,0 +1,79 @@
+﻿@page "/Samples/MarkupFileOnlyComponent"
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+
+<h2>Komponente nur mit .razor-Datei und Inline-Code</h2>
+X:
+<input id="x" type="number" @bind="X" />
+Y:
+<input id="y" type="number" @bind="Y" />
+<button @onclick="AddAsync">Add x + y</button>
+Sum: @Sum
+
+@code
+{
+ // Schon injiziert per @inject
+ //[Inject]
+ //public BlazorUtil Util { get; set; } = null;
+ [Inject]
+ public IJSRuntime JSRuntime { get; set; } = null;
+ [Inject]
+ public NavigationManager NavigationManager { get; set; } = null;
+
+ [Parameter]
+ public decimal X { get; set; } = 1.23m;
+ [Parameter]
+ public decimal Y { get; set; } = 2.34m;
+ [Parameter]
+ public EventCallback<decimal> ValueHasChanged { get; set; }
+
+ public decimal Sum = 0;
+
+ #region Standard-Lebenszyklus-Ereignisse
+ protected override void OnInitialized()
+ {
+  Util.Log(nameof(CodeBehindPartielleKlasse) + ".OnInitialized()");
+ }
+
+ protected async override Task OnInitializedAsync()
+ {
+  Util.Log(nameof(CodeBehindPartielleKlasse) + ".OnInitializedAsync()");
+ }
+
+ protected override void OnParametersSet()
+ {
+  Util.Log(nameof(CodeBehindPartielleKlasse) + ".OnParametersSet()");
+ }
+
+ protected async override Task OnParametersSetAsync()
+ {
+  Util.Log(nameof(CodeBehindPartielleKlasse) + ".OnParametersSetAsync()");
+ }
+
+ protected override void OnAfterRender(bool firstRender)
+ {
+  Util.Log(nameof(CodeBehindPartielleKlasse) + ".OnAfterRender(firstRender=" + firstRender + ")");
+  // this.StateHasChanged(); // --> Endlosschleife !!! :-(
+ }
+
+ protected async override Task OnAfterRenderAsync(bool firstRender)
+ {
+  Util.Log(nameof(CodeBehindPartielleKlasse) + ".OnAfterRenderAsync(firstRender=" + firstRender + ")");
+ }
+
+ public void Dispose()
+ {
+  Util.Log(nameof(CodeBehindPartielleKlasse) + ".Dispose()");
+ }
+ #endregion
+
+ #region Reaktionen auf Benutzerinteraktionen
+ public async Task AddAsync()
+ {
+  Sum = X + Y;
+  Util.Log($"{nameof(CodeBehindPartielleKlasse)}.Add(). x={X} y={Y} sum={Sum}");
+  await ValueHasChanged.InvokeAsync(Sum);
+  X = Sum;
+ }
+ #endregion
+}

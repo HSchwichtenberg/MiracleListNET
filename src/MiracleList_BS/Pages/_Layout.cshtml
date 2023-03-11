@@ -1,0 +1,96 @@
+﻿@namespace Web.Pages
+@using Microsoft.AspNetCore.Components.Web
+@using ITVisions.Blazor
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject BlazorUtil Util
+
+<!DOCTYPE html>
+<html>
+<head>
+ <title>MiracleList_BS / @("v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString())</title>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width" />
+ <base href="/" />
+
+ <!--Bootstrap -->
+ <link rel="stylesheet" href="/_content/ITVisions.Blazor/css/bootstrap/bootstrap.min.css" />
+ <script src="/_content/ITVisions.Blazor/js/jquery.min.js"></script>
+ <script src="/_content/ITVisions.Blazor/js/bootstrap.min.js" defer></script>
+
+ <!-- Bundle aller CSS-Dateien, die Razor Components zugeordnet sind-->
+ <link href="MiracleList_BS.styles.css" rel="stylesheet" />
+
+ <!-- Eigenständige CSS-Dateien und ICO-Dateien aus wwwRoot -->
+ <link rel="icon" type="image/vnd.microsoft.icon" href="/_content/MLBlazorRCL/favicon.ico">
+ <link rel="stylesheet" href="/_content/MLBlazorRCL/styles.css" />
+ <link rel="stylesheet" href="/_content/ITVisions.Blazor/styles.css" />
+
+ <!-- -------- Für Radzen Components -->
+ <link rel="stylesheet" href="_content/Radzen.Blazor/css/default-base.css">
+ <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+
+ <!-- -------- Für BlazorContextMenu https://github.com/stavroskasidis/BlazorContextMenu -->
+ <link rel="stylesheet" href="/_content/Blazor.ContextMenu/blazorContextMenu.min.css" />
+ <script src="/_content/Blazor.ContextMenu/blazorContextMenu.min.js"></script>
+
+ <!-- Neu seit Blazor 6.0 -->
+ <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+</head>
+
+<body>
+ @RenderBody()
+
+ <script autostart="true" src="_framework/blazor.server.js"></script>
+ @*JavaScipt aus eigener Hilfsbibliothek*@
+ <script src="/_content/ITVisions.Blazor/BlazorUtil.js"></script>
+
+ <!--Für CHARTIST.JS -->
+ <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+ <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+
+ @*Auto Reload, https://github.com/dotnet/aspnetcore/issues/10325*@
+ <script>
+  // Wait until a 'reload' button appears
+  new MutationObserver((mutations, observer) => {
+   if (document.querySelector('#components-reconnect-modal h5 a')) {
+    // Now every second, see if the server appears to be back, and if so, reload
+    async function attemptReload() {
+     await fetch(''); // Check the server really is back
+     console.log("-> Auto Reload...");
+     location.reload();
+    }
+    observer.disconnect();
+    attemptReload();
+    setInterval(attemptReload, 1000);
+   }
+  }).observe(document.body, { childList: true, subtree: true });
+ </script>
+
+ @*Reconnection https://stackoverflow.com/questions/58404533/how-can-i-change-the-could-not-reconnect-to-the-server-text-in-blazor*@
+ <script>
+  // erfordert  autostart="false"
+  //Blazor.start({
+  // reconnectionHandler: {
+  //  onConnectionDown: (options, error) => console.error("onConnectionDown",error),
+  //  onConnectionUp: () => console.log("onConnectionUp")
+  // }
+  //});
+ </script>
+ <script>
+  function createOwnDisplay() {
+   return {
+    show: () => { console.log('Reconnection: show'); oldImpl.show(); },
+    hide: () => { console.log('Reconnection: hide'); oldImpl.hide(); },
+    update: () => { console.log('Reconnection: update'); oldImpl.update(); },
+    failed: () => { console.log('Reconnection: failed'); oldImpl.failed(); },
+    rejected: () => { console.log('Reconnection: rejected'); oldImpl.rejected(); }
+   };
+  }
+      //Blazor.defaultReconnectionHandler._logger.minimumLogLevel = 5;
+      //var oldImpl = Blazor.defaultReconnectionHandler._reconnectionDisplay;
+      //console.log("defaultReconnectionHandler",Blazor.defaultReconnectionHandler);
+      //Blazor.defaultReconnectionHandler._reconnectionDisplay = createOwnDisplay();
+ </script>
+
+</body>
+</html>

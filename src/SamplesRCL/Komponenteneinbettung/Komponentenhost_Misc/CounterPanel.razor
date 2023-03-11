@@ -1,0 +1,49 @@
+﻿@*@implements IDisposable*@
+
+<div class="panel panel-default gruen">
+ <div class="panel-heading gruen">
+  <h4>Komponente "Counter Panel"</h4>
+  </div>
+
+ <div class="panel-body">
+  <p>
+   Diese Razor Component <b>@this.GetType().FullName</b> kommt aus der DLL: <b><text>@System.Reflection.Assembly.GetExecutingAssembly().GetName().Name</text>.dll</b>!
+  </p>
+
+  <button class="btn btn-primary" @onclick="Increment">Klick mich!</button>
+ </div>
+ 
+</div>
+
+
+@code {
+
+ public struct ValueHasChangedDetails
+ {
+  public int Counter { get; set; }
+  public string Text { get; set; }
+ }
+
+ [Parameter] // Parameter muss Property und public sein!
+ public CounterDataClass ValueClass { get; set; }
+ [Parameter] // Parameter muss Property und public sein!
+ public CounterDataStruct ValueStruct { get; set; }
+ [Parameter] // Parameter muss Property und public sein!
+ public CounterDataRecord ValueRecord { get; set; }
+
+
+
+ protected async override Task OnInitializedAsync()
+ {
+
+ }
+
+ async void Increment()
+ {
+  this.ValueClass.Counter++;
+  this.ValueStruct = new CounterDataStruct() { Counter = this.ValueStruct.Counter + 1 };
+  this.ValueRecord.Counter++;
+ }
+
+
+}

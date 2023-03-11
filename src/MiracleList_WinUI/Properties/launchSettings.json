@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MiracleList_WinUI (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "MiracleList_WinUI (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

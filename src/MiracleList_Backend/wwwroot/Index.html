@@ -1,0 +1,156 @@
+﻿<html>
+<head>
+ <title>MiracleList Backend</title>
+ <link rel="icon" type="image/x-icon" href="favicon.ico">
+ <style>
+  body {
+      background: rgba(255, 221, 134, 1) !important;
+  }
+ </style>
+ <link href="bootstrap.min.css" rel="stylesheet" />
+ <link href="bootstrap-theme.min.css" rel="stylesheet" />
+</head>
+<body>
+
+ <div class="container">
+  <div class="row" style="background: white; margin-bottom: 10px">
+   <!--Spalte 1-->
+   <div class="col-xs-3">
+    <p>
+     <img src="MiracleListLogo.jpg">
+    </p>
+
+    <p>MiracleList ist eine Beispielanwendung, angelehnt an die Webanwendung und App "Wunderlist", die die Firma Microsoft im Jahr 2015 <a target="_blank" href="https://www.heise.de/newsticker/meldung/Microsoft-uebernimmt-Berliner-Startup-6Wunderkinder-2678017.html">für über 100 Millionen Dollar kaufte</a> und dann im Jahr 2020 zugunsten von <a target="_blank" href="https://todo.microsoft.com">"Microsoft ToDo"</a> beerdigte.</p>
+
+    <p>Dieser Server stellt das <b>Backend auf Basis von .NET/C#/ASP.NET Core</b> bereit. Es ist kostenfrei für Test- und Ausbildungszwecke für jedermann nutzbar. Eine <a href="/clientid">Registrierung für eine Client-ID</a> ist aber erforderlich, damit jeder Client einen eigenen Mandaten erhält.</p>
+
+    <p>
+     Es gibt derzeit folgende Frontends:
+     <ul>
+      <li><a target="_blank" href="https://miraclelist.azurewebsites.net/">TypeScript/Angular</a> im Browser, in Cordova und in Electron</li>
+      <li><a target="_blank" href="https://miraclelist-vue.azurewebsites.net/">TypeScript/Vue.js</a> im Browser</li>
+      <li><a target="_blank" href="https://miraclelist-bs.azurewebsites.net/">C#/Blazor Server</a> im Browser</li>
+      <li><a target="_blank" href="https://miraclelist-bw.azurewebsites.net/">C#/Blazor WebAssembly</a> im Browser</li>
+      <li>C#/Blazor Desktop auf Windows (<a target="_blank" href="https://www.IT-Visions.de/BlazorBuch">Code im Buch "Blazor"</a>)</li>
+     </ul>
+
+
+    </p>
+
+
+   </div>
+
+   <!--Spalte 2-->
+   <div class="col-xs-9">
+
+    <br />
+    <div class="list-group ">
+
+
+     <a class="list-group-item" href="/about">Server and Version Info</a><br />
+     <!--<a class="list-group-item" href="/UserStatistics">User Statistics</a><br />-->
+
+     <a class="list-group-item" href="/swagger/v1/swagger.json">Swagger OpenAPI Specification (OAS) für API v1 (JSON) </a><br />
+     <a class="list-group-item" href="/swagger/v2/swagger.json">Swagger OpenAPI Specification (OAS) für API v2 (JSON)</a><br />
+     <a class="list-group-item" href="/swagger">API-Hilfeseiten (v1 and v2)</a><br />
+     <a class="list-group-item" href="/clientid">Client ID beantragen</a><br />
+
+     <div class="row">
+      <div class="col-xs-6">
+       <a class="list-group-item" href="https://miraclelist.azurewebsites.net">MiracleList Web UI (TypeScript/Angular)</a><br />
+      </div>
+
+      <div class="col-xs-6">
+       <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListClient">Quellcode auf Github</a><br />
+      </div>
+
+     </div>
+
+     <div class="row">
+      <div class="col-xs-6">
+       <a class="list-group-item" href="https://Miraclelist.azurewebsites.net/download/MiracleListElectron-win32-x64.rar">MiracleList Desktop App für Windows (Download, RAR-Archiv, ~43 MB)</a><br />
+      </div>
+
+      <div class="col-xs-6">
+       <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListClient">Quellcode auf Github</a><br />
+      </div>
+
+     </div>
+
+     <div class="row">
+      <div class="col-xs-6">
+       <a class="list-group-item" href="https://Miraclelist.azurewebsites.net/download/MiracleListElectron-linux-x64.rar">MiracleList Desktop App für Linux (Download, RAR-Archiv, ~36 MB)</a><br />
+      </div>
+
+      <div class="col-xs-6">
+       <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListClient">Quellcode auf Github</a><br />
+      </div>
+
+     </div>
+
+
+     <div class="row">
+      <div class="col-xs-6">
+
+       <a class="list-group-item" href="https://Miraclelist.azurewebsites.net/download/MiracleListElectron-darwin-x64.zip">MiracleList Desktop App für MacOS (Download, ZIP-Archiv, ~44 MB)</a><br />
+      </div>
+
+      <div class="col-xs-6">
+       <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListClient">Quellcode auf Github</a><br />
+      </div>
+
+     </div>
+
+
+     <div class="row">
+      <div class="col-xs-6">
+       <a class="list-group-item" href="https://miraclelist-vue.azurewebsites.net">MiracleList Web UI (TypeScript/Vue.js)</a><br />
+      </div>
+
+      <div class="col-xs-6">
+       <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListVueTutorial">Quellcode auf Github</a><br />
+      </div>
+
+     </div>
+
+     <div class="row">
+      <div class="col-xs-6">
+       <a class="list-group-item" href="https://miraclelist-bw.azurewebsites.net">MiracleList Web UI (C#/Blazor WebAssembly)</a><br />
+      </div>
+
+      <div class="col-xs-6">
+       <a class="list-group-item" target="_blank" href="https://www.IT-Visions.de/BlazorBuch">Quellcode im Buch "Blazor"</a>
+      </div>
+
+     </div>
+
+     <div class="row">
+      <div class="col-xs-6">
+       <a class="list-group-item" href="https://miraclelist-bs.azurewebsites.net">MiracleList Web UI (C#/Blazor Server)</a><br />
+      </div>
+
+      <div class="col-xs-6">
+       <a class="list-group-item" target="_blank" href="https://www.IT-Visions.de/BlazorBuch">Quellcode im Buch "Blazor"</a>
+      </div>
+
+     </div>
+
+     <div class="row">
+      <div class="col-xs-6">
+       <a class="list-group-item" href="https://www.IT-Visions.de/BlazorBuch">MiracleList Desktop App für Windows (C#/Blazor Desktop/WPF)</a><br />
+      </div>
+
+      <div class="col-xs-6">
+       <a class="list-group-item" target="_blank" href="https://www.IT-Visions.de/BlazorBuch">Quellcode im Buch "Blazor"</a>
+      </div>
+
+     </div>
+
+     <a class="list-group-item" href="/imprint">Impressum</a><br />
+
+    </div>
+   </div>
+  </div>
+ </div>
+</body>
+</html>

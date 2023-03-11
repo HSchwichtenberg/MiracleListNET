@@ -1,0 +1,200 @@
+﻿@page "/Samples/angular"
+@inject IJSRuntime JSRuntime
+@inject HttpClient httpClient
+@inject BlazorUtil util
+
+<h3>Nutzung von Angular WebComponents (Angular Elements)</h3>
+<style>
+ .intro {
+  font-weight: bold;
+ }
+
+ h4 {
+  background-color: skyblue;
+ }
+
+ h5 {
+  color: blue;
+ }
+
+ .kursiv {
+  font-style: italic;
+ }
+</style>
+
+<!-- #region <hello-world> -->
+<h4>Web Component &lt;hello world&gt;</h4>
+<angular-hello-world></angular-hello-world>
+<!-- #endregion -->
+@*----------------------------------------------------------------------------------------------*@
+<!-- #region <angular-counter> -->
+
+<h4>
+ Web Component 	&lt;angular-counter&gt; (Zwei Instanzen!)
+</h4>
+
+<div class="row">
+ <div class="col-xs-4">
+  <br>
+  <angular-counter counter="10" @ref="c1"></angular-counter>
+  <br />
+  <angular-counter counter="20" @ref="c2"></angular-counter>
+ </div>
+ <div class="col-xs-4">
+  Ausgabe JS:
+  <span id="ausgabeJS"></span>
+  <br />
+  Ausgabe C#:
+  <span>@ausgabeCS</span>
+ </div>
+</div>
+
+@code {
+
+ private ElementReference c1;
+ private ElementReference c2;
+
+ public string ausgabeCS { get; set; }
+ public bool showWarnung { get; set; }
+ protected override async Task OnInitializedAsync()
+ {
+  util.Log("OnInitializedAsync");
+  showWarnung = util.IsWebAssembly && await util.IsHttps();
+ }
+
+ private DotNetObjectReference<Angular> _objectReference;
+
+ IJSObjectReference script1;
+ IJSObjectReference script2;
+
+ protected override async Task OnAfterRenderAsync(bool firstRender)
+ {
+  util.Log("OnAfterRenderAsync");
+
+  if (firstRender)
+  {
+   /* DEMO: 15 Skripte für <angular-grid> laden: Aufruf von JS statement import() (ECMAScript 2020) 
+   siehe https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#dynamic_imports */
+   script1 = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/_content/SamplesRCL/ITVElements.js");
+   script2 = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/_content/SamplesRCL/ITVElementsGlueCode.js");
+
+   // Referenz auf diese Razor Component für Callbacks
+   _objectReference = DotNetObjectReference.Create(this);
+
+   // Initialisieren der Event-Handler für zwei Counter-Instanzen
+   await script2.InvokeVoidAsync("init", _objectReference, c1);
+   await script2.InvokeVoidAsync("init", _objectReference, c2);
+  }
+ }
+
+ // Event Handler für changed-Ereignis der Web Component
+ [JSInvokable]
+ public void NewValueArrived(int value)
+ {
+  ausgabeCS = "NewValueArrived=" + value;
+  this.StateHasChanged();
+  Console.WriteLine("C#: " + ausgabeCS);
+ }
+}
+<!-- #endregion <angular-counter> -->
+@*----------------------------------------------------------------------------------------------*@
+<!-- #region <angular-grid> statische Daten -->
+@*<angular-grid column-Defs-String='@Header2' row-data-string='[{"make":"Toyota","model":"Celica","price":35000},{"make":"Ford","model":"Mondeo","price":32000},{"make":"Porsche","model":"Boxter","price":72000},{"make":"Porsche","model":"Boxter","price":72000},{"make":"Porsche","model":"Boxter","price":72000},{"make":"Porsche","model":"Boxter","price":72000},{"make":"Porsche","model":"Boxter","price":72000},{"make":"Porsche","model":"Boxter","price":72000}]'></angular-grid>*@
+@code
+{
+ //string Header2 = "[{\"field\":\"make\"},{\"field\":\"model\"},{\"field\":\"price\"}]";
+}
+<!-- #endregion <angular-grid> -->
+@*----------------------------------------------------------------------------------------------*@
+
+<!-- #region <angular-grid> Star Trek API (STAPI.co) -->
+
+<h4> Web Component &lt;angular-grid&gt;</h4>
+
+@if (showWarnung)
+{
+ <div class="alert alert-danger" role="alert">
+  ACHTUNG: Der Aufruf des Star Trek-API ist nicht möglich, wenn die Blazor WebAssembly-Anwendung mit TLS (HTTPS) läuft, weil das Star Trek-API leider nur ungesichert verfügbar ist. Der Browser lehnt dies ab (Mixed Content) mit Fehler: Mixed Content: The page was loaded over HTTPS, but requested an insecure resource 'http://stapi.co/api/v1/rest/character/search'. This request has been blocked; the content must be served over HTTPS.
+ </div>
+}
+
+<div class="row">
+ <div class="col-xs-4">
+  <input type="text" @bind="searchName" class="form-control" />
+  <button @onclick="LoadDataInAngularGrid">Load data from Star Trek API (STAPI.co)</button>
+
+  @{/* DEMO: 16 Web Component <angular-grid> einbinden */ }
+  <angular-grid column-Defs-String='@Header' row-data-string='@GridData'></angular-grid>
+
+ </div>
+ <div class="col-xs-4">
+  Ausgabe JS: <span id="gridResultJS"></span><br />
+  Ausgabe C#: <span id="">@gridResultCS</span>
+ </div>
+</div>
+
+@code
+ {
+ string Header = "[{\"field\":\"name\"},{\"field\":\"alternateReality\"},{\"field\":\"yearOfDeath\"}]";
+ string searchName = "";
+ string GridData = "";
+ string gridResultCS { get; set; }
+
+ public async void LoadDataInAngularGrid()
+ {
+  util.Log("Loading data...");
+
+  // Event Handler einrichten
+  var _objectReference = DotNetObjectReference.Create(this);
+  await script2.InvokeVoidAsync("initGrid", _objectReference);
+  // Daten Laden vom API
+  var formContent = new FormUrlEncodedContent(new[] {
+    new KeyValuePair<string, string>("name", this.searchName) //, new KeyValuePair<string, string>//("placeOfBirth", "Earth")
+  });
+  HttpResponseMessage response = await httpClient.PostAsync("http://stapi.co/api/v1/rest/character/search", formContent);
+  string text = await response.Content.ReadAsStringAsync();
+  // Daten filtern
+  System.Text.Json.JsonDocument json = System.Text.Json.JsonDocument.Parse(text);
+  var characters = json.RootElement.GetProperty("characters").ToString();
+  // Daten an Grind binden
+  this.GridData = characters;
+  this.StateHasChanged(); // WICHTIG!
+ }
+
+ /// <summary>
+ /// Datenstruktur, die dem entspricht, was das angular-grid im Ereignis selectedRowsChanged liefert
+ /// </summary>
+ public record StarTrekCharacter
+ {
+  public string Name { get; init; }
+  public bool AlternateReality { get; init; }
+  public int? YearOfDeath { get; init; }
+ }
+
+ // Event Handler für selectedRowsChanged-Ereignis der Web Component <angular-grid>. JSON wird auf Record abgebildet!
+ [JSInvokable]
+ public void NewSelection(List<StarTrekCharacter> data)
+ {
+  util.Log(data);
+
+  var selectedDataStringPresentation = String.Join(", ", data.Select(x => x.Name + ' ' + x.AlternateReality + ' ' + x.YearOfDeath).OfType<string>().ToArray());
+
+  gridResultCS = selectedDataStringPresentation;
+  this.StateHasChanged();
+  util.Log(gridResultCS);
+ }
+
+ // Alternativer Event Handler für selectedRowsChanged-Ereignis der Web Component <angular-grid>, mit JSON statt Typen
+ [JSInvokable]
+ public void NewSelection2(List<System.Text.Json.JsonElement> data)
+ {
+  util.Log(data);
+
+  var selectedDataStringPresentation = String.Join(", ", data.Select(x => x.GetProperty("name").ToString() + ' ' + x.GetProperty("alternateReality").ToString() + ' ' + x.GetProperty("yearOfDeath").ToString()).OfType<string>().ToArray());
+
+  gridResultCS = selectedDataStringPresentation;
+  this.StateHasChanged();
+  util.Log(gridResultCS);
+ }
+}
+<!-- #endregion <angular-grid> -->

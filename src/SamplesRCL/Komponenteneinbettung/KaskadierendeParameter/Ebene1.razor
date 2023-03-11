@@ -1,0 +1,11 @@
+﻿@code {
+ [CascadingParameter]
+ protected Settings settings { get; set; }
+}
+
+<h3 style="color:@settings.Color;text-align:@settings.Align">Ebene1</h3>
+
+@for (int i = 0; i < settings.Count; i++)
+{
+ <Ebene2></Ebene2>
+}

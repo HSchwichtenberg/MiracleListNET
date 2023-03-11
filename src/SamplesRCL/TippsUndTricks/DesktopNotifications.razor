@@ -1,0 +1,29 @@
+﻿@page "/Samples/DesktopNotifications"
+
+@inject BlazorUtil util
+<h3>Desktop Notifications</h3>
+<hr />
+<h4>Grundkonfiguration</h4>
+<div class="row">
+ <div class="col-xs-8">
+  <button class="btn btn-info" @onclick='() => util.RequestPermission("Benachrichtigung von Blazor-Anwendung", "Testnachricht: Desktop-Benachrichtigungen sind nun aktiv" )'> Bitte einmalig hier klicken, um Desktop-Benachrichtigungen von dieser Web-Anwendung zu erlauben! </button>
+  <br />
+
+  <p>Diese Erlaubnis können Sie dann jederzeit in Ihren Browsereinstellung widerrufen, z.B. in Chrome unter Site Settings/Notifications.</p>
+  <hr />
+  <h4>Benachrichtigung</h4>
+<textarea style="width:100%" @bind="Nachricht"></textarea>
+  <br />
+  <button class="btn btn-primary" @onclick="NachrichtSenden">Nachricht senden</button>
+ </div>
+</div>
+
+
+@code {
+ public string Nachricht { get; set; } = "Dies ist ein Beispieltext, der in der Nachricht erscheinen soll.";
+
+ async void NachrichtSenden()
+ {
+  await util.Notification("Benachrichtigung von Blazor-Anwendung", Nachricht);
+ }
+}

@@ -1,0 +1,55 @@
+﻿@page "/Samples/Lottospiel"
+
+<h2>Lottospiel (6 aus 49 ohne Zusatzzahl)</h2>
+
+@*------------------------- Tipp*@
+@code {
+ List<int> MeineLottozahlen = new List<int>() { 10, 13, 15, 19, 28, 39 };
+}
+
+<h3>Diese Zahlen tippe ich:</h3>
+<ol>
+ @foreach (var l in MeineLottozahlen)
+ {
+  <li>@l</li>
+ }
+</ol>
+
+@*------------------------- Ziehung*@
+<button @onclick="ZahlenZiehen">Neue Ziehung</button>
+
+@code
+{
+ List<int> gezogeneZahlen;
+ int richtige = 0;
+
+ void ZahlenZiehen() // Reaktion auf Klick auf Schaltfläche
+ {
+  richtige = 0; // wichtig: Richtige zurücksetzen
+  gezogeneZahlen = new List<int>(); // Liste der gezogenen zurücksetzen!
+  do
+  {
+   int neueZahl = new Random((int)DateTime.Now.Ticks).Next(1, 50); // bei Next() ist die Untergrenze inklusiv, die Obergrenze exklusiv
+                                                                   // Doppelte verhindern!
+   if (!gezogeneZahlen.Contains(neueZahl)) gezogeneZahlen.Add(neueZahl);
+  } while (gezogeneZahlen.Count < 6);
+ }
+}
+
+@*------------------------- Ausgabe der Ziehung*@
+@if (gezogeneZahlen != null)
+{
+ <h3>Diese Zahlen wurden gezogen:</h3>
+ <ol>
+  @foreach (var g in gezogeneZahlen.OrderBy(x => x))
+  {
+   if (MeineLottozahlen.Contains(g)) richtige++;
+   var text = (MeineLottozahlen.Contains(g) ? " Treffer!" : "Kein Treffer");
+   var farbe = (MeineLottozahlen.Contains(g) ? "green" : "red");
+
+   <li style='color:@farbe'>@g: @text</li>
+  }
+ </ol>
+
+ <h4>@richtige Richtige!</h4>
+}

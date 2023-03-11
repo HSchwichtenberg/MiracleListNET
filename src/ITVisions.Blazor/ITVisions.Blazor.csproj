@@ -1,0 +1,80 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+ <!--Runtime-->
+ <PropertyGroup>
+  <TargetFramework>net7.0</TargetFramework>
+ </PropertyGroup>
+
+ <!--Namen-->
+ <PropertyGroup>
+  <PackageId>ITVisions.Blazor</PackageId>
+  <RootNamespace>ITVisions.Blazor</RootNamespace>
+  <AssemblyName>ITVisions.Blazor</AssemblyName>
+ </PropertyGroup>
+
+ <!--Versionen-->
+ <PropertyGroup>
+  <Version>7.11.0.0</Version>
+  <AssemblyVersion>7.11.0.0</AssemblyVersion>
+  <FileVersion>7.11.0.0</FileVersion>
+  <InformationalVersion>7.11.0.0-03/09/2023 21:01:32</InformationalVersion>
+ </PropertyGroup>
+
+ <!--Autor-->
+ <PropertyGroup>
+  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
+  <Authors>Dr. Holger Schwichtenberg</Authors>
+  <Company>www.IT-Visions.de</Company>
+  <Product>www.IT-Visions-de Blazor Utltities</Product>
+  <!--<PackageIcon>ITVisions.jpg</PackageIcon>-->
+  <Description>
+   Hilfsklassen für Blazor WebAssembly, Blazor Server und Blazor Desktop inkl. JavaScript-Datei
+   Startup.cs:  services.AddScoped&lt;BlazorUtil&gt;();
+   index.html bzw. _host.cshtml: &lt;script src="/_content/ITVisions.Blazor/BlazorUtil.js"&gt;&lt;/script&gt;
+  </Description>
+  <PackageOutputPath>H:\DB\NugetHS</PackageOutputPath>
+ </PropertyGroup>
+
+ <!--NuGets-->
+ <ItemGroup>
+  <PackageReference Include="Blazored.LocalStorage" Version="4.3.*" />
+  <PackageReference Include="Blazored.SessionStorage" Version="2.3.*" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.4.1" />
+  <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="7.0.0" />
+  <PackageReference Include="Microsoft.JSInterop" Version="7.0.*" />
+  <PackageReference Include="UAParser" Version="3.1.*" />
+ </ItemGroup>
+
+ <!--Dateien-->
+ <ItemGroup>
+  <None Remove="ITVisions.jpg" />
+  <None Remove="readme.txt" />
+  <None Remove="www.IT-Visions.de_Logo.png" />
+ </ItemGroup>
+ <ItemGroup>
+  <Content Include="Controls\ConfirmDialog.razor.js" />
+ </ItemGroup>
+ <ItemGroup>
+  <EmbeddedResource Include="readme.txt" />
+ </ItemGroup>
+ <ItemGroup>
+  <None Include="wwwroot\ITVisions.jpg">
+   <Pack>True</Pack>
+   <PackagePath></PackagePath>
+  </None>
+ </ItemGroup>
+ <ItemGroup>
+  <Resource Include="ITVisions.jpg" />
+ </ItemGroup>
+ <ItemGroup>
+  <Content Update="wwwroot\www.IT-Visions.de_Logo.png">
+   <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
+ </ItemGroup>
+
+</Project>

@@ -1,0 +1,78 @@
+﻿@page "/Samples/DI"
+@using ITVisions
+@using ITVisions.Blazor
+@using Microsoft.AspNetCore.Http
+@using Microsoft.Extensions.DependencyInjection
+@inject BlazorUtil Util
+@inject IHttpContextAccessor HttpContextAccessor
+@inject IServiceProvider ServiceProvider
+
+<button @onclick="DI">DI-Demo</button>
+<hr />
+@((MarkupString)Ausgabe)
+
+@code
+{
+ public string Ausgabe { get; set; }
+
+ interface IXY { }
+
+ public void DI()
+ {
+  Ausgabe += "<h3>DI</h3>";
+
+  IJSRuntime js1 = ServiceProvider.GetService<IJSRuntime>();
+  Ausgabe += js1.GetType().FullName + "<br>";
+
+  IJSRuntime js2 = ServiceProvider.GetRequiredService<IJSRuntime>();
+  Ausgabe += js2.GetType().FullName + "<br>";
+
+  IXY js3 = ServiceProvider.GetService<IXY>();
+  if (js3 != null)
+  {
+   Ausgabe += js3.GetType().FullName + "<br>";
+  }
+  else
+  {
+   Ausgabe += "IXY nicht gefunden!<br>";
+  }
+
+  try
+  {
+   IXY js4 = ServiceProvider.GetRequiredService<IXY>();
+   Ausgabe += js4.GetType().FullName + "<br>";
+  }
+  catch (Exception ex)
+  {
+   Ausgabe += ex.Message + "<br>";
+  }
+
+  Ausgabe += "<h3>HttpContext</h3>";
+
+  HttpContext httpContext = null;
+
+  try
+  {
+   httpContext = HttpContextAccessor.HttpContext;
+  }
+  catch (Exception ex)
+  {
+   Ausgabe += ex.Message + "<br>";
+  }
+
+  if (httpContext == null) Ausgabe += "HttpContext ist null<br>";
+  else
+  { // das geht nur in Blazor Server!
+   IJSRuntime js10 = (IJSRuntime)HttpContextAccessor.HttpContext.RequestServices.GetService(typeof(IJSRuntime));
+   Ausgabe += js10.GetType().FullName + "<br>";
+
+   IJSRuntime js11 = (IJSRuntime)HttpContextAccessor.HttpContext.RequestServices.GetService<IJSRuntime>();
+   Ausgabe += js11.GetType().FullName + "<br>";
+
+   var request = HttpContextAccessor.HttpContext.Request;
+   Ausgabe += "<h3>Request-Objekt</h3>" + request.ToNameValueString(attributeSeparator: "<br>");
+  }
+
+ }
+
+}

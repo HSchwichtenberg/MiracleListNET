@@ -1,0 +1,76 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+ <PropertyGroup>
+  <TargetFramework>net7.0</TargetFramework>
+  <RazorLangVersion>7.0</RazorLangVersion>
+  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
+  <Version>7.11.0.0</Version>
+  <AssemblyVersion>7.11.0.0</AssemblyVersion>
+  <FileVersion>7.11.0.0</FileVersion>
+  <InformationalVersion>7.11.0.0-03/09/2023 21:01:33</InformationalVersion>
+  <LangVersion>latest</LangVersion>
+  <RootNamespace>Samples</RootNamespace>
+ </PropertyGroup>
+
+ <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <NoWarn>1701;1702;1998</NoWarn>
+ </PropertyGroup>
+
+ <ItemGroup>
+  <ProjectReference Include="..\ITVisions.Blazor\ITVisions.Blazor.csproj" />
+ </ItemGroup>
+
+ <ItemGroup>
+  <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
+  <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.*" />
+  <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0" />
+  <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+  <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.*" />
+  <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.9.5">
+    <PrivateAssets>all</PrivateAssets>
+    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+  </PackageReference>
+  <PackageReference Include="System.DirectoryServices" Version="7.0.1" />
+ </ItemGroup>
+
+ <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+ <ItemGroup>
+  <Compile Remove="Komponenteneinbettung\Tag Helper - not supported yet!\DatetimeTagHelper.cs" />
+ </ItemGroup>
+
+ <ItemGroup>
+   <Content Remove="tsconfig.json" />
+ </ItemGroup>
+
+ <ItemGroup>
+   <Content Include="Interop\Interop.razor.js" />
+ </ItemGroup>
+
+ <ItemGroup>
+  <None Include="Komponenteneinbettung\Tag Helper - not supported yet!\DatetimeTagHelper.cs" />
+  <TypeScriptCompile Include="tsconfig.json" />
+  <None Include="wwwroot\favicon.ico" />
+ </ItemGroup>
+
+ <ItemGroup>
+   <Content Update="Forms\FormSimple.razor">
+     <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+   </Content>
+ </ItemGroup>
+
+ 
+ <ItemGroup>
+  <EmbeddedResource Update="TippsUndTricks\Mehrsprachigkeit\Localization.en.resx">
+   <SubType>Designer</SubType>
+  </EmbeddedResource>
+  <EmbeddedResource Update="TippsUndTricks\Mehrsprachigkeit\Localization.fr.resx">
+   <SubType>Designer</SubType>
+  </EmbeddedResource>
+ </ItemGroup>
+
+</Project>

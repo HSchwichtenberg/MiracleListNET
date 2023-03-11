@@ -1,0 +1,73 @@
+﻿@inject IJSRuntime js
+@using ITVisions.Blazor
+@using Microsoft.JSInterop
+
+@*Quelle: https://www.jqueryscript.net/form/three-state-switch-theswitch.html*@
+
+<div id="@ID"></div>
+@*<span id="value-@ID"></span>*@
+
+
+@code {
+
+ [Parameter]
+ public string ID { get; set; }
+
+ [Parameter]
+ public bool Tristate { get; set; } = false;
+
+ private bool? _Value;
+
+ [Parameter]
+ public bool? Value
+ {
+  get => _Value;
+  set
+  {
+   if (_Value == value) return;
+   _Value = value;
+   ValueChanged.InvokeAsync(value);
+   Changed.InvokeAsync(new TriStateInfo(ID, _Value));
+  }
+ }
+
+ [Parameter]
+ public EventCallback<bool?> ValueChanged { get; set; }
+
+ [Parameter]
+ public EventCallback<TriStateInfo> Changed { get; set; }
+
+ bool Initiliazed = false;
+ //IJSObjectReference skript;
+
+ //protected override async Task OnInitializedAsync()
+ //{
+
+ //}
+
+ protected override async Task OnAfterRenderAsync(bool firstRender)
+ {
+
+  DotNetObjectReference<Switch> objRef;
+  objRef = DotNetObjectReference.Create(this);
+  if (!Initiliazed)
+  {
+   // 2 Skripte laden
+   //await js.InvokeAsync<IJSObjectReference>("import", "/_content/ITVisions.Blazor/jquery.theswitch.js");
+   //skript = await js.InvokeAsync<IJSObjectReference>("import", "/_content/ITVisions.Blazor/Switch.js");
+   await js.InvokeVoidAsync("initSwitch", ID, Value, Tristate, objRef);
+   Initiliazed = true;
+  }
+  else
+  {
+   await js.InvokeVoidAsync("setSwitchValue", ID, Value);
+  }
+ }
+
+ [JSInvokable]
+ public void SetValue(bool? value)
+ {
+  util.Log("TriState.SetValue:" + ID + "=" + value);
+  this.Value = value;
+ }
+}

@@ -1,0 +1,17 @@
+﻿@typeparam Typ
+
+<ul>
+ @foreach (Typ o in Daten)
+ {
+  <li>@ChildContent(o)</li>
+ }
+</ul>
+
+@code
+{
+ [Parameter]
+ public IEnumerable<Typ> Daten { get; set; }
+
+ [Parameter]
+ public RenderFragment<Typ> ChildContent { get; set; }
+}

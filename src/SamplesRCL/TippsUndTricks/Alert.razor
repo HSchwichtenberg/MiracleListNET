@@ -1,0 +1,8 @@
+﻿@if (visible)
+{ 
+<div class="alert alert-@this.AlertType.ToString() alert-dismissible" role="alert">
+ <button type="button" @onclick="@Close" class="close" aria-label="Close"><span aria-hidden="true">&times;</span>
+ </button>
+ @ChildContent
+</div>
+}

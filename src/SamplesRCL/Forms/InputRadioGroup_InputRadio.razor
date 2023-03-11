@@ -1,0 +1,76 @@
+﻿@page "/Samples/InputRadioGroup_InputRadio"
+
+<h3>Optionsfelder (InputRadio und InputRadioGroup)</h3>
+@if (umfrage != null)
+{
+ <div class="row">
+
+  <EditForm Model="umfrage">
+   <div class="col-xs-6">
+    <h3>Was halten Sie von Blazor?</h3>
+
+    <InputRadioGroup @bind-Value="umfrage.MeinungZuBlazor">
+     @foreach (var opinion in opinions)
+     {
+      <div class="form-check">
+       <InputRadio class="form-check-input" id="@opinion.id" Value="@opinion.id" />
+       <label class="form-check-label" for="@opinion.id">@opinion.label</label>
+      </div>
+     }
+    </InputRadioGroup>
+
+   </div>
+
+   <div class="col-xs-6">
+    <h3>
+     Was halten Sie von dieser Webanwendung?
+    </h3>
+    <InputRadioGroup @bind-Value="umfrage.MeinungZurApp">
+     @foreach (var opinion in opinions)
+     {
+      <div class="form-check">
+       <InputRadio class="form-check-input" id="@opinion.id" Value="@opinion.id" />
+       <label class="form-check-label" for="@opinion.id">@opinion.label</label>
+      </div>
+     }
+     <button type="submit" @onclick="Speichern" class="btn btn-primary">Speichern</button>
+    </InputRadioGroup>
+   </div>
+  </EditForm>
+ </div>
+}
+<br />
+<div class="badge-success">@Meldung</div>
+
+@code
+{
+ public Umfrage umfrage { get; set; } = new Umfrage();
+ public List<Opinion> opinions { get; set; } = new List<Opinion>();
+
+ public class Opinion
+ {
+  public string id { get; set; }
+  public string label { get; set; }
+ }
+ public class Umfrage
+ {
+  public string MeinungZuBlazor { get; set; }
+  public string MeinungZurApp { get; set; }
+ }
+
+ protected override void OnInitialized()
+ {
+  opinions.Add(new Opinion() { id = "1", label = "sehr gut" });
+  opinions.Add(new Opinion() { id = "2", label = "gut" });
+  opinions.Add(new Opinion() { id = "3", label = "befriedigend" });
+  opinions.Add(new Opinion() { id = "4", label = "ausreichend" });
+  opinions.Add(new Opinion() { id = "5", label = "mangelhaft" });
+  opinions.Add(new Opinion() { id = "6", label = "ungenügend" });
+ }
+
+ public string Meldung { get; set; }
+ void Speichern()
+  {
+   this.Meldung = "Danke für Ihre ehrliche Meinung zu Blazor (" + umfrage.MeinungZuBlazor + ") und dieser App (" + umfrage.MeinungZurApp + ")!";
+  }
+}

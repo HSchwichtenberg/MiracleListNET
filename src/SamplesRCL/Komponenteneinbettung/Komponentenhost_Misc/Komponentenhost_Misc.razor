@@ -1,0 +1,35 @@
+﻿@page "/Samples/Komponentenhost_Misc"
+<h3>Komponentenhost_Misc</h3>
+<p>
+ Diese Razor Component <b>@this.GetType().FullName</b> kommt aus der DLL: <b><text>@System.Reflection.Assembly.GetExecutingAssembly().GetName().Name</text>.dll</b>!
+</p>
+@*<CounterPanel StartValue="10" ValueHasChanged="NewValueArrived" />*@
+
+<CounterPanel ValueClass="@ValueClass" 
+              ValueStruct="@ValueStruct" 
+              ValueRecord="@ValueRecord"/>
+
+
+<button @onclick="Refresh" class="btn btn-success">Refresh</button>
+<p>
+ @@ValueClass.Counter: @ValueClass.Counter
+</p>
+<p>
+ @@ValueStruct.Counter: @ValueStruct.Counter
+</p>
+<p>
+ @@ValueRecord.Counter: @ValueRecord.Counter
+</p>
+
+@code
+{
+ public CounterDataClass ValueClass { get; set; } = new() { Counter = 10 };
+ public CounterDataStruct ValueStruct { get; set; } = new() { Counter = 10 };
+ public CounterDataRecord ValueRecord { get; set; } = new() { Counter = 10 };
+
+ void Refresh()
+ {
+
+ }
+
+}

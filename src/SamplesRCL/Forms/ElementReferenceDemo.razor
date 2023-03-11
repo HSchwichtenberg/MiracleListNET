@@ -1,0 +1,40 @@
+﻿@page "/miscnews"
+
+<hr />
+<h1>Blazor 6: Element.Value.FocusAsync</h1>
+<hr />
+
+
+@code {
+ class Person
+ {
+
+  public int ID { get; set; }
+  public string Name { get; set; }
+ }
+
+ public ElementReference rVorname { get; set; }
+ InputText NameComponent { get; set; }
+ Person p = new Person() { ID = 1, Name = "Holger Schwichtenberg" };
+
+ void Submmit()
+ {
+  js.InvokeVoidAsync("alert", NameComponent.Element.Value.Id + " (" + NameComponent.DisplayName + "): " + NameComponent.Value);
+  NameComponent.Element.Value.FocusAsync();
+  // TODO: Validieren, Speichern, etc.
+ }
+
+ protected override void OnInitialized()
+ {
+
+ }
+  }
+<EditForm Model="p">
+
+ <InputText @bind-Value="p.Name" @ref="NameComponent"></InputText>
+
+ <input type="button" value="Submit" class="btn btn-primary"
+        @onclick="Submmit" />
+
+</EditForm>
+

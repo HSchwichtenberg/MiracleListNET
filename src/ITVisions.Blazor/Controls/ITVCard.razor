@@ -1,0 +1,21 @@
+﻿<div class="card" style="background-color:@Color">
+ <div class="card-header">
+  <h4>@((MarkupString)Title)</h4>
+ </div>
+ <div class="card-body">
+  <p class="card-text">
+   @ChildContent
+   </p>
+ </div>
+</div>
+
+@code {
+
+ [Parameter]
+ public string Title { get; set; }
+ [Parameter]
+ public string Color { get; set; } = "";
+
+ [Parameter]
+ public RenderFragment? ChildContent { get; set; }
+}

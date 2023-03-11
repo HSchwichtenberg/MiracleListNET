@@ -1,0 +1,12 @@
+﻿@code {
+
+ [CascadingParameter]
+ protected Settings s { get; set; }
+}
+
+<h6 style="color:@s.Color;text-align:@s.Align">Ebene3</h6>
+
+<div style="text-align:@s.Align">
+ Aktuelle Farbe: @s.Color |  Ausrichtung: @s.Align
+</div>
+

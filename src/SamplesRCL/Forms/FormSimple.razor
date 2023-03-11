@@ -1,0 +1,95 @@
+﻿@page "/Samples/FormSimple"
+@using ITVisions
+
+<form>
+ <style>
+  .validation-message {
+      color: red;
+  }
+ </style>
+ <h2>@this.GetType().FullName</h2>
+
+ <div class="row">
+  <div class="col-xs-6">
+
+   <div class="form-group">
+    <label for="C_Name">Name</label>
+    <input type="text" @bind="person.Name" class="form-control" placeholder="Your Name (max 20 letters)" />
+   </div>
+
+   <div class="form-group">
+    <label for="C_Mail">E-Mail</label>
+    <input type="text" id="C_Mail" @bind="person.EMail" class="form-control" placeholder="Your E-Mail xxx@yyy.com" />
+   </div>
+
+   <div class="form-group">
+    <label for="C_DayOfBirth">Day of Birth</label>
+    <input type="date" id="C_DayOfBirth" @bind="person.DayOfBirth" class="form-control" placeholder="Your Birthday" />
+
+   </div>
+
+   <div class="form-group">
+    <label for="C_Children">Children</label>
+    <input type="number" id="C_Children" min="0" @bind="person.Children" class="form-control" />
+
+   </div>
+
+   <div class="form-group">
+    <label for="C_Newsletter">
+     <input type="checkbox" id="C_Newsletter" @bind="person.Newsletter" /> Newsletter
+    </label>
+   </div>
+
+   <div class="form-group">
+    <label for="C_JobTitle">Job Title/Primary Role</label>
+    <select id="C_JobTitle" @bind="person.JobTitle" class="form-control">
+     @foreach (object s in System.Enum.GetValues(typeof(JobTitle)))
+     {
+      <option value="@s">@s (@((int)s))</option>
+     }
+    </select>
+   </div>
+
+   <div class="form-group">
+    <label for="C_OtherRoles">Other Roles</label>
+    <select id="C_OtherRoles" @bind="person.OtherRoles" class="form-control" multiple>
+     @foreach (object s in System.Enum.GetValues(typeof(JobTitle)))
+     {
+      <option value="@s">@s (@((int)s))</option>
+     }
+    </select>
+   </div>
+
+   <div class="form-group">
+    <label for="C_Note">Notes</label>
+    <textarea id="C_Note" @bind="person.Notes" class="form-control" placeholder="Any note" rows="5" />
+   </div>
+
+   <button type="button" @onclick="Submit" class="btn btn-primary">Speichern</button>
+
+  </div>
+
+  @*Spalte 2*@
+  <div class="col-xs-6">
+
+   <h5>Current Data:</h5>
+   @((MarkupString)person.ToNameValueString(attributeSeparator: "<br>"))
+
+   <div class="bg-success">
+    @if (!String.IsNullOrEmpty(Output))
+    {
+     <h5>Saved Data:</h5>
+     @((MarkupString)Output)
+    }
+   </div>
+
+   <div class="bg-danger" style="color:red">
+    @if (!String.IsNullOrEmpty(OutputError))
+    {
+     @((MarkupString)OutputError)
+    }
+   </div>
+  </div>
+
+ </div>
+</form>

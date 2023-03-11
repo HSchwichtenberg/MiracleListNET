@@ -1,0 +1,25 @@
+﻿@page "/Samples/Komponentenhost_Zahl"
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+<h3>Komponentenhost</h3>
+
+<CounterPanel StartValue="@Startwert" ValueHasChanged="NewValueArrived"  />
+
+<p>
+ Diese Razor Component <b>@this.GetType().FullName</b> kommt aus der DLL: <b><text>@System.Reflection.Assembly.GetExecutingAssembly().GetName().Name</text>.dll</b>!
+</p>
+
+<p>
+ Die eingebettete Komponente liefert den Wert: @Counter
+</p>
+
+@code
+{
+ public int Startwert { get; set; } = 10;
+ public int Counter { get; set; }
+ public void NewValueArrived(int value)
+ {
+  Counter = value;
+  Util.Log("Counter ist nun: " + value);
+ }
+}

@@ -1,0 +1,54 @@
+﻿@inject BlazorUtil util;
+@page "/Samples/BootstrapModal"
+
+<h1>Modaler Dialog mit Bootstrap 4 in Razor Component verpackt</h1>
+
+
+Aktueller Name: @Name
+
+
+
+<Modal id="myModal" autoclose="@true">
+ <Toggle class="btn btn-primary btn-lg">
+  Name ändern
+ </Toggle>
+ <Content>
+  <HeaderTemplate>
+   <!-- Case-sensitive names!!! -->
+   <h1>Ein modaler Dialog</h1>
+  </HeaderTemplate>
+  <BodyTemplate>
+
+   Ihr Name:
+   <input type="text" @bind="Name" />
+
+  </BodyTemplate>
+  <FooterTemplate>
+   <button type="button" class="btn btn-secondary" data-dismiss="modal">Speichern</button>
+  </FooterTemplate>
+ </Content>
+</Modal>
+
+
+<hr />
+@((MarkupString)History)
+
+@code
+{ private string _name = "n/a";
+
+ public string Name
+ {
+  get
+  {
+   return _name;
+  }
+  set
+  {
+   History += DateTime.Now + ": Name geändert auf " + value + "<br>";
+   _name = value;
+  }
+ }
+
+ public string History { get; set; } }
+
+

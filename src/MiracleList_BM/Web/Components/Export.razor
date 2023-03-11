@@ -1,0 +1,9 @@
+﻿@using ITVisions.Blazor
+@using System.Runtime.Serialization;
+@using System.Runtime.InteropServices;
+@inject BlazorUtil Util
+
+<a @onclick="ExportXMLFile"><span id="ShowGrid" title="Export this task list to XML file @ExportPath" class="glyphicon glyphicon-floppy-save"></span></a>
+@if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+ <a @onclick="ExportWord"><span id="ShowGrid" title="Send this task list to Microsoft Word and save in @ExportPathWord" class="glyphicon glyphicon-export"></span></a>
+}

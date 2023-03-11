@@ -1,0 +1,69 @@
+﻿@page "/Samples_BW/NativeCall"
+@using System.Runtime.InteropServices
+
+<h3>Native Dependencies Demos<br />Managed Code in C# ruft Native Code Code<br />Holger Schwichtenberg 12.10.2021</h3>
+Nutzt Clib.c<br />
+Dafür muss in .csproj aktiv sein: NativeFileReference Include="CLib.c"
+
+@code {
+ [DllImport("CLib")]
+ static extern int Fact(int n);
+
+ [DllImport("CLib")]
+ static extern int Fibonacci(int n, [Out] int[] array);
+
+ [DllImport("CLib")]
+ static extern int GetRandomNumberList(int n, [Out] int[] array);
+
+ static int n = 10;
+ int[] ResultArray1 = new int[n];
+ int[] ResultArray2 = new int[n];
+ int result1 = 0;
+ int result2 = 0;
+ string ErrorMessage = "";
+
+ protected override void OnInitialized()
+ {
+  try {
+   result1 = Fibonacci(n, ResultArray1);
+   result2 = GetRandomNumberList(n, ResultArray2);
+  }
+  catch (Exception ex) {
+
+   ErrorMessage = "Es ist ein Fehler aufgetreten. Haben Sie NativeFileReference für CLib.c in .csproj aktiviert? Fehlerdetails: " + ex.ToString();
+  }
+ }
+}
+
+@if (!String.IsNullOrEmpty(ErrorMessage))
+{
+ <div class="alert alert-danger">@ErrorMessage</div>
+}
+<ErrorBoundary>
+ <ChildContent>
+   <p>Fact: @Fact(8)</p>
+ </ChildContent>
+
+ <ErrorContent>
+  <div class="alert alert-danger">
+   Es ist ein Fehler aufgetreten. Haben Sie NativeFileReference für CLib.c in .csproj aktiviert?
+  </div>
+  </ErrorContent>
+</ErrorBoundary>
+
+<p>Fibonacci: @ResultArray1.Length / @result1 </p>
+<ul>
+ @foreach (var a in @ResultArray1)
+ {
+  <li>@a</li>
+ }
+</ul>
+
+<p>Random: @ResultArray2.Length / @result2 </p>
+
+<ul>
+ @foreach (var a in @ResultArray2)
+ {
+  <li>@a</li>
+ }
+</ul>

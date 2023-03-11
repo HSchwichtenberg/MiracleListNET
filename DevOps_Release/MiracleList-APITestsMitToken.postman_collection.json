@@ -1,0 +1,266 @@
+{
+	"variables": [],
+	"info": {
+		"name": "MiracleListMitToken",
+		"_postman_id": "aae1987e-12bc-ee36-bdc1-c0173226de9e",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8887/CategorySet/test",
+			"request": {
+				"url": "http://localhost:8887/Task/HS/623",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskID\": 1,\n    \"title\": \"Projektplan erstellen\",\n    \"created\": \"2017-01-09T20:59:38.2067306\",\n    \"due\": \"2017-01-10T20:59:38.2052332\",\n    \"importance\": 0,\n    \"note\": \"\",\n    \"done\": false,\n    \"order\": 0,\n    \"subTasks\": [],\n    \"category\": null,\n    \"categoryID\": 1\n  }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8887/taskset/test/300",
+			"request": {
+				"url": "http://localhost:8887/taskset/test/300",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskID\": 1,\n    \"title\": \"Projektplan erstellen\",\n    \"created\": \"2017-01-09T20:59:38.2067306\",\n    \"due\": \"2017-01-10T20:59:38.2052332\",\n    \"importance\": 0,\n    \"note\": \"\",\n    \"done\": false,\n    \"order\": 0,\n    \"subTasks\": [],\n    \"category\": null,\n    \"categoryID\": 1\n  }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8887/taskset/test/300",
+			"request": {
+				"url": "http://localhost:8887/task/test/731",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskID\": 1,\n    \"title\": \"Projektplan erstellen\",\n    \"created\": \"2017-01-09T20:59:38.2067306\",\n    \"due\": \"2017-01-10T20:59:38.2052332\",\n    \"importance\": 0,\n    \"note\": \"\",\n    \"done\": false,\n    \"order\": 0,\n    \"subTasks\": [],\n    \"category\": null,\n    \"categoryID\": 1\n  }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8887/login",
+			"request": {
+				"url": "http://localhost:8887/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"clientID\": \"test2\",\r\n  \"userName\": \"test2\",\r\n  \"password\": \"test2\",\r\n  \"token\": \"\"\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8887/Logoff/test",
+			"request": {
+				"url": "http://localhost:45935/Logoff/HS",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"HS\",\"password\":\"\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8887/DueTaskSet/test",
+			"request": {
+				"url": "http://localhost:82/DueTaskSet/test",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"clientID\": \"test2\",\r\n  \"userName\": \"test2\",\r\n  \"password\": \"test2\",\r\n  \"token\": \"\"\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://miraclelistbackend.azurewebsites.net/CategorySet/test",
+			"request": {
+				"url": "http://miraclelistbackend.azurewebsites.net/CategorySet/test",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskID\": 1,\n    \"title\": \"Projektplan erstellen\",\n    \"created\": \"2017-01-09T20:59:38.2067306\",\n    \"due\": \"2017-01-10T20:59:38.2052332\",\n    \"importance\": 0,\n    \"note\": \"\",\n    \"done\": false,\n    \"order\": 0,\n    \"subTasks\": [],\n    \"category\": null,\n    \"categoryID\": 1\n  }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "OPTIONS http://localhost:8887/CategorySet/test",
+			"request": {
+				"url": "http://localhost:8887/CategorySet/test",
+				"method": "OPTIONS",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Origin",
+						"value": "www.it-visions.de",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskID\": 1,\n    \"title\": \"Projektplan erstellen\",\n    \"created\": \"2017-01-09T20:59:38.2067306\",\n    \"due\": \"2017-01-10T20:59:38.2052332\",\n    \"importance\": 0,\n    \"note\": \"\",\n    \"done\": false,\n    \"order\": 0,\n    \"subTasks\": [],\n    \"category\": null,\n    \"categoryID\": 1\n  }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "OPTIONS http://miraclelistbackend.azurewebsites.net",
+			"request": {
+				"url": "http://miraclelistbackend.azurewebsites.net/",
+				"method": "OPTIONS",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Origin",
+						"value": "http://www.example.com",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskID\": 1,\n    \"title\": \"Projektplan erstellen\",\n    \"created\": \"2017-01-09T20:59:38.2067306\",\n    \"due\": \"2017-01-10T20:59:38.2052332\",\n    \"importance\": 0,\n    \"note\": \"\",\n    \"done\": false,\n    \"order\": 0,\n    \"subTasks\": [],\n    \"category\": null,\n    \"categoryID\": 1\n  }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8887/ChangeTask/dev",
+			"request": {
+				"url": "http://localhost:8887/ChangeTask/dev",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"taskID\":1080,\"effort\":40,\"title\":\"Angular-Tutorial für die iX schreiben\",\"created\":\"2017-01-23T20:49:01.605Z\",\"due\":\"2017-02-22T20:49:01.605Z\",\"importance\":0,\"note\":\"Teil 1: Einrichten eines Angular-Projekts, Datenabruf von REST-Diensten, Rendern von Daten per Template\\nTeil 2: Routing, Formulare für das Einfügen, Ändern und Löschen von Daten, Senden von Daten an REST-Dienste\\nTeil 3: Menü, Kontextmenü, Dialogfenster, Animationen, Benutzeranmeldung und Auslieferung des Projekts\",\"done\":false,\"order\":0,\"category\":null,\"categoryID\":418}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8887/login ERROR",
+			"request": {
+				"url": "http://localhost:8887/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"clientID\": \"test2\",\r\n  \"userName\": \"test2\",\r\n  \"password\": \"falsch\",\r\n  \"token\": \"\"\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8887/seitegibtesnicht",
+			"request": {
+				"url": "localhost:8887/seitegibtesnicht",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Origin",
+						"value": "www.it-visions.de",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskID\": 1,\n    \"title\": \"Projektplan erstellen\",\n    \"created\": \"2017-01-09T20:59:38.2067306\",\n    \"due\": \"2017-01-10T20:59:38.2052332\",\n    \"importance\": 0,\n    \"note\": \"\",\n    \"done\": false,\n    \"order\": 0,\n    \"subTasks\": [],\n    \"category\": null,\n    \"categoryID\": 1\n  }"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

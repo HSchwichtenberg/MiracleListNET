@@ -1,0 +1,65 @@
+﻿@*Liefert die Netzwerklatenz bei Blazor Server
+ (C) Dr. Holger Schwichtenberg 2020-2022*@
+
+@inject IJSRuntime JSRuntime
+@implements IDisposable
+
+@if (latency is null)
+{
+ <span class="Loading">Berechne...</span>
+}
+else
+{
+ <span @onclick="CalcLatency" style="color: @(latency.Value.TotalMilliseconds>=Threshold? "red" : "")">
+  @(Math.Round(latency.Value.TotalMilliseconds, 2)) ms
+ </span>
+}
+
+@code {
+ [Parameter]
+ public int UpdateIntervallSeconds { get; set; } = 1;
+ [Parameter]
+ public int Threshold { get; set; } = 250; // based on https://docs.microsoft.com/de-de/aspnet/core/host-and-deploy/blazor/server
+
+ private TimeSpan? latency;
+
+ System.Threading.Timer timer;
+
+ protected override void OnInitialized()
+ {
+  timer = new System.Threading.Timer(async _ =>
+  {
+   await CalcLatency();
+   await InvokeAsync(StateHasChanged);
+  }, null, UpdateIntervallSeconds * 1000, UpdateIntervallSeconds * 1000);
+ }
+
+ public void Dispose()
+ {
+  // wichtig, damit Timer nicht weiterläuft, wenn die Komponente schon nicht mehr lebt
+  if (timer != null) timer.Dispose();
+ }
+
+ protected override async Task OnAfterRenderAsync(bool firstRender)
+ {
+  if (firstRender)
+  {
+   await CalcLatency();
+   this.StateHasChanged();
+  }
+ }
+
+ public async Task CalcLatency()
+ {
+  try
+  {
+   var startTime = DateTime.UtcNow;
+   var _ = await JSRuntime.InvokeAsync<string>("toString");
+   latency = DateTime.UtcNow - startTime;
+  }
+  catch (Exception)
+  {
+   latency = null;
+  }
+ }
+ }

@@ -1,0 +1,15 @@
+﻿@page "{id:int}"
+
+@model MiracleList.Pages.UserDetailsModel
+@{
+ ViewData["Title"] = "UserDetails";
+ Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+<h2>UserDetails</h2>
+
+@Model.Message
+<hr />
+@await Component.InvokeAsync("ObjectDump", new { obj = Model.MLUser })
+
+

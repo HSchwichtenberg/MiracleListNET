@@ -1,0 +1,42 @@
+﻿@page "/Samples_BW/SQLite"
+@page "/Samples_BW/SQLiteLocalData"
+@using Microsoft.EntityFrameworkCore
+
+<h2>SQLiteLocalData: Verwendung von SQLite als Datenspeicher in Blazor WebAssembly</h2>
+Datenbank-Verbindungszeichenfolge: @DBInfo
+<hr />
+<button class="btn btn-info" @onclick="Add">Neuer Log-Datensatz</button>
+<hr />
+@code {
+
+
+ List<LocalData.Log> LogSet;
+ string DBInfo { get; set; }
+
+ protected override void OnInitialized()
+ {
+  // e_sqlite.o kommt von https://github.com/SteveSandersonMS/BlazeOrbital/tree/main/BlazeOrbital/ManufacturingHub/Data
+  var ctx1 = new LocalData.ClientSideDbContext();
+  ctx1.Database.EnsureCreated();
+  Add();
+  this.DBInfo = ctx1.Database.GetDbConnection().ConnectionString;
+ }
+
+ void Add()
+ {
+  var ctx = new LocalData.ClientSideDbContext();
+  ctx.Database.EnsureCreated();
+  var p = new LocalData.Log() { DateTime = DateTime.Now, Text = System.Environment.UserName };
+  ctx.LogSet.Add(p);
+  ctx.SaveChanges();
+  var ctx2 = new LocalData.ClientSideDbContext();
+  this.LogSet = ctx2.LogSet.ToList();
+ }
+}
+
+<ul>
+ @foreach (var p in LogSet)
+ {
+  <li>#@p.ID: @p.DateTime Benutzer "@p.Text"</li>
+ }
+</ul>

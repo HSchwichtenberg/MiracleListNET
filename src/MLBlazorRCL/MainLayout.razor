@@ -1,0 +1,149 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@using ITVisions.Blazor
+@using ITVisions.Blazor.Controls
+@using MLBlazorRCL
+@inject BlazorUtil Util
+
+@*Nicht ständig sichtbarer Toast / Einbindung für alle Unterkomponenten*@
+<BlazoredToasts RemoveToastsOnNavigation="true" Position="Blazored.Toast.Configuration.ToastPosition.BottomLeft" />
+@*Nicht ständig sichtbarer Dialog aus MLBlazorRCL / Einbindung für alle Unterkomponenten*@
+<ConfirmDialog></ConfirmDialog>
+
+
+<div class="row" style="background: white; margin-bottom: 10px">
+
+ <!-- ### Logo links oben -->
+ <div class="col-xs-10 col-sm-4 col-md-3 col-lg-2">
+  <img @onclick="@ShowAbout" src="/_content/MLBlazorRCL/img/MiracleListLogo.jpg" />
+ </div>
+
+ <!-- ### Statusanzeige: Anzeige dieses Blocks oben nur auf großen Displays -->
+ <div class="col-xs-6 col-lg-9 col-sm-7 col-md-8 hidden-xs" style="vertical-align: middle;margin-top:10px">
+  <AuthorizeView>
+   <Authorized>
+    <div class="HeadInfo">
+     <h4 class="HeadInfo" id="LoggedInUser">User: <b>@context.User.Identity.Name</b> <a href="/logout">Logout</a></h4>
+     <h4 class="HeadInfo">Logged in since: <b>@GetLogInDateTime().Result</b> Screen: <b><span id="screenInfo">@screenInfo</span></b> </h4>
+     <h4 class="HeadInfo"><ConnectionState /></h4>
+    </div>
+   </Authorized>
+   <NotAuthorized>
+    @*<h4>You're not signed in</h4>*@
+   </NotAuthorized>
+  </AuthorizeView>
+ </div>
+
+ <!-- ### Hamburger-Menü rechts oben -->
+ <div class="col-xs-1">
+  <ul class="nav navbar-nav navbar-right">
+   <li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown">
+     <span style="font-size: 2.2em" class="glyphicon glyphicon-menu-hamburger icon-primary"></span>
+    </a>
+    <ul class="dropdown-menu">
+     <!-- Menüpunkte für MiracleList-->
+     <li><a href="/About">Über diese App</a></li>
+     <AuthorizeView>
+      <Authorized>
+       <li><a href="/Main">MiracleList-Aufgabenverwaltung</a></li>
+       <li><a href="/Logout">Logout</a></li>
+      </Authorized>
+      <NotAuthorized>
+       <li><a href="/Login">Login</a></li>
+      </NotAuthorized>
+     </AuthorizeView>
+     <!-- Menüpunkte für weitere Blazor-Beispiele außerhalb von MiracleList-->
+     <li><a href="/SamplesList">Blazor-Beispiele außerhalb der MiracleList</a></li>
+     <!-- Links ins WWW-->
+     <li>
+      <a href="https://www.it-visions.de/miraclelist" target="_blank">www.MiracleList.net</a>
+     </li>
+     <li>
+      <a href="https://www.it-visions.de/thema/Blazor"
+         target="_blank">Beratung und Schulung zu Blazor</a>
+     </li>
+     <li>
+      <a href="https://www.it-visions.de/BlazorBuch" target="_blank">Fachbuch zu Blazor</a>
+     </li>
+     <li>
+      <a href="https://www.it-visions.de" target="_blank">www.IT-Visions.de</a>
+     </li>
+     <li>
+      <a href="https://www.MAXIMAGO.de" target="_blank">MAXIMAGO GmbH</a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </div>
+</div>
+
+<!-- Inhalt der Seiten-->
+<div class="container-fluid">
+ @Body
+
+ <!-- Alternative Anzeige dieses Blocks unten auf kleinen Displays (!!! Codedopplung, könnte man noch in eine Komponente auslagern !!!) -->
+ <div class="row">
+  <div class="col-xs-12 hidden-sm hidden-md hidden-lg" style="padding:0px;">
+  <AuthorizeView>
+   <Authorized>
+    <div class="HeadInfo">
+     <h4 class="HeadInfo" id="LoggedInUser">User: <b>@context.User.Identity.Name</b> <a href="/logout">Logout</a></h4>
+     <h4 class="HeadInfo">Logged in since: <b>@GetLogInDateTime().Result</b> Screen: <b><span id="screenInfo">@screenInfo</span></b> </h4>
+     <h4 class="HeadInfo"><ConnectionState /></h4>
+    </div>
+   </Authorized>
+   <NotAuthorized>
+    @*<h4>You're not signed in</h4>*@
+   </NotAuthorized>
+  </AuthorizeView>
+  </div>
+ </div>
+</div>
+
+@code
+{
+
+ [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+ protected override async System.Threading.Tasks.Task OnInitializedAsync() {
+
+  // Setzt den Seitentitel für Browser-Registerkarte auf Projektnmame und Versionsnummer
+  var entryAssemblyName = System.Reflection.Assembly.GetEntryAssembly().GetName();
+  var projektname = entryAssemblyName.Name;
+  await Util.SetTitle(projektname + " / v" + entryAssemblyName.Version.ToString());
+
+  // ermittelte den aktuellen Benu´tzer
+  var authState = await authenticationStateTask;
+  var user = authState.User;
+  if (user.Identity.IsAuthenticated) {
+   Util.Log($"MainLayout: User {user.Identity.Name} is authenticated!");
+  }
+  else {
+   Util.Log("MainLayout: User is NOT authenticated.");
+  }
+ }
+
+ public string screenInfo { get; set; }
+
+ protected override async Task OnAfterRenderAsync(bool firstRender) {
+  if (firstRender) {
+   screenInfo = await Util.GetScreenSize();
+   await Util.InitUpdateScreenSize("screenInfo");
+   this.StateHasChanged();
+  }
+ }
+
+ async Task<string> GetLogInDateTime() {
+  var authState = await authenticationStateTask;
+  var user = authState.User;
+  if (user == null) return "???";
+  return user.Claims.FirstOrDefault(x => x.Type == "LogInDateTime")?.Value ?? "???";
+ }
+
+ public void ShowAbout() {
+  // Navigiere zu /About und zurück zur Startseite, wenn auf das Logo geklickt wird
+  if (NavigationManager.Uri.ToLower().Contains("/about")) NavigationManager.NavigateTo("/");
+  else NavigationManager.NavigateTo("About");
+ }
+}

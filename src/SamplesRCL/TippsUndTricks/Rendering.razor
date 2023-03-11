@@ -1,0 +1,117 @@
+﻿@page "/Samples/Rendering"
+@using System.Threading;
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+
+<h1>Rendering in @(Util.IsWebAssembly ? "Blazor WebAssembly" : "Blazor Server")</h1>
+
+<h3>Einstellungen</h3>
+
+<br />
+<input type="number" @bind="Dauer" /> Sekunden
+<br />
+<input type="checkbox" @bind="shouldRender" /> ShouldRender? --> ohne dies sieht man gar keine UI-Updates
+<br />
+<input type="checkbox" @bind="useTask" /> Use Task?
+<br />
+<input type="checkbox" @bind="useInvokeAsync" /> Use InvokeAsync?
+<br />
+<input type="checkbox" @bind="callStateHasChanged" /> StateHasChanged? --> ohne dies Absturz in Blazor Server ("The current thread is not associated with the Dispatcher.")
+<br />
+<input type="number" @bind="delay" /> ms Verzögerung nach dem StateHasChanges() --> in Blazor WebAssembly blockiert das UI
+
+<h3>Ausgaben</h3>
+
+<button @onclick="Start">Start</button>
+
+<hr />
+Verbleibende Sekunden: @VerbleibendeSekunden
+<br />
+@((MarkupString)Ausgabe)
+<br />
+@EndeZeit
+
+@DetectChangeDetection
+
+@code {
+ private int Dauer { get; set; } = 5;
+ private string Ausgabe { get; set; } = "";
+ private string EndeZeit { get; set; } = "";
+ private bool shouldRender = true;
+ private bool useTask = true;
+ private bool useInvokeAsync = true;
+ private bool callStateHasChanged = true;
+
+ // Dieses Property dient nur dazu, festzustellen, 
+ // wann eine Change Detection stattfindet
+ // Es wird im Razor Code verwendet, damit Blazor es als relevant betrachtet
+ public string DetectChangeDetection
+ {
+  get { Util.Log("Change Detection!"); return ""; }
+  set { } // wir setzen hier nie einen Wert
+ }
+
+ private int delay = 1;
+ private int count { get; set; }
+ public int VerbleibendeSekunden { get; set; }
+ protected override bool ShouldRender() { return shouldRender; }
+
+ public async void Start()
+ {
+  //for (int i = 0; i < 100; i++)
+  //{
+  // Ausgabe += $"{i:0000} {DateTime.Now.ToString()}<br>";
+  //}
+  //return;
+
+  count = 0;
+  VerbleibendeSekunden = Dauer;
+  EndeZeit = "";
+  DateTime startTime = DateTime.Now;
+  DateTime? letzteLogAusgabe = null;
+  while ((DateTime.Now - startTime).TotalSeconds < Dauer)
+  {
+   if (letzteLogAusgabe == null || (DateTime.Now - letzteLogAusgabe.Value).TotalSeconds >= 1)
+   {
+    letzteLogAusgabe = DateTime.Now;
+    VerbleibendeSekunden = (int)(startTime.AddSeconds(Dauer) - DateTime.Now).TotalSeconds;
+    Util.Log("Verbleibende Sekunden: " + VerbleibendeSekunden);
+   }
+
+   if (!useTask)
+   {
+    Print();
+    if (callStateHasChanged) this.StateHasChanged();
+    if (delay > 0) await Task.Delay(delay);
+   }
+   else
+   { // eigenen Task verwenden
+    await Task.Run(async () =>
+    {
+     Print();
+     if (useInvokeAsync)
+     {
+      await this.InvokeAsync(
+             async () =>
+             {
+              if (callStateHasChanged) this.StateHasChanged();
+             });
+     }
+     else
+     {
+      if (callStateHasChanged) this.StateHasChanged();
+     }
+     if (delay > 0) await Task.Delay(delay);
+    });
+   }
+  } // end while
+  EndeZeit = "Beendet um " + DateTime.Now;
+ } // end start
+
+ void Print()
+ {
+  count++;
+  if (count % 10 == 0) Ausgabe = "";
+  Ausgabe += $"{count:0000} {DateTime.Now.ToString()}<br>";
+ }
+}

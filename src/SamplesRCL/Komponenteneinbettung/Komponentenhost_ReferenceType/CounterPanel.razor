@@ -1,0 +1,39 @@
+﻿
+<div class="panel panel-default gruen">
+ <div class="panel-heading gruen">
+  <h4>Komponente "Counter Panel"</h4>
+ </div>
+ <div class="panel-body">
+  <p>
+   Diese Razor Component <b>@this.GetType().FullName</b> kommt aus der DLL: <b><text>@System.Reflection.Assembly.GetExecutingAssembly().GetName().Name</text>.dll</b>!
+  </p>
+  <p>Current count: @Data.Counter</p>
+  <button class="btn btn-primary" @onclick="Increment">Klick mich!</button>
+ </div>
+</div>
+
+@code {
+ // Datenstruktur für Ereignis ValueHasChanged()
+ public struct ValueHasChangedDetails
+ {
+  public int Counter { get; set; }
+  public string Text { get; set; }
+ }
+
+ [Parameter] // Parameter muss Property und public sein!
+ public CounterData Data { get; set; } // By Reference!
+
+ [Parameter]
+ public EventCallback<ValueHasChangedDetails> ValueHasChanged { get; set; }
+
+ protected async override Task OnInitializedAsync()
+ {
+  await ValueHasChanged.InvokeAsync(new ValueHasChangedDetails() { Counter = Data.Counter, Text = "Startwert" });
+ }
+
+ async void Increment()
+ {
+  this.Data.Counter++;
+  await ValueHasChanged.InvokeAsync(new ValueHasChangedDetails() { Counter = Data.Counter, Text = "Erhöht am " + DateTime.Now });
+ }
+}

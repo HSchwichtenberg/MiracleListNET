@@ -1,0 +1,56 @@
+﻿@page "/Samples/Focus"
+
+<h3>Fokus setzen mit FocusAsync() bei HTML-Eingabesteuerelementen (ab Blazor 5.0)</h3>
+
+@code
+{
+ public string Vorname { get; set; }
+ public string Name { get; set; }
+
+ public ElementReference rVorname { get; set; }
+ public ElementReference rName { get; set; }
+
+ public async void Fokus()
+ {
+  await rVorname.FocusAsync(); // FocusAsync() seit Blazor 5.0
+ }
+}
+
+Vorname:
+<input type="text" @ref="rVorname" @bind="Vorname" />
+Name:
+<input type="text" @ref="rName" @bind="Name" />
+
+<br />
+<button @onclick='Fokus'>Fokus auf Vorname</button>
+<button @onclick='() => rName.FocusAsync()'>Fokus auf Name</button>
+
+<h3>Fokus setzen mit FocusAsync() bei Blazor-Eingabesteuerelementen (ab Blazor 6.0)</h3>
+@code
+ {
+
+  class Person
+  {
+
+   public int ID { get; set; }
+   public string Vorname { get; set; }
+   public string Name { get; set; }
+  }
+
+  public InputText rPersonVorname { get; set; }
+  InputText NameComponent { get; set; }
+  public InputText rPersonName { get; set; }
+  Person p = new Person() { ID = 1, Name = "Holger Schwichtenberg" };
+ }
+
+ <EditForm Model="p">
+  Vorname:
+  <InputText type="text" @ref="rPersonVorname" @bind-Value="p.Vorname" />
+  Name:
+  <InputText type="text" @ref="rPersonName" @bind-Value="p.Name" />
+
+ </EditForm>
+ <br />
+
+ @*<button @onclick='() => rPersonVorname.Element.Value.FocusAsync()'>Fokus auf Vorname (erst ab Blazor 6)</button>*@
+

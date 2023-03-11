@@ -1,0 +1,26 @@
+﻿@page
+
+@model MiracleList.Pages.ClientIDConfirmationModel
+@{
+ ViewData["Title"] = "ClientIDConfirmation";
+ Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *,Miraclelist_WebAPI
+@addTagHelper *,ITVTagHelper
+<h2>Beantragung für Client-ID</h2>
+
+<div>
+
+ <p>Danke, <span fett>@Model.ClientIDModelResult.Name</span><text>.</text> Der Server hat Ihre personalisierte Client-ID gesendet an <span fett>@Model.ClientIDModelResult.EMail</span>.<br />Bitte beachten Sie, dass eine Client-ID jederzeit widerrufen werden kann, falls Sie diese missbrauchen!</p>
+
+  @*The client ID is displayed here only in the environments development and test.*@
+ <environment names="development, test"> <p>Ihre Client-ID ist: @Model.ClientIDModelResult.ClientID</p>
+
+ <h2>Alle gespeicherten Daten - Variante 1</h2>
+ @await Component.InvokeAsync("ObjectDump", new { obj = Model.ClientIDModelResult })
+ <h2>Alle gespeicherten Daten - Variante 2 (Ausgabe via Tag Helper)</h2>
+ <vc:object-dump obj="@Model.ClientIDModelResult" details="false"></vc:object-dump>
+
+ </environment>
+</div>

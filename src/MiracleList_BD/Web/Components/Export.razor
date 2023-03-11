@@ -1,0 +1,100 @@
+﻿@using ITVisions.Blazor
+@using System.Runtime.Serialization;
+@inject BlazorUtil Util
+
+<a @onclick="ExportXMLFile"><span id="ShowGrid" title="Export this task list to XML file @ExportPath" class="glyphicon glyphicon-floppy-save"></span></a>
+<a @onclick="ExportWord"><span id="ShowGrid" title="Send this task list to Microsoft Word and save in @ExportPathWord" class="glyphicon glyphicon-export"></span></a>
+
+@code {
+
+ [Parameter]
+ public BO.Category category { get; set; }
+ [Parameter]
+ public List<BO.Task> taskSet { get; set; }
+
+ public string ExportPath {
+  get {
+   if (category == null) return "";
+   string fileName = "MiracleList_Export_" + category.Name + "_" + DateTime.Now.ToDateString() + ".xml";
+   string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), fileName);
+   return path;
+  }
+ }
+
+ public string ExportPathWord {
+  get {
+   if (category == null) return "";
+   string fileName = "MiracleList_Export_ " + category.Name + "_" + DateTime.Now.ToDateString() + ".docx";
+   string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), fileName);
+   return path;
+  }
+ }
+
+ /// <summary>
+ /// Nur in BD und BM: Direkter Export ins Dateisystem
+ /// </summary>
+ public async Task ExportXMLFile() {
+  if (category == null) return;
+
+  if (System.IO.File.Exists(ExportPath)) {
+   if (!await Util.Confirm($"Datei {ExportPath} existiert bereits. Überschreiben?")) return;
+  }
+  else {
+   if (!await Util.Confirm($"Datei {ExportPath} anlegen?")) return;
+  }
+
+  try {
+   // TODO: Zirkuläre Referenzen ausschalten!!!
+   DataContractSerializer xs = new(typeof(List<BO.Task>));
+   System.IO.FileStream file = System.IO.File.Create(ExportPath);
+   xs.WriteObject(file, taskSet);
+   file.Close();
+   await Util.Alert($"XML-Datei {ExportPath} wurde erzeugt!");
+  }
+  catch (Exception ex) {
+   await Util.Alert($"XML-Datei {ExportPath} kann nicht erzeugt werden: {ex.Message}");
+   return;
+  }
+ }
+
+ /// <summary>
+ /// Nur in BD und BM auf Windows: Word-Dokumentengenerierung
+ /// </summary>
+ public async Task ExportWord() {
+  // Neues Word-Dokument
+  var word = new Microsoft.Office.Interop.Word.Application();
+  word.Visible = true;
+  var doc = word.Documents.Add();
+
+  // Anzeige aktualisieren
+  await DoEvents();
+
+  // Kopfzeile
+  word.ActiveWindow.ActivePane.View.SeekView = Microsoft.Office.Interop.Word.WdSeekView.wdSeekCurrentPageHeader;
+  Microsoft.Office.Interop.Word.Find findObject = word.Selection.Find;
+  findObject.ClearFormatting();
+  findObject.Text = "Dokumententitel [ITV DokHead]";
+  findObject.Replacement.ClearFormatting();
+  findObject.Replacement.Text = "All Tasks in Category " + category.Name;
+  object replaceAll = Microsoft.Office.Interop.Word.WdReplace.wdReplaceAll;
+  findObject.Execute(Replace: replaceAll);
+
+  // Seiteninhalt
+  word.ActiveWindow.ActivePane.View.SeekView = Microsoft.Office.Interop.Word.WdSeekView.wdSeekMainDocument;
+  word.Selection.WholeStory();
+  word.Selection.Delete();
+
+  foreach (var t in taskSet) {
+   var line = "Task #" + t.TaskID + ": " + t.Title + " Due: " + t.Due.GetValueOrDefault().ToShortDateString() + "\n";
+   word.Selection.TypeText(line);
+  }
+
+  // Dokument speichern
+  doc.SaveAs2(ExportPathWord);
+ }
+
+ async Task DoEvents() {
+  this.StateHasChanged();
+  await Task.Delay(1); // notwendig in Blazor WebAssembly und Blazor Desktop
+ }
+}

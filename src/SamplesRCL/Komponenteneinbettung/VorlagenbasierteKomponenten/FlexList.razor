@@ -1,0 +1,41 @@
+﻿@typeparam Typ
+
+@code
+{
+ [Parameter]
+ public IEnumerable<Typ> Daten { get; set; }
+
+ [Parameter]
+ public RenderFragment<Typ> ElementTemplate { get; set; }
+
+ [Parameter]
+ public RenderFragment<RenderFragment> ListTemplate { get; set; }
+
+ protected override void OnParametersSet()
+ {
+  if (ListTemplate == null)
+  {
+   ListTemplate = (context) =>@:@{
+    <ul>@context</ul>
+   }
+   ;
+  }
+
+  if (ElementTemplate == null)
+  {
+   ElementTemplate = (item) =>@:@{
+    <li>@item.ToString()</li>
+   }
+   ;
+  }
+ }
+}
+
+@ListTemplate(
+ @:@{
+     foreach (Typ o in Daten)
+     {
+   <li>@ElementTemplate(o)</li>
+     }
+ }
+ )

@@ -1,0 +1,51 @@
+﻿@page "/Samples/Browserkonsole"
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+
+
+<h3>Browserkonsole</h3>
+
+<button @onclick="LogToConsole">Ausgabe in die Browserkonsole</button>
+@code {
+
+ string Ausgabe;
+ void GetBlazorType()
+ {
+  Ausgabe = Util.GetBlazorVersionInfo();
+  if (Util.IsWebAssembly) Console.WriteLine("In Blazor WebAssembly geht Console.WriteLine() in die Browserkonsole!");
+ }
+
+ class Softwarearchitekt
+ {
+  public string Name { get; set; }
+  public Uri Website { get; set; }
+  public int Geburtsjahr { get; set; }
+ }
+
+ protected override void OnInitialized()
+ {
+  Util.LogFailOnError = true;
+  Util.Log("Das geht nicht hier in Blazor Server!");
+ }
+
+ void LogToConsole()
+ {
+  Util.Clear();
+
+  var obj = new Softwarearchitekt { Name = "Dr. Holger Schwichtenberg", Website = new Uri("https://www.dotnet-doktor.de"), Geburtsjahr = 1972 };
+
+  Console.WriteLine("Ausgabe mit Console.WriteLine");
+  Util.Log("Info-Ausgabe von Blazor " + Util.BlazorType);
+  Util.Log("Info-Ausgabe mit Objekt", obj);
+  Util.Log(obj);
+  Util.Warn("Dies ist eine Warnung");
+  Util.Warn("Dies ist eine Warnung mit Objekt", obj);
+  Util.Error("Dies ist ein Fehler");
+  Util.Error("Dies ist ein Fehler mit Objekt", obj);
+
+  Util.Log(obj);
+  Util.Log(123);
+  Util.Log("Hallo Welt!");
+
+ }
+}

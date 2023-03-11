@@ -1,0 +1,55 @@
+﻿@page "/Dynamic"
+@using Samples.NET6
+@code {
+
+}
+
+<h1>Blazor 6: Dynamisches/Metadatengetriebenes UI</h1>
+<hr />
+
+<div class="row">
+ @*Spalte 1*@
+ <div class="col">
+  <div class="card">
+   <div class="card-body">
+    <div class="card-title">Was soll gerendert werden?</div>
+    <select value="@ControlType" @onchange="Render" class="form-control">
+     <option>Text</option>
+     <option>Viel Text</option>
+     <option>Zahl</option>
+     <option>Auswahl</option>
+    </select>
+    <input type="text" @bind="State.Value" class="form-control" />
+    <button class="btn btn-info" @onclick="() => Render(null)">Render</button>
+   </div>
+  </div>
+ </div>
+
+ @*Spalte 2*@
+ <div class="col" style="background-color:aliceblue">
+  @if (type != null)
+  {
+   // DEMO 80: DynamicComponent
+   <DynamicComponent Type="@type" Parameters="@parameter" />
+   <button class="btn btn-success" @onclick="()=>this.StateHasChanged()">OK</button>
+  }
+ </div>
+
+</div>
+
+    @code {
+     string ControlType = "Text";
+     System.Type type = null;
+     State State { get; set; } = new State() { Value = 42 };
+
+     Dictionary<string, object> parameter;
+
+     // DEMO 81: DynamicComponent befüttern
+     void Render(ChangeEventArgs e)
+     {
+      if (e != null) ControlType = e.Value.ToString();
+      var fulltypeName = "NET6BW.Pages.Controls." + ControlType.Replace(" ", "_");
+      type = System.Type.GetType(fulltypeName);
+      parameter = new Dictionary<string, object> { { "State", State } };
+     }
+    }

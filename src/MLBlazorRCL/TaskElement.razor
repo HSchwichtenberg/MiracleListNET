@@ -1,0 +1,129 @@
+﻿@using BlazorContextMenu;
+@using ITVisions
+@using ITVisions.Blazor.Controls
+@using MiracleList;
+@inject IAppState AppState
+@inject IMiracleListProxy Proxy
+@inject BlazorUtil Util
+
+
+<ContextMenuTrigger MenuId="@("TaskContextMenu" + Task.CategoryID.ToString() + "_" + Task.TaskID.ToString())" Data="Task">
+
+ <li  class="list-group-item" @onclick="() => SetTaskActive(Task)" style="Background-color: @(Active ? "#E0EEFA" : "white")" title="Task #@Task.TaskID" draggable="true" @ondragstart="(e) => DragTask(e, Task)">
+
+  <span id="Remove" style="float:right;" class="close" title="Remove Task #@Task.TaskID" @onclick="() => RemoveTask(Task)">x</span>
+
+  <input type="checkbox" name="@("done" + Task.TaskID)" id="@("done" + Task.TaskID)" checked="@Task.Done" class=" MLcheckbox" @onclick:stopPropagation="true" @onchange=@(async(eventArgs) => { Task.Done = (bool)eventArgs.Value; await ChangeTaskDone(Task); }) />
+
+  <b>@Task.Title</b>
+  <br>
+  <div>
+   <span class="badge badge-important" style="margin-right:10px" title="Wichtigkeit: @Task.Importance">@Task.Importance</span>
+   @if (Task.Due.HasValue)
+    if (Task.Due.Value.Date < DateTime.Now.Date) {
+     <span style="color:red;" title="@Task.Due.Value.ToShortDateString()">Due since @Task.Due.Value.Date.ToRelativeDate(true)</span>
+    }
+    else {
+     <span style="color:green;" title="@Task.Due.Value.ToShortDateString()">Due at @Task.Due.Value.Date.ToShortDateString()</span>
+    }
+  </div>
+
+ </li>
+</ContextMenuTrigger>
+
+@*Kontextmenü aus https://github.com/stavroskasidis/BlazorContextMenu*@
+<ContextMenu Id="@("TaskContextMenu" + Task.CategoryID.ToString() + "_" + Task.TaskID.ToString())">
+ <Item OnClick="@OnContextAbout">About this task</Item>
+ <Seperator />
+ <Item OnClick="@OnContextRemove">Remove Task</Item>
+</ContextMenu>
+
+@code {
+ // Parameter für den zu rendernden Task
+ [Parameter]
+ public BO.Task Task { get; set; }
+ // Ist die zu rendernde Aufgabe die aktive Aufgabe?
+ [Parameter]
+ public bool Active { get; set; }
+
+ [Parameter] // Ereignis, wenn Haken bei Aufgabe geändert wird
+ public EventCallback<BO.Task> TaskChecked { get; set; }
+
+ [Parameter] // Ereignis, wenn Aufgabe gelöscht wurde
+ public EventCallback<BO.Task> TaskRemoved { get; set; }
+
+ [Parameter] // Ereignis, wenn Aufgabe angeklickt wurde
+ public EventCallback<BO.Task> TaskClicked { get; set; }
+
+ [Parameter] // Ereignis, wenn Aufgabe gezogen wird
+ public EventCallback<BO.Task> TaskDragged { get; set; }
+
+ #region Entfernen von Aufgaben
+ DotNetObjectReference<TaskElement> obj;
+ /// <summary>
+ /// Ereignisbehandlung: Benutzer löscht Aufgabe
+ /// </summary>
+ public async System.Threading.Tasks.Task RemoveTask(BO.Task t) {
+  obj = DotNetObjectReference.Create(this);
+  await Util.ConfirmDialog("Remove this Task?<br><br><b>#" + t.TaskID + ": " + t.Title, t.TaskID, obj, ConfirmedRemoveTask);
+ }
+
+ /// <summary>
+ /// Callback, wenn Benutzer Bestätigungsdialog zum Löschen einer Aufgabe betätigt hat
+ /// </summary>
+ [JSInvokable]
+ public async Task ConfirmedRemoveTask(int taskID, bool result) {
+  Util.Log($"ConfirmedRemoveTask: #{taskID}:{result}");
+  if (result == false) return;
+  // Löschen via Proxy-Aufruf
+  await Proxy.DeleteTaskAsync(taskID, AppState.Token);
+  // Ereignis an Mutterkomponente
+  await TaskRemoved.InvokeAsync(Task);
+ }
+
+ ///// <summary>
+ ///// Ereignisbehandlung: Benutzer löscht Aufgabe
+ ///// Nur als Beispiel für den Einsatz von confirm()
+ ///// </summary>
+ //public async System.Threading.Tasks.Task RemoveTask_old(BO.Task t)
+ //{
+ // // Rückfrage (Browser-Dialog via JS!)
+ // if (!await Util.Confirm("Aufgabe #" + t.TaskID + ": " + t.Title, "Endgültig löschen?")) return;
+ // // Löschen via WebAPI-Aufruf
+ // await Proxy.DeleteTaskAsync(t.TaskID, token);
+ // ...
+ //}
+ #endregion
+
+ #region Kontextmenüaktionen
+ async Task OnContextAbout(ItemClickEventArgs e) {
+  Util.Log($"Context Menu Item Clicked => Menu: {e.ContextMenuId}, MenuTarget: {e.ContextMenuTargetId}, IsCanceled: {e.IsCanceled}, MenuItem: {e.MenuItemElement}, MouseEvent: {e.MouseEvent} Data: {e.Data}");
+  var t = e.Data as BO.Task;
+  await Util.Alert("Task #" + t.TaskID + " was created on " + t.Created);
+ }
+
+ async Task OnContextRemove(ItemClickEventArgs e) {
+  await this.RemoveTask(e.Data as BO.Task);
+ }
+ #endregion
+
+ #region Andere Ereignisse
+
+ public async Task SetTaskActive(BO.Task task) {
+  await TaskClicked.InvokeAsync(task);
+ }
+
+ public async Task DragTask(DragEventArgs e, BO.Task task) {
+  await TaskDragged.InvokeAsync(task);
+ }
+
+ public async Task ChangeTaskDone(BO.Task t) {
+  Util.Log("Change Task: " + t.TaskID + " Done: " + t.Done);
+  await Proxy.ChangeTaskDoneAsync(t.TaskID, t.Done, AppState.Token);
+  // Ereignis an Mutterkomponente
+  await TaskChecked.InvokeAsync(t);
+ }
+
+
+ #endregion
+}

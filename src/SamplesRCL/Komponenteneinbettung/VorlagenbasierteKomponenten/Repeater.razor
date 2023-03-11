@@ -1,0 +1,59 @@
+﻿@typeparam T
+
+@if (Items == null)
+{
+ @LoadingTemplate
+}
+else
+{
+ if (EmptyTemplate != null && !Items.Any())
+ {
+  @EmptyTemplate
+ }
+ else
+ {
+  @ContainerTemplate(
+           @: @{
+              var first = true;
+              foreach (var item in Items)
+              {
+               if (!first && ItemSeparatorTemplate != null)
+               {
+              @ItemSeparatorTemplate
+               }
+
+             @ItemTemplate(item);
+               first = false;
+              }
+           }
+           )
+ }
+}
+
+@code {
+ [Parameter]
+ public IEnumerable<T> Items { get; set; }
+
+ [Parameter]
+ public RenderFragment LoadingTemplate { get; set; }
+
+ [Parameter]
+ public RenderFragment<RenderFragment> ContainerTemplate { get; set; }
+
+ [Parameter]
+ public RenderFragment<T> ItemTemplate { get; set; }
+
+ [Parameter]
+ public RenderFragment ItemSeparatorTemplate { get; set; }
+
+ [Parameter]
+ public RenderFragment EmptyTemplate { get; set; }
+
+ protected override void OnParametersSet()
+ {
+  if (ContainerTemplate == null)
+  {
+   ContainerTemplate = new RenderFragment<RenderFragment>(fragment => fragment);
+  }
+ }
+}

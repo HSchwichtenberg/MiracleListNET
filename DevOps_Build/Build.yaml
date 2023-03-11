@@ -1,0 +1,53 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
+trigger:
+- NET3CoreSignalR
+
+pool: 
+  vmImage: windows-2019
+
+variables:
+  solution: 'src/MiracleList_BS/*.csproj'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- powershell: |
+   # Notwendiges leeres Verzeichnis, damit Restore nicht stolpert über  <add key="ProjectPackages" value="ProjectPackages" />, das VS braucht
+   md $env:AGENT_BUILDDIRECTORY/Nuget/ProjectPackages -ea silentlycontinue  
+  displayName: 'PowerShell Script: Workaround für <add key="ProjectPackages" value="ProjectPackages" />'
+
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/*.sln'
+    feedsToUse: 'config'
+    nugetConfigPath: 'nuget.config'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: VSTest@2
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure Sponsorship (14945d71-0adf-4fa5-86dc-2c2d007c168a)'
+    appType: 'webApp'
+    WebAppName: 'MiracleList-BS'
+    deployToSlotOrASE: true
+    ResourceGroupName: 'RG-MiracleList'
+    SlotName: 'staging'
+    packageForLinux: '$(build.artifactstagingdirectory)/MiracleList_BS.zip'

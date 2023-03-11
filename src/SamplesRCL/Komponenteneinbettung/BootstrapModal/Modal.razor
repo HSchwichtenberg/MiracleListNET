@@ -1,0 +1,24 @@
+﻿@using Web
+<CascadingValue Value="@Context">
+    <div>
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@functions
+{
+    protected override void OnInitialized()
+    {
+        Context = new ModalContext
+        {
+            Id = Id,
+            AutoClose = AutoClose
+        };
+    }
+
+    [Parameter] public ModalContext Context { get; set; }
+    [Parameter] public string Id { get; set; }
+    [Parameter] public bool AutoClose { get; set; }
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}

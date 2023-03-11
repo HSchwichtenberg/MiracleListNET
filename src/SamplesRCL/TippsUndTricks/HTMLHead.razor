@@ -1,0 +1,23 @@
+﻿@page "/Samples/HTMLHead"
+
+<h3>HTML-Head beeinflussen</h3>
+
+<button @onclick="ChangeTitle">Seitentitel ändern</button>
+
+<PageTitle>@text</PageTitle>
+
+<HeadContent>
+ <meta name="description" content="Diese Seite zeigt, wie man Seitentitel und Beschreibung auf die aktuelle Zeit (@text) setzt!">
+</HeadContent>
+
+<br />
+Titel wurde gesetzt auf: @text
+
+@code
+{
+ public string text { get; set; } = "n/a";
+ public void ChangeTitle()
+ {
+  text = DateTime.Now.ToLongTimeString();
+ }
+}

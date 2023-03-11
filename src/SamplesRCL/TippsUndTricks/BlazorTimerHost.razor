@@ -1,0 +1,17 @@
+﻿@page "/Samples/BlazorTimerHost"
+<h3>Nutzung der BlazorTimer-Komponente</h3>
+@using ITVisions.Blazor.Controls
+@inject BlazorUtil Util
+
+<BlazorTimer Seconds="1" Callback="Aktion"></BlazorTimer>
+
+@Ausgabe
+
+@code {
+ string Ausgabe;
+ void Aktion()
+ {
+  Util.Log(DateTime.Now +": Timer!");
+  Ausgabe = "Letztes Zeitgeberereignis: " + DateTime.Now;
+  }
+}

@@ -1,0 +1,54 @@
+﻿@inject BlazorUtil Util
+
+<div class="form-group">
+ <label>Subtasks</label>
+ <input type="text"
+        class="form-control"
+        name="newSubTaskTitle"
+        @bind="newSubTaskTitle"
+        @bind:after="CreateSubTask"
+        placeholder="new Subtask..." />
+
+  @if (Task.SubTaskSet!=null)
+  {
+  <ul class="list-group">
+  @foreach (var st in Task.SubTaskSet)
+  {
+  <li  class="list-group-item" :key="st.subTaskID">
+   <input type="checkbox"
+          @bind="st.Done"
+          class="MLcheckbox"
+          style="margin-right:5px;" />
+   <span style="text-decoration:@(st.Done ? "line-through" : "none")">@st.Title</span>
+   <a @onclick="()=>RemoveSubTask(st)" title="Remove Subtask (will be done without confirmation)" class="close"> <span id="Remove" style="float:right;" class="glyphicon glyphicon-remove-circle close"></span></a>
+  </li>
+  }
+ </ul>
+  }
+</div>
+
+@code {
+ [Parameter]
+ public BO.Task Task { get; set; }
+ public string newSubTaskTitle { get; set; }
+
+ private async Task CreateSubTask()
+ {
+  var newSubTask = new BO.SubTask()
+   {
+    SubTaskID = 0,
+    Title = newSubTaskTitle,
+    Created = DateTime.Now,
+    Done = false,
+    TaskID = Task.TaskID
+   };
+  Task.SubTaskSet.Add(newSubTask);
+  newSubTaskTitle = "";
+ }
+
+ void RemoveSubTask(BO.SubTask st)
+ {
+  Util.Log(nameof(RemoveSubTask), st);
+  Task.SubTaskSet.Remove(st);
+ }
+}

@@ -1,0 +1,42 @@
+﻿@page "/Samples/HTMLElementReferences"
+<h1 @ref=MyElementReference>Hello, world!</h1>
+<button @onclick=ButtonClicked>Show serialized reference</button>
+<code><pre>@Log</pre></code>
+Welcome to your new app.
+
+Our component instance is created. OnInitialized (Line 15) is executed.
+The value of MyElementReference is serialized to our Log string (Line 33).
+The Render Tree is generated.
+The browser’s DOM is updated
+Blazor checks for elements decorated with @@ref and updates the ElementReference they identify.
+OnAfterRender is executed on our component (Line 21).
+The value of MyElementReference is serialized to our Log string, but is not displayed – we’d have to call StateHasChanged to see it, but the value of Log has been updated.
+The user clicks the button.
+The value of MyElementReference is serialized to our Log string.
+Blazor executes StateHasChanged in response to the button click.
+We see the Log updated on screen to show the values added from steps #7 and #9 – both of these show a non-null identifier.
+
+
+@code {
+ string Log;
+ ElementReference MyElementReference;
+ protected override void OnInitialized()
+ {
+  Log += "OnInitialized: ";
+  ShowSerializedReference();
+ }
+ protected override void OnAfterRender(bool firstRender)
+ {
+  Log += "OnAfterRender: ";
+  ShowSerializedReference();
+ }
+ private void ButtonClicked()
+ {
+  Log += "Button clicked: ";
+  ShowSerializedReference();
+ }
+ private void ShowSerializedReference()
+ {
+  Log += System.Text.Json.JsonSerializer.Serialize(MyElementReference) + "\r\n";
+ }
+}

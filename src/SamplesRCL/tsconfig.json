@@ -1,0 +1,19 @@
+{
+ //<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="x.x.x" notwendig!>
+ "compilerOptions": {
+  "allowJs": true,
+  "noImplicitAny": false,
+  "removeComments": true,
+  "preserveConstEnums": true,
+  "sourceMap": true,
+
+ "module": "ES2020"
+ },
+ "include": [
+  "**/*.ts"
+ ],
+ "exclude": [
+  "node_modules"
+ ],
+ "compileOnSave": true
+}

@@ -1,0 +1,17 @@
+﻿
+ <ul>
+  @foreach (object o in Daten)
+  {
+  <li>@ChildContent(o)</li>
+  }
+ </ul>
+
+@code
+{
+ [Parameter]
+ public IEnumerable<object> Daten { get; set; }
+
+ [Parameter]
+ public RenderFragment<object> ChildContent { get; set; }
+}
+ 

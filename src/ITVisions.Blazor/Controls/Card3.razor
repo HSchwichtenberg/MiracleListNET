@@ -1,0 +1,28 @@
+﻿@*Panel mit Bootstrap 3 / entspricht Card ab Boostrap 4*@
+
+<div class="panel panel-default">
+ <div class="panel-heading" @onclick="()=>OnHeaderClick.InvokeAsync()">
+  @Header
+ </div>
+ <div class="panel-body">
+  <h5>@Title</h5>
+  <p>@Text</p>
+
+ </div>
+</div>
+
+
+@code {
+ [Parameter]
+ public EventCallback OnHeaderClick { get; set; }
+
+ [Parameter]
+ public RenderFragment? Header { get; set; }
+
+ [Parameter]
+ public RenderFragment? Title { get; set; }
+
+ [Parameter]
+ public RenderFragment? Text { get; set; }
+
+}

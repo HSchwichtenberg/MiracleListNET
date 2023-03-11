@@ -1,0 +1,26 @@
+﻿
+
+
+ <div class="panel panel-default">
+  <div class="panel-heading" @onclick="@Toggle">
+   <span class='@(Collapsed ? "glyphicon glyphicon-plus" : "glyphicon glyphicon-minus")' aria-hidden="true"></span> @Ueberschrift</div>
+  @if (!Collapsed)
+  {
+   <div class="panel-body">
+    @ChildContent
+   </div>
+  }
+ </div>
+
+
+ @code {
+  [Parameter]
+  public RenderFragment ChildContent { get; set; }
+  [Parameter]
+  public bool Collapsed { get; set; }
+  string Ueberschrift { get => Collapsed ? "Details anzeigen" : "Details verbergen"; }
+  void Toggle()
+  {
+   Collapsed = !Collapsed;
+  }
+ }

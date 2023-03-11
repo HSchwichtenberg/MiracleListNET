@@ -1,0 +1,27 @@
+﻿@page "/Samples_BW/RCL"
+@using Samples.Komponenteneinbettung.Komponentenhost_ValueType
+@inject ITVisions.Blazor.BlazorUtil Util
+
+<h3>RCL</h3>
+<CounterPanel StartValue="10" ValueHasChanged="NewValueArrived" />
+
+<h3>Tag Helper</h3>
+not supported :-(
+@*<ITVisions.DateTime></ITVisions.DateTime>*@
+
+<h3>Error</h3>
+<button @onclick="MakeError" class="btn btn-danger">Make Error</button>
+
+@code
+{
+ public async void NewValueArrived(int value)
+ {
+  if (value % 10 == 0) { await Util.Alert("Wert ist nun: " + value); }
+ }
+
+ public void MakeError()
+ {
+  throw new ApplicationException("Das ist ein Fehler!");
+
+ }
+}

@@ -1,0 +1,25 @@
+﻿@page "/samples/JSInteropBWOnly"
+@inject IJSRuntime JSRuntime
+@using System.Runtime.InteropServices.JavaScript;
+
+<h3>JSInteropBWOnly</h3>
+
+<button @onclick="InteropForAllBlazorVariants" class="btn btn-primary">InteropForAllBlazorVariants</button>
+<button @onclick="InteropBWOnly" class="btn btn-primary">InteropBWOnly</button>
+<hr />
+
+<div class="panel panel-default">
+ <div class="panel-heading">Ausgabe von .NET</div>
+ <div class="panel-body"> @NETOutput</div>
+</div>
+
+<div class="panel panel-default">
+ <div class="panel-heading">Ausgabe von JavaScript</div>
+ <div class="panel-body"> <span id="JSOutput"></span></div>
+</div>
+
+
+@code {
+
+
+}

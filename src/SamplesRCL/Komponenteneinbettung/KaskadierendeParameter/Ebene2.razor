@@ -1,0 +1,21 @@
+﻿@code {
+
+ [CascadingParameter]
+ protected Settings settings { get; set; }
+
+}
+
+<h4 style="color:@settings.Color;text-align:@settings.Align">Ebene2</h4>
+
+<select @bind="@settings.Color" class="form-control">
+ <option>red</option>
+ <option>green</option>
+ <option>blue</option>
+</select>
+
+<CascadingValue Value="settings">
+ @for (int i = 0; i < settings.Count; i++)
+ {
+  <Ebene3></Ebene3>
+ }
+ </CascadingValue>

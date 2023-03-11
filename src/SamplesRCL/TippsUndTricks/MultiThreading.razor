@@ -1,0 +1,20 @@
+﻿@page "/Samples/MultiThreading"
+<h3>MultiThreading</h3>
+
+<p>Current count: @currentCount</p>
+<button @onclick="IncrementCount">Click me</button>
+<button @onclick="StartAsyncOperation">Start Async Operation</button>
+
+@code {
+ private int currentCount = 0;
+ private async Task StartAsyncOperation()
+ {
+  await Task.Run(() => System.Threading.Thread.Sleep(5000));
+  currentCount += 100;
+ }
+
+ private void IncrementCount()
+ {
+  currentCount++;
+ }
+}

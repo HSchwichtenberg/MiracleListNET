@@ -1,0 +1,26 @@
+﻿@page
+
+@model MiracleList.Pages.ClientIDErrorModel
+@{
+ ViewData["Title"] = "ClientIDConfirmation";
+ Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *,MiracleList
+@addTagHelper *,ITVTagHelper
+<h2>Beantragung für Client-ID</h2>
+
+<div>
+ @*@Model.ClientIDModel_Result*@
+ Hallo <span fett>@Model.ClientIDModelResult.Name</span><text>.</text>
+
+ <p>
+  Leider konnte keine E-Mail mit der Client-ID an <span fett>@Model.ClientIDModelResult.EMail</span>.<br /> gesendet werden.
+ </p>
+
+ <div class="alert alert-danger">@Model.ClientIDModelResult.ErrorMessage</div>
+
+ @*The client ID is displayed here only in the environments development and test.*@
+ <environment names="development, test"> <p>Ihre Client-ID ist: @Model.ClientIDModelResult.ClientID</p></environment>
+
+</div>

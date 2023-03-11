@@ -1,0 +1,62 @@
+﻿@page "/Samples/Fehler"
+@inject BlazorUtil util
+<h3>Fehlertest</h3>
+
+<div>Zähler: @count</div>
+
+<button @onclick="KlickFehler" class="btn btn-danger">Klick mich und ich mache einen Fehler ;-)</button>
+<button @onclick="KlickDebugger" class="btn btn-warning">Klick mich und ich starte den Debugger ;-)</button>
+<button @onclick="KlickOK" class="btn btn-success">Bei mir ist alles gut!</button>
+
+
+@code {
+ [System.Diagnostics.DebuggerDisplay("Person #{ID}: {Name}")]
+ class Person
+ {
+  public int ID { get; set; }
+  public string Name { get; set; }
+ }
+
+ [System.Diagnostics.DebuggerDisplay("Aktueller Zähler (count) = {count}")]
+ int count = 0;
+ List<DateTime> ZeitenList = new List<DateTime>();
+ SortedDictionary<int, DateTime> ZeitenDic = new SortedDictionary<int, DateTime>();
+
+ void KlickFehler()
+ {
+  Logik();
+  throw new ApplicationException("Der Klick war ein Fehler!");
+ }
+
+ void KlickDebugger()
+ {
+  Logik();
+  System.Diagnostics.Debugger.Break();
+ }
+
+ [System.Diagnostics.DebuggerHidden()]
+ async Task KlickOK()
+ {
+  await Logik();
+ }
+
+
+ async Task Logik()
+ {
+  count++;
+  Log($"{count}");
+  DateTime now = DateTime.Now;
+  ZeitenList.Add(now);
+  DateTime[] ZeitenArray = ZeitenList.ToArray();
+  ZeitenDic.Add(count, now);
+  Log($"{count}: {now}");
+
+  var p = new Person() { ID = 123, Name = "Holger Schwichtenberg" };
+  util.Log(p.ToString());
+ }
+
+ void Log(string s)
+ {
+  Console.WriteLine(s);
+ }
+}

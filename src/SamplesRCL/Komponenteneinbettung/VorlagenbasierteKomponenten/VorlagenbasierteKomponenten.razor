@@ -1,0 +1,187 @@
+﻿@page "/Samples/VorlagenbasierteKomponenten"
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+<h3>Komponentenvorlagen</h3>
+
+
+<h1>Expander</h1>
+
+@code
+{
+ public string Name { get; set; } = "Dr. Holger Schwichtenberg";
+ public int ErstesMVPJahr { get; set; } = 2004;
+}
+
+<Expander>
+ <u>@Name</u> ist seit <u>@(DateTime.Now.Year-ErstesMVPJahr+1) Jahren</u> als Microsoft Most Valuable Professional (MVP) ausgezeichnet.
+</Expander>
+
+<h1>FlexExpander</h1>
+
+<FlexExpander>
+ <HeadlineCollapsed>
+  <span class='glyphicon glyphicon-plus' aria-hidden="true"></span> Details anzeigen
+ </HeadlineCollapsed>
+ <HeadlineExpanded>
+  <span class='glyphicon glyphicon-minus' aria-hidden="true"></span> Details verbergen
+ </HeadlineExpanded>
+ <Content>
+  <u>@Name</u> ist seit
+  <u>@(DateTime.Now.Year-ErstesMVPJahr+1) Jahren</u> als Microsoft Most Valuable Professional (MVP) ausgezeichnet.
+ </Content>
+</FlexExpander>
+
+
+
+@code
+{
+ List<string> URLs = new List<string>() { "www.IT-Visions.de", "www.dotnet-doktor.de", "www.dotnetframework.de", "www.dotnet7.de", "www.dotnet-lexikon.de" };
+}
+
+<h1>Liste mit Zeichenketten</h1>
+
+<UnorderedList Daten="@URLs">
+ <a href="http://@context">@context</a>
+</UnorderedList>
+
+<h1>Liste mit Zeichenketten (Umbenennen des Kontextes)</h1>
+
+<UnorderedList Daten="@URLs" Context="url">
+ <a href="http://@url">@url</a>
+</UnorderedList>
+
+@code
+{
+
+ List<Website> Websites = new List<Website>() {
+   new Website() { Name="DOTNET-DOKTOR", URL="www.dotnet-doktor.de"},
+   new Website() { Name=".NET-Lexikon",  URL="www.dotnet-lexikon.de"},
+   new Website() { Name=".NET 6.0",  URL="www.dotnet7.de"}
+  };
+
+};
+
+
+<h1>Liste mit komplexen Objekten (Renderfragment-Typ "Object")</h1>
+
+<UnorderedList Daten="@Websites">
+ <a href="http://(@context as Website).URL">@((context as Website).Name)</a>
+</UnorderedList>
+
+
+<h1>Liste mit komplexen Objekten (Renderfragment-Typ "Website")</h1>
+
+<UnorderedTypedList Daten="@Websites">
+ <a href="http://@context.URL">@context.Name</a>
+</UnorderedTypedList>
+
+<h1>Liste mit komplexen Objekten (generischer Renderfragment-Typ mit expliziter Typangabe)</h1>
+
+<UnorderedGenericList Daten="@Websites" Typ="Website">
+ <a href="http://@context.URL">@context.Name</a>
+</UnorderedGenericList>
+
+<h1>Liste mit komplexen Objekten (generischer Renderfragment-Typ mit Typ-Ableitung)</h1>
+
+<UnorderedGenericList Daten="@Websites">
+ <a href="http://@context.URL">@context.Name</a>
+</UnorderedGenericList>
+
+
+<h2>FlexList</h2>
+
+<FlexList Daten="@Websites" Typ="Website">
+
+ <ListTemplate>
+  <ol>@context</ol>
+ </ListTemplate>
+
+ <ElementTemplate Context="w">
+  <a href="http://@w.URL">@w.Name (@w.URL)</a>
+ </ElementTemplate>
+
+</FlexList>
+
+<h2>FlexList ohne Inhalte für Renderfragmente</h2>
+
+<FlexList Daten="@Websites" Typ="Website">
+</FlexList>
+
+
+
+<h2>Repeater erzeugt Tabelle</h2>
+<Repeater Items="@Websites">
+
+ <LoadingTemplate>
+  <p><b>Lade...</b></p>
+ </LoadingTemplate>
+
+ <ContainerTemplate Context="ItemsContent">
+  <table class="table table-striped">
+   <thead class="">
+    <tr>
+     <th scope="col">URL</th>
+     <th scope="col">Name</th>
+    </tr>
+   </thead>
+   <tbody>
+    @ItemsContent
+   </tbody>
+  </table>
+ </ContainerTemplate>
+
+ <ItemTemplate Context="url">
+  <tr>
+   <td scope="row">@url.URL</td>
+   <td scope="row">@url.Name</td>
+  </tr>
+ </ItemTemplate>
+
+</Repeater>
+
+
+@*
+  <h2>FlexList mit Listenartauswahl</h2>
+
+ <select @bind="ListType">
+  <option>OL</option>
+  <option>UL</option>
+  <option>DL</option>
+ </select>
+
+ <FlexList @ref="FL" Daten="@Websites" Typ="Website">
+
+  <ListTemplate>
+   <ol>@context</ol>
+  </ListTemplate>
+
+  <ElementTemplate Context="w">
+   <a href="http://@w.URL">@w.Name (@w.URL)</a>
+  </ElementTemplate>
+
+ </FlexList>
+
+ @code
+ {
+ public ElementReference FL { get; set; }
+ private string _ListType;
+ public string ListType
+ {
+  get
+  {
+   return _ListType;
+  }
+
+  set
+  {
+   _ListType = value;
+
+   var rf = new RenderFragment("@: @{ <ol></ol> }");
+
+   (FL as FlexList<Website>).ListTemplate = rf;
+  }
+
+
+  }
+
+  }*@

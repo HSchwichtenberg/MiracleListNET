@@ -1,0 +1,107 @@
+<!--Projektdatei der MiracleList Blazor Webassembly App-->
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+ <!--Runtime-->
+ <PropertyGroup>
+  <TargetFramework>net7.0</TargetFramework>
+  <!--Optional für AOT-Kompilierung-->
+  <!--<RunAOTCompilation>true</RunAOTCompilation>-->
+ </PropertyGroup>
+
+ <!--Namen-->
+ <PropertyGroup>
+  <Description>Blazor WebAssembly (Client Side Blazor) Version of the MiracleList Web Frontend</Description>
+  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
+  <Authors>Dr. Holger Schwichtenberg, www.IT-Visions.de</Authors>
+  <Company>www.IT-Visions.de</Company>
+  <Product>MiracleList</Product>
+  <RootNamespace>Web</RootNamespace>
+  <StartupObject>Web.Program</StartupObject>
+ </PropertyGroup>
+
+ <!--Versionsinfos-->
+ <PropertyGroup>
+  <Version>7.11.0.0</Version>
+  <AssemblyVersion>7.11.0.0</AssemblyVersion>
+  <FileVersion>7.11.0.0</FileVersion>
+  <InformationalVersion>7.11.0.0-03/09/2023 21:01:33</InformationalVersion>
+ </PropertyGroup>
+ <ItemGroup>
+   <Content Remove="wwwroot\manifest.json" />
+   <Content Remove="wwwroot\service-worker.js" />
+ </ItemGroup>
+ <!--<ItemGroup>
+   <None Remove="SamplesBW\interop\JSInteropBWOnly.razor.js" />
+ </ItemGroup>-->
+
+ <!--Lazy Loading-->
+ <ItemGroup>
+  <BlazorWebAssemblyLazyLoad Include="SamplesRCL.dll" />
+ </ItemGroup>
+
+ <!--für Zeigerpororrogrammierung erlauben neue JSinterop ab Blazor WebAssembly 7.0-->
+ <PropertyGroup>
+  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+ </PropertyGroup>
+ 
+ <!--Lokalisierung-->
+<PropertyGroup>
+ <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+ <BlazorWebAssemblyI18NAssemblies>all</BlazorWebAssemblyI18NAssemblies>
+</PropertyGroup>
+ 
+ <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <NoWarn>1701;1702;1998</NoWarn>
+ </PropertyGroup>
+ 
+ <ItemGroup>
+   <None Include="wwwroot\service-worker.js" />
+ </ItemGroup>
+
+ <!--Projektreferenzen-->
+ <ItemGroup>
+  <ProjectReference Include="..\MiracleList_Interfaces\MiracleList_Interfaces.csproj" />
+  <ProjectReference Include="..\BO\BO.csproj" />
+  <ProjectReference Include="..\ITVisions.Blazor\ITVisions.Blazor.csproj" />
+  <ProjectReference Include="..\MiracleListAPI_Proxy\MiracleListAPI_Proxy.csproj" />
+  <ProjectReference Include="..\MLBlazorRCL\MLBlazorRCL.csproj" />
+  <ProjectReference Include="..\SamplesRCL\SamplesRCL.csproj" />
+ </ItemGroup>
+ 
+ <!--NuGet-Pakete-->
+ <ItemGroup>
+  <!--Standardreferenzen für BW-->
+  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.*" PrivateAssets="all" />
+
+  <!--Zusätzliche Pakete von Microsoft-->
+  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.*" />
+  <PackageReference Include="System.Net.Http.Json" Version="7.0.*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.*" />
+  
+  <!--Zusätzliche Pakete von Anderen-->
+  <PackageReference Include="Blazor.Extensions.Logging" Version="2.0.4" />
+  <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
+  <PackageReference Include="Blazored.Toast" Version="4.1.0" />
+  
+  <!--!!! Community-Projekt BlazorWasmAntivirusProtection war ein Versuch, läuft aber nicht mit diesem Projekt !!!-->
+  <!--<PackageReference Include="BlazorWasmAntivirusProtection" Version="2.2.1" />-->
+ </ItemGroup>
+
+ <!--PWA-->
+ <PropertyGroup>
+  <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+  <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  <UserSecretsId>1a22018c-6aab-42f2-8be5-0a4cedeeb272</UserSecretsId>
+ </PropertyGroup>
+ 
+ <ItemGroup>
+  <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+ </ItemGroup>
+
+ <!--Optional: Native dependencies für Samples_BW/NativeCall.razor und Samples_BW/SQLite -> Verlängert die Kompilierung-->
+
+
+</Project>

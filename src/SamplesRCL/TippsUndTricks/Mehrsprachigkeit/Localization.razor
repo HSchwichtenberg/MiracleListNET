@@ -1,0 +1,120 @@
+﻿@page "/Samples/Lokalisierung"
+@using System.Globalization
+@using System.Threading
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Localization> Loc
+@inject BlazorUtil Util
+
+<style>
+ p {
+     margin-left: 20px;
+ }
+</style>
+<h3>@Loc["Headline"]</h3>
+
+<div class="row">
+ <div class="col-xs-6">
+  <h4>
+   @Loc["Current"]:
+  </h4>
+  <p>@((MarkupString)LanguageInfo)</p>
+
+  <h4>@Loc["Sample Values"]:</h4>
+  <p>@((MarkupString)ValueSamples)</p>
+
+  <input type="date" placeholder="dd.mm.yyyy" />
+
+  <EditForm Model="LanguageInfo">
+   <InputDate @bind-Value="Date"></InputDate>
+  </EditForm>
+ </div>
+
+ <div class="col-xs-6">
+
+  <h4>@Loc["Change"]:</h4>
+  <p>
+   <select class="form-control" @bind="Culture">
+    @foreach (CultureInfo culture in supportedLanguages)
+    {
+     <option value="@culture">@culture.NativeName </option>
+     @*@culture.Name @culture.DisplayName @culture.EnglishName*@
+    }
+   </select>
+  </p>
+ </div>
+</div>
+
+@code {
+ public string LanguageInfo;
+ public string CurrentSelectedLanguage { get; set; }
+ public string ValueSamples;
+ public int IntNumber { get; set; } = 12345689;
+ public decimal DecimalNumber { get; set; } = 12345.689m;
+ public DateTime Date { get; set; } = DateTime.Now;
+
+ CultureInfo[] supportedLanguages = new[] {
+        new CultureInfo("en-US",true),
+        new CultureInfo("fr-FR",true),
+        new CultureInfo("de-DE",true),
+ };
+
+ CultureInfo Culture
+ {
+  get => CultureInfo.CurrentCulture;
+  set
+  {
+   if (CultureInfo.CurrentCulture != value)
+   {
+    if (Util.IsWebAssembly)
+    { // bei BW laden wir die Anwendung durch einen Reload neu
+     JSRuntime.InvokeVoidAsync("blazorCulture.set", value.Name);
+     NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+    }
+    else if (Util.IsHybrid)
+    {
+     // Versuch, läuft aber noch nicht optiomal :-(
+     var culture = new CultureInfo(value.Name);
+     CultureInfo.DefaultThreadCurrentCulture = culture;
+     CultureInfo.DefaultThreadCurrentUICulture = culture;
+     CultureInfo.CurrentCulture = culture;
+     CultureInfo.CurrentUICulture = culture;
+     Thread.CurrentThread.CurrentCulture = culture;
+     Thread.CurrentThread.CurrentUICulture = culture;
+     this.StateHasChanged();
+    }
+    else
+    {
+     // bei Blazor Server leiten wir zu einem MVC-Controller, um einen Culture-Cookie zu setzen
+     string culture = value.Name;
+     var uri = new Uri(NavigationManager.Uri)
+         .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+     var query = $"?culture={Uri.EscapeDataString(culture)}&" +
+         $"redirectUri={Uri.EscapeDataString(uri)}";
+
+     NavigationManager.NavigateTo("/Culture/SetCulture" + query, forceLoad: true);
+
+    }
+   }
+  }
+ }
+
+ public void Print(ref string place, string s)
+ {
+  place += s + "<br>";
+ }
+
+ protected override void OnInitialized()
+ {
+  Print(ref LanguageInfo, "CultureInfo.DefaultThreadCurrentCulture: " + CultureInfo.DefaultThreadCurrentCulture?.Name);
+  Print(ref LanguageInfo, "CultureInfo.DefaultThreadCurrentUICulture: " + CultureInfo.DefaultThreadCurrentUICulture?.Name);
+  Print(ref LanguageInfo, "CultureInfo.CurrentCulture: " + CultureInfo.CurrentCulture.Name);
+  Print(ref LanguageInfo, "CultureInfo.CurrentUICulture: " + CultureInfo.CurrentUICulture.Name);
+  Print(ref LanguageInfo, "CurrentThread.CurrentCulture: " + Thread.CurrentThread.CurrentCulture.Name);
+  Print(ref LanguageInfo, "CurrentThread.CurrentUICulture: " + Thread.CurrentThread.CurrentUICulture.Name);
+
+  Print(ref ValueSamples, "Int Number: " + IntNumber);
+  Print(ref ValueSamples, $"Decimal Number: {DecimalNumber:#,###.00}");
+  Print(ref ValueSamples, "Date: " + Date);
+ }
+}

@@ -1,0 +1,49 @@
+﻿@page "/Samples/RoutingHistory"
+@using ITVisions
+@inject BlazorUtil BlazorUtil
+@inject NavigationManager navigationManager
+
+<PageTitle>Übergabe von Werten per Browser History Stack (seit Blazor 7.0)</PageTitle>
+
+<h1>Übergabe von Werten per Browser History Stack (seit Blazor 7.0)</h1>
+<hr />
+@message
+<hr />
+
+<p role="status">Current count: @currentCount</p>
+<button class="btn btn-primary" @onclick="IncrementCount">+@increment</button>
+
+
+
+@code {
+ private int currentCount = 0;
+ public string message { get; set; } = "";
+ public int increment = 1;
+
+ protected override void OnInitialized()
+ {
+  if (navigationManager.HistoryEntryState != null && navigationManager.HistoryEntryState.Length > 0)
+  {
+   string data = navigationManager.HistoryEntryState;
+   message = "Übergebene Daten: " + navigationManager.HistoryEntryState;
+   currentCount = Convert.ToInt32(data.Split(";")[0].Replace("StartValue:", ""));
+   increment = Convert.ToInt32(data.Split(";")[1].Replace("Increment:", ""));
+  }
+  else
+  {
+   message = "Übergebene Daten: KEINE";
+  }
+ }
+
+ private void IncrementCount()
+ {
+  currentCount+=increment;
+ }
+
+ private void Log()
+ {
+  BlazorUtil.Log(currentCount);
+  message = DateTime.Now + ": Wert=" + currentCount;
+ }
+
+}

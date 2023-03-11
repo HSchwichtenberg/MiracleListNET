@@ -1,0 +1,73 @@
+﻿@page "/Samples/Files"
+@using ITVisions.Blazor
+@using System.Globalization
+
+@if (this.FolderName == "Demo")
+{
+ //wird nur verwendet, wenn die Komponente direkt angesprungen wurde
+ <h2>Dateiaustausch</h2>
+ <hr />
+}
+
+@*-------------------- Liste der Dateien*@
+<label>Dateien</label>
+@if (files != null && files.Count > 0)
+{
+ <ul class="list-group">
+  @foreach (var f in files)
+  {
+   <li class="list-group-item">
+    <span class="glyphicon glyphicon-remove-circle close" aria-hidden="true" title="Datei löschen" @onclick="()=>DeleteFile(f)">  </span>
+    <span class="badge badge-primary badge-pill" title="@f.FullName">
+     @f.LastWriteTime.ToString("g", CultureInfo.CreateSpecificCulture("de-DE"))
+    </span>
+
+    <span class="badge badge-primary badge-pill" title="@f.FullName">
+     @GetMB(f.Length)
+    </span>
+    <a href="@relPathFilesDir/@f.Name" target="_blank">@f.Name</a>
+   </li>
+  }
+ </ul>
+}
+else
+{
+ <div>keine</div>
+ <br />
+}
+
+@*-------------------- Upload-Bereich*@
+
+<EditForm Model="model" OnValidSubmit="OnSubmit">
+ <label>Upload (max @GetMB(MAXFILESIZE) pro Datei)</label>
+ <div class="custom-file">
+  <InputFile class="custom-file-input" OnChange="OnInputFileChange" multiple /><br />
+ </div>
+
+
+ @if (this.filesToUpload != null && this.filesToUpload.Count > 0)
+ {
+  <ul>
+   @foreach (var f in this.filesToUpload)
+   {
+    var zugross = f.Size > MAXFILESIZE;
+
+    <li style='color:@(zugross ? "red" : "green")'>@f.Name: @(!zugross? GetMB(f.Size) : " ist zu groß! Maximium ist " + GetMB(MAXFILESIZE))! </li>
+   }
+  </ul>
+
+  @if (this.filesToUpload.All(x => x.Size < MAXFILESIZE))
+  {
+   <button class="btn btn-primary">@(this.filesToUpload.Count == 1 ? "Datei nun hochladen" : this.filesToUpload.Count + " Dateien nun hochladen")</button>
+  }
+
+  var progressCss = "progress " + (displayProgress ? "" : "d-none");
+  var progressWidthStyle = progressPercent + "%";
+
+  <div>@((MarkupString)Info)</div>
+  <div class="@progressCss">
+   <div class="progress-bar" role="progressbar" style="width: @progressWidthStyle" area-valuenow="@progressPercent" aria-minvalue="0" aria-maxvalue="100"></div>
+  </div>
+
+ }
+</EditForm>

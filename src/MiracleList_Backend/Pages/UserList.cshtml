@@ -1,0 +1,33 @@
+﻿@page
+@model MiracleList.Pages.UserListModel
+@{
+    ViewData["Title"] = "UserList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>UserList</h2>
+
+<style>
+ td, th {
+  padding: 5px
+ }
+</style>
+
+<table>
+ <tr>
+  @foreach (System.Data.DataColumn c in Model.UserDT.Columns)
+ {
+  <th >@c.ColumnName</th>
+}
+ </tr>
+ @foreach (System.Data.DataRow r in Model.UserDT.Rows)
+ {
+ <tr >
+  @foreach (System.Data.DataColumn c in Model.UserDT.Columns)
+  {
+  <td>@r[c.ColumnName]</td>
+}
+ </tr>
+ }
+</table>
+

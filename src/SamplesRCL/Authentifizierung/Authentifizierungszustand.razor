@@ -1,0 +1,50 @@
+﻿@page "/Samples/Authentifizierungszustand"
+@using Microsoft.AspNetCore.Components.Authorization
+
+<h3>Authentifizierungszustand</h3>
+<style>
+ table, th, td {
+  padding: 10px;
+  border: 1px solid black;
+  border-collapse: collapse;
+ }
+</style>
+
+@((MarkupString)ausgabe)
+
+@code
+{
+
+ [CascadingParameter]
+ Task<AuthenticationState> authenticationStateTask { get; set; }
+
+ public string ausgabe { get; set; }
+ 
+ protected override async Task OnInitializedAsync()
+ {
+  var u = (await authenticationStateTask).User;
+  ausgabe = "IsAuthenticated: " + u.Identity.IsAuthenticated + "<br>AuthenticationType: " + u.Identity.AuthenticationType + "<br>Username: " + u.Identity.Name + "<h4>Claims:</h4><table>";
+
+  foreach (var c in u.Claims)
+  {
+   ausgabe += "<tr><td>" + c.Type + "</td><td>" + c.Value + "</td></tr>";
+  }
+
+  ausgabe += "</table>";
+
+ }
+}
+
+
+<hr />
+
+<h3>Deklarative Autorisierung</h3>
+
+<AuthorizeView>
+ <Authorized>
+  <p>Es ist Benutzer @context.User.Identity.Name angemeldet</p>
+ </Authorized>
+ <NotAuthorized>
+  <p>Es ist KEIN Benutzer angemeldet!</p>
+ </NotAuthorized>
+</AuthorizeView>

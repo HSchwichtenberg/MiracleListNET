@@ -1,0 +1,88 @@
+﻿@page "/Samples_BW/Misc"
+
+@inject ITVisions.Blazor.BlazorUtil Util
+@using Samples.Komponenteneinbettung.Komponentenhost_ValueType
+<h3>RCL</h3>
+<CounterPanel StartValue="10" ValueHasChanged="NewValueArrived" />
+
+<h3>APIs</h3>
+<button @onclick="APITests" class="btn btn-danger">Test forbidden API Calls</button>
+
+
+
+<h3>Tag Helper</h3>
+not supported :-(
+@*<ITVisions.DateTime></ITVisions.DateTime>*@
+
+<h3>Error</h3>
+<button @onclick="MakeError" class="btn btn-danger">Make Error</button>
+
+@code
+{
+ public void NewValueArrived(int value)
+ {
+  if (value % 10 == 0) { Util.Alert("Wert ist nun: " + value); }
+ }
+
+ public void MakeError()
+ {
+  throw new ApplicationException("Das ist ein Fehler!");
+
+  //Console.WriteLine("X");
+
+
+
+
+ }
+
+ public void Doit()
+ {
+
+ }
+
+
+ void APITests()
+ {
+
+  // System.PlatformNotSupportedException: Cannot start threads on this runtim
+  Console.WriteLine("--- Thread.Start()");
+  try
+  {
+
+   var t = new System.Threading.Thread(Doit);
+   t.Start();
+  }
+  catch (Exception ex)
+  {
+   Console.WriteLine(ex.ToString());
+  }
+
+  Console.WriteLine("--- SqlConnection");
+  try
+  {
+   var c = new Microsoft.Data.SqlClient.SqlConnection("xx");
+  }
+  catch (Exception ex)
+  {
+   Console.WriteLine(ex.ToString());
+  }
+
+  Console.WriteLine("--- CreateDomain");
+  try
+  {
+   
+   //Creating and unloading AppDomains is not supported and throws an exception.' 
+   //var d = System.AppDomain.CreateDomain("xx");
+  }
+  catch (Exception ex)
+  {
+   Console.WriteLine(ex.ToString());
+  }
+
+
+
+
+
+  // Warning Console.ReadLine();
+ }
+}

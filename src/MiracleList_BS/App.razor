@@ -1,0 +1,38 @@
+﻿@inject NavigationManager NavigationManager
+
+<CascadingAuthenticationState>
+ <Router AppAssembly="typeof(Startup).Assembly"
+         AdditionalAssemblies="new[] { typeof(Samples.RazorSyntax.Listen).Assembly,typeof(MLBlazorRCL.Main).Assembly }">
+  <Navigating>
+   <div>
+    <p>Loading the requested page...</p>
+   </div>
+  </Navigating>
+  <Found Context="routeData">
+   <AuthorizeRouteView RouteData="@routeData"
+                       DefaultLayout="@typeof(MLBlazorRCL.MainLayout)">
+    <Authorizing>
+     <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+     </div>
+    </Authorizing>
+    <NotAuthorized>
+     @{
+      NavigationManager.NavigateTo("/");
+     }
+     @*oder: Sie sind nicht angemeldet und können den Inhalt dieser Seite daher nicht sehen. Bitte melden Sie sich an in der <a href="/Login">Anmeldemaske</a>*@
+    </NotAuthorized>
+   </AuthorizeRouteView>
+  </Found>
+  <NotFound>
+   <h1>Page not found</h1>
+   <p>Sorry, but there's nothing here!</p>
+  </NotFound>
+ </Router>
+</CascadingAuthenticationState>
+
+

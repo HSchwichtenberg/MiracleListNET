@@ -1,0 +1,33 @@
+﻿@page "/Samples/Cookies"
+@inject ITVisions.Blazor.BlazorUtil  BlazorUtil
+@using ITVisions
+<h3>Cookies</h3>
+
+<button @onclick="SetCookie">SetCookie</button>
+<button @onclick="GetCookie">GetCookie</button>
+@((MarkupString)Ausgabe)
+
+@code {
+
+ public string Ausgabe { get; set; }
+
+ public async Task SetCookie()
+ {
+  BlazorUtil.Log("SetCookie");
+  await BlazorUtil.SetCookie("Cookie1", "Endlos", true);
+  await BlazorUtil.SetCookie("Cookie2", "Nicht endlos");
+  await BlazorUtil.SetCookie("Cookie3", DateTime.Now.ToString());
+  Ausgabe += "3 Cookies gesetzt<br>";
+ }
+
+ public async Task GetCookie()
+ {
+  BlazorUtil.Log("GetCookie");
+  Ausgabe += "<h3>Alle Cookies</h3>" + await BlazorUtil.GetCookiesAsString();
+  Ausgabe += "<h3>Einzelne Cookies</h3>";
+  Ausgabe += "Cookie1: " + await BlazorUtil.GetCookie("Cookie1") + "<br>";
+  Ausgabe += "Cookie2: " + await BlazorUtil.GetCookie("Cookie2") + "<br>";
+  Ausgabe += "Cookie3: " + await BlazorUtil.GetCookie("Cookie3") + "<br>";
+ }
+
+}

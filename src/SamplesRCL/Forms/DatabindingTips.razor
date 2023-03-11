@@ -1,0 +1,72 @@
+﻿@page "/Samples/DatabindingTips"
+@using ITVisions
+@inject BlazorUtil BlazorUtil
+@inject NavigationManager navigationManager
+
+<PageTitle>Databinding Tipps & Tricks (seit Blazor 7.0)</PageTitle>
+
+<h1>Databinding Tipps & Tricks (seit Blazor 7.0)</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">+@increment</button>
+<p>
+Getter und Setter trennen (Setter verhindert negative Werte, setzt diese wieder auf 0!):
+ !!!!Bug in 7.0.0 https://github.com/dotnet/aspnetcore/issues/44957!!!!
+ @*<input type="number" @bind:get="currentCount" @bind:set="SetCurrentCount" />*@
+</p>
+<p>
+Methode nach der Datenbindung mit Ausgabe im Browserfenster und in Console:
+ !!!!Bug in 7.0.0 https://github.com/dotnet/aspnetcore/issues/44957!!!!
+@*<input type="number" @bind="currentCount" @bind:after="Log" />*@
+</p>
+<hr />
+@message
+<hr />
+
+@code {
+ private int currentCount = 0;
+ public string message { get; set; } = "";
+ public int increment = 1;
+
+ protected override void OnInitialized()
+ {
+  if (navigationManager.HistoryEntryState != null && navigationManager.HistoryEntryState.Length > 0)
+  {
+   string data = navigationManager.HistoryEntryState;
+   message = "Übergebene Daten: " + navigationManager.HistoryEntryState;
+   currentCount = Convert.ToInt32(data.Split(";")[0].Replace("StartValue:", ""));
+   increment = Convert.ToInt32(data.Split(";")[1].Replace("Increment:", ""));
+  }
+  else
+  {
+   message = "Übergebene Daten: KEINE";
+  }
+ }
+
+ // Eine Methode geht nicht bei @bind:get!
+ public int GetCurrentCount()
+ {
+  return currentCount;
+ }
+
+ // Methode für @bind:set
+ public void SetCurrentCount(int v)
+ {
+  if (v > 0) currentCount = v;
+  else currentCount = 0;
+  Log();
+ }
+
+ private void IncrementCount()
+ {
+  currentCount+=increment;
+ }
+
+ private void Log()
+ {
+  BlazorUtil.Log(currentCount);
+  message = DateTime.Now + ": Wert=" + currentCount;
+ }
+
+}

@@ -1,0 +1,29 @@
+﻿@page "/Samples/Komponentenhost_EigenerTyp"
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+<h3>Komponentenhost</h3>
+
+<CounterPanel Data="@data" ValueHasChanged="NewValueArrived" />
+
+<p>
+ Diese Razor Component <b>@this.GetType().FullName</b> kommt aus der DLL: <b><text>@System.Reflection.Assembly.GetExecutingAssembly().GetName().Name</text>.dll</b>!
+</p>
+<p>
+ Wert im Host: @data.Counter 
+</p>
+<p>
+ Die eingebettete Komponente liefert per Ereignis den Wert: @counterEventData (@Details)
+</p>
+
+@code
+{
+ public CounterData data { get; set; } = new CounterData() { Counter = 10 };
+ public int counterEventData { get; set; }
+ public string Details { get; set; }
+ public void NewValueArrived(CounterPanel.ValueHasChangedDetails value)
+ {
+  counterEventData = value.Counter;
+  Details = value.Text;
+  Util.Log("Zaehler ist nun: " + counterEventData + " (" + Details + ")");
+ }
+}

@@ -1,0 +1,12 @@
+﻿
+
+<button class="@Class" data-toggle="modal" data-target="#@OutermostEnv.Id">
+    @ChildContent
+</button>
+
+@functions
+{
+    [CascadingParameter] protected ModalContext OutermostEnv { get; set; }
+    [Parameter] public string Class { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}

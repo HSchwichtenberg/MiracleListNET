@@ -1,0 +1,33 @@
+﻿
+<div class="form-group form-check">
+ <InputCheckbox class="form-check-input bigCheckbox" @bind-Value="Value" />
+ <label @onclick="ChangeCheckboxState" class="form-check-label bigCheckboxLabel">@((MarkupString)Label)</label>
+</div>
+
+
+@code {
+
+ private Boolean value;
+
+ [Parameter]
+ public string Label { get; set; }
+
+ [Parameter]
+ public Boolean Value
+ {
+  get => value;
+  set
+  {
+   if (this.value == value) return;
+
+   this.value = value;
+   ValueChanged.InvokeAsync(value);
+  }
+ }
+
+ void ChangeCheckboxState() => Value = !Value;
+ 
+ [Parameter]
+ public EventCallback<Boolean> ValueChanged { get; set; }
+
+}

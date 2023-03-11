@@ -1,0 +1,127 @@
+﻿@page "/Main"
+@page "/Index"
+@page "/app"
+@page "/task/{TaskID:int}"
+@attribute [Authorize]
+@using ITVisions.Blazor
+@using ITVisions.Blazor.Controls
+@using Microsoft.AspNetCore.SignalR.Client;
+@using Web;
+@using BlazorContextMenu;
+
+<div class="row">
+
+ <!-- ### Spalte 1: Kategorien-->
+ @if (categorySet != null) {
+  <div class="MLPanel col-xs-4 col-sm-4 col-md-3 col-lg-2 @(this.task!=null ? "hidden-sm hidden-xs": ""  )">
+   <!-- ---------- Überschrift Spalte 1-->
+   <h4 style="margin-top:9px;margin-bottom:6px"> @(categorySet.Count()) <span>Categories</span></h4>
+   <!-- ---------- neue Kategorie eingeben-->
+   <input name="newCategoryName" type="text" class="form-control" @bind="newCategoryName" @onkeyup="(e) => NewCategory_Keyup(e)" placeholder="new Category..." />
+   <!-- ---------- Kategorieliste ausgeben-->
+
+   <ol class="list-group scroll">
+    @foreach (BO.Category c in categorySet) {
+     <li @key="c" class="list-group-item" title="Task Category #@c.CategoryID" style="Background-color:@(this.category != null && c.CategoryID == this.category.CategoryID ? "#E0EEFA" : "white")"
+       @onclick="() => ShowTaskSet(c)"
+         ondragover="event.preventDefault();" @ondrop="(e) => DropTaskToCategory(e, c)">
+      @c.Name
+      <span id="Remove" style="float:right;" class="close" title="Remove Category #@c.CategoryID" @onclick="() => RemoveCategory(c)">x</span>
+     </li>
+    }
+
+    <!-- ----------Suchfeld-->
+    <input type="text" class="form-control" name="search" @bind="searchText" @onkeyup="(e) => Search(e)" placeholder="search...">
+   </ol>
+  </div>
+ }
+
+ <!-- ### Spalte 2: Aufgabenliste in der gewählten Kategorie oder Suchergebnisse -->
+ <div class="MLPanel @(this.task!=null ? "hidden-xs col-sm-6 col-md-5 col-lg-6" : "col-xs-8 col-sm-8 col-md-9 col-lg-10" )">
+
+  @if (this.searchResultSet == null) {
+
+   <!-- ---------- Überschrift Spalte 2-->
+   <h4 style="margin-top:5px;margin-bottom:5px">
+    <div class="form-inline">
+
+     <span id="TaskHeadline">
+      @(
+          taskSet == null ? 0 : taskSet.Count()
+          )
+      Tasks in <i> @category?.Name</i>
+     </span>
+
+     <!-- ---------- Filter-->
+     @*ACHTUNG: VS-Bug. Wird als fehlerhaft angezeigt, kompiliert und läuft aber! https://github.com/dotnet/razor/issues/8315*@
+     <select @bind="taskFilter" @bind:after="()=>ShowTaskSet(this.category)" style="margin-left:15px;height:25px;width:120px" class="form-control input-sm blue">
+      <option value="0">Alle Aufgaben</option>
+      <option value="1">Nur offene Aufgaben</option>
+      <option value="2">Nur erledigte Aufgaben</option>
+     </select>
+
+     <!-- ---------- Schaltlächen -->
+     <a href="/TaskGrid/@this.category?.CategoryID"><span id="DataGrid" title="View in Datagrid" style="margin-left:20px" class="glyphicon glyphicon-align-justify"></span></a>
+
+     @*Optionale Export-Befehle, die nur einige Blazor-Arten realisieren können*@
+     @if (AdditionalComponents.TaskExportAdditionalComponent != null) {
+      <span style="margin-left:10px">  <DynamicComponent Type="@AdditionalComponents.TaskExportAdditionalComponent" Parameters="@(new Dictionary<string, object>() { {"category", this.category }, { "taskSet", this.taskSet} })"></DynamicComponent></span>
+     }
+    </div>
+   </h4>
+
+   <!-- ---------- neue Aufgaben eingeben-->
+   <input name="newTaskTitle" type="text" class="form-control" disabled="@(this.category == null)" @bind="newTaskTitle" @onkeyup="(e) => NewTask_Keyup(e)" placeholder="new Task..." />
+   <!-- ---------- Aufgabenliste ausgeben-->
+   @if (taskSet != null) {
+    <ol id="TaskSet" class="list-group scroll">
+
+     @foreach (BO.Task t in taskSet) {
+      <TaskElement Task="t" @key="t"
+                   Active="(t.TaskID == this.task?.TaskID)"
+                   TaskChecked="async ()=>await this.SendTaskListUpdate()"
+                   TaskRemoved="ReloadTaskList"
+                   TaskClicked="(t)=>ShowTaskDetail(t)"
+                   TaskDragged="(t)=>DragTask(null,t)">
+      </TaskElement>
+     }
+    </ol>
+   }
+  }
+  else {
+   @*Suchergebnisse anzeigen*@
+   <h4 style="margin-top:9px;margin-bottom:6px">Search Results in @searchResultSet.Count Categories</h4>
+   @foreach (BO.Category c in searchResultSet) {
+    <h5 class="blue">Category <b>@c.Name</b></h5>
+    <div style="margin-bottom:5px;">
+     @foreach (BO.Task t in c.TaskSet) {
+      <TaskElement Task="t" @key="t"
+                   Active="(t.TaskID == this.task?.TaskID)"
+                   TaskChecked="async (t)=>await this.SendTaskListUpdate(t)"
+                   TaskRemoved="ReloadTaskList"
+                   TaskClicked="(t)=>ShowTaskDetail(t)"
+                   TaskDragged="(t)=>DragTask(null,t)">
+      </TaskElement>
+     }
+    </div>
+   }
+  }
+ </div>
+
+ <!-- ### Spalte 3: Aufgabendetails-->
+ @if (task != null) {
+  <div class="MLPanel col-xs-12 col-sm-6 col-md-4 col-lg-4">
+   @{
+    /* DEMO: 20. Unterkomponente: einbetten mit Parametern */
+   }
+   <MLBlazorRCL.TaskEdit Task="@task" TaskHasChanged="@TaskHasChanged"></MLBlazorRCL.TaskEdit>
+  </div>
+ }
+
+</div> @*end row*@
+
+
+
+@code {
+ // Code ist in Code-Behind-Datei!
+}

@@ -1,0 +1,38 @@
+﻿@page "/Samples/CodeBehindPartielleKlasse"
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+
+<h2>Code-Behind mit partieller Klasse</h2>
+X:
+<input id="x" type="number" @bind="X" />
+Y:
+<input id="y" type="number" @bind="Y" />
+<button @onclick="AddAsync">Add x + y</button>
+Sum: @Sum
+
+@{
+var variable1 = 1;
+}
+
+@variable1
+@variable2;
+
+@code
+{
+ int variable2 = 1;
+
+
+ // Hier ist auch Code möglich, wenn man unbedingt will ;-)
+
+ // es sind aber keine Ereignisse möglich, die schon in der Code-Behind-Datei implementiert sind
+ // --> Error	CS0111	Type 'CodeBehindPartielleKlasse' already defines a member called 'OnInitialized' with the same parameter types	MiracleList_BS
+ //protected override void OnInitialized()
+ //{
+
+ //}
+ public int variable4 { get; set; }
+ void LogURL()
+ {
+  Util.Log("LogURL(): " + NavigationManager.Uri.ToString());
+ }
+}

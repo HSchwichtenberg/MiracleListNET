@@ -1,0 +1,23 @@
+﻿<h3>Komponente2</h3>
+Text: @Starttext
+<br />
+Zahl: @Startwert
+
+<button @onclick="Klick">Klick mich!</button>
+@ausgabe
+
+@code
+{
+ [Parameter]
+ public int Startwert { get; set; }
+
+ [Parameter]
+ public string Starttext { get; set; }
+
+ public string ausgabe { get; set; } = "";
+
+ private void Klick()
+ {
+  ausgabe = DateTime.Now.ToString();
+ }
+}

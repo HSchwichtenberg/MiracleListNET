@@ -1,0 +1,49 @@
+﻿@page "/Samples/TimedUpdates"
+@using System.Threading;
+@using System.Globalization
+@implements IDisposable
+
+<h3>Zeitgesteuerte Seitenaktualisierung mit Timer</h3>
+
+@code {
+ public TimedUpdates()
+ {
+  Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("de-de");
+ }
+
+ [Inject]
+ public BlazorUtil Util { get; set; } = null;
+
+ Timer timer;
+ const int UpdateIntervallSekunden = 1;
+ protected override void OnInitialized()
+ {
+  timer = new Timer(async (state) =>
+  {
+   Util.Log("Callback: " + state);
+   // Optional: beliebige Aktion, z.B. Laden von Datensätzen aus einer Datenbank
+   await InvokeAsync(StateHasChanged);
+  }, "Gestartet " + DateTime.Now, UpdateIntervallSekunden * 1000, UpdateIntervallSekunden * 1000);
+
+  //timer = new Timer(new TimerCallback((state) => Callback(state)), "Gestartet " + DateTime.Now, UpdateIntervallSekunden * 1000, UpdateIntervallSekunden * 1000);
+
+  //async Task Callback(object state)
+  //{
+  // Util.Log("Callback: " + state);
+  // // Optional: beliebige Aktion, z.B. Laden von Datensätzen aus einer Datenbank
+  // await InvokeAsync(StateHasChanged);
+  //}
+
+ }
+
+ public void Dispose()
+ {
+  // wichtig, damit Timer nicht weiterläuft, wenn die Komponente schon nicht mehr lebt
+  if (timer != null) timer.Dispose();
+ }
+
+ public string StateFilter { get; set; } = "";
+ }
+
+Uhrzeit: @DateTime.Now<br />
+Noch @(Math.Round((decimal)(DateTime.Now.Date.AddDays(1)-DateTime.Now).TotalMinutes,2)) Minuten bis zum Ende des Aktionszeitraums um Mitternacht!

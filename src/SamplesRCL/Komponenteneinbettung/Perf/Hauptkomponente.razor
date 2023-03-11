@@ -1,0 +1,43 @@
+﻿@page "/Samples/KomponenteneinbettungPerf"
+<h3>Hauptkomponente</h3>
+
+<input type="text" value="@Anzahl" />
+<button @onclick="Subkomponente">Subkomponente</button>
+<button @onclick="Inline">Inline</button>
+@code {
+ List<string> Daten1 = new List<string>();
+ List<string> Daten2 = new List<string>();
+ int Anzahl = 10000;
+ void Subkomponente()
+ {
+  for (int i = 0; i < Anzahl; i++)
+  {
+   Daten1.Add("x");
+  }
+ }
+
+ void Inline()
+ {
+  for (int i = 0; i < Anzahl; i++)
+  {
+   Daten2.Add("x");
+  }
+ }
+
+}
+
+<h3>Unterkomponente</h3>
+
+@foreach (var d in Daten1)
+{
+ <Unterkomponente Wert="@d"></Unterkomponente>
+}
+
+<h3>Inline</h3>
+
+@foreach (var d in Daten2)
+{
+ <span> <b>@d</b>; &nbsp;</span>
+
+}
+

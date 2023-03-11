@@ -1,0 +1,80 @@
+﻿@page "/Samples/Fehlerbehandlung"
+<h3>Fehlerbehandlung</h3>
+
+Der Zähler erzeugt ab 10 einen Fehler ;-)
+
+@*DEMO 90: ErrorBoundary*@
+@*------------------------------------------------------------*@
+<h2>Counter ohne ErrorBoundary</h2>
+<LimitedCounter currentCount="5"></LimitedCounter>
+
+@*------------------------------------------------------------*@
+<h2>Counter mit ErrorBoundary</h2>
+<ErrorBoundary>
+    <LimitedCounter currentCount="5"></LimitedCounter>
+</ErrorBoundary>
+
+@*------------------------------------------------------------*@
+<h2>Counter mit Custom ErrorBoundary</h2>
+<ITVErrorBoundary>
+    <LimitedCounter currentCount="9"></LimitedCounter>
+</ITVErrorBoundary>
+
+@*------------------------------------------------------------*@
+<h2>Counter mit ErrorBoundary und ErrorContent</h2>
+<ErrorBoundary @ref="errorBoundary">
+    <ChildContent>
+        <LimitedCounter currentCount="5"></LimitedCounter>
+    </ChildContent>
+    <ErrorContent>
+        <p class="alert alert-danger">
+            Diese Komponente hat leider gerade ein Problem. Wir arbeiten daran!
+            <button class="btn btn-warning" @onclick="Restart">Nochmal versuchen</button>
+        </p>
+    </ErrorContent>
+</ErrorBoundary>
+
+
+<h3>throw new ApplicationException</h3>
+
+
+<ErrorBoundary>
+
+ <button @onclick="ThrowError">Erzeuge Fehler</button>
+
+ @code {
+ void ThrowError()
+ {
+  throw new ApplicationException("test");
+ }
+
+}
+</ErrorBoundary>
+
+<ITVErrorBoundary>
+
+ <button @onclick="ThrowError2">Erzeuge Fehler2</button>
+
+ @code {
+ void ThrowError2()
+ {
+  throw new ApplicationException("test");
+ }
+
+}
+</ITVErrorBoundary>
+
+@code {
+    ErrorBoundary errorBoundary;
+
+    protected override void OnInitialized()
+    {
+    }
+
+    void Restart()
+    {
+       errorBoundary?.Recover();
+    }
+}
+
+@*// Console.WriteLine(errorBoundary.MaximumErrorCount); = 100*@

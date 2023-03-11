@@ -1,0 +1,45 @@
+﻿@page "/Samples/CodeBehindOnlyNonVisual"
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+@using Web.Vorlagen
+
+<h2>Nutzung der Komponente ohne UI</h2>
+Die Summe ändert sich beim Veranlassen der Eingabefelder!
+<br />
+X:
+<input id="x" type="number" @bind="X" />
+Y:
+<input id="y" type="number" @bind="Y" />
+
+
+Sum: @Sum
+
+<CodeOnlyComponentNonVisual X="@X" Y="@Y" NewValue="NewValue"></CodeOnlyComponentNonVisual>
+
+@code
+{
+ [Inject]
+ public IJSRuntime JSRuntime { get; set; } = null;
+ [Inject]
+ public NavigationManager NavigationManager { get; set; } = null;
+
+ [Parameter]
+ public decimal X { get; set; } = 1.23m;
+ [Parameter]
+ public decimal Y { get; set; } = 2.34m;
+
+ decimal Sum;
+
+ protected override void OnInitialized()
+ {
+  Util.Log(nameof(HostForCodeOnlyComponentNonVisual) + ".OnInitialized()");
+ }
+
+ public async Task NewValue(decimal sum)
+ {
+  this.Sum = sum;
+  Util.Log($"{DateTime.Now}: {nameof(HostForCodeOnlyComponentNonVisual)}.NewValue(). x={X} y={Y} sum={sum}");
+
+ }
+
+}

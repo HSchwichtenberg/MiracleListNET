@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "UnitTests": {
+      "commandName": "Project",
+      "commandLineArgs": "-xytest ",
+     "environmentVariables": {
+      "ConnectionStrings:MiracleListDB-inaktiv": "Data Source=localhost;Initial Catalog=MiracleList_Test;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;MultiSubnetFailover=False",
+      "Test": "123"
+     }
+    }
+  }
+}

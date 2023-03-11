@@ -1,0 +1,48 @@
+﻿@*@implements IDisposable*@
+
+<div class="panel panel-default">
+ <div class="panel-heading">
+  <h4>Komponente "Counter Panel"</h4>
+ </div>
+
+ <div class="panel-body">
+  <p>
+   Diese Razor Component <b>@this.GetType().FullName</b> kommt aus der DLL: <b><text>@System.Reflection.Assembly.GetExecutingAssembly().GetName().Name</text>.dll</b>!
+  </p>
+
+  <p>Current count: @currentValue</p>
+
+  <button class="btn btn-primary" @onclick="Increment">Klick mich!</button>
+ </div>
+
+</div>
+
+
+@code {
+ [EditorRequired]
+ [Parameter] // Parameter muss Property und public sein!
+ public int StartValue { get; set; } = 0;
+
+ private int currentValue { get; set; }
+
+ [Parameter]
+ public EventCallback<int> ValueHasChanged { get; set; }
+
+
+ protected async override Task OnInitializedAsync()
+ {
+  this.currentValue = this.StartValue;
+  await ValueHasChanged.InvokeAsync(currentValue);
+ }
+
+ async void Increment()
+ {
+  currentValue++;
+  await ValueHasChanged.InvokeAsync(currentValue);
+ }
+
+ //public void Dispose()
+ //{
+ //}
+
+}

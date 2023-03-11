@@ -1,0 +1,11 @@
+﻿
+@using System.Globalization
+
+<div class="row">
+
+ @foreach(var prop in Model)
+ {
+  <div class="col-xs-6">@prop.Key</div>
+  <div class="col-xs-6">@prop.Value</div>
+ }
+</div>

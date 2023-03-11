@@ -1,0 +1,10 @@
+﻿/* DEMO: 28. CSS-Isolation: Deklaration */
+
+.Headline {
+ color:  white;
+}
+
+.Content
+{
+ color: black;
+}

@@ -1,0 +1,27 @@
+﻿
+<div class="card h-100">
+ <div class="card-header" @onclick="()=>OnHeaderClick.InvokeAsync()">
+  @Header
+ </div>
+ <div class="card-body">
+  <h5 class="card-title">@Title</h5>
+  <p class="card-text">@Text</p>
+
+ </div>
+</div>
+
+
+@code {
+ [Parameter]
+ public EventCallback OnHeaderClick { get; set; }
+
+ [Parameter]
+ public RenderFragment? Header { get; set; }
+
+ [Parameter]
+ public RenderFragment? Title { get; set; }
+
+ [Parameter]
+ public RenderFragment? Text { get; set; }
+
+}

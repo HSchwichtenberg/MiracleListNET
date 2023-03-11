@@ -1,0 +1,38 @@
+﻿@page  "/Samples/Variablen"
+
+<h3>Variablennutzung</h3>
+
+@{
+ var field1 = 1;
+ var prop1 = 1;
+}
+
+@code
+{
+ int field2 = 2;
+ int prop2 = 2;
+
+ public void Method1()
+ {
+  //field1 = 22; // geht nicht
+  //prop1 = 22; // geht nicht
+  field2 = 22;
+ }
+
+
+}
+
+<h3>Ausgabe</h3>
+@@field1: @field1
+<br />
+@@field2: @field2
+<br />
+@@field3: @field3
+<br />
+
+@@prop1: @prop1
+<br />
+@@prop2: @prop2
+<br />
+@@prop3: @prop3
+<br />

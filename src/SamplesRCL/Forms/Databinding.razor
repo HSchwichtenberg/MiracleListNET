@@ -1,0 +1,103 @@
+﻿@page "/Samples/Datenbindung"
+
+<h3>Datenbindung</h3>
+<hr />
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+
+@code {
+
+ public string _Name;
+ public string Name
+ {
+  get => _Name;
+  set
+  {
+   _Name = value;
+   Util.Log("Name=" + _Name);
+  }
+ }
+
+ void ExtraHandler(ChangeEventArgs args)
+ {
+  Util.Log("ExtraHandler: Name=" + _Name + "/args = " + args.Value);
+ }
+}
+
+
+<h4>Bindung mit @@bind</h4>
+<input type="text" id="C_Name" @bind="Name" class="form-control" />
+
+<h4>Bindung mit @@bind-value="Name" @@bind-value:event="onchange"</h4>
+<input type="text" id="C_Name" @bind-value="Name" @bind-value:event="onchange" class="form-control" />
+
+<h4>Bindung mit @@bind-value="Name" @@bind-value:event="oninput"</h4>
+<input type="text" id="C_Name" @bind-value="Name" @bind-value:event="oninput" class="form-control" />
+
+<h4>Bindung mit @@bind="Name" @@bind:event="oninput"</h4>
+<input type="text" id="C_Name" @bind="Name" @bind:event="oninput" class="form-control" />
+
+<h4>Bindung mit @@bind="Name" @@oninput</h4>
+<input type="text" id="C_Name" @bind="Name" @oninput="ExtraHandler" class="form-control" />
+
+<h4>Bindung mit @@bind="Name" @@bind:event="oninput" @@onchange</h4>
+<input type="text" id="C_Name" @bind="Name" @bind:event="oninput" @onchange="ExtraHandler" class="form-control" />
+
+@*<h4>Bindung mit @@bind-value="Name" @@bind-value:event="onkeypress" (funktioniert nicht!)</h4>
+ <input type="text" id="C_Name" @bind-value="Name" @bind-value:event="onkeypress" class="form-control" />
+
+
+
+ <h4>InputText mit @@bind-value</h4>
+ <EditForm Model="@this">
+  <InputText id="name" Value="@Name" ValueChanged="NameChanged" ValueExpression="() => Name" class="form-control"></InputText>
+ </EditForm>
+
+ <h4>InputText mit Value, ValueChanged und ValueExpression</h4>
+ <EditForm Model="@this">
+  <InputText id="name" Value="@Name" ValueChanged="NameChanged" ValueExpression="() => Name" class="form-control"></InputText>
+ </EditForm>*@
+
+@code {
+ private EditContext editContext { get; set; } = null;
+ private void NameChanged(string value)
+ {
+  Name = value;
+ }
+}
+
+<h4>Ausgabe</h4>
+ Name = @Name
+
+
+ <hr />
+ <h2>Datenbindung mit Datumsangaben</h2>
+ <h4>Bindung mit text und @@bind </h4>
+ <input type="text" id="C_Name" @bind="Datum" class="form-control" />
+
+ <h4>Bindung mit date und @@bind </h4>
+ <input type="date" id="C_Name" @bind="Datum" class="form-control" />
+
+ <h4>Bindung mit datetime-local und @@bind </h4>
+ <input type="datetime-local" id="C_Name" @bind="Datum" class="form-control" />
+
+ <h4>Bindung mit text, @@bind und @@bind:format</h4>
+ <input type="text" id="C_Name" @bind="Datum" @bind:format="yyyy-MM-dd hh:mm" class="form-control" />
+
+ <h4>Bindung mit date, @@bind und @@bind:format</h4>
+ <input type="date" id="C_Name" @bind="Datum" @bind:format="yyyy-MM-dd hh:mm" class="form-control" />
+
+ <h4>Bindung mit datetime-local, @@bind und @@bind:format</h4>
+ <input type="datetime-local" id="C_Name" @bind="Datum" @bind:format="yyyy-MM-dd hh:mm" class="form-control" />
+
+ @code {
+  public DateTime Datum { get; set; }
+
+  public Databinding()
+  {
+   this.Datum = DateTime.Now;
+  }
+ }
+
+ <h4>Ausgabe</h4>
+ Datum = @Datum

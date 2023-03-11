@@ -1,0 +1,164 @@
+﻿@page "/Samples/FormComponents"
+@*@page "/"*@
+@using System.Linq
+@using ITVisions
+@using ITVisions.Blazor
+@inherits FormComponentsModel
+@inject BlazorUtil Util
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+
+<style>
+ .validation-message {
+     color: red;
+ }
+</style>
+
+<div class="row">
+ <div class="col-xs-6">
+  <h2>Entry Form (@this.GetType().FullName)</h2>
+  <EditForm EditContext="@editContext"
+            OnValidSubmit="@Save"
+            OnInvalidSubmit="@ShowValidationError">
+   @*Model="@person"*@
+   <DataAnnotationsValidator />
+
+   <div class="col-xs-6">
+    <div class="form-group">
+     <label for="C_Name">Name</label>
+     <InputText id="C_Name" @bind-Value="person.Name" class="form-control" placeholder="Your Name (max 20 letters)" />
+     <ValidationMessage For="@(() => person.Name)" />
+    </div>
+
+    <div class="form-group">
+     <label for="C_Mail">E-Mail</label>
+     <InputText id="C_Mail" @bind-Value="person.EMail" class="form-control" placeholder="Your E-Mail xxx@yyy.com" />
+     <ValidationMessage For="@(() => person.EMail)" />
+    </div>
+
+    <div class="form-group">
+     <label for="C_DayOfBirth">Day of Birth</label>
+     <InputDate id="C_DayOfBirth" @bind-Value="person.DayOfBirth" class="form-control" placeholder="Your Birthday" />
+     <ValidationMessage For="@(() => person.DayOfBirth)" />
+    </div>
+
+    <div class="form-group">
+     <label for="C_Children">Children</label>
+     <InputNumber id="C_Children" min="0" @bind-Value="person.Children" class="form-control" />
+     <ValidationMessage For="@(() => person.Children)" />
+    </div>
+
+    <div class="form-group">
+     <label for="C_Newsletter">
+      <InputCheckbox id="C_Newsletter" @bind-Value="person.Newsletter" /> Newsletter
+     </label>
+    </div>
+
+    <div class="form-group">
+     <label for="C_JobTitle">Job Title/Primary Role</label>
+     <InputSelect id="C_JobTitle" @bind-Value="person.JobTitle" class="form-control">
+      @foreach (var s in Enum.GetValues(typeof(JobTitle)).Cast<JobTitle>().ToList())
+      {
+       <option value="@s">@s (@((int)s))</option>
+      }
+     </InputSelect>
+    </div>
+
+    <div class="form-group">
+     <label for="C_OtherRoles">Other Roles</label>
+     <InputSelect id="C_OtherRoles" @bind-Value="person.OtherRoles" class="form-control">
+      @foreach (object s in System.Enum.GetValues(typeof(JobTitle)))
+      {
+       <option value="@s">@s (@((int)s))</option>
+      }
+     </InputSelect>
+    </div>
+
+    <div class="form-group">
+     <label for="C_Note">Notes</label>
+     <InputTextArea id="C_Note" @bind-Value="person.Notes" class="form-control" placeholder="Any note" rows="5" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Speichern</button>
+
+   </div>
+
+   @*Spalte 2*@
+   <div class="col-xs-6">
+
+    <h5>Current Data:</h5>
+    @((MarkupString)person.ToNameValueString(attributeSeparator: "<br>"))
+
+    <div class="bg-success">
+     @if (!String.IsNullOrEmpty(Output))
+     {
+      <p>Saved Data:</p>
+      @((MarkupString)Output)
+     }
+    </div>
+
+    <div class="bg-danger" style="color:white">
+     @if (!String.IsNullOrEmpty(OutputError))
+     {
+      @OutputError<br />
+     }
+     <ValidationSummary  />
+    </div>
+   </div>
+
+  </EditForm>
+ </div>
+</div>
+
+@code {
+
+ private EditContext editContext { get; set; } = null;
+ private Person person { get; set; } = new Person();
+ private string Output { get; set; }
+ private string OutputError { get; set; }
+
+ protected override void OnInitialized()
+ {
+
+  // for easier testing, just some test data
+  person = new Person()
+  {
+   Name = "Dr. Holger Schwichtenberg",
+   JobTitle = JobTitle.Softwarearchitect,
+   OtherRoles = new JobTitle[] { JobTitle.Trainer, JobTitle.Consultant, JobTitle.Author, JobTitle.Developer },
+   Children = 2,
+   Newsletter = true,
+   EMail = "anfragen@IT-Visions.de",
+   Notes = "Man kann mich auch als Berater und Trainer buchen.",
+  };
+  // Create Edit Context for Person
+  this.editContext = new EditContext(this.person);
+ }
+
+ private void Save()
+ {
+  Util.Log("Save");
+  Output = "Object has been saved:<br>" + person.ToNameValueString(attributeSeparator: "<br>");
+  OutputError = "";
+ }
+
+ private async void ShowValidationError()
+ {
+  Output = "";
+  OutputError = "";
+  this.StateHasChanged();
+
+  if (this.editContext != null)
+  {
+   var isValid = editContext.Validate();
+   IEnumerable<string> messages = this.editContext.GetValidationMessages();
+   var m = "Some values are not valid:\n\n" + String.Join("\n", messages);
+   Util.Log(m);
+   await Util.Alert(m);
+  }
+  else
+  {
+   await Util.Alert("Some values are not valid: unknown :-(");
+  }
+ }
+}

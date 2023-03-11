@@ -1,0 +1,36 @@
+﻿@page "/Samples_BS/telerikGrid"
+
+<a href="https://docs.telerik.com/blazor-ui/introduction.html?_ga=2.25038650.1664076158.1569321188-268324218.1518300003">Telerik Blazor</a>General grid with its most common features
+
+
+<h3>Erst Telerik-Komponenten einbinden, siehe auskommentierter Code in dieser Komponente und Startup.cs und _Imports.razor sowie MainLayout.razor</h3>
+
+@*<TelerikGrid Data="@MyData" Height="400px"
+              Pageable="true" Sortable="true" Groupable="true"
+              FilterMode="Telerik.Blazor.GridFilterMode.FilterRow">
+  <GridColumns>
+   <GridColumn Field="@(nameof(SampleData.Id))" />
+   <GridColumn Field="@(nameof(SampleData.Name))" Title="Employee Name" Groupable="false" />
+   <GridColumn Field="@(nameof(SampleData.Team))" Title="Team" />
+   <GridColumn Field="@(nameof(SampleData.HireDate))" Title="Hire Date" />
+  </GridColumns>
+ </TelerikGrid>*@
+
+@code {
+ public IEnumerable<SampleData>
+MyData = Enumerable.Range(1, 30).Select(x => new SampleData
+{
+Id = x,
+Name = "name " + x,
+Team = "team " + x % 5,
+HireDate = DateTime.Now.AddDays(-x).Date
+});
+
+ public class SampleData
+ {
+  public int Id { get; set; }
+  public string Name { get; set; }
+  public string Team { get; set; }
+  public DateTime HireDate { get; set; }
+ }
+}

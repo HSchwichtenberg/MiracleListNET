@@ -1,0 +1,35 @@
+﻿
+<div class="modal" id="@OutermostEnv.Id">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    @HeaderTemplate
+                </h5>
+                @if (OutermostEnv.AutoClose)
+                {
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                }
+            </div>
+
+            <div class="modal-body">
+                @BodyTemplate
+            </div>
+
+            <div class="modal-footer">
+                @FooterTemplate
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@code
+{
+    [CascadingParameter] protected ModalContext OutermostEnv { get; set; }
+    [Parameter] public RenderFragment HeaderTemplate { get; set; }
+    [Parameter] public RenderFragment BodyTemplate { get; set; }
+    [Parameter] public RenderFragment FooterTemplate { get; set; }
+}

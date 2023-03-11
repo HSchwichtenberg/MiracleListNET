@@ -1,0 +1,16 @@
+﻿<h3>Komponente1</h3>
+
+<button @onclick="Klick">Klick mich!</button>
+@ausgabe
+
+@code
+{
+
+ public string ausgabe { get; set; } = "";
+
+ private void Klick()
+ {
+  ausgabe = DateTime.Now.ToString();
+ }
+}
+

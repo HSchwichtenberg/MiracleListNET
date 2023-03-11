@@ -1,0 +1,47 @@
+﻿@inherits ErrorBoundary
+@inject BlazorUtil util
+
+
+@*https://stackoverflow.com/questions/57539330/is-there-a-way-to-globally-catch-all-unhandled-errors-in-a-blazor-single-page-ap*@
+@if (CurrentException is null)
+{
+ @ChildContent
+}
+else if (ErrorContent is not null)
+{
+ @ErrorContent(CurrentException)
+}
+else
+{
+ <div class="itv-error-boundary">
+  Leider ist es zu einem Fehler gekommen:
+  <ul>
+  @foreach (var exception in receivedExceptions)
+  {
+   <li>
+   @exception.GetType().Name: @exception.Message (Fehler-ID: @exception.Data["Guid"])
+   </li>
+  }</ul>
+ </div>
+}
+
+@code {
+ List<Exception> receivedExceptions = new();
+
+ protected override Task OnErrorAsync(Exception exception)
+ {
+  
+  exception.Data.Add("Guid",Guid.NewGuid());
+  receivedExceptions.Add(exception);
+  util.Error(exception.Message);
+
+  // Hier kann dann tun, was man will, z.B. Logging oder E-Mail
+  return base.OnErrorAsync(exception);
+ }
+
+ public new void Recover()
+ {
+  receivedExceptions.Clear();
+  base.Recover();
+ }
+}

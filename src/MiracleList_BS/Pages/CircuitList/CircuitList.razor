@@ -1,0 +1,114 @@
+﻿@page "/CircuitList"
+@using System.Threading;
+@using System.Globalization
+@inject IJSRuntime JSRuntime
+@implements IDisposable
+
+<h3>Liste der Blazor Server-Circuits</h3>
+<div>Basis ist die Klasse CircuitListCircuitHandler, die von Microsoft.AspNetCore.Components.Server.Circuits.CircuitHandler erbt!</div>
+<div>
+ Dieses Beispiel gibt es nicht für Blazor WebAssembly, da es dort keine Circuits gibt ;-)
+</div>
+
+<style>
+ .table {
+     border-collapse: collapse;
+     border-spacing: 0;
+ }
+
+ .section {
+     border-top: 1em solid transparent;
+ }
+</style>
+
+<hr>
+ Netzwerklatenz:
+@if (latency is null)
+{
+ <span>Berechne...</span>
+}
+else
+{
+ <span @onclick="CalcLatency">
+  @(Math.Round(latency.Value.TotalMilliseconds, 2)) ms
+ </span>
+}
+<hr>
+@code {
+
+ private TimeSpan? latency;
+
+ public CircuitList()
+ {
+  Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("de-de");
+ }
+
+ System.Threading.Timer timer;
+ const int UpdateIntervallSekunden = 1;
+ public string StateFilter { get; set; } = "";
+
+ protected override void OnInitialized()
+ {
+  timer = new System.Threading.Timer(async _ =>
+  {
+   await CalcLatency();
+   await InvokeAsync(StateHasChanged);
+  }, null, 0, UpdateIntervallSekunden * 1000);
+ }
+
+ public void Dispose()
+ {
+  // wichtig, damit Timer nicht weiterläuft, wenn die Komponente schon nicht mehr lebt
+  if (timer != null) timer.Dispose();
+ }
+
+
+ public async Task CalcLatency()
+ {
+  DateTime startTime = DateTime.UtcNow;
+  var _ = await JSRuntime.InvokeAsync<string>("toString");
+  latency = DateTime.UtcNow - startTime;
+ }
+}
+
+<br />
+<div class="form-inline">
+ Zustandsfilter:  <select @bind="StateFilter" class="form-control">
+  <option value="">Alle</option>
+  @foreach (var z in Enum.GetValues(typeof(ITVisions.Blazor.Services.CircuitState)))
+  {
+   <option>@z</option>
+  }
+ </select>
+</div>
+<br />
+
+@if (ITVisions.Blazor.Services.CircuitListCircuitHandler.CircuitSet != null)
+{
+ int count = 0;
+ <table class="table">
+  <tbody class="section section-step">
+   <tr>
+    <th>Laufende Nummer</th>
+    <th>Interne Circuit-ID</th>
+    <th>Client-IP</th>
+    <th>Browser</th>
+    <th>Zustand</th>
+    <th>Erzeugt</th>
+    <th>Letzte Zustandsänderung</th>
+   </tr>
+   @foreach (ITVisions.Blazor.Services.CircuitInfo c in ITVisions.Blazor.Services.CircuitListCircuitHandler.CircuitSet.Where(x => (StateFilter != "" ? x.CircuitState == Enum.Parse<ITVisions.Blazor.Services.CircuitState>(StateFilter) : true)).OrderBy(x => x.CircuitState).OrderByDescending(x => x.LastStateChanged))
+   {
+    <tr style="background-color: @(++count % 2 == 0 ? "#EEEEEE" : "#F4F4ED")">
+     <td>@c.ID</td>
+     <td>@c.Circuit?.Id</td>
+     <td>@c.ClientIP</td>
+     <td>@c.ClientBrowser</td>
+     <td>@c.CircuitState</td>
+     <td>@c.Created.ToLongTimeString()</td>
+     <td>@c.LastStateChanged.ToLongTimeString()</td>
+    </tr>
+   }
+  </tbody>
+ </table>
+}

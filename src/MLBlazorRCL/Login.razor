@@ -1,0 +1,76 @@
+﻿@page "/Login"
+@page "/Logout"
+@page "/"
+@inherits LoginModel;
+
+
+<div class="panel panel-primary">
+ <div class="panel-heading">
+  @{
+   /* DEMO: 29. CSS-Isolation: Nutzung */
+  }
+  <h2 class="Headline">Benutzeranmeldung</h2>
+ </div>
+ <div class="panel-body">
+  <div>
+   <a href="/about">MiracleList</a> ist eine Beispielanwendung für eine Single-Page-Webapplication (SPA) zur Aufgabenverwaltung. Diese Variante des Frontends läuft mit ASP.NET Core Blazor WebAssembly (@System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription).
+   <span class="glyphicon glyphicon-arrow-right"></span><a href="/About/WeitereInformationenMiracleList">Andere Varianten</a>
+  </div>
+  <div>Autor: Dr. Holger Schwichtenberg, <a href="http://www.IT-Visions.de">www.IT-Visions.de</a>, 2018-@DateTime.Now.Year</div>
+  <br />
+  <div>
+   Zur Benutzeranmeldung geben Sie die Kombination aus Ihrer E-Mail-Adresse und einem beliebigen Kennwort ein. Wenn es für diese E-Mail-Adresse noch kein Benutzerkonto gibt, wird automatisch ein neues Benutzerkonto angelegt mit einigen Beispielaufgaben. Das Benutzeranmeldeverfahren ist bewusst vereinfacht, um die Hürde zum Einstieg in die Anwendung gering zu halten.
+  </div>
+  <br>
+  @{
+   /* DEMO: 40. Login-Formular */
+  }
+  <div class="row">
+   <div class="col-xs-12 form-group">
+    <label for="name">E-Mail-Adresse:</label>
+    <input name="name" @bind="this.Username" id="name" type="text" placeholder="Ihre E-Mail-Adresse" required class="form-control">
+   </div>
+  </div>
+
+  <div class="row">
+   <div class="col-xs-12 form-group">
+    <label for="password">Kennwort</label>
+    <input name="password" @bind="this.Password" id="password" placeholder="Ihr Kennwort" required type="password" class="form-control">
+   </div>
+  </div>
+
+  <div class="row">
+   <div class="col-xs-12 form-group">
+    <label for="password">Server</label>
+    <select @bind="this.Backend" id="backend" class="form-control">
+     @foreach (var cs in AppState.GetBackendSet())
+     {
+      <option value="@cs.Value">@cs.Key</option>
+     }
+    </select>
+    <div style="margin-top: 10px">
+
+     <MLBlazorRCL.ServerState></MLBlazorRCL.ServerState>
+
+    </div>
+   </div>
+  </div>
+
+  <button @onclick="Login" class="btn btn-primary" type="submit" id="Anmelden" name="Anmelden">Anmelden</button>
+
+  <span id="errorMsg" class="text-danger">@ErrorMsg</span>
+ </div>
+</div>
+
+<a href="https://www.IT-Visions.de">
+ <img align="right" width="200" src="/_content/MLBlazorRCL/img/www.IT-Visions.de_Logo.jpg" />
+</a>
+
+<div>
+
+ <text>MiracleList v</text>
+ @System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()
+ basiert auf @Util.GetBlazorVersionInfo()
+</div>
+
+<a href="/about">Mehr Systeminformationen</a>

@@ -1,0 +1,11 @@
+﻿body {
+}
+
+.counter {
+ border-radius: 12px;
+ background-color: Highlight;
+ color: white;
+ padding: 10px;
+ width: 100px;
+ height: 100px;
+}

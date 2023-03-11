@@ -1,0 +1,37 @@
+@page "/limitedcounter"
+
+<h4>Zähler #@CounterID</h4>
+
+<p>Zählerstand: <span class="counter"> @currentCount</span></p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Zähler erhöhen</button>
+@*<br />
+    Bisher wurde der Zähler nur um eins erhöht (++), das habe ich nun auf +=10 geändert!
+    Der bisherige Zählerstand ist dabei erhalten geblieben
+    und auch dieser neue Text ist erschienen im Browser!
+*@
+@code {
+
+    public static int NumOfCounters { get; set; } = 0;
+    public int CounterID { get; set; } = 0;
+
+    public LimitedCounter()
+    {
+
+        CounterID = ++LimitedCounter.NumOfCounters;
+    }
+
+    [Parameter]
+    public int currentCount { get; set; }
+
+    private void IncrementCount()
+    {
+        currentCount++;
+        if (currentCount > 10)
+        {
+            throw new InvalidOperationException("Das ist zu viel für mich!");
+        }
+    }
+}
+
+<hr>

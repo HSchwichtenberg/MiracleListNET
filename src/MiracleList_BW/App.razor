@@ -1,0 +1,77 @@
+﻿@using System.Reflection
+
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.WebAssembly.Services
+
+@inject NavigationManager NavigationManager
+
+@{/* DEMO: 33a. Lazy Loading von RCL in App.Razor: Teil 1 */ }
+@inject LazyAssemblyLoader LazyAssemblyLoader
+
+@{/* DEMO: 31. Routing */ }
+<CascadingAuthenticationState>
+ <Router AppAssembly="typeof(Program).Assembly"
+         AdditionalAssemblies="lazyLoadedAssemblies"
+         OnNavigateAsync="@OnNavigateAsync">
+  <Navigating>
+   <div>
+    <div class="spinner">
+     <div class="rect1"></div>
+     <div class="rect2"></div>
+     <div class="rect3"></div>
+     <div class="rect4"></div>
+     <div class="rect5"></div>
+    </div>
+    <h1>Loading...</h1>
+   </div>
+  </Navigating>
+
+  <Found Context="routeData">
+   <AuthorizeRouteView RouteData="@routeData"
+                       DefaultLayout="@typeof(MLBlazorRCL.MainLayout)">
+    <Authorizing>
+     <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+     </div>
+     <h1>Authorizing...</h1>
+    </Authorizing>
+
+    <NotAuthorized>
+     @{
+      NavigationManager.NavigateTo("/");
+     }
+     @*oder: Sie sind nicht angemeldet und können den Inhalt dieser Seite daher nicht sehen. Bitte melden Sie sich an in der <a href="/Login">Anmeldemaske</a>*@
+    </NotAuthorized>
+
+   </AuthorizeRouteView>
+  </Found>
+
+  <NotFound>
+   <PageTitle>Not found</PageTitle>
+   <h1>Sorry, Page not found :-(</h1>
+  </NotFound>
+
+ </Router>
+</CascadingAuthenticationState>
+
+@code {
+ private List<Assembly> lazyLoadedAssemblies = new() { typeof(MLBlazorRCL.Main).Assembly };
+
+ // DEMO: 33b. Lazy Loading von RCL in App.Razor: Teil 2
+ private async Task OnNavigateAsync(NavigationContext args)
+ {
+  Console.WriteLine("OnNavigateAsync: " + args.Path);
+  // Alle Pfade /samples liegen in MLBlazorRCL.dl
+  // Aber es gibt in /samples_BW und /samples_BS in den Hauptprojekten!
+  if (args.Path.ToLower().Contains("about") || (args.Path.ToLower().Contains("samples") ))
+  {
+   Console.WriteLine("Lazy Loading SamplesRCL.dll...");
+   var a = await LazyAssemblyLoader.LoadAssembliesAsync(new string[] { "SamplesRCL.dll" });
+   lazyLoadedAssemblies.AddRange(a);
+  }
+ }
+}

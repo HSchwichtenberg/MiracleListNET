@@ -1,0 +1,114 @@
+﻿@page "/Samples/ProgressBar"
+@using System.Threading;
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+
+@*<h3>Einstellungen</h3>
+
+ <br />
+ <input type="checkbox" @bind="renderUI" /> ShouldRender? --> ohne dies sieht man gar keine UI-Updates
+ <br />
+ <input type="checkbox" @bind="UIThreadSync" /> StateHasChanged? --> ohne dies Absturz in Blazor Server ("The current thread is not associated with the Dispatcher.")
+ <br />
+ <input type="number" @bind="Delay" /> ms Verzögerung nach dem StateHasChanges() --> in Blazor WebAssembly blockiert das UI
+
+ @code{
+ private string Ausgabe { get; set; } = "";
+ private bool renderUI = true;
+ private bool UIThreadSync = true;
+ private int Delay = 1;
+ protected override bool ShouldRender() { return renderUI; }
+ }*@
+
+
+<h3>Fortschrittsanzeige</h3>
+Iterationen:
+<input type="number" @bind="anzahl" />
+<button @onclick="StartFortschritt" class="btn btn-success">Starte Vorgang</button>
+<button @onclick="StartFortschritt_SoGehtEsNicht" class="btn btn-warning">Starte Vorgang (so geht es nicht)</button>
+<button @onclick="Abbruch" class="btn btn-danger">Abbruch</button>
+
+<div style="display: block;background-color:#f1f1f1!important">
+ <div style="display: block;background-color:lawngreen;width:@Fortschritt%">Fortschritt:&nbsp;@Fortschritt%</div>
+</div>
+
+@code {
+ private int Fortschritt { get; set; } = 0;
+ private CancellationTokenSource cts = new CancellationTokenSource();
+ public int anzahl { get; set; }
+
+ protected override void OnInitialized()
+ {
+
+  anzahl = Util.IsWebAssembly ? 20000 : 200000; // Da Blazor WebAssembly langsamer ist, hier nicht so viele        Iterationen; -)
+ }
+
+ // Die richtige Lösung ist, die Berechnung in einen getrennten Thread auszulagern und damit den Hauptthread freizugeben.d.
+ async Task StartFortschritt()
+ {
+  Util.Log("StartFortschritt");
+  this.Fortschritt = 0;
+  cts = new CancellationTokenSource();
+  await Task.Run(async () =>
+  {
+   Util.Log("Start Task...");
+   for (int i = 0; i < 20; i++)
+   {
+    if (cts.IsCancellationRequested) { Util.Log("Task abgebrochen!"); break; }
+
+   // dies ist nur ein Beispiel für den Aufruf irgendeiner Methode, die etwas tut, was etwas dauert
+
+   new Berechnungen().Start(anzahl, this.Fortschritt, this.Fortschritt + 5);
+
+    this.Fortschritt += 5;
+    Util.Log("Fortschritt: " + Fortschritt + "%");
+
+    if (Util.IsWebAssembly)
+    {
+     this.StateHasChanged();
+     await Task.Delay(1); // Delay ist für Blazor WebAssembly notwendig
+   }
+    else if (Util.IsBlazorServer || Util.IsHybrid)
+    {
+    // So kommen wir in Blazor Server und Blazor Desktop zurück auf den Hauptthread!
+    // in Blazor Server nicht erlaubt! "The current thread is not associated with the Dispatcher. Use InvokeAsync() to switch execution to the Dispatcher when triggering rendering or component state."
+    await this.InvokeAsync(
+         async () =>
+         {
+          this.StateHasChanged();
+         });
+    }
+    else
+    {
+     Util.Error("Unerwartete Blazor-Variante!");
+    }
+   }
+  }, cts.Token);
+
+  cts = null;
+ }
+
+ async void Abbruch()
+ {
+  if (cts != null) cts.Cancel();
+  await Util.Alert("Abgebrochen!");
+ }
+
+ // Das funktioniert nicht, weil Blazor das Virtual DOM erst mit dem echten DOM synchronisiert, sobald der Main Thread nicht mehr blockiert ist!!!
+ void StartFortschritt_SoGehtEsNicht()
+ {
+  this.Fortschritt = 0;
+  for (int i = 0; i < 20; i++)
+  {
+   new Berechnungen().Start(1000000, this.Fortschritt, this.Fortschritt + 5);
+   this.Fortschritt += 5;
+   Util.Log("Fortschritt: " + Fortschritt + "%");
+  }
+ }
+
+ protected async override Task OnAfterRenderAsync(bool firstRender)
+ {
+  Util.Log("OnAfterRenderAsync(firstRender=" + firstRender + ")");
+ }
+
+}

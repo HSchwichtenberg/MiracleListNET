@@ -1,0 +1,28 @@
+﻿<div class="form-group">
+ <label for="@Id">@Label</label>
+ <InputText id="@Id" @oninput="OnValueChanged" @bind-Value="@Value" class="form-control col-sm-8" placeholder="@Placeholder"></InputText>
+ <ValidationMessage For="@(() => Value)" />
+</div>
+
+
+@code {
+
+ public string Id => Label.ToLower().Replace(" ", "");
+
+ [Parameter]
+ public string Label { get; set; }
+
+ [Parameter]
+ public string Value { get; set; }
+
+ [Parameter]
+ public string Placeholder { get; set; }
+
+ [Parameter] public EventCallback<string> ValueChanged { get; set; }
+
+ Task OnValueChanged(ChangeEventArgs e)
+ {
+  Value = e.Value.ToString();
+  return ValueChanged.InvokeAsync(Value);
+ }
+}

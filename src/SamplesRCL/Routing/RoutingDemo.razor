@@ -1,0 +1,235 @@
+﻿@*Multi-Routing*@
+@page "/Samples/Routing"
+@*Parameter sind nicht case-senstive*@
+@page "/Samples/Routing/{a}"
+@page "/Samples/Routing/{a}/{b:int}"
+@page "/Samples/Routing/{a}/{b:int}/{c:datetime}"
+@page "/Samples/RoutingGUID/{g:guid}"
+@page "/RoutingDemo"
+
+@using ITVisions.Blazor
+
+<h3>RoutingDemo</h3>
+
+<style>
+ a.active {
+     font-weight: bold;
+     background-color: antiquewhite;
+ }
+</style>
+
+<div class="row">
+
+ <div class="col-xs-6">
+
+
+  <div class="panel panel-default">
+   <div class="panel-heading">NavLinks</div>
+   <div class="panel-body">
+    <div class="">
+     <ul class="nav flex-column">
+      <li class="nav-item px-3">
+       <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+        <span class="oi oi-home" aria-hidden="true"></span> Home
+       </NavLink>
+      </li>
+      <li class="nav-item px-3">
+       <NavLink class="nav-link" href="/Samples/Routing" Match="NavLinkMatch.All">
+        <span class="oi oi-plus" aria-hidden="true"></span>/Samples/Routing
+       </NavLink>
+      </li>
+      <li class="nav-item px-3">
+       <NavLink class="nav-link" href="/Samples/Routing?zusatz=info" Match="NavLinkMatch.Prefix">
+        <span class="oi oi-plus" aria-hidden="true"></span>/Samples/Routing?zusatz=info
+       </NavLink>
+      </li>
+      <li class="nav-item px-3">
+       <NavLink class="nav-link" href="/Samples/Routing/abc/" Match="NavLinkMatch.Prefix">
+        <span class="oi oi-plus" aria-hidden="true"></span>/Samples/Routing/abc/
+       </NavLink>
+      </li>
+      <li class="nav-item px-3">
+       <NavLink class="nav-link" href="/Samples/Routing/abc/123/" Match="NavLinkMatch.Prefix">
+        <span class="oi oi-plus" aria-hidden="true"></span>/Samples/Routing/abc/123/
+       </NavLink>
+      </li>
+      <li class="nav-item px-3">
+       <NavLink class="nav-link" href="/Samples/Routing/abc/123/2020-02-13" Match="NavLinkMatch.Prefix">
+        <span class="oi oi-plus" aria-hidden="true"></span>/Samples/Routing/abc/123/2020-02-13
+       </NavLink>
+      </li>
+      <li class="nav-item px-3">
+       <NavLink class="nav-link" href="/Samples/Routing/abc/123?Zusatz=info2" Match="NavLinkMatch.Prefix">
+        <span class="oi oi-plus" aria-hidden="true"></span>/Samples/Routing/abc/123?Zusatz=info2
+       </NavLink>
+      </li>
+      <li class="nav-item px-3">
+       <NavLink class="nav-link" href="/Samples/Routing/abc/123#ausgabe" Match="NavLinkMatch.Prefix">
+        <span class="oi oi-plus" aria-hidden="true"></span>/Samples/Routing/abc/123#ausgabe
+       </NavLink>
+      </li>
+      <li class="nav-item px-3">
+       <NavLink class="nav-link" href="/Samples/RoutingGUID/66441e7f-97e5-47e9-8a43-287ea05bbbc1" Match="NavLinkMatch.Prefix">
+        <span class="oi oi-plus" aria-hidden="true"></span>/Samples/RoutingGUID/66441e7f-97e5-47e9-8a43-287ea05bbbc1
+       </NavLink>
+      </li>
+     </ul>
+    </div>
+   </div>
+  </div>
+
+
+ </div>
+ <div class="col-xs-6">
+
+  <div class="panel panel-default">
+   <div class="panel-heading">Standardlinks</div>
+   <div class="panel-body">
+    <a href="/Samples/Routing">/Samples/Routing</a>
+    <br />
+    <a href="/Samples/Routing?zusatz=info">/Samples/Routing?zusatz=info</a>
+    <br />
+    <a href="/RoutingDemo">/RoutingDemo</a>
+    <br />
+    <a href="/RoutingDemo?z1=123&z2=456">/RoutingDemo?z1=123&z2=456</a>
+    <br />
+    <a href="/DemoRouting">/DemoRouting</a>
+    <br />
+    <a href="/Samples/Routing" target="_self">/Samples/Routing mit target="_self"</a>
+    <br />
+    <a href="/Samples/Routing" target="_blank">/Samples/Routing mit target="_blank"</a>
+    <br />
+    <a href="/Unsinn">/Unsinn (Führt zur NotFound-Seite!)</a>
+   </div>
+  </div>
+
+  <div class="panel panel-default">
+   <div class="panel-heading">Einstellungen</div>
+   <div class="panel-body">
+    <input type="checkbox" @bind="AllowNavigation" /> Navigation erlauben
+   </div>
+  </div>
+
+  <div class="panel panel-default">
+   <div class="panel-heading">Einstellungen</div>
+   <div class="panel-body">
+    <button @onclick='()=> navigationManager.NavigateTo("/Samples/RoutingHistory", new NavigationOptions { HistoryEntryState = "StartValue:10;Increment:2" })'>Routing mit History Entry</button>
+   </div>
+  </div>
+
+ </div>
+</div>
+
+<hr />
+<a id="ausgabe"></a>
+@((MarkupString)Ausgabe)
+
+<NavigationLock OnBeforeInternalNavigation="ConfirmNavigation" ConfirmExternalNavigation="!AllowNavigation" />
+
+@code {
+ [Inject]
+ public BlazorUtil Util { get; set; } = null;
+ [Inject]
+ public IJSRuntime JSRuntime { get; set; } = null;
+ [Inject]
+ public NavigationManager navigationManager { get; set; } = null;
+
+
+ [Parameter]
+ public string a { get; set; }
+ [Parameter]
+ public int b { get; set; }
+ [Parameter]
+ public DateTime? c { get; set; } = DateTime.Now;
+ [Parameter]
+ public Guid? g { get; set; } = Guid.NewGuid();
+
+ public bool AllowNavigation { get; set; } = true;
+ public string Ausgabe { get; set; }
+
+
+ protected override void OnInitialized()
+ {
+  navigationManager.LocationChanged += LocationChanged;
+  //var registration = navigationManager.RegisterLocationChangingHandler(async context =>
+  //{
+  // Util.Log("LocationChanging -> " + context.TargetLocation);
+  // if (!AllowNavigation)
+  // {
+  //  var isConfirmed = await Util.Confirm("Möchten Sie wirklich navigieren nach " + context.TargetLocation + " ?");
+  //  if (!isConfirmed)
+  //  {
+  //   context.PreventNavigation();
+  //  }
+  // }
+  //});
+
+  PrintURLDetails("OnInitialized");
+ }
+
+ void LocationChanged(object sender, LocationChangedEventArgs lcea)
+ {
+  PrintURLDetails("LocationChanged", lcea);
+ }
+
+ // Called only for internal navigations
+ // External navigations will trigger a browser specific prompt
+ async Task ConfirmNavigation(LocationChangingContext context)
+ {
+  if (!AllowNavigation)
+  {
+   var isConfirmed = await Util.Confirm("NavigationLock: Möchten Sie wirklich navigieren nach " + context.TargetLocation + " ? ");
+
+   if (!isConfirmed)
+   {
+    context.PreventNavigation();
+   }
+  }
+ }
+
+ void PrintURLDetails(string Event, LocationChangedEventArgs lcea = null)
+ {
+
+  Ausgabe = "<h3>Auswertung der URL (" + Event + ")</h3>";
+
+  string uristring = navigationManager.Uri;
+  Ausgabe += "DateTime: " + DateTime.Now.ToLongTimeString() + "<br>";
+  Ausgabe += "NavigationManager.Uri: " + uristring + "<br>";
+  Ausgabe += "LocationChangedEventArgs.Location: " + lcea?.Location + "<br>";
+  Ausgabe += "LocationChangedEventArgs.IsNavigationIntercepted: " + lcea?.IsNavigationIntercepted + "<br>";
+
+  System.Uri uriObj = new System.Uri(uristring);
+
+  #region Query String Parameter
+  System.Collections.Specialized.NameValueCollection queryNameValueCollection = System.Web.HttpUtility.ParseQueryString(uriObj.Query);
+
+  if (queryNameValueCollection.Count == 0) Ausgabe += "Keine Querystring-Parameter!<br>";
+
+  int count = 0;
+  foreach (string p in queryNameValueCollection)
+  {
+   count++;
+   Ausgabe += "Querystring-Parameter #" + count + ":" + p + " = " + queryNameValueCollection[p] + "<br>";
+  }
+
+  // Zugriff auf einzelnes Element
+  Ausgabe += "Zusatz = " + queryNameValueCollection.Get("zusatz") + "<br>";
+
+  // Alternativ: Verwendet Microsoft.AspNetCore.WebUtilities
+  Dictionary<string, Microsoft.Extensions.Primitives.StringValues> queryDictionary = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uriObj.Query);
+  if (queryDictionary.TryGetValue("zusatz", out var _wert))
+  {
+   Ausgabe += "Zusatz = " + _wert + "<br>";
+  }
+  #endregion
+
+  #region Route Parameter
+  Ausgabe += "Route-Parameter a: " + (a ?? "(null)") + "<br>";
+  Ausgabe += "Route-Parameter b: " + b + "<br>";
+  Ausgabe += "Route-Parameter c: " + (c != null ? c.Value.ToString() : "(null)") + "<br>";
+  Ausgabe += "Route-Parameter g: " + (g != null ? g.Value.ToString() : "(null)") + "<br>";
+  #endregion
+
+  this.StateHasChanged();
+ }
+}

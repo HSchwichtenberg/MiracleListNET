@@ -1,0 +1,48 @@
+﻿@page "/Samples/Listen"
+@inherits ListenModel;
+@using ITVisions.Blazor
+@inject IJSRuntime JSRuntime
+@inject NavigationManager  NavigationManager
+
+<h2>Start: @start</h2>
+<div class="row">
+
+ <div class="col-6">
+  <ul>
+   @foreach (var i in liste)
+   {
+    <li>@i</li>
+   }
+  </ul>
+ </div>
+
+ <div class="col-6">
+  <ul>
+   @foreach (var i in liste)
+   {
+    <li>@i</li>
+   }
+  </ul>
+ </div>
+
+ <button class="btn btn-primary" @onclick="Klick">Klick mich!</button>
+
+</div>
+
+
+@code {
+ int start = 0;
+ IEnumerable<int> liste { get; set; }
+
+ protected override void OnInitialized()
+ {
+  liste = Enumerable.Range(start, 10);
+ }
+
+ void Klick()
+ {
+  start += 10;
+  liste = Enumerable.Range(start, 10);
+  //Util.Confirm("Nachfrage");
+ }
+}

@@ -1,0 +1,17 @@
+﻿<h1>Counter</h1>
+<p>Current count: @SessionState.GetInt(ID)</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+
+ [Inject]
+ GenericSessionState SessionState { get; set; }
+
+ [Parameter]
+ public string ID { get; set; }
+ void IncrementCount()
+ {
+  SessionState[ID] = SessionState.GetInt(ID) + 1;
+ }
+}

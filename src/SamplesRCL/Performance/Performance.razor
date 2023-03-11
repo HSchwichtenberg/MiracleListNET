@@ -1,0 +1,277 @@
+﻿@page "/Samples/Performance"
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+@using System.Diagnostics
+@using System.Reflection
+@inject IJSRuntime JSRuntime
+
+<h1>Blazor Performance</h1>
+<h3>Dauer letzter Test: @Duration</h3>
+
+<hr />
+<h2>Rendering Performance (String Builder)</h2>
+
+Number of Elements:
+<input @bind="NumberOfElements" />
+<button @onclick="StartRendering_StringBuilder">Start</button>
+<br />
+Duration: @Duration
+<br />
+<ol>
+ @((MarkupString)Output)
+</ol>
+
+<h2>Rendering Performance (String --> Out of Memory-Exception bei größeren Mengen!)</h2>
+
+
+Number of Elements:
+<input @bind="NumberOfElements" />
+<button @onclick="StartRendering_String">Start</button>
+<br />
+Duration: @Duration
+<br />
+<ol>
+ @((MarkupString)Output)
+</ol>
+
+@code {
+
+ protected override void OnAfterRender(bool firstRender)
+ {
+  Console.WriteLine("OnAfterRender");
+ }
+
+ string Output = "";
+ string Duration = "";
+ int NumberOfElements = 1000;
+ public void StartRendering_StringBuilder()
+ {
+  Util.Log("Start... Elements=" + NumberOfElements);
+  Stopwatch sw = new Stopwatch();
+  sw.Start();
+  System.Text.StringBuilder sb = new System.Text.StringBuilder();
+  for (int i = 0; i < NumberOfElements; i++)
+  {
+   sb.Append("<li>text <b>text</b> text<br></li>");
+  }
+  Output = sb.ToString();
+  sw.Stop();
+  this.Duration = $"{sw.ElapsedMilliseconds:###,###,##0} ms für {NumberOfElements:###,###,##0} Zeilen.";
+  Util.Log("Done: " + this.Duration);
+ }
+
+ public void StartRendering_String()
+ {
+  Util.Log("Start... Elements=" + NumberOfElements);
+  Stopwatch sw = new Stopwatch();
+  sw.Start();
+  for (int i = 0; i < NumberOfElements; i++)
+  {
+   Output += "<li>text <b>text</b> text<br></li>";
+  }
+  sw.Stop();
+  this.Duration = $"{sw.ElapsedMilliseconds:###,###,##0} ms für {NumberOfElements:###,###,##0} Zeilen.";
+  Util.Log("Done: " + this.Duration);
+ }
+}
+
+<hr />
+<h2>String Concat</h2>
+
+ Anzahl Durchläufe:
+<input @bind="NumberOfElements" />
+<button @onclick="StringConcat">Start</button>
+<br />
+
+<hr />
+<h2>StringBuilder</h2>
+
+ Anzahl Durchläufe:
+<input @bind="NumberOfElements" />
+<button @onclick="StringBuilder">Start</button>
+<button @onclick="MemoryTest">MemoryTest</button>
+<br />
+Dauer: @Duration
+
+
+@code {
+
+ public void StringConcat()
+ {
+  string s = "";
+  Util.Log("Start... Elements=" + NumberOfElements);
+  Stopwatch sw = new Stopwatch();
+  sw.Start();
+  for (int i = 0; i < NumberOfElements; i++)
+  {
+   s += "Hello World";
+  }
+  Output = s.Length + " Zeichen";
+  sw.Stop();
+  this.Duration = $"{sw.ElapsedMilliseconds:###,###} ms für {NumberOfElements:###,###,##0} Zeilen.";
+  Util.Log("Done: " + this.Duration);
+ }
+
+ public void StringBuilder()
+ {
+  Util.Log("Start... Elements=" + NumberOfElements);
+  Stopwatch sw = new Stopwatch();
+  sw.Start();
+  System.Text.StringBuilder sb = new System.Text.StringBuilder();
+  for (int i = 0; i < NumberOfElements; i++)
+  {
+   sb.Append("Hello World");
+  }
+  Output = sb.Length + " Zeichen";
+  sw.Stop();
+  this.Duration = $"{sw.ElapsedMilliseconds:###,###,##0} ms für {NumberOfElements:###,###,##0} Zeilen.";
+  Util.Log("Done: " + this.Duration);
+ }
+
+ public void MemoryTest()
+ {
+  Util.Log("=== Blazor Memory Test by Dr. Holger Schwichtenberg, www.IT-Visions.de, 2020-2022 ===");
+
+  Stopwatch sw = new Stopwatch();
+  int iterations = 100000000;
+  int i = 0;
+
+  System.Text.StringBuilder sb = new System.Text.StringBuilder();
+  //Util.Log("StringBuilder.MaxCapacity: " + sb.MaxCapacity);
+  // geht nicht: "Microsoft.AspNetCore.Components.WebAssembly.Rendering.WebAssemblyRenderer[100]"
+  //Console.WriteLine(System.Diagnostics.Process.GetCurrentProcess().ProcessName);
+  //Console.WriteLine("System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64: " + System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64);
+  //Util.Log("GC.GetTotalMemory(false): " + MB(GC.GetTotalMemory(false)));
+
+
+  void PrintProgress()
+  {
+   Util.Log($"{sb.Length} characters / {sw.ElapsedMilliseconds:###,###,##0} ms / {i:###,###,##0} iterations / { ITVisions.MathUtil.GetUsedRAM()} used");
+  }
+
+  try
+  {
+   Util.Log("Start...");
+
+   sw.Start();
+
+   for (i = 0; i < iterations; i++)
+   {
+    if ((i % (iterations / 10)) == 0) PrintProgress();
+    sb.Append("Hello World!");
+   }
+   Console.WriteLine();
+   sw.Stop();
+   Util.Log("DONE!");
+   PrintProgress();
+  }
+  catch (Exception ex)
+  {
+   Util.Log("ERROR: " + ex.ToString());
+   PrintProgress();
+  }
+ }
+
+}
+
+<hr />
+<h2>Fibonacci-Berechnungen</h2>
+
+ Anzahl Durchläufe:
+<input @bind="Anzahl" />
+<button @onclick="StartCS">Start (C#)</button>
+<button @onclick="StartJS">Start (JS)</button>
+<br />
+Dauer: @Dauer
+<br />
+
+<button @onclick="StartCSAll">Start (C#) 1.000 bis 1.000.000</button>
+<button @onclick="StartJSAll">Start (JS) 1.000 bis 1.000.000</button>
+<br />
+@((MarkupString)DauerAll)
+
+@code {
+
+ string Dauer = "";
+ string DauerAll = "";
+ int Anzahl = 10000;
+
+ public async Task DoEvents()
+ {
+  if (Util.IsWebAssembly)
+  {
+   // in Blazor Server nicht erlaubt! "The current thread is not associated with the Dispatcher. Use InvokeAsync() to switch execution to the Dispatcher when triggering rendering or component state."
+   this.StateHasChanged();
+   await Task.Delay(1); // Delay ist für Blazor WebAssembly notwendig
+  }
+  else
+  {
+   // So kommen wir in Blazor Server zurück auf den Hauptthread!
+   await this.InvokeAsync(
+       async () =>
+       {
+        this.StateHasChanged();
+       });
+  }
+ }
+
+ public async Task StartCSAll()
+ {
+  await Task.Run(async () =>
+  {
+   DauerAll += "Läuft...<br>";
+   await DoEvents();
+   Anzahl = 1000;
+   for (int i = 1; i < 6; i++)
+   {
+    await StartCS();
+    DauerAll += Dauer + "<br>";
+    Anzahl = Anzahl * 10;
+    await DoEvents();
+   }
+   DauerAll += "Beendet!<br>";
+  });
+ }
+
+  public async Task StartJSAll()
+ {
+  await Task.Run(async () =>
+  {
+   DauerAll += "Läuft...<br>";
+   await DoEvents();
+   Anzahl = 1000;
+   for (int i = 1; i < 6; i++)
+   {
+    await StartJS();
+    DauerAll += Dauer + "<br>";
+    Anzahl = Anzahl * 10;
+    await DoEvents();
+   }
+   DauerAll += "Beendet!<br>";
+  });
+ }
+
+ public async Task StartCS()
+ {
+  Util.Log("Start... Anzahl C#-Berechnungen=" + Anzahl);
+  this.Dauer = "Läuft...";
+  await DoEvents();
+  var ms = new Berechnungen().Start(Anzahl);
+  //var mb = ITVisions.MathUtil.GetUsedRAM();
+  this.Dauer = $"{ms} ms für {Anzahl:###,###,##0} C#-Berechnungen";
+  Util.Log("Done: " + this.Dauer);
+ }
+
+ public async Task StartJS()
+ {
+  Util.Log("Start... Anzahl JS-Berechnungen=" + Anzahl);
+  this.Dauer = "Läuft...";
+  await DoEvents();
+  var ms = await new Berechnungen().StartJS(JSRuntime, Anzahl);
+  var mb = ITVisions.MathUtil.GetUsedRAM();
+  this.Dauer = $"{ms} ms für {Anzahl:###,###,##0} JS-Berechnungen / {mb}.";
+  Util.Log("Done: " + this.Dauer);
+
+ }
+
+}

@@ -1,0 +1,99 @@
+﻿@page "/Samples/SelectControl"
+<h3>Auswahlsteuerelemente</h3>
+
+<select class="form-control" @bind="Priority1">
+ <option value=""></option>
+ <option value="0">A - wichtig</option>
+ <option value="1">B</option>
+ <option value="2">C</option>
+</select>
+
+Aktueller Wert von @@Priority1: @Priority1
+
+@code
+{
+ public int Priority1 { get; set; } = 0;
+}
+<hr />
+<select class="form-control" @bind="Priority2">
+ <option value=""></option>
+ @foreach (var v in System.Enum.GetValues<Priorities>())
+ {
+  <option value="@v">@v</option>
+ }
+</select>
+Aktueller Wert von @@Priority2: @Priority2
+
+@code
+{
+ public enum Priorities
+ {
+  A, B, C
+ }
+
+ public Priorities Priority2 { get; set; } = Priorities.A;
+}
+
+<h3>Auswahlsteuerelemente mit Mehrfachauswahl</h3>
+
+<h5>Mehrfachauswahl mit statischen Optionen, Bindung an Array of String</h5>
+<p>
+ <select @bind="SelectedCities" multiple class="form-control">
+  <option value="E">Essen</option>
+  <option value="HH">Hamburg</option>
+  <option value="A">Augsburg</option>
+  <option value="B">Berlin</option>
+  <option value="F">Frankfurt</option>
+ </select>
+</p>
+
+<h5>Mehrfachauswahl mit Binding an Enumeration</h5>
+<p>
+ <select @bind="SelectedCars" multiple class="form-control">
+  @foreach (object s in System.Enum.GetValues(typeof(Cars)))
+  {
+   <option value="@s">@s (@((int)s))</option>
+  }
+ </select>
+</p>
+
+<h5>Mehrfachauswahl mit manueller Behandlung von onchange</h5>
+<p>
+ <select @onchange="SelectedCarsChanged" multiple class="form-control">
+  @foreach (object s in System.Enum.GetValues(typeof(Cars)))
+  {
+   <option value="@s">@s (@((int)s))</option>
+  }
+ </select>
+</p>
+
+<hr />
+<h5>
+ Gewählte Autohersteller
+</h5>
+@foreach (var c in SelectedCars)
+{
+ @c
+ <br />
+}
+<h5>Gewählte Städte</h5>
+@foreach (string s in SelectedCities)
+{
+ @s
+ <br>
+}
+@code {
+
+ public enum Cars { Audi, VW, BMW, Mercedes, Ford, Opel }
+
+ public Cars[] SelectedCars { get; set; } = new Cars[] { Cars.VW };
+ public string[] SelectedCities { get; set; } = new[] { "E", "B" };
+
+ void SelectedCarsChanged(ChangeEventArgs e)
+ {
+  string[] WerteAsString = (string[])e.Value;
+  // konvertieren von Array of String in Array of Cars
+  SelectedCars = WerteAsString.Select(a => (Cars)Enum.Parse(typeof(Cars), a)).ToArray();
+ }
+
+ }

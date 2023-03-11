@@ -1,0 +1,57 @@
+﻿@page "/Samples/AlertHost"
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+
+<h2>Meldungskomponente</h2>
+<hr />
+
+<div class="row">
+ <div class="col-xs-6">
+  <input type="text" @bind="text" class="form-control" />
+  <button @onclick="() =>   alertVisible = true" class="form-control">Zeige Meldung</button>
+  <button @onclick="() =>   alertVisible = false" class="form-control">Verstecke Meldung</button>
+ </div>
+ <div class="col-xs-6">
+  <select @bind="alertTypeString" class="form-control">
+   <option>danger</option>
+   <option>info</option>
+   <option>warning</option>
+   <option>success</option>
+  </select>
+ </div>
+</div>
+
+<hr />
+Hinweistyp: @alertType | Hinweis sichtbar: @alertVisible
+
+<hr />
+
+<Alert AlertType="@alertType" Visible="alertVisible" VisibleChanged="VisibleHasChanged">
+ <span class="oi oi-check mr-2"></span>
+ @text
+</Alert>
+
+@code
+{
+ bool alertVisible = false;
+ string alertTypeString = "info";
+ string text = "Das ist die Meldung!";
+
+ AlertType alertType
+ {
+  get
+  {
+   AlertType a = AlertType.info;
+   Enum.TryParse(this.alertTypeString, out a);
+   return a;
+  }
+  set
+  { }
+ }
+
+ void VisibleHasChanged(bool alertVisible)
+ {
+  this.alertVisible = alertVisible;
+  Util.Log("alertVisible=" + alertVisible);
+ }
+}

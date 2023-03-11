@@ -1,0 +1,102 @@
+﻿@page "/State"
+@page "/Samples/StateManagement"
+<h3>Blazor State Management Demo </h3>
+<h4>(C) Dr. Holger Schwichtenberg 2019-@DateTime.Now.Year</h4>
+
+@code {
+ string Counter1Visibility { get; set; } = "render + visible";
+ string Counter2Visibility { get; set; } = "render + visible";
+ string Counter3Visibility { get; set; } = "render + visible";
+ string Counter4Visibility { get; set; } = "render + visible";
+ string Counter5Visibility { get; set; } = "render + visible";
+ string Counter6Visibility { get; set; } = "render + visible";
+
+}
+
+@*@*------------------- Counter 1*@
+<hr />
+Settings for Counter 1 (local Component Property): <select @bind="Counter1Visibility">
+ <option>render + visible</option>
+ <option>do not render</option>
+ <option>render + invisible</option>
+</select>
+
+@if (Counter1Visibility != "do not render")
+{
+ <div style="@((Counter1Visibility != "render + invisible") ? "display:block" : "display:none")">
+  <Counter> </Counter>
+ </div>
+}
+
+@*@*------------------- Counter 2*@
+<hr />
+Settings for Counter 2 (local Component Property): <select @bind="Counter2Visibility">
+ <option>render + visible</option>
+ <option>do not render</option>
+ <option>render + invisible</option>
+</select>
+@if (Counter2Visibility != "do not render")
+{
+ <div style="@((Counter2Visibility != "render + invisible") ? "display:block" : "display:none")">
+  <Counter> </Counter>
+ </div>
+}
+
+@*@*------------------- Counter 3*@
+<hr />
+Settings for Counter 3 (TypedSessionState): <select @bind="Counter3Visibility">
+ <option>render + visible</option>
+ <option>do not render</option>
+ <option>render + invisible</option>
+</select>
+@if (Counter3Visibility != "do not render")
+{
+ <div style="@((Counter3Visibility != "render + invisible") ? "display:block" : "display:none")">
+  <CounterWithSessionState> </CounterWithSessionState>
+ </div>
+}
+
+@*------------------- Counter 4*@
+<hr />
+Settings for Counter 4 (GenericSessionState): <select @bind="Counter4Visibility">
+ <option>render + visible</option>
+ <option>do not render</option>
+ <option>render + invisible</option>
+</select>
+@if (Counter4Visibility != "do not render")
+{
+ <div style="@((Counter4Visibility != "render + invisible") ? "display:block" : "display:none")">
+  <CounterWithGenericSessionState ID="Counter4"> </CounterWithGenericSessionState>
+ </div>
+}
+
+
+
+@*------------------- Counter 5*@
+<hr />
+Settings for Counter 5 (Browser Local Storage): <select @bind="Counter2Visibility">
+ <option>render + visible</option>
+ <option>do not render</option>
+ <option>render + invisible</option>
+</select>
+@if (Counter5Visibility != "do not render")
+{
+ <div style="@((Counter5Visibility != "render + invisible") ? "display:block" : "display:none")">
+  <CounterWithBrowserLocalStorage ID="Counter5"> </CounterWithBrowserLocalStorage>
+ </div>
+}
+
+
+@*------------------- Counter 6*@
+<!--<hr />
+Settings for Counter 6 (Protected Browser Local Storage): <select @bind="Counter2Visibility">
+ <option>render + visible</option>
+ <option>do not render</option>
+ <option>render + invisible</option>
+</select>
+@if (Counter6Visibility != "do not render")
+{
+ <div style="@((Counter6Visibility != "render + invisible") ? "display:block" : "display:none")">
+  <CounterWithProtectedBrowserStorage ID="Counter5"> </CounterWithProtectedBrowserStorage>
+ </div>
+}-->

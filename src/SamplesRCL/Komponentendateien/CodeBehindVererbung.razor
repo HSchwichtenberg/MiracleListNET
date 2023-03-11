@@ -1,0 +1,22 @@
+﻿@page "/Samples/CodeBehindVererbung"
+@inherits CodeBehindVererbungModel;
+
+<h2>Code-Behind mit Vererbung</h2>
+X:
+<input id="x" type="number" @bind="X" />
+Y:
+<input id="y" type="number" @bind="Y" />
+<button @onclick="AddAsync">Add x + y</button>
+Sum: @Sum
+
+@code
+{ // hier kann auch Code enthalten sein, zusätzlich zu der Code-Behind-Datei
+ // aus Gründen der Übersichtlichkeit sollte man Code an zwei Orten aber vermeiden!
+ protected override void OnInitialized()
+ {
+  // Verwendet in die Basisklasse per DI injezierte Objekte
+  Util.Log("Razor-Seite.OnInitialized(): " + NavigationManager.Uri.ToString());
+  // Ruft danach noch das gleiche Ereignis in der Basisklasse
+  base.OnInitialized();
+ }
+}

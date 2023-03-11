@@ -1,0 +1,723 @@
+{
+	"info": {
+		"_postman_id": "0dd44b47-c3b3-47f8-a6d2-c446e7efeb39",
+		"name": "MiracleList-V2-APITests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "LOGIN ERROR http://localhost:8887/login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"ClientIDUnknown\"] = jsonData.message === \"Client-ID-Check: ClientIDUnknown\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"clientID\": \"test2\",\r\n  \"userName\": \"test2\",\r\n  \"password\": \"falsch\",\r\n  \"token\": \"\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{servername}}/login",
+					"protocol": "http",
+					"host": [
+						"{{servername}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN http://{{servername}}/login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"token\"] = jsonData.username === \"test\";",
+							"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"clientID\": \"11111111-1111-1111-1111-111111111111\",\r\n  \"userName\": \"test\",\r\n  \"password\": \"test\",\r\n  \"token\": \"\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{servername}}/login",
+					"protocol": "http",
+					"host": [
+						"{{servername}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN http://{{servername}}/login Init",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"token\"] = jsonData.username === \"test\";",
+							"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"clientID\": \"11111111-1111-1111-1111-111111111111\",\r\n  \"userName\": \"test\",\r\n  \"password\": \"test\",\r\n  \"token\": \"\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{servername}}/login",
+					"protocol": "http",
+					"host": [
+						"{{servername}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "V2 About http://{{servername}}/v2/about",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"// einfache Form, liefert keine detaillierte Fehlermeldung",
+							"//tests[\"Backend\"] = jsonData[1] === \"MiracleListBackend\";",
+							"//tests[\"DB\"] = jsonData[10] === \"Database Status: OK\";",
+							"",
+							"// Funktionsform, liefert detaillierte Fehlermeldung",
+							"pm.test(\"Database Status: OK\", () => {",
+							"    pm.expect(pm.response.text()).to.include(\"Database Status: OK\");",
+							"})",
+							"",
+							"pm.test(\"Erster Wert ist 'MiracleListBackend'\", () => {",
+							"    //parse the response JSON and test three properties",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(jsonData[1]).to.eql('MiracleListBackend');",
+							"});",
+							"",
+							"pm.test(\"Passwords sind ***\", () => {",
+							"    pm.expect(pm.response.text()).to.include(\"Password=***\");",
+							"    pm.expect(pm.response.text()).to.include(\"Pwd=***\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{servername}}/v2/about",
+					"protocol": "http",
+					"host": [
+						"{{servername}}"
+					],
+					"path": [
+						"v2",
+						"about"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "V2 CategorySet http://{{servername}}/V2/CategorySet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Cat1\"] = jsonData[1].name === \"Beruf\";",
+							"tests[\"Cat2\"] = jsonData[2].name === \"Haushalt\";",
+							"tests[\"Cat3\"] = jsonData[3].name === \"Freizeit\";",
+							"postman.setEnvironmentVariable(\"categoryID\", jsonData[0].categoryID);",
+							"postman.setEnvironmentVariable(\"taskID\", jsonData[0].taskSet[0].taskID);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "ML-AuthToken",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{servername}}/V2/CategorySet",
+					"protocol": "http",
+					"host": [
+						"{{servername}}"
+					],
+					"path": [
+						"V2",
+						"CategorySet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "V2 TaskSet http://{{servername}}/v2/taskset/{{categoryID}}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"title1\"] = jsonData[0].title === \"Beispielaufgaben erforschen\";",
+							"tests[\"title2\"] = jsonData[1].title === \"Verstehen, dass MiracleList eine Beispiel-Anwendung ist und kein fertiges Produkt.\";",
+							"tests[\"taskCount\"] = jsonData.length == 4;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "ML-AuthToken",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{servername}}/v2/taskset/{{categoryID}}",
+					"protocol": "http",
+					"host": [
+						"{{servername}}"
+					],
+					"path": [
+						"v2",
+						"taskset",
+						"{{categoryID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "V2 CreateCategory http://{{servername}}/V2/CreateCategory/{{$guid}}?",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var uuid = require('uuid'); // To load the uuid module of JS in the variable uuid. Require is used in JS to load a module.\r",
+							"var myUUID = uuid.v4(); // version 4 of UUID from the module loaded in the previous step is saved in variable myUUID.\r",
+							"console.log(myUUID); // This line is to print the value of myUUID on the console.\r",
+							"postman.setEnvironmentVariable(\"newCategoryName\", myUUID);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Neuer categoryName stimmt'\", () => {\r",
+							"    //parse the response JSON and test three properties\r",
+							"    const json = pm.response.json();\r",
+							"    pm.expect(json.name).to.eql(postman.getEnvironmentVariable(\"newCategoryName\"));\r",
+							"    postman.setEnvironmentVariable(\"newCategoryID\", json.categoryID);\r",
+							"});\r",
+							"\r",
+							"//postman.setNextRequest(\"V2 CreateTask http://{{servername}}/V2/CreateTask\");\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "ML-AuthToken",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{servername}}/V2/CreateCategory/{{newCategoryName}}?Content-Type=application/json&ML-AuthToken={{token}}",
+					"protocol": "http",
+					"host": [
+						"{{servername}}"
+					],
+					"path": [
+						"V2",
+						"CreateCategory",
+						"{{newCategoryName}}"
+					],
+					"query": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "ML-AuthToken",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "V2 CreateTask http://{{servername}}/V2/CreateTask",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var uuid = require('uuid'); // To load the uuid module of JS in the variable uuid. Require is used in JS to load a module.\r",
+							"var myUUID = uuid.v4(); // version 4 of UUID from the module loaded in the previous step is saved in variable myUUID.\r",
+							"console.log(myUUID); // This line is to print the value of myUUID on the console.\r",
+							"postman.setEnvironmentVariable(\"newTaskName\", myUUID);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Prüfe Task'\", () => {\r",
+							"    //parse the response JSON and test three properties\r",
+							"    const json = pm.response.json();\r",
+							"    pm.expect(json.title).to.eql(\"Testaufgabe\");\r",
+							"    pm.expect(json.categoryID.toString()).to.equal(pm.environment.get(\"newCategoryID\"));\r",
+							"    postman.setEnvironmentVariable(\"newTaskID\", json.taskID);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Setze neue Task ID'\", () => {\r",
+							"    //parse the response JSON and test three properties\r",
+							"    const json = pm.response.json();\r",
+							"    postman.setEnvironmentVariable(\"newTaskID\", json.taskID);\r",
+							"});\r",
+							"\r",
+							"//postman.setNextRequest(\"V2 Task http://{{servername}}/Task/{{newTaskID}}\");\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "ML-AuthToken",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"taskID\": 0,\r\n  \"title\": \"Testaufgabe\",\r\n  \"created\": \"2017-02-19T20:12:25.8233734\",\r\n  \"due\": \"2017-02-17T20:12:25.8233734\",\r\n  \"importance\": 0,\r\n  \"note\": \"Beispielaufgabe {{zeitpunkt}}\",\r\n  \"done\": false,\r\n  \"effort\": 2,\r\n  \"order\": 0,\r\n  \"subTaskSet\": [\r\n    {\r\n      \"subTaskID\": 0,\r\n      \"title\": \"Planen\",\r\n      \"done\": false,\r\n      \"created\": \"2017-02-19T20:12:25.8233734\",\r\n      \"taskID\": 0\r\n    },\r\n    {\r\n      \"subTaskID\": 0,\r\n      \"title\": \"Ausführen\",\r\n      \"done\": false,\r\n      \"created\": \"2017-02-19T20:12:25.8233734\",\r\n      \"taskID\": 0\r\n    }\r\n  ],\r\n  \"category\": null,\r\n  \"categoryID\": {{newCategoryID}}\r\n}"
+				},
+				"url": {
+					"raw": "http://{{servername}}/V2/CreateTask",
+					"protocol": "http",
+					"host": [
+						"{{servername}}"
+					],
+					"path": [
+						"V2",
+						"CreateTask"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "V2 Task http://{{servername}}/Task/{{newTaskID}}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Prüfe Task'\", () => {",
+							"    //parse the response JSON and test three properties",
+							"    const json = pm.response.json();",
+							"    pm.expect(json.title).to.eql(\"Testaufgabe\");",
+							"    pm.expect(json.taskID.toString()).to.equal(pm.environment.get(\"newTaskID\"));",
+							"    postman.setEnvironmentVariable(\"newTaskID\", json.taskID);",
+							"});",
+							"",
+							"pm.test(\"Prüfe Aufgabenkategorie'\", () => {",
+							"    //parse the response JSON and test three properties",
+							"    const json = pm.response.json();",
+							"    pm.expect(json.categoryID.toString()).to.equal(pm.environment.get(\"newCategoryID\"));",
+							"});",
+							"",
+							"pm.test(\"Setze neue Task ID'\", () => {",
+							"    //parse the response JSON and test three properties",
+							"    const json = pm.response.json();",
+							"    postman.setEnvironmentVariable(\"newTaskID\", json.taskID);",
+							"});",
+							"",
+							"//postman.setNextRequest(\"V2 ChangeTask http://{{servername}}/ChangeTask/\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const moment = require('moment');\r",
+							"pm.globals.set(\"zeitpunkt\", moment().format(\"MM/DD/YYYY hh:mm:ss\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "ML-AuthToken",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{servername}}/V2//Task/{{newTaskID}}",
+					"protocol": "http",
+					"host": [
+						"{{servername}}"
+					],
+					"path": [
+						"V2",
+						"",
+						"Task",
+						"{{newTaskID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "V2 ChangeTask http://{{servername}}/ChangeTask/",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Prüfe Task'\", () => {",
+							"    //parse the response JSON and test three properties",
+							"    const json = pm.response.json();",
+							"    pm.expect(json.title).to.eql(\"Testaufgabe\");",
+							"    pm.expect(json.taskID.toString()).to.equal(pm.environment.get(\"newTaskID\"));",
+							"    postman.setEnvironmentVariable(\"newTaskID\", json.taskID);",
+							"});",
+							"",
+							"pm.test(\"Prüfe Aufgabenkategorie'\", () => {",
+							"    //parse the response JSON and test three properties",
+							"    const json = pm.response.json();",
+							"    pm.expect(json.categoryID.toString()).to.equal(pm.environment.get(\"newCategoryID\"));",
+							"});",
+							"",
+							"pm.test(\"Setze neue Task ID'\", () => {",
+							"    //parse the response JSON and test three properties",
+							"    const json = pm.response.json();",
+							"    postman.setEnvironmentVariable(\"newTaskID\", json.taskID);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const moment = require('moment');\r",
+							"pm.globals.set(\"zeitpunkt\", moment().format(\"MM/DD/YYYY hh:mm:ss\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "ML-AuthToken",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskID\": {{newTaskID}},\n    \"title\": \"Testaufgabe\",\n    \"created\": \"2017-02-19T20:12:25.8233734\",\n    \"due\": \"2017-02-17T20:12:25.8233734\",\n    \"importance\": 0,\n    \"note\": \"Beispielaufgabe 01/07/2022 10:18:41\",\n    \"importanceNN\": 0,\n    \"dueNN\": \"2017-02-17T20:12:25.8233734\",\n    \"done\": false,\n    \"effort\": 2.0,\n    \"order\": 0,\n    \"dueInDays\": -1785,\n    \"subTaskSet\": [\n        {\n            \"subTaskID\": 138898,\n            \"title\": \"Planen\",\n            \"done\": false,\n            \"created\": \"2017-02-19T20:12:25.8233734\",\n            \"taskID\": {{newTaskID}}\n        },\n        {\n            \"subTaskID\": 138899,\n            \"title\": \"Ausführen\",\n            \"done\": false,\n            \"created\": \"2017-02-19T20:12:25.8233734\",\n            \"taskID\": {{newTaskID}}\n        }\n    ],\n    \"categoryID\": {{newCategoryID}}\n}"
+				},
+				"url": {
+					"raw": "http://{{servername}}/V2/ChangeTask/",
+					"protocol": "http",
+					"host": [
+						"{{servername}}"
+					],
+					"path": [
+						"V2",
+						"ChangeTask",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "V1 TaskSet http://{{servername}}/taskset/test/{{categoryID}}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"title1\"] = jsonData[0].title === \"Beispielaufgaben erforschen\";",
+							"tests[\"title2\"] = jsonData[1].title === \"Verstehen, dass MiracleList eine Beispiel-Anwendung ist und kein fertiges Produkt.\";",
+							"tests[\"taskCount\"] = jsonData.length == 4;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://{{servername}}/taskset/test/{{categoryID}}",
+					"protocol": "http",
+					"host": [
+						"{{servername}}"
+					],
+					"path": [
+						"taskset",
+						"test",
+						"{{categoryID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "V1 CategorySet http://{{servername}}/CategorySet/test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Cat1\"] = jsonData[1].name === \"Beruf\";",
+							"tests[\"Cat2\"] = jsonData[2].name === \"Haushalt\";",
+							"tests[\"Cat3\"] = jsonData[3].name === \"Freizeit\";",
+							"postman.setEnvironmentVariable(\"categoryID\", jsonData[0].categoryID);",
+							"postman.setEnvironmentVariable(\"taskID\", jsonData[0].taskSet[0].taskID);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://{{servername}}/CategorySet/test",
+					"protocol": "http",
+					"host": [
+						"{{servername}}"
+					],
+					"path": [
+						"CategorySet",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "V1 One Task http://{{servername}}/task/test/{{taskID}}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"title\"] = jsonData.title === \"Beispielaufgaben erforschen\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://{{servername}}/task/test/{{taskID}}",
+					"protocol": "http",
+					"host": [
+						"{{servername}}"
+					],
+					"path": [
+						"task",
+						"test",
+						"{{taskID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "V1 DueTaskSet http://{{servername}/DueTaskSet/test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"token\"] = jsonData.length > 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://{{servername}}/DueTaskSet/test",
+					"protocol": "http",
+					"host": [
+						"{{servername}}"
+					],
+					"path": [
+						"DueTaskSet",
+						"test"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

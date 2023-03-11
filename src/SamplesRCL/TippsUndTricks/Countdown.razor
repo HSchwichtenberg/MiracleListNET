@@ -1,0 +1,49 @@
+﻿@page "/Samples/Countdown"
+@using System.Threading;
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+@implements IDisposable
+
+<h3>Countdown</h3>
+
+<button @onclick="Start" class="btn btn-default" disabled="@(timer != null)">Start Countdown</button>
+@Ausgabe
+<br />
+@Count
+
+
+@code {
+ private int Count { get; set; } = 10;
+ private string Ausgabe { get; set; } = "";
+
+ System.Threading.Timer timer; // Außerhalb wegen GC!
+ void Start()
+ {
+  if (timer == null)
+  {
+   timer = new Timer(new TimerCallback(_ => Schritt()), null, 1000, 1000);
+   Ausgabe = "Timer gestartet...";
+  }
+ }
+
+ void Schritt()
+ {
+  // Calling StateHasChanged() from an arbitrary thread is not safe!!!
+  this.InvokeAsync(
+    () =>
+    {
+     if (Count <= 0) { Ausgabe = "Die Zeit ist um!"; return; }
+     Count--;
+     Util.Log(Count);
+     // Call to StateHasChanged() is necessary because otherwise
+     // Blazor would not recognize the state change and not refresh the UI
+     this.StateHasChanged();
+    });
+ }
+
+ public void Dispose()
+ {
+  // wichtig, damit Timer nicht weiterläuft, wenn die Komponente schon nicht mehr lebt
+  if (timer != null) timer.Dispose();
+ }
+}

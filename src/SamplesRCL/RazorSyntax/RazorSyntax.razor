@@ -1,0 +1,353 @@
+﻿@page  "/Samples/razorsyntax"
+@inject ITVisions.Blazor.BlazorUtil Util
+@using System
+@using ITVisions
+@using System.Collections.Generic
+
+<h2>Razor-Demos in Razor Component (Blazor)</h2>
+
+<style>
+ .intro {
+  font-weight: bold;
+ }
+
+ h4 {
+  background-color: skyblue;
+ }
+
+ h5 {
+  color: blue;
+ }
+
+ .kursiv {
+  font-style: italic;
+ }
+</style>
+
+@*#################### Blöcke*@
+<h4>
+ Razor-Blöcke
+</h4>
+@*
+ Dies ist ein mehrzeiliger
+ Kommentarblock *@
+
+@code {
+ // Codeblock
+ int anz = 5;
+
+ int GetAnzahl()
+ { return anz; }
+
+ DateTime start = DateTime.Now;
+ string ausgabe = "<i>kursiv</i>";
+ List<string> orte = new List<string>
+ () { "Essen", "Dortmund", "Bochum" };
+ // int X = 123; wäre doppelt!
+}
+
+<h5>
+ Block mit reinem Text (ohne HTML-Tag) mit &lt;text&gt;
+</h5>
+@{
+ {
+  <text> Anzahl: @anz
+  noch mehr reiner Text </text>
+ }
+}
+<h5> oder mit @@:</h5>
+@{
+ {
+  @: Anzahl: @anz
+  @: noch mehr reiner Text
+ } // Klammer muss in diesem Fall in getrennte Zeile!
+}
+
+<br />
+<h5>Funktion:</h5>
+@functions
+  {
+ string GetProzent(int anz)
+ {
+  return anz.ToString() + "%";
+ }
+}
+
+@code {
+ RenderFragment<int> RenderProzent = zahl => __builder =>
+ {<span style="color:red">Erledigt sind erst <strong>@zahl%</strong>!</span>};
+}
+
+<h5>Render-Funktionen</h5>
+
+<p>Zwischenstand: @RenderProzent(85)</p>
+
+@*
+ Razor-Helper nicht erlaubt in Blazor!
+ @helper GetProzent(int anz)
+ {
+ @: Erledigt sind <i>@anz%</i>
+ }
+ @GetProzent(10)*@
+<br />
+
+@*#################### Ausdrücke*@
+<h4> Ausdrücke</h4>
+
+<h5>Ausgabe von Variable, Field oder Property (HTML-encoded)</h5>
+@ausgabe
+<br />
+@anz
+<br />
+@this.anz
+<br />
+<h5>Ausgabe nicht HTML-Encoded (andere Razor-Formen: Html.Raw(ausgabe))</h5>
+@((MarkupString)ausgabe)
+<br />
+@((MarkupString)anz.ToString())
+<br />
+
+<h5>@@ und @@(...)</h5>
+  Durch das Leerzeichen ist der Punkt reiner Text.
+  Dies ist die @anz. Seite!
+  Ohne Leerzeichen braucht man hier Klammern!
+  Abgrenzung zwischen Operator und Text durch Klammerung:
+  Dies ist die @(anz).Seite!
+  Ausdrücke mit Operatoren brauchen Klammern:
+  Ergebnis: @(anz * 10 + 2)
+  Methodenaufruf
+  @orte.Count()
+  <h5>
+   Methodenaufruf mit Leerzeichen erfordert Klammern
+  </h5>
+  @(new Autor("HS").ToString())
+  @(new Autor("HS").GetInfo<string>())
+  <h5>Escape für @@</h5>
+  Variable @@anzahl enthält @anz.
+
+  Eine E-Mail-Adresse wird erkannt info@IT-Visions.de
+
+  @*##################### Ausdruck vs. Befehl*@
+
+  @*Nicht erlaubt*@
+  @*@<p style="Background-color: @{
+   if (x != 0) {<text>white</text>} else { <text>red</text>} }">Ausgabe</p>*@
+
+  <p style="Background-color: @( x!=0 ? "white":"red" )">Ausgabe</p>
+  <p style="Background-color: @( GetColor() )">Ausgabe</p>
+  @code
+{
+   public int x { get; set; } = 0;
+   public string GetColor()
+   {
+    if (x != 0)
+    { return "white"; }
+    else
+    { return "red"; }
+   }
+  }
+
+  @*<span>
+   Tag ohne Schluss führt zum Kompilierfehler!*@
+
+
+  @*#################### Bedingte Formatierung*@
+  <h4> Bedingte Formatierung</h4>
+
+  Dynamische Festlegung einer CSS - Klasse
+  @{ string cssklasse = "bg-success";
+  }
+  <div class="@cssklasse">Text</div>
+  Bedingte Festlegung einer CSS-Klasse
+  <div class="@(anz < 5? "bg-success" : "bg-danger")">Text</div>
+  Wenn cssklasse null ist, verschwindet das class-Attribut.
+  @{ cssklasse = null; }
+  <div class="@cssklasse">Text</div>
+  aber nicht, wenn es weitere CSS-Klassen gibt
+  <div class="@cssklasse kursiv">kursiver Text</div>
+
+  Bedingter Style: nur Wert dynamisch
+  <div style='color:@( anz<5 && orte != null ? "red" : "green" )'>
+   Zahl = @anz
+  </div>
+
+  Bedingter Style: Attribut und Wert dynamisch
+  <div style='@((anz <5 && orte != null ? "color:red" : "Background-color:red"))'>
+   Zahl = @anz
+  </div>
+
+
+  <div style='Background-color:@(this.X <5 && this.Result != null ? "#E0EEFA" : "red")'>
+   Variante 1a: Das Ergebnis ist: @this.Result
+  </div>
+
+  <div style='Background-color:@(anz <5 && orte != null ? "#E0EEFA" : "red")'>
+   Variante 1b: Das Ergebnis ist: @anz
+  </div>
+
+  @*Nicht mehr erlaubt*@
+  @*<div style='@{ (anz <5 && orte != null ? "Background-color:#E0EEFA" : "Background-color:red") }'>
+
+   Variante 2:  Das Ergebnis ist: @anz
+   </div>*@
+
+  @*Kompiliert nicht*@
+  @*<div @(anz <5 && orte != null ? "style='Background-color:#E0EEFA'" : "style='Background-color:red'")>
+   </div>*@
+
+  @*Das geht so nicht in Blazor*@
+  @*@if(true)
+   {
+    @:<div style="color:red">
+   }
+   else
+   {
+    @:<div style="color:green">
+    }
+    test
+
+    </div>*@
+
+  @*Richtig*@
+
+  Aus true wird hier checked
+  @{ var aktiv = true; }
+  <input type="checkbox" checked="@aktiv" />
+
+  @*#################### ViewData --> nicht in Blazor!*@
+  @*<h4>
+    ViewData
+   </h4>
+   @{
+    ViewData["Name"] = "Holger";
+   }
+   ViewData.Name=@ViewData["Name"]
+   ViewBag.Name=@ViewBag.Name*@
+
+  @*#################### Schleifen*@
+  <h4>Schleifen</h4>
+
+  @* for-Schleife*@
+  @for (int i = 0; i < anz; i++)
+  {<div>@start.AddDays(i)</div>}
+
+  @* for-Schleife*@
+  @{
+   // Reiner Text im Codeblock
+   for (int i = 0; i < anz; i++)
+   {
+    <text> Seite @i
+    noch mehr reiner Text </text>
+   }
+  }
+  <br />
+
+  @* for-Schleife*@
+  @{
+   // Reiner Text im Codeblock (Alternative Schreibweise)
+   for (int i = 0; i < anz; i++)
+   {
+    @: Seite @i
+    @: noch mehr reiner Text
+   }
+  }
+
+  @* while-Schleife*@
+  @while (anz * 10 < 100)
+  {
+   anz++;<div>@(anz * 10)% erledigt</div>
+  }
+
+  @* foreach-Schleife*@
+  @foreach (var ort in orte)
+  {
+   <a href="/flug/@ort">@ort</a>
+  }
+
+  @*#################### Bedingungen*@
+  <h4>
+   Bedingungen
+  </h4>
+
+  @if (anz < 100)
+  {<text>reiner Text und Ausdruck @anz</text> }
+ else
+ { <div>Tag und Ausdruck @anz</div>}
+
+  @*#################### Formulare*@
+  <h4>
+   Formulare
+  </h4>
+  X:
+  <input type="number" @bind="X" />
+  Y:
+  <input type="number" @bind="Y" />
+  <button @onclick="Add">x + y</button>
+  <button @onclick="() => Mult(X,Y)">x * y</button>
+  <button @onclick="(e) => ShowEventDetails(X,Y, e)">EventDetails</button>
+  Result: @Result
+
+
+  @{
+
+
+  }
+
+
+  @code
+  {
+   public decimal X { get; set; } = 1.23m;
+   public decimal? Y = 2.34m, Result = null;
+
+   public void Add()
+   {
+    Result = X + Y;
+    Util.Log($"{this.GetType().FullName}.Add(). X={X} Y={Y} Result={Result}");
+   }
+
+   public void Mult(decimal? x, decimal? y)
+   {
+    Result = X * Y;
+    Util.Log($"{this.GetType().FullName}.Mult(). X={X} Y={Y} Result={Result}");
+   }
+
+   public void ShowEventDetails(decimal? x, decimal? y, Microsoft.AspNetCore.Components.Web.MouseEventArgs e)
+   {
+    Util.Log($"{this.GetType().FullName}.EventInfo(). e={e.GetType().FullName}:{e.ToNameValueString()}");
+   }
+
+
+  }
+
+
+
+  }
+
+  @*@using (Html.BeginForm("Neu", "Flug", FormMethod.Post))
+   {
+   @Html.ValidationSummary("Fehleingaben:")
+   <div>
+    FlugNr @Html.TextBoxFor(x => x.FlugNr, new { @class = "form-control", disabled = "disabled" })
+    @Html.ValidationMessageFor(x => x.FlugNr, "", new { @class = "text-danger" })<br />
+    @{
+    var orteItems1 = orte.Select(x => new SelectListItem { Text = x, Value = x }).ToList();
+    }
+    Abflugort: @Html.DropDownListFor(x => x.Abflugort, orteItems1, "offen", new { @class = "form-control" }) <br />
+    Nichtraucherflug: @Html.CheckBoxFor(x => x.NichtRaucherFlug, new { @class = "form-control" }) <br />
+    <button type="submit" class="btn btn-default">Speichern</button>
+   </div>
+   }*@
+
+  <form asp-action="Fluganlegen" asp-controller="Flug" method="POST">
+   <div asp-validation-summary="All"></div>
+   <div>
+    FlugNr <input asp-for="FlugNr" class="form-control" disabled="disabled" />
+    <span asp-validation-for="FlugNr" class="text-danger"></span><br />
+    @{
+     var orteItems2 = orte.Select(x => new SelectListItem { Text = x, Value = x }).ToList();
+    }
+    Abflugort: <select asp-for="Abflugort" asp-items="orteItems2" class="form-control"></select> <br />
+    Nichtraucherflug: <input type="checkbox" asp-for="NichtRaucherFlug" class="form-control" /> <br />
+    <button type="submit" class="btn btn-default">Speichern</button>
+   </div>
+  </form>s

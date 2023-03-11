@@ -1,0 +1,14 @@
+﻿@page "/EditorRequiredDemo"
+@using  Samples.Komponenteneinbettung.Komponentenhost_ValueType
+
+<h3>EditorRequiredDemo</h3>
+
+@code {
+
+}
+
+<h2>Hier ist der Parameter vorhanden</h2>
+<CounterPanel StartValue="42" />
+
+<h2>Hier fehlt (absichtlich) der Parameter (daher eine Warnung in Visual Studio!!!)</h2>
+<CounterPanel />

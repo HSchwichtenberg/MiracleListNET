@@ -1,0 +1,10 @@
+﻿.MLPanel {
+ padding-right: 2px;
+ padding-left: 2px;
+}
+
+.MLcheckbox {
+ width: 30px;
+ height: 30px;
+ display: inline;
+}

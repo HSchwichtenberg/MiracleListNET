@@ -1,5 +1,4 @@
 <h2>Über MiracleList</h2>
-<br />
 <p>
  MiracleList ist eine umfangreiche, sehr realitätsnahe Beispielanwendung, die ähnliche Konzepte wie das inzwischen leider eingestellte <a href="https://de.wikipedia.org/wiki/Wunderlist">Wunderlist</a> bietet. Diese Beispielanwendung verwendet <a href="https://www.dotnet-doktor.de">Dr. Holger Schwichtenberg</a> in seinen <a href="https://www.IT-Visions.de/Verlag">Fachbüchern</a>, <a href="https://www.IT-Visions.de/Schulungen">Schulungen</a> und <a href="https://www.IT-Visions.de/Vortraege">Vorträgen</a>. 
  
@@ -8,7 +7,7 @@
  </div>
 </p>
 
-<h2>Vier Blazor-Implementierung der MiracleList</h2>
+<h2>Vier Blazor-Implementierungen der MiracleList</h2>
 
  Es gibt vier auf ASP.NET Core Blazor basierende Implementierung des MiracleList-Frontends:
 <ul>
@@ -47,9 +46,9 @@
 <h2>MiracleList-Live-Systeme in der Cloud</h2>
 <ul>
  <li>Backend mit C#/ASP.NET Core: <a href="https://miraclelistbackend.azurewebsites.net" rel="nofollow">https://miraclelistbackend.azurewebsites.net</a></li>
- <li>Web-Frontend C#/Blazor Server: <a href="http://miraclelist-bs.azurewebsites.net" rel="nofollow">http://miraclelist-bs.azurewebsites.net</a></li>
- <li>Web-Frontend C#/Blazor WebAssembly: <a href="http://miraclelist-bw.azurewebsites.net" rel="nofollow">http://miraclelist-bw.azurewebsites.net</a></li>
- <li>Web-Frontend TypeScript/Vue.js: <a href="http://www.miraclelist-vue.net" rel="nofollow">http://www.miraclelist-vue.net</a></li>
+ <li>Web-Frontend C#/Blazor Server: <a href="https://miraclelist-bs.azurewebsites.net" rel="nofollow">https://miraclelist-bs.azurewebsites.net</a></li>
+ <li>Web-Frontend C#/Blazor WebAssembly: <a href="https://miraclelist-bw.azurewebsites.net" rel="nofollow">https://miraclelist-bw.azurewebsites.net</a></li>
+ <li>Web-Frontend TypeScript/Vue.js: <a href="https://miraclelist-vue.azurewebsites.net/" rel="nofollow">https://miraclelist-vue.azurewebsites.net/</a></li>
  <li>Web-Frontend TypeScript/Angular: <a href="http://www.miraclelist.net" rel="nofollow">http://www.miraclelist.net</a></li>
 
  <li>Windows-Client TypeScript/Angular/Electron: <a href="https://Miraclelist.azurewebsites.net/download/MiracleListElectron-win32-x64.rar" rel="nofollow">https://Miraclelist.azurewebsites.net/download/MiracleListElectron-win32-x64.rar</a></li>

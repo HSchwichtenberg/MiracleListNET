@@ -5,12 +5,10 @@ and the Blazor-based implementations of the MiracleList-Clients: Blazor WebAssem
 # URLs to the Live-Systems in the Azure cloud
 - Blazor-Server-based Frontend: http://miraclelist-bs.azurewebsites.net
 - Blazor-Webassembly-based Frontend: http://miraclelist-bw.azurewebsites.net
-- Angular-based Frontend: http://miraclelist.azurewebsites.net
-- Vue.js-based Frontend: http://miraclelist-vue.azurewebsites.net
 - Backend: http://miraclelistbackend.azurewebsites.net
 
 # Used frameworks and tools
-Backend
+Backend:
 - .NET with C# 		
 - Entity Framework Core 
 - SQL Azure
@@ -33,11 +31,11 @@ Frontend:
 - Package Manager Console: Run: Update-Database
 
 # Set the connection string to your database
-in: MiracleList_BD/appsettings.json
-in: MiracleList_BS/appsettings.json
-in: MiracleList_Backend/appsettings.json
-in: EFC_Tools/appsettings.json
-in: Tests/appsettings.json
+- in: MiracleList_BD/appsettings.json
+- in: MiracleList_BS/appsettings.json
+- in: MiracleList_Backend/appsettings.json
+- in: EFC_Tools/appsettings.json
+- in: Tests/appsettings.json
 
 # Only for for MiracleList_BW and MiracleList_BM running against the existing Cloud-Backend !!!
 - Open https://miraclelistbackend.azurewebsites.net/
@@ -49,8 +47,7 @@ in: Tests/appsettings.json
 1. Start the Server MiracleList_Backend
 2. Open the running site in the browser
 3. complete the form "Apply for Client ID"
-4. Get the Client-ID from the Email account
-If you dind't receive an e-mail: Open the table "Client" in the database to get the created Client-ID
+4. Get the Client-ID from the Email account. If you dind't receive an e-mail: Open the table "Client" in the database to get the created Client-ID
 5. Set the Client-ID in File MiracleList_BW/wwwRoot/appSettings.json
 6. Set the your server-URL in "Backend/DebugURL" in File MiracleList_BW/wwwRoot/appsettings.json
 
@@ -59,4 +56,4 @@ If you dind't receive an e-mail: Open the table "Client" in the database to get 
 
 # Test the Website
 - View in Browser (STRG SHIFT W)
-- http://localhost:8887/index.html
+- or Start Debugging (F5)

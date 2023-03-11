@@ -1,9 +1,9 @@
-<h2>Über MiracleList</h2>
+<h2>Ãœber MiracleList</h2>
 <p>
- MiracleList ist eine umfangreiche, sehr realitätsnahe Beispielanwendung, die ähnliche Konzepte wie das inzwischen leider eingestellte <a href="https://de.wikipedia.org/wiki/Wunderlist">Wunderlist</a> bietet. Diese Beispielanwendung verwendet <a href="https://www.dotnet-doktor.de">Dr. Holger Schwichtenberg</a> in seinen <a href="https://www.IT-Visions.de/Verlag">Fachbüchern</a>, <a href="https://www.IT-Visions.de/Schulungen">Schulungen</a> und <a href="https://www.IT-Visions.de/Vortraege">Vorträgen</a>. 
+ MiracleList ist eine umfangreiche, sehr realitÃ¤tsnahe Beispielanwendung, die Ã¤hnliche Konzepte wie das inzwischen leider eingestellte <a href="https://de.wikipedia.org/wiki/Wunderlist">Wunderlist</a> bietet. Diese Beispielanwendung verwendet <a href="https://www.dotnet-doktor.de">Dr. Holger Schwichtenberg</a> in seinen <a href="https://www.IT-Visions.de/Verlag">FachbÃ¼chern</a>, <a href="https://www.IT-Visions.de/Schulungen">Schulungen</a> und <a href="https://www.IT-Visions.de/Vortraege">VortrÃ¤gen</a>. 
  
  <div class="alert alert-info">
-  Während in vielen Veröffentlichungen und Weiterbildungsmaßen immer nur einzelne kleine, aus dem Kontext gerissene Beispiele gezeigt werden, dient MiracleList dazu, Softwareentwicklern möglichst viele Funktionen in einem praxisnahen Gesamtzusammenhang zu zeigen.
+  WÃ¤hrend in vielen VerÃ¶ffentlichungen und WeiterbildungsmaÃŸen immer nur einzelne kleine, aus dem Kontext gerissene Beispiele gezeigt werden, dient MiracleList dazu, Softwareentwicklern mÃ¶glichst viele Funktionen in einem praxisnahen Gesamtzusammenhang zu zeigen.
  </div>
 </p>
 
@@ -11,19 +11,22 @@
 
  Es gibt vier auf ASP.NET Core Blazor basierende Implementierung des MiracleList-Frontends:
 <ul>
- <li><b>MiracleList_BW</b>: MiracleList mit Blazor WebAssembly (3-Tier mit Zugriff auf die Daten über WebAPI-basierten Application Server)</li>
+ <li><b>MiracleList_BW</b>: MiracleList mit Blazor WebAssembly (3-Tier mit Zugriff auf die Daten Ã¼ber WebAPI-basierten Application Server)</li>
  <li><b>MiracleList_BS</b>: MiracleList mit Blazor Server (2-Tier mit Direktzugriff auf die Datenbank)</li>
  <li><b>MiracleList_BD</b>: MiracleList mit Blazor Desktop in einer WPF-Rahmenanwendung (2-Tier mit Direktzugriff auf die Datenbank)</li>
- <li><b>MiracleList_BM</b>: MiracleList mit Blazor MAUI (3-Tier mit Zugriff auf die Daten über WebAPI-basierten Application Server)</li>
+ <li><b>MiracleList_BM</b>: MiracleList mit Blazor MAUI (3-Tier mit Zugriff auf die Daten Ã¼ber WebAPI-basierten Application Server)</li>
 </ul>
+
+<h2>Architektur der Blazor-Implementierungen der MiracleList</h2>
+![image](https://user-images.githubusercontent.com/3673169/224501737-dbe842a5-4db4-455f-a287-655c71b73967.png)
 
 <h2>Features der Blazor-Implementierung der MiracleList</h2>
 
 <p>Welche Funktionen die Blazor-Implementierungen der MiracleList aus Benutzersicht bieten, finden Sie in der Tabelle auf <a href="http://www.MiracleList.net">www.MiracleList.net</a></p>
 
-<p>Aus technischer Sicht demonstrieren die Blazor-Implementierungen der MiracleList für Softwareentwickler folgende Funktionen von Blazor </p>
+<p>Aus technischer Sicht demonstrieren die Blazor-Implementierungen der MiracleList fÃ¼r Softwareentwickler folgende Funktionen von Blazor </p>
 <ul>
- <li>Alle vier Blazor-Varianten (Blazor WebAssembly,Blazor Server,Blazor Desktop, Blazor MAUI) für Browser und als Hybridanwendung</li>
+ <li>Alle vier Blazor-Varianten (Blazor WebAssembly,Blazor Server,Blazor Desktop, Blazor MAUI) fÃ¼r Browser und als Hybridanwendung</li>
  <li>Sehr viel Shared Code zwischen allen Blazor-Varianten mit einem gemeinsamen UI in einer Razor Class Library </li>
  <li>Abstraktion zwischen einer 2-Tier- und 3-Tier-Anwendung: Mit dem gleichen Komponenten sowohl direkt auf eine Datenbank zugreifen als auch Nutzung von WebAPIs auf einem Application Server</li>
  <li>Listenansichten mit Suchen und Filtern</li>
@@ -32,10 +35,10 @@
  <li>Tastaturereignisse</li>
  <li>Editierbares Datagrid</li>
  <li>Drag&Drop</li>
- <li>Kontextmenüs</li>
+ <li>KontextmenÃ¼s</li>
  <li>Modale Dialoge</li>
  <li>Toast-Benachrichtigungen</li>
- <li>Ständig aktualisierte Statusanzeige für Backendsysteme</li>
+ <li>StÃ¤ndig aktualisierte Statusanzeige fÃ¼r Backendsysteme</li>
  <li>Generierung eines Berichts via Microsoft Word (nur in Hybridanwendung)</li>
  <li>Authentifizierung und Autorisierung</li>
  <li>Nutzung des Local Storage des Browsers</li>
@@ -74,10 +77,10 @@ Frontend:
 - .NET-MAUI mit Blazor-MAUI
 
 ## Erstellen Sie die Datenbank
-- Ändern Sie die Verbindungszeichenfolge in: DA/Context.cs
+- Ã„ndern Sie die Verbindungszeichenfolge in: DA/Context.cs
 - Projektmappen-Explorer: Als Startprojekt festlegen = EFCTools
 - Paket-Manager-Konsole: Standardprojekt = DA
-- Paket-Manager-Konsole: Ausführen: Update-Database
+- Paket-Manager-Konsole: AusfÃ¼hren: Update-Database
 
 ## Setzen Sie die Verbindungszeichenfolge auf Ihre Datenbank
 - in: MiracleList_BD/appsettings.json
@@ -86,19 +89,19 @@ Frontend:
 - in: EFC_Tools/appsettings.json
 - in: Tests/appsettings.json
 
-## Nur für MiracleList_BW und MiracleList_BM, die gegen das vorhandene Cloud-Backend laufen !!!
-- Öffnen Sie https://miraclelistbackend.azurewebsites.net/
-- Füllen Sie das Formular „Kunden-ID beantragen“ aus
+## Nur fÃ¼r MiracleList_BW und MiracleList_BM, die gegen das vorhandene Cloud-Backend laufen !!!
+- Ã–ffnen Sie https://miraclelistbackend.azurewebsites.net/
+- FÃ¼llen Sie das Formular â€žKunden-ID beantragenâ€œ aus
 - Holen Sie sich die Client-ID aus dem E-Mail-Konto
 - Setzen Sie die Client-ID in der Datei MiracleList_BW/wwwRoot/appSettings.json
 
-## Nur für MiracleList_BW und MiracleList_BM, die auf Ihrem lokalen Server laufen !!!
+## Nur fÃ¼r MiracleList_BW und MiracleList_BM, die auf Ihrem lokalen Server laufen !!!
 1. Starten Sie den Server MiracleList_Backend
-2. Öffnen Sie die laufende Site im Browser
-3. Füllen Sie das Formular „Kunden-ID beantragen“ aus
-4. Holen Sie sich die Client-ID aus dem E-Mail-Konto. Wenn Sie keine E-Mail erhalten haben: Öffnen Sie die Tabelle "Client" in der Datenbank, um die erstellte Client-ID zu erhalten
+2. Ã–ffnen Sie die laufende Site im Browser
+3. FÃ¼llen Sie das Formular â€žKunden-ID beantragenâ€œ aus
+4. Holen Sie sich die Client-ID aus dem E-Mail-Konto. Wenn Sie keine E-Mail erhalten haben: Ã–ffnen Sie die Tabelle "Client" in der Datenbank, um die erstellte Client-ID zu erhalten
 5. Legen Sie die Client-ID in der Datei MiracleList_BW/wwwRoot/appSettings.json fest
-6. Setzen Sie Ihre Server-URL in „Backend/DebugURL“ in der Datei MiracleList_BW/wwwRoot/appsettings.json
+6. Setzen Sie Ihre Server-URL in â€žBackend/DebugURLâ€œ in der Datei MiracleList_BW/wwwRoot/appsettings.json
 
 <h2>Weitere Informationen</h2>
 <ul>

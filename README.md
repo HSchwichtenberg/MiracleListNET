@@ -18,7 +18,7 @@
 </ul>
 
 <h2>Architektur der Blazor-Implementierungen der MiracleList</h2>
-![image](https://user-images.githubusercontent.com/3673169/224501737-dbe842a5-4db4-455f-a287-655c71b73967.png)
+<img src="https://user-images.githubusercontent.com/3673169/224501737-dbe842a5-4db4-455f-a287-655c71b73967.png">
 
 <h2>Features der Blazor-Implementierung der MiracleList</h2>
 

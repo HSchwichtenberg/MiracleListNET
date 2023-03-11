@@ -55,7 +55,8 @@
 </ul>
 
 <h2>Architektur der Blazor-Implementierungen der MiracleList</h2>
-
+<img src="https://user-images.githubusercontent.com/3673169/224501737-dbe842a5-4db4-455f-a287-655c71b73967.png">
+<p>Abbildung: Die vier Blazor-Implementierungen der MiracleList verwenden sehr viel gemeinsamen Code.</p>
 
 ## Verwendete Frameworks und Tools
 Backend:

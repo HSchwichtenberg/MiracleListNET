@@ -57,7 +57,7 @@
  <li>Linux-Client TypeScript/Angular/Electron: <a href="https://Miraclelist.azurewebsites.net/download/MiracleListElectron-linux-x64.rar" rel="nofollow">https://Miraclelist.azurewebsites.net/download/MiracleListElectron-linux-x64.rar</a></li>
 </ul>
 
-# Verwendete Frameworks und Tools
+## Verwendete Frameworks und Tools
 Backend:
 - .NET mit C#
 - Entity Framework-Kern
@@ -74,26 +74,26 @@ Frontend:
 - Windows Presentation Foundation (WPF) mit Blazor Desktop
 - .NET-MAUI mit Blazor-MAUI
 
-# Erstellen Sie die Datenbank
+## Erstellen Sie die Datenbank
 - Ändern Sie die Verbindungszeichenfolge in: DA/Context.cs
 - Projektmappen-Explorer: Als Startprojekt festlegen = EFCTools
 - Paket-Manager-Konsole: Standardprojekt = DA
 - Paket-Manager-Konsole: Ausführen: Update-Database
 
-# Setzen Sie die Verbindungszeichenfolge auf Ihre Datenbank
+## Setzen Sie die Verbindungszeichenfolge auf Ihre Datenbank
 - in: MiracleList_BD/appsettings.json
 - in: MiracleList_BS/appsettings.json
 - in: MiracleList_Backend/appsettings.json
 - in: EFC_Tools/appsettings.json
 - in: Tests/appsettings.json
 
-# Nur für MiracleList_BW und MiracleList_BM, die gegen das vorhandene Cloud-Backend laufen !!!
+## Nur für MiracleList_BW und MiracleList_BM, die gegen das vorhandene Cloud-Backend laufen !!!
 - Öffnen Sie https://miraclelistbackend.azurewebsites.net/
 - Füllen Sie das Formular „Kunden-ID beantragen“ aus
 - Holen Sie sich die Client-ID aus dem E-Mail-Konto
 - Setzen Sie die Client-ID in der Datei MiracleList_BW/wwwRoot/appSettings.json
 
-# Nur für MiracleList_BW und MiracleList_BM, die auf Ihrem lokalen Server laufen !!!
+## Nur für MiracleList_BW und MiracleList_BM, die auf Ihrem lokalen Server laufen !!!
 1. Starten Sie den Server MiracleList_Backend
 2. Öffnen Sie die laufende Site im Browser
 3. Füllen Sie das Formular „Kunden-ID beantragen“ aus

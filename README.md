@@ -31,7 +31,7 @@
 
 <p>Welche Funktionen die Blazor-Implementierungen der MiracleList aus Benutzersicht bieten, finden Sie in der Tabelle auf <a href="http://www.MiracleList.net">www.MiracleList.net</a></p>
 
-<p>Aus technischer Sicht demonstrieren die Blazor-Implementierungen der MiracleList für Softwareentwickler folgende Funktionen von Blazor </p>
+<p>Aus technischer Sicht demonstrieren die Blazor-Implementierungen der MiracleList für Softwareentwickler folgende Funktionen von Blazor:</p>
 <ul>
  <li>Alle vier Blazor-Varianten (Blazor WebAssembly,Blazor Server,Blazor Desktop, Blazor MAUI) für Browser und als Hybridanwendung</li>
  <li>Sehr viel Shared Code zwischen allen Blazor-Varianten mit einem gemeinsamen UI in einer Razor Class Library </li>
@@ -51,6 +51,7 @@
  <li>Nutzung des Local Storage des Browsers</li>
  <li>Fenster-Synchronisation mit Push-Nachrichten via ASP.NET Core SignalR</li>
  <li>Progressive Web App (nur Blazor WebAssembly)</li>
+ <li>Einsatz kostenfreier Zusatzkomponenten</li>
 </ul>
 
 <h2>MiracleList-Live-Systeme in der Cloud</h2>
@@ -69,40 +70,39 @@
 ## Verwendete Frameworks und Tools
 Backend:
 - .NET mit C#
-- Entity Framework-Kern
-- SQL-Azure
+- Entity Framework Core
+- SQL Azure
 - ASP.NET Core-WebAPI
-- Anwendungseinblicke
 - Swagger/Swashbuckle.AspNetCore
 - HTTP-Tests mit Postman
 
 Frontend:
 - .NET
-- ASP.NET Core Blazor-Server
-- ASP.NET Core Blazor-Webassembly
+- ASP.NET Core Blazor Server
+- ASP.NET Core Blazor Webassembly
 - Windows Presentation Foundation (WPF) mit Blazor Desktop
-- .NET-MAUI mit Blazor-MAUI
+- .NET MAUI mit Blazor MAUI
 
-## Erstellen Sie die Datenbank
+## Erstellen Sie die Datenbank (nur für Backend und 2-Tier-Varianten notwendig!)
 - Ändern Sie die Verbindungszeichenfolge in: DA/Context.cs
-- Projektmappen-Explorer: Als Startprojekt festlegen = EFCTools
-- Paket-Manager-Konsole: Standardprojekt = DA
-- Paket-Manager-Konsole: Ausführen: Update-Database
+- Projektmappen Explorer: Als Startprojekt festlegen = EFCTools
+- Package Manager Console: Standardprojekt = DA
+- Package Manager Console: Ausführen: Update-Database
 
-## Setzen Sie die Verbindungszeichenfolge auf Ihre Datenbank
+## Setzen Sie die Verbindungszeichenfolge auf Ihre Datenbank (nur für Backend und 2-Tier-Varianten notwendig!)
 - in: MiracleList_BD/appsettings.json
 - in: MiracleList_BS/appsettings.json
 - in: MiracleList_Backend/appsettings.json
 - in: EFC_Tools/appsettings.json
 - in: Tests/appsettings.json
 
-## Nur für MiracleList_BW und MiracleList_BM, die gegen das vorhandene Cloud-Backend laufen !!!
+## Nur für MiracleList_BW und MiracleList_BM, wenn Sie das vorhandene Cloud-Backend verwenden wollen
 - Öffnen Sie https://miraclelistbackend.azurewebsites.net/
 - Füllen Sie das Formular „Kunden-ID beantragen“ aus
 - Holen Sie sich die Client-ID aus dem E-Mail-Konto
 - Setzen Sie die Client-ID in der Datei MiracleList_BW/wwwRoot/appSettings.json
 
-## Nur für MiracleList_BW und MiracleList_BM, die auf Ihrem lokalen Server laufen !!!
+## Nur für MiracleList_BW und MiracleList_BM, wenn diese auf Ihrem lokalen Server laufen
 1. Starten Sie den Server MiracleList_Backend
 2. Öffnen Sie die laufende Site im Browser
 3. Füllen Sie das Formular „Kunden-ID beantragen“ aus

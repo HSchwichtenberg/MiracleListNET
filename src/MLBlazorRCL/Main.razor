@@ -90,7 +90,7 @@
   }
   else {
    @*Suchergebnisse anzeigen*@
-   <h4 style="margin-top:9px;margin-bottom:6px">Search Results in @searchResultSet.Count Categories</h4>
+   <h4 style="margin-top:9px;margin-bottom:6px">@searchResultSet.Sum(x=>x.TaskSet.Count) Suchergebnisse in @searchResultSet.Count Kategorien</h4>
    @foreach (BO.Category c in searchResultSet) {
     <h5 class="blue">Category <b>@c.Name</b></h5>
     <div style="margin-bottom:5px;">

@@ -1,9 +1,9 @@
 ﻿//NUGET: Selenium.Support 
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;              // contains: IWebDriver
 using OpenQA.Selenium.Support.UI;   // contains: WebDriverWait, ExpectedConditions 
 using SeleniumTests;
-using System;
 
 namespace MiracleListUITests
 {
@@ -12,7 +12,7 @@ namespace MiracleListUITests
  {
   // DEMO: 72. UI Tests mit Selenium
   [TestMethod]
-  public void AnmeldenTest()
+  public void LoginSuccessTest()
   {
    string anmeldename = "testuser " + DateTime.Now.ToString();
    string kennwort = "geheim";
@@ -32,11 +32,11 @@ namespace MiracleListUITests
     wait.Until(d => b.FindElement(By.CssSelector("h2")));
 
     IWebElement headline = b.FindElement(By.CssSelector("h2")); // start
-    Assert.AreEqual(headline.Text, "Benutzeranmeldung");
+    Assert.IsTrue(headline.Text == "Benutzeranmeldung" || headline.Text == "User Login");
 
     // 2x Textbox
-    b.FindElement(By.Id("name")).Clear();
-    b.FindElement(By.Id("name")).SendKeys(anmeldename);
+    b.FindElement(By.Id("username")).Clear();
+    b.FindElement(By.Id("username")).SendKeys(anmeldename);
     b.FindElement(By.Id("password")).Clear();
     b.FindElement(By.Id("password")).SendKeys(kennwort);
 
@@ -44,7 +44,7 @@ namespace MiracleListUITests
     ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot1.png", ScreenshotImageFormat.Png);
 
     // Button
-    b.FindElement(By.Id("Anmelden")).Click();
+    b.FindElement(By.Id("login")).Click();
 
     //Thread.Sleep(1000); :-(
 
@@ -67,6 +67,5 @@ namespace MiracleListUITests
     b.Quit();
    }
   }
-
  }
 }

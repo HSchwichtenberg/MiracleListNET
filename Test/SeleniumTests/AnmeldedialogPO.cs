@@ -1,9 +1,9 @@
-﻿using OpenQA.Selenium;
-using SeleniumExtras.PageObjects;
-using SeleniumTests;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using OpenQA.Selenium;
+using SeleniumExtras.PageObjects;
+using SeleniumTests;
 
 namespace MiracleListClientSeleniumTestsCore
 {
@@ -18,24 +18,24 @@ namespace MiracleListClientSeleniumTestsCore
    this.driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(Util.GetTimeoutSec());
 
    // Wäre unnötig mit Pagefactory
-   this.Name = driver.FindElement(By.Id("name"));
+   this.Username = driver.FindElement(By.Id("username"));
    this.Password = driver.FindElement(By.Id("password"));
-   this.Anmelden = driver.FindElement(By.Id("Anmelden"));
+   this.Login = driver.FindElement(By.Id("login"));
   }
 
-  [FindsBy(How = How.Id, Using = "name")]
-  public IWebElement Name;
+  [FindsBy(How = How.Id, Using = "username")]
+  public IWebElement Username;
 
   [FindsBy(How = How.Id, Using = "password")]
   public IWebElement Password;
 
-  [FindsBy(How = How.Id, Using = "Anmelden")]
-  public IWebElement Anmelden;
+  [FindsBy(How = How.Id, Using = "login")]
+  public IWebElement Login;
 
   public void SetName(string anmeldename)
   {
-   this.Name.Clear();
-   this.Name.SendKeys(anmeldename);
+   this.Username.Clear();
+   this.Username.SendKeys(anmeldename);
   }
 
   public void SetPassword(string kennwort)
@@ -44,9 +44,9 @@ namespace MiracleListClientSeleniumTestsCore
    this.Password.SendKeys(kennwort);
   }
 
-  public void ClickAnmelden()
+  public void ClickLogin()
   {
-   this.Anmelden.Click();
+   this.Login.Click();
   }
 
   public IWebElement LoggedInUser

@@ -25,7 +25,7 @@
   <div class="row">
    <div class="col-xs-12 form-group">
     <label for="name">E-Mail-Adresse:</label>
-    <input name="name" @bind="this.Username" id="name" type="text" placeholder="Ihre E-Mail-Adresse" required class="form-control">
+    <input name="username" @bind="this.Username" id="username" type="text" placeholder="Ihre E-Mail-Adresse" required class="form-control">
    </div>
   </div>
 
@@ -53,7 +53,7 @@
    </div>
   </div>
 
-  <button @onclick="Login" class="btn btn-primary" type="submit" id="Anmelden" name="Anmelden">Anmelden</button>
+  <button @onclick="Login" class="btn btn-primary" type="submit" id="login" name="login">Anmelden</button>
 
   <span id="errorMsg" class="text-danger">@ErrorMsg</span>
  </div>

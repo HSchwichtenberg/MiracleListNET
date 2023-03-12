@@ -30,11 +30,11 @@ namespace MiracleListUITests
 
     // Anmeldedialog
     var po = new AnmeldedialogPO(b);
-    po.Name.Clear();
-    po.Name.SendKeys(anmeldename);
+    po.Username.Clear();
+    po.Username.SendKeys(anmeldename);
     po.Password.Clear();
     po.Password.SendKeys(kennwort);
-    po.Anmelden.Click();
+    po.Login.Click();
 
     // Main Page
     var mpo = new MainPO(b);
@@ -101,7 +101,7 @@ namespace MiracleListUITests
 
     po.SetName(anmeldename);
     po.SetPassword(kennwort);
-    po.ClickAnmelden();
+    po.ClickLogin();
 
     // Main Page
     var mpo = new MainPO(b);
@@ -258,7 +258,7 @@ namespace MiracleListUITests
 
     po.SetName(anmeldename);
     po.SetPassword(kennwort);
-    po.ClickAnmelden();
+    po.ClickLogin();
 
     // Main Page
     var mpo = new MainPO(b);

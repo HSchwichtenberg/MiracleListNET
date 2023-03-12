@@ -10,7 +10,8 @@ using MiracleList;
 
 namespace MLBlazorRCL;
 
-public class LoginModel : ComponentBase {
+public class LoginModel : ComponentBase
+{
  [Inject] public BlazorUtil Util { get; set; }
  [Inject] public NavigationManager NavigationManager { get; set; }
  [Inject] AuthenticationStateProvider mLAuthenticationStateProvider { get; set; } = null;
@@ -38,28 +39,26 @@ public class LoginModel : ComponentBase {
  public string Backend { get; set; }
  public string ErrorMsg { get; set; }
  private bool shouldRender { get; set; }
- public SortedDictionary<string, string> ServerList { get; set; } = new();
+ public SortedDictionary<string, string> BackendList { get; set; } = new();
  #endregion
 
- protected override async System.Threading.Tasks.Task OnInitializedAsync() {
-  shouldRender = false;
-  Console.WriteLine(nameof(LoginModel) + "." + (nameof(OnInitializedAsync)));
-  Console.WriteLine("URI: " + this.NavigationManager.Uri);
+ protected override async System.Threading.Tasks.Task OnInitializedAsync()
+ {
+  shouldRender = false;   // Rendern unterdrücken, falls wir die Anmeldeseite gar nicht darstellen müssen
+
+  Util.Log(nameof(LoginModel) + "." + (nameof(OnInitializedAsync)) + ": " + this.NavigationManager.Uri);
   #region Umleitung als Reaktion auf die URL /logout
-  if (this.NavigationManager.Uri.ToLower().Contains("/logout")) {
+  if (this.NavigationManager.Uri.ToLower().Contains("/logout"))
+  {
    await ((IMLAuthenticationStateProvider)mLAuthenticationStateProvider).Logout();
   }
   #endregion
 
-  // letztes verwendetes Backend aus Local Storage
-  Backend = await localStorage.GetItemAsync<string>("Backend");
-  if (!String.IsNullOrEmpty(Backend)) {
-   await ((IMLAuthenticationStateProvider)mLAuthenticationStateProvider).SetCurrentBackend(Backend);
-  }
-
   #region Wenn wir noch authentifiziert sind (mit Daten im Local Storage), dann gehen wir direkt zu /main
-  if (authenticationStateTask != null) {
-   if ((await authenticationStateTask).User.Identity.IsAuthenticated) {
+  if (authenticationStateTask != null)
+  {
+   if ((await authenticationStateTask).User.Identity.IsAuthenticated)
+   {
     NavigationManager.NavigateTo("/main");
    }
   }
@@ -67,10 +66,10 @@ public class LoginModel : ComponentBase {
 
   #region Vorgaben im Login-Formular
   bool includeLocalHost = this.NavigationManager.Uri.ToLower().Contains("localhost");
-  ServerList = AppState.GetBackendSet(includeLocalHost);
+  BackendList = AppState.GetBackendSet(includeLocalHost);
 
-  // sonst erstes Backend
-  if (ServerList.Count > 0 && String.IsNullOrEmpty(Backend)) Backend = ServerList.Values.First();
+  // Wenn es eine Backendliste gibt und noch kein Backend im Local Storage war oder das Backend aus dem Local Storage nicht existiert in der Liste: nimm das erste in der Liste
+  if (BackendList.Count > 0 && (String.IsNullOrEmpty(Backend) || !BackendList.Keys.Any(x => x == Backend))) Backend = BackendList.Keys.First();
   shouldRender = true;
 
   if (System.Diagnostics.Debugger.IsAttached) // zum einfacheren Debugging
@@ -78,19 +77,24 @@ public class LoginModel : ComponentBase {
    Username = IAppState.DebugUser;
    Password = IAppState.DebugPassword;
   }
-  shouldRender = true;
+
   #endregion
+
+  shouldRender = true;
  }
 
- protected override bool ShouldRender() {
+ protected override bool ShouldRender()
+ {
   return shouldRender;
  }
 
- protected override async Task OnParametersSetAsync() {
+ protected override async Task OnParametersSetAsync()
+ {
   Console.WriteLine(nameof(LoginModel) + "." + (nameof(OnParametersSetAsync)));
 
   // gibt es Daten im QueryString? (Aufruf von einer anderen Anwendung)
-  if (!String.IsNullOrEmpty(Q_User) && !(string.IsNullOrEmpty(Q_Password))) {
+  if (!String.IsNullOrEmpty(Q_User) && !(string.IsNullOrEmpty(Q_Password)))
+  {
    // Set the Backend-URL for the Proxy
    var url = "https://miraclelistbackend.azurewebsites.net/";
    LoginInfo li = await ((IMLAuthenticationStateProvider)mLAuthenticationStateProvider).LogIn(Q_User, Q_Password, url);
@@ -101,14 +105,16 @@ public class LoginModel : ComponentBase {
  /// <summary>
  /// Reaktion auf Benutzeraktion
  /// </summary>
- protected async Task Login() {
+ protected async Task Login()
+ {
   ErrorMsg = "Logging in...";
   Util.Log($"{nameof(LoginModel)}.{nameof(Login)}: {Username}/{Password}/{Backend}");
 
   // Anmelden versuchen
   LoginInfo loginInfo = await ((IMLAuthenticationStateProvider)mLAuthenticationStateProvider).LogIn(Username, Password, Backend);
 
-  if (loginInfo != null && String.IsNullOrEmpty(loginInfo.Message)) {
+  if (loginInfo != null && String.IsNullOrEmpty(loginInfo.Message))
+  {
 
    /// TODO: Das würde ich gerne machen, bringt aber bUnit zum Absturz ("System.InvalidOperationException : Queue empty.")
    //var u = (await authenticationStateTask).User;
@@ -117,19 +123,22 @@ public class LoginModel : ComponentBase {
    // daher:
    var username = loginInfo.Username;
 
-   if (!String.IsNullOrEmpty(Username)) {
+   if (!String.IsNullOrEmpty(Username))
+   {
     ErrorMsg = "";
     // DEMO: 32. NavigationManager
     Util.Log("Login.DoLogin: Login OK!");
     this.NavigationManager.NavigateTo("/main");
     return;
    }
-   else {
+   else
+   {
     ErrorMsg = "Unknown Login Error!";
     Util.Log("Login.DoLogin: Unknown Login Error!");
    }
   }
-  else {
+  else
+  {
    ErrorMsg = "Login Error: " + loginInfo?.Message;
    Util.Log("Login.DoLogin: Login Error!");
   }

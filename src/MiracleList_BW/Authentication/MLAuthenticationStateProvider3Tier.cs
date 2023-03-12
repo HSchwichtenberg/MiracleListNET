@@ -1,5 +1,6 @@
 ﻿#pragma warning disable 1998
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
@@ -38,13 +39,16 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
   this.ServiceProvider = ServiceProvider;
  }
 
- public async Task SetCurrentBackend(string backend)
+ public async Task SetCurrentBackend(string backendKey)
  {
-  if (String.IsNullOrEmpty(backend)) { return; }
+
+  var backend = AppState.GetBackendByKey(backendKey);
+  if (backend == null) { return; };
+
   proxy.BaseUrl = backend;
   AppState.BackendURL = backend;
   AppState.SignalRHubURL = new Uri(new Uri(backend), "MLHubV2").ToString();
-  await localStorage.SetItemAsync("Backend", backend);
+  await localStorage.SetItemAsync("Backend", AppState.BackendDisplayName);
  }
 
  private void SetCurrentUser(LoginInfo current)
@@ -57,9 +61,11 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
  /// <summary>
  /// Login to be called by Razor Component Login.razor
  /// </summary>
- public async Task<LoginInfo> LogIn(string username, string password, string backend)
+ public async Task<LoginInfo> LogIn(string username, string password, string backendKey)
  {
-  // DEMO: 42. Login()-Funktion
+
+  var backend = AppState.GetBackendByKey(backendKey);
+
   var l = new LoginInfo() { Username = username, Password = password, ClientID = AppState.ClientID };
   await SetCurrentBackend(backend);
 

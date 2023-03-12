@@ -42,13 +42,11 @@
     <select @bind="this.Backend" id="backend" class="form-control">
      @foreach (var cs in AppState.GetBackendSet())
      {
-      <option value="@cs.Value">@cs.Key</option>
+      <option value="@cs.Key">@cs.Key</option>
      }
     </select>
     <div style="margin-top: 10px">
-
      <MLBlazorRCL.ServerState></MLBlazorRCL.ServerState>
-
     </div>
    </div>
   </div>

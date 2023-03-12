@@ -6,11 +6,11 @@
 @inject IMLAuthenticationStateProvider MLAuthenticationStateProvider
 
 <span>
- Backend: <span style='color: @(backendState.State == BackendStateStatus.OK ? "green" : "red")' title='@(AppState.BackendDisplayName + ": " + backendState.StateDetails + " Checked: " + lastCheck)'>@backendState.State</span>
+ Backend: <span style='color: @(backendState.State == BackendStateStatus.OK ? "green" : "red")' title='@(AppState.BackendDisplayName + ": " + backendState.StateDetails + " Geprüft: " + lastCheck)'>@backendState.State</span>
 </span>
 
 <span>
- SignalR Connection: <span style='color: @(AppState.HubConnection?.State == HubConnectionState.Connected ? "green" : "red")' title='@(AppState.SignalRHubURL + " Connection-ID: " + @AppState.HubConnection?.ConnectionId + " Checked: " + lastCheck)'>@AppState.HubConnection?.State</span>
+ SignalR Connection: <span style='color: @(AppState.HubConnection?.State == HubConnectionState.Connected ? "green" : "red")' title='@(AppState.SignalRHubURL + " Verbindungs-ID: " + (AppState.HubConnection?.ConnectionId != null ? AppState.HubConnection.ConnectionId : "---") + " Geprüft: " + lastCheck)'>@(AppState.HubConnection?.State != null ? AppState.HubConnection.State : "Nicht vorhanden")</span>
 </span>
 
 @code {
@@ -18,36 +18,50 @@
  DateTime lastCheck = DateTime.Now;
  HubConnectionState? lastState = null;
 
- protected override async Task OnInitializedAsync() {
-  
+ protected override async Task OnInitializedAsync()
+ {
+
   Util.Log("ConnectionState.OnInitializedAsync");
 
   await Run();
 
   // alle 5 Sekunden
   using var periodicTimer = new PeriodicTimer(TimeSpan.FromSeconds(5));
-  while (await periodicTimer.WaitForNextTickAsync()) {
+  while (await periodicTimer.WaitForNextTickAsync())
+  {
    await Run();
   }
 
  }
 
- async Task Run() {
+ async Task Run()
+ {
   lastCheck = DateTime.Now;
   Util.Log("Connection Check...");
   // Überwachung des Backends per Timer
   _ = Task.Run(
-     async () => {
-      var result = await MLAuthenticationStateProvider.CheckBackend(AppState.BackendURL);
-      backendState.State = result.State;
-      backendState.StateDetails = result.StateDetails;
-      Util.Log("Backend State", result.State);
+     async () =>
+     {
+      if (String.IsNullOrEmpty(AppState.BackendURL))
+      {
+       backendState.State = BackendStateStatus.Checking;
+       backendState.StateDetails = "";
+      }
+      else
+      {
+       var result = await MLAuthenticationStateProvider.CheckBackend(AppState.BackendURL);
+       backendState.State = result.State;
+       backendState.StateDetails = result.StateDetails;
+       Util.Log("Backend State", result.State);
+      }
+
       await InvokeAsync(StateHasChanged);
      }
      ); // end Task
 
   // Überwachung der HubConnection per Timer
-  if ((lastState == null || lastState != AppState.HubConnection.State) && AppState.HubConnection != null) {
+  if ((lastState == null || lastState != AppState.HubConnection.State) && AppState.HubConnection != null)
+  {
    Util.Log("HubConnection State", AppState.HubConnection.State);
    await InvokeAsync(StateHasChanged);
    Util.Log("HubConnection State has changed: " + lastState + "->" + AppState.HubConnection.State);

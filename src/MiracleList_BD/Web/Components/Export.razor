@@ -2,8 +2,8 @@
 @using System.Runtime.Serialization;
 @inject BlazorUtil Util
 
-<a @onclick="ExportXMLFile"><span id="ShowGrid" title="Export this task list to XML file @ExportPath" class="glyphicon glyphicon-floppy-save"></span></a>
-<a @onclick="ExportWord"><span id="ShowGrid" title="Send this task list to Microsoft Word and save in @ExportPathWord" class="glyphicon glyphicon-export"></span></a>
+<a @onclick="ExportXMLFile"><span id="ShowGrid" title="Aufgabenliste in XML-Datei @ExportPath exportieren" class="glyphicon glyphicon-floppy-save"></span></a>
+<a @onclick="ExportWord"><span id="ShowGrid" title="Word-Dokumente @ExportPathWord aus der Aufgabenliste erzeugen" class="glyphicon glyphicon-export"></span></a>
 
 @code {
 
@@ -75,7 +75,7 @@
   findObject.ClearFormatting();
   findObject.Text = "Dokumententitel [ITV DokHead]";
   findObject.Replacement.ClearFormatting();
-  findObject.Replacement.Text = "All Tasks in Category " + category.Name;
+  findObject.Replacement.Text = "Alle Aufgaben in der Kategorie " + category.Name;
   object replaceAll = Microsoft.Office.Interop.Word.WdReplace.wdReplaceAll;
   findObject.Execute(Replace: replaceAll);
 
@@ -85,7 +85,7 @@
   word.Selection.Delete();
 
   foreach (var t in taskSet) {
-   var line = "Task #" + t.TaskID + ": " + t.Title + " Due: " + t.Due.GetValueOrDefault().ToShortDateString() + "\n";
+   var line = "Aufgabe #" + t.TaskID + ": " + t.Title + " Fällig: " + t.Due.GetValueOrDefault().ToShortDateString() + "\n";
    word.Selection.TypeText(line);
   }
 

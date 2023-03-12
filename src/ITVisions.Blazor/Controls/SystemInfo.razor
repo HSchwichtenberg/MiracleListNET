@@ -92,7 +92,7 @@ else
             Util.Log("OnAfterRender(firstRender=" + firstRender + ")");
             if (firstRender)
             {
-                Browser = await Util.getBrowserShortInfo();
+                Browser = await Util.GetBrowserShortInfo();
                 BrowserDetails = await Util.GetBrowserInfo();
                 var d1 = new Dictionary<string, string>();
                 d1.Add("Web Framework", Util.GetBlazorVersionInfo());

@@ -3,7 +3,7 @@
 @using System.Runtime.InteropServices;
 @inject BlazorUtil Util
 
-<a @onclick="ExportXMLFile"><span id="ShowGrid" title="Export this task list to XML file @ExportPath" class="glyphicon glyphicon-floppy-save"></span></a>
+<a @onclick="ExportXMLFile"><span id="ShowGrid" title="Aufgabenliste in XML-Datei @ExportPath exportieren" class="glyphicon glyphicon-floppy-save"></span></a>
 @if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
- <a @onclick="ExportWord"><span id="ShowGrid" title="Send this task list to Microsoft Word and save in @ExportPathWord" class="glyphicon glyphicon-export"></span></a>
+ <a @onclick="ExportWord"><span id="ShowGrid" title="Word-Dokumente @ExportPathWord aus der Aufgabenliste erzeugen" class="glyphicon glyphicon-export"></span></a>
 }

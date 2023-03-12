@@ -103,7 +103,7 @@ public partial class Main : IAsyncDisposable {
   // Reaktion auf eingehende Nachricht
   AppState.HubConnection.On<string>(nameof(IMLHub.CategoryListUpdate), async (sender) => {
    Util.Log($"SignalR.CategoryListUpdate from {sender} (Thread #{System.Threading.Thread.CurrentThread.ManagedThreadId})");
-   toastService.ShowSuccess($"Category list was changed on another system.");
+   toastService.ShowSuccess($"Die Aufgabenliste wurde in einer anderen Anwendungsinstanz verändert.");
    await ShowCategorySet(); // Daten neu laden
    await InvokeAsync(StateHasChanged); // InvokeAsync() notwendig hier, weil die Nachricht im Hintergrund (anderer Thread) kommt
   });
@@ -113,13 +113,13 @@ public partial class Main : IAsyncDisposable {
    Util.Log($"SignalR.TaskListUpdate from {sender}: {categoryID} (Thread #{System.Threading.Thread.CurrentThread.ManagedThreadId})");
 
    if (categoryID == this.category.CategoryID) {
-    toastService.ShowSuccess($"Tasks of this category #{category.CategoryID}: \"{this.category.Name}\" have been modified in another instance.");
+    toastService.ShowSuccess($"Die Aufgabe dieser Kategorie #{category.CategoryID}: \"{this.category.Name}\" wurden auf n einer anderen Anwendungsinstanz verändert.");
     await ShowTaskSet(this.category); // Daten neu laden
     await InvokeAsync(StateHasChanged); // InvokeAsync() notwendig hier, weil die Nachricht im Hintergrund (anderer Thread) kommt
    }
    else {
     var changedCategory = this.categorySet.Where(x => x.CategoryID == categoryID).FirstOrDefault();
-    if (changedCategory != null) toastService.ShowInfo($"Tasks of category #{changedCategory.CategoryID}: \"{changedCategory.Name}\" have been changed in another instance.");
+    if (changedCategory != null) toastService.ShowSuccess($"Die Aufgabe der Kategorie #{category.CategoryID}: \"{this.category.Name}\" wurden auf n einer anderen Anwendungsinstanz verändert.");
     // Kein UI-Update notwendig
    }
   });
@@ -275,7 +275,7 @@ public partial class Main : IAsyncDisposable {
  /// </summary>
  public async System.Threading.Tasks.Task RemoveCategory(BO.Category c) {
   obj = DotNetObjectReference.Create(this);
-  await Util.ConfirmDialog("Remove category #" + c.CategoryID + " with " + c.TaskSet.Count + " tasks?", c.CategoryID, obj, ConfirmedRemoveCategory);
+  await Util.ConfirmDialog("Löschen der Kategorie #" + c.CategoryID + " mit " + c.TaskSet.Count + " Aufgaben?", c.CategoryID, obj, ConfirmedRemoveCategory);
  }
 
  /// <summary>
@@ -306,7 +306,7 @@ public partial class Main : IAsyncDisposable {
   // reload all tasks in current category
   if (save) {
    await Proxy.ChangeTaskAsync(this.task, AppState.Token);
-   toastService.ShowSuccess($"Task #" + task.TaskID + " has been saved");
+   toastService.ShowSuccess($"Aufgabe #" + task.TaskID + " wurde gespeichert.");
    await SendTaskListUpdate();
    this.task = null;
   }
@@ -330,7 +330,6 @@ public partial class Main : IAsyncDisposable {
    }
   }
  }
-
  #endregion
 
  #region SignalR-Nachrichten senden

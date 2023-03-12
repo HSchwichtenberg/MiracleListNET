@@ -75,7 +75,7 @@ public partial class Export {
  findObject.ClearFormatting();
  findObject.Text = "Dokumententitel [ITV DokHead]";
  findObject.Replacement.ClearFormatting();
- findObject.Replacement.Text = "All Tasks in Category " + this.category.Name;
+ findObject.Replacement.Text = "Alle Aufgaben in der Kategorie " + this.category.Name;
  object replaceAll = Microsoft.Office.Interop.Word.WdReplace.wdReplaceAll;
  findObject.Execute(Replace: replaceAll);
 
@@ -86,7 +86,7 @@ public partial class Export {
 
  foreach (var t in this.taskSet)
  {
-  var line = "Task #" + t.TaskID + ": " + t.Title + " Due: " + t.Due.GetValueOrDefault().ToShortDateString() + "\n";
+  var line = "Aufgabe #" + t.TaskID + ": " + t.Title + " Fällig: " + t.Due.GetValueOrDefault().ToShortDateString() + "\n";
   word.Selection.TypeText(line);
  }
 

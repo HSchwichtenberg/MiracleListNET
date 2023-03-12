@@ -15,9 +15,9 @@
  @if (categorySet != null) {
   <div class="MLPanel col-xs-4 col-sm-4 col-md-3 col-lg-2 @(this.task!=null ? "hidden-sm hidden-xs": ""  )">
    <!-- ---------- Überschrift Spalte 1-->
-   <h4 style="margin-top:9px;margin-bottom:6px"> @(categorySet.Count()) <span>Categories</span></h4>
+   <h4 style="margin-top:9px;margin-bottom:6px"> @(categorySet.Count()) <span>Kategorien</span></h4>
    <!-- ---------- neue Kategorie eingeben-->
-   <input name="newCategoryName" type="text" class="form-control" @bind="newCategoryName" @onkeyup="(e) => NewCategory_Keyup(e)" placeholder="new Category..." />
+   <input name="newCategoryName" type="text" class="form-control blue"  @bind="newCategoryName" @onkeyup="(e) => NewCategory_Keyup(e)" placeholder="Neue Kategorie..." />
    <!-- ---------- Kategorieliste ausgeben-->
 
    <ol class="list-group scroll">
@@ -31,7 +31,7 @@
     }
 
     <!-- ----------Suchfeld-->
-    <input type="text" class="form-control" name="search" @bind="searchText" @onkeyup="(e) => Search(e)" placeholder="search...">
+    <input type="text" class="form-control" name="search" @bind="searchText" @onkeyup="(e) => Search(e)" placeholder="Suche...">
    </ol>
   </div>
  }
@@ -49,7 +49,7 @@
       @(
           taskSet == null ? 0 : taskSet.Count()
           )
-      Tasks in <i> @category?.Name</i>
+      Aufgaben in <i> @category?.Name</i>
      </span>
 
      <!-- ---------- Filter-->
@@ -61,7 +61,7 @@
      </select>
 
      <!-- ---------- Schaltlächen -->
-     <a href="/TaskGrid/@this.category?.CategoryID"><span id="DataGrid" title="View in Datagrid" style="margin-left:20px" class="glyphicon glyphicon-align-justify"></span></a>
+     <a href="/TaskGrid/@this.category?.CategoryID"><span id="DataGrid" title="Tabellenansicht" style="margin-left:20px" class="glyphicon glyphicon-align-justify"></span></a>
 
      @*Optionale Export-Befehle, die nur einige Blazor-Arten realisieren können*@
      @if (AdditionalComponents.TaskExportAdditionalComponent != null) {
@@ -71,7 +71,7 @@
    </h4>
 
    <!-- ---------- neue Aufgaben eingeben-->
-   <input name="newTaskTitle" type="text" class="form-control" disabled="@(this.category == null)" @bind="newTaskTitle" @onkeyup="(e) => NewTask_Keyup(e)" placeholder="new Task..." />
+   <input name="newTaskTitle" type="text" class="form-control" disabled="@(this.category == null)" @bind="newTaskTitle" @onkeyup="(e) => NewTask_Keyup(e)" placeholder="Neue Aufgabe..." />
    <!-- ---------- Aufgabenliste ausgeben-->
    @if (taskSet != null) {
     <ol id="TaskSet" class="list-group scroll">
@@ -119,8 +119,6 @@
  }
 
 </div> @*end row*@
-
-
 
 @code {
  // Code ist in Code-Behind-Datei!

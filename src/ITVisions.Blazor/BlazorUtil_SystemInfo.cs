@@ -38,7 +38,7 @@ namespace ITVisions.Blazor
    return await _jsRuntime.InvokeAsync<string>("window.getScreenSize", null);
   }
 
-  public async Task<string> getBrowserShortInfo()
+  public async Task<string> GetBrowserShortInfo()
   {
    var data = await _jsRuntime.InvokeAsync<string[]>("Util.getBrowserInfo", null);
    var uaParser = UAParser.Parser.GetDefault();

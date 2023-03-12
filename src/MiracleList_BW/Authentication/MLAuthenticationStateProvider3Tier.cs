@@ -236,7 +236,7 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
     var ServerAppVersion = serverData[6].Replace("Application Version: ", "");
     var ServerFramework = serverData[8];
     result.State = BackendStateStatus.OK;
-    result.StateDetails = "WebAPI-Backend-Version:" + ServerAppVersion;
+    result.StateDetails = "WebAPI-Backend-Version: " + ServerAppVersion;
    }
    catch (Exception ex)
    {

@@ -4,7 +4,7 @@
   <Version>7.11.0.0</Version>
   <AssemblyVersion>7.11.0.0</AssemblyVersion>
   <FileVersion>7.11.0.0</FileVersion>
-  <InformationalVersion>7.11.0.0-03/09/2023 21:01:32</InformationalVersion>
+  <InformationalVersion>7.11.0.0-03/12/2023 14:33:45</InformationalVersion>
   <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
  </PropertyGroup>
  <PropertyGroup Label="Globals">

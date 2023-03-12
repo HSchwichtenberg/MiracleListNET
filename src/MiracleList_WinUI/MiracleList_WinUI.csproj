@@ -10,7 +10,7 @@
   <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
   <UseWinUI>true</UseWinUI>
   <EnableMsixTooling>true</EnableMsixTooling>
-  <Version>7.11</Version>
+  <Version>7.11.0.0</Version>
  </PropertyGroup>
 
  <!--Versionsinfos-->
@@ -18,7 +18,7 @@
   <Version>7.11.0.0</Version>
   <AssemblyVersion>7.11.0.0</AssemblyVersion>
   <FileVersion>7.11.0.0</FileVersion>
-  <InformationalVersion>7.11.0.0-03/09/2023 21:01:32</InformationalVersion>
+  <InformationalVersion>7.11.0.0-03/12/2023 14:33:46</InformationalVersion>
   <ApplicationDisplayVersion>7.11</ApplicationDisplayVersion>
   <ApplicationVersion>7</ApplicationVersion>
  </PropertyGroup>

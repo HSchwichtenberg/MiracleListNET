@@ -9,22 +9,25 @@
 
 <ContextMenuTrigger MenuId="@("TaskContextMenu" + Task.CategoryID.ToString() + "_" + Task.TaskID.ToString())" Data="Task">
 
- <li  class="list-group-item" @onclick="() => SetTaskActive(Task)" style="Background-color: @(Active ? "#E0EEFA" : "white")" title="Task #@Task.TaskID" draggable="true" @ondragstart="(e) => DragTask(e, Task)">
+ <li class="list-group-item" @onclick="() => SetTaskActive(Task)" style="Background-color: @(Active ? "#E0EEFA" : "white")" title="Task #@Task.TaskID" draggable="true" @ondragstart="(e) => DragTask(e, Task)">
 
-  <span id="Remove" style="float:right;" class="close" title="Remove Task #@Task.TaskID" @onclick="() => RemoveTask(Task)">x</span>
+  <span style="float: right; margin-right: 10px">
+   <span id="Remove" class="close" title="Remove Task #@Task.TaskID" @onclick="() => RemoveTask(Task)">x</span>
+   <span class="badge badge-important" style="margin-right:10px" title="Wichtigkeit: @Task.Importance">@Task.Importance</span>
+  </span>
 
   <input type="checkbox" name="@("done" + Task.TaskID)" id="@("done" + Task.TaskID)" checked="@Task.Done" class=" MLcheckbox" @onclick:stopPropagation="true" @onchange=@(async(eventArgs) => { Task.Done = (bool)eventArgs.Value; await ChangeTaskDone(Task); }) />
 
   <b>@Task.Title</b>
   <br>
   <div>
-   <span class="badge badge-important" style="margin-right:10px" title="Wichtigkeit: @Task.Importance">@Task.Importance</span>
+
    @if (Task.Due.HasValue)
     if (Task.Due.Value.Date < DateTime.Now.Date) {
-     <span style="color:red;" title="@Task.Due.Value.ToShortDateString()">Due since @Task.Due.Value.Date.ToRelativeDate(true)</span>
+     <span style="color:red;" title="@Task.Due.Value.ToShortDateString()">Fällig seit @Task.Due.Value.Date.ToRelativeDate(true)</span>
     }
     else {
-     <span style="color:green;" title="@Task.Due.Value.ToShortDateString()">Due at @Task.Due.Value.Date.ToShortDateString()</span>
+     <span style="color:green;" title="@Task.Due.Value.ToShortDateString()">Fällig am @Task.Due.Value.Date.ToShortDateString()</span>
     }
   </div>
 
@@ -33,9 +36,10 @@
 
 @*Kontextmenü aus https://github.com/stavroskasidis/BlazorContextMenu*@
 <ContextMenu Id="@("TaskContextMenu" + Task.CategoryID.ToString() + "_" + Task.TaskID.ToString())">
- <Item OnClick="@OnContextAbout">About this task</Item>
+ <Item OnClick="@OnContextAbout">Details zu dieser Aufgabe</Item>
  <Seperator />
- <Item OnClick="@OnContextRemove">Remove Task</Item>
+ <Item OnClick="@OnContextEdit">Bearbeiten</Item>
+ <Item OnClick="@OnContextRemove">Löschen</Item>
 </ContextMenu>
 
 @code {
@@ -100,6 +104,10 @@
   Util.Log($"Context Menu Item Clicked => Menu: {e.ContextMenuId}, MenuTarget: {e.ContextMenuTargetId}, IsCanceled: {e.IsCanceled}, MenuItem: {e.MenuItemElement}, MouseEvent: {e.MouseEvent} Data: {e.Data}");
   var t = e.Data as BO.Task;
   await Util.Alert("Task #" + t.TaskID + " was created on " + t.Created);
+ }
+
+ async Task OnContextEdit(ItemClickEventArgs e) {
+  await SetTaskActive(e.Data as BO.Task);
  }
 
  async Task OnContextRemove(ItemClickEventArgs e) {

@@ -1,25 +1,24 @@
 using System;
-using Xunit;
-using Bunit;
-using Samples.Komponentendateien;
-using Microsoft.Extensions.DependencyInjection;
-using ITVisions.Blazor;
-using Microsoft.JSInterop;
-using Microsoft.AspNetCore.Components;
 using System.Diagnostics;
-using System.Linq;
 using System.Globalization;
-using Microsoft.AspNetCore.Components.Authorization;
-using Web;
+using System.Linq;
 using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Hosting;
 using BlazorTests;
-using static Bunit.ComponentParameterFactory;
 using BlazorTests.Mocks;
-using Microsoft.AspNetCore.Http;
-using Telerik.JustMock; // Mocking mit Just Mock von Progress Telerik
+using Bunit;
+using ITVisions.Blazor;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
-
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.JSInterop;
+using Samples.Komponentendateien;
+using Telerik.JustMock; // Mocking mit Just Mock von Progress Telerik
+using Web;
+using Xunit;
+using static Bunit.ComponentParameterFactory;
 // Testen der BD-Lösung
 //using Pages = BD.Web.Pages;
 // oder z.B. Blazor Server
@@ -66,9 +65,9 @@ namespace MiracleListTests
    // Headline vorhanden?
    var e = cut.Find("h2");
    Assert.NotNull(e);
-   //cut.MarkupMatches(@"<h1>Systeminfo</h1>");
+
    // Teste Text in Headline
-   e.MarkupMatches(@"<h2>Systeminfo</h2>");
+   e.MarkupMatches(@"<h2>Technische Daten</h2>");
 
    // Teste weiteren Text
    Assert.Contains(".NET", cut.Markup);

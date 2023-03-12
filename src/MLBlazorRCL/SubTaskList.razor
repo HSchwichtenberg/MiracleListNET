@@ -1,13 +1,13 @@
 ﻿@inject BlazorUtil Util
 
 <div class="form-group">
- <label>Subtasks</label>
+ <label>Unteraufgaben</label>
  <input type="text"
         class="form-control"
         name="newSubTaskTitle"
         @bind="newSubTaskTitle"
         @bind:after="CreateSubTask"
-        placeholder="new Subtask..." />
+        placeholder="Neue Unteraufgabe..." />
 
   @if (Task.SubTaskSet!=null)
   {
@@ -20,7 +20,7 @@
           class="MLcheckbox"
           style="margin-right:5px;" />
    <span style="text-decoration:@(st.Done ? "line-through" : "none")">@st.Title</span>
-   <a @onclick="()=>RemoveSubTask(st)" title="Remove Subtask (will be done without confirmation)" class="close"> <span id="Remove" style="float:right;" class="glyphicon glyphicon-remove-circle close"></span></a>
+   <a @onclick="()=>RemoveSubTask(st)" title="Unteraufgabe entfernen (ohne Rückfrage. Wird erst gespeichert, wenn Sie 'Speichern' ausführen!)" class="close"> <span id="Remove" style="float:right;" class="glyphicon glyphicon-remove-circle close"></span></a>
   </li>
   }
  </ul>

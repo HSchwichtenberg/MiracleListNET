@@ -1,12 +1,12 @@
 ﻿//NUGET: Selenium.Support 
+using System;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MiracleListClientSeleniumTestsCore;
 using OpenQA.Selenium;              // contains: IWebDriver
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;   // contains: WebDriverWait, ExpectedConditions 
 using SeleniumTests;
-using System;
-using System.IO;
 
 namespace MiracleListUITests
 {
@@ -53,11 +53,11 @@ namespace MiracleListUITests
     mpo.NewCategory.SendKeys(Keys.Return);
 
     WebDriverWait wait2 = new WebDriverWait(b, TimeSpan.FromSeconds(Util.GetTimeoutSec()));
-    wait2.Until(d => mpo.TaskHeadline.Text == "0 Tasks in Testkategorie" || mpo.TaskHeadline.Text == "0 Aufgaben in Kategorie Testkategorie");
+    wait2.Until(d => mpo.TaskHeadline.Text == "0 Tasks in Testkategorie" || mpo.TaskHeadline.Text == "0 Aufgaben in Testkategorie");
 
     var headline1 = mpo.TaskHeadline.Text;
 
-    Assert.AreEqual("0 Tasks in Testkategorie", headline1);
+    Assert.IsTrue(headline1 == "0 Tasks in Testkategorie" || headline1 == "0 Aufgaben in Testkategorie");
 
     // Aufgabe anlegen
     var taskTitle = "Testaufgabe " + DateTime.Now;
@@ -71,7 +71,7 @@ namespace MiracleListUITests
 
     var headline2 = mpo.TaskHeadline.Text;
 
-    Assert.AreEqual("1 Tasks in Testkategorie", headline2);
+    Assert.IsTrue(headline2 == "1 Tasks in Testkategorie" || headline2 == "1 Aufgaben in Testkategorie");
 
     var taskElements = mpo.TaskSet.FindElements(By.CssSelector("li"));
     IWebElement task = taskElements[0];
@@ -116,11 +116,11 @@ namespace MiracleListUITests
     mpo.NewCategory.SendKeys(Keys.Return);
 
     WebDriverWait wait2 = new WebDriverWait(b, TimeSpan.FromSeconds(Util.GetTimeoutSec()));
-    wait2.Until(d => mpo.TaskHeadline.Text == "0 Tasks in Testkategorie");
+    wait2.Until(d => mpo.TaskHeadline.Text == "0 Tasks in Testkategorie" || mpo.TaskHeadline.Text == "0 Aufgaben in Testkategorie");
 
     var headline1 = mpo.TaskHeadline.Text;
 
-    Assert.AreEqual("0 Tasks in Testkategorie", headline1);
+    Assert.IsTrue(headline1 == "0 Tasks in Testkategorie" || headline1 == "0 Aufgaben in Testkategorie");
 
     // Aufgabe anlegen
     var taskTitle = "Testaufgabe " + DateTime.Now;
@@ -130,13 +130,13 @@ namespace MiracleListUITests
     System.Threading.Thread.Sleep(2000); // Chrome ist seit v74 zu schnell!
 
     WebDriverWait wait3 = new WebDriverWait(b, TimeSpan.FromSeconds(Util.GetTimeoutSec()));
-    wait3.Until(d => mpo.TaskHeadline != null && mpo.TaskHeadline.Text == "1 Tasks in Testkategorie");
+    wait3.Until(d => mpo.TaskHeadline.Text == "1 Tasks in Testkategorie" || mpo.TaskHeadline.Text == "1 Aufgaben in Testkategorie");
 
     ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot4.png", ScreenshotImageFormat.Png);
     //  ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot3.png", ScreenshotImageFormat.Png);
     var headline2 = mpo.TaskHeadline.Text;
 
-    Assert.AreEqual("1 Tasks in Testkategorie", headline2);
+    Assert.IsTrue(headline2 == "1 Tasks in Testkategorie" || headline2 == "1 Aufgaben in Testkategorie");
 
     var taskElements = mpo.TaskSet.FindElements(By.CssSelector("li"));
 
@@ -184,7 +184,7 @@ namespace MiracleListUITests
   //  mpo.NewCategory.SendKeys(Keys.Return);
 
   //  WebDriverWait wait2 = new WebDriverWait(b, TimeSpan.FromSeconds(Util.GetTimeoutSec()));
-  //  wait2.Until(d => mpo.TaskHeadline.Text == "0 Tasks in Testkategorie" || mpo.TaskHeadline.Text == "0 Aufgaben in Kategorie Testkategorie");
+  //  wait2.Until(d => mpo.TaskHeadline.Text == "0 Tasks in Testkategorie" || mpo.TaskHeadline.Text == "0 Aufgaben in  Testkategorie");
 
   //  var headline1 = mpo.TaskHeadline.Text;
 
@@ -273,11 +273,10 @@ namespace MiracleListUITests
     mpo.NewCategory.SendKeys(Keys.Return);
 
     WebDriverWait wait2 = new WebDriverWait(b, TimeSpan.FromSeconds(Util.GetTimeoutSec()));
-    wait2.Until(d => mpo.TaskHeadline.Text == "0 Tasks in Testkategorie");
+    wait2.Until(d => mpo.TaskHeadline.Text == "0 Tasks in Testkategorie" || mpo.TaskHeadline.Text == "0 Aufgaben in Testkategorie");
 
     var headline1 = mpo.TaskHeadline.Text;
-
-    Assert.AreEqual("0 Tasks in Testkategorie", headline1);
+    Assert.IsTrue(headline1 == "0 Tasks in Testkategorie" || headline1 == "0 Aufgaben in Testkategorie");
 
     // 10 Aufgaben anlegen
     for (int i = 1; i <= 10; i++)
@@ -286,17 +285,14 @@ namespace MiracleListUITests
      mpo.NewTask.SendKeys(taskTitle);
      mpo.NewTask.SendKeys(Keys.Return);
 
-     //System.Threading.Thread.Sleep(2000); // Chrome ist seit v74 zu schnell!
-
      WebDriverWait wait3 = new WebDriverWait(b, TimeSpan.FromSeconds(Util.GetTimeoutSec()));
-     wait3.Until(d => mpo.TaskHeadline != null && mpo.TaskHeadline.Text == i + " Tasks in Testkategorie");
-
+     wait3.Until(d => mpo.TaskHeadline != null && (mpo.TaskHeadline.Text == i + " Tasks in Testkategorie" || mpo.TaskHeadline.Text == i + " Aufgaben in Testkategorie"));
 
      ((ITakesScreenshot)b).GetScreenshot().SaveAsFile($@"Screenshot_Task#{i}.png", ScreenshotImageFormat.Png);
      //  ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot3.png", ScreenshotImageFormat.Png);
      var headline2 = mpo.TaskHeadline.Text;
 
-     Assert.AreEqual(i + " Tasks in Testkategorie", headline2);
+     Assert.IsTrue(headline2 == i + " Tasks in Testkategorie" || headline2 == i + " Aufgaben in Testkategorie");
 
      var taskElements = mpo.TaskSet.FindElements(By.CssSelector("li"));
 

@@ -11,9 +11,6 @@ Import-Module -Name AzureRM
 Get-Module AzureRM -ListAvailable | Select-Object -Property Name,Version,Path | ft
 "Anzahl geladener Azure-Module: " + (Get-Module AzureRM.* -ListAvailable | Select-Object -Property Name,Version,Path).Count
 "Anzahl verfügbarer Azure-Befehle: " + (Get-Command -module AzureRM*).Count
-
-
-
 #endregion
 
 # Anmelden interaktiv!!!

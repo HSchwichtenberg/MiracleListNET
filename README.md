@@ -1,58 +1,57 @@
-<h2>Über MiracleList</h2>
-<p>
- MiracleList ist eine umfangreiche, sehr realitätsnahe Beispielanwendung, die eine ähnliche Benutzeroberfläche und Funktionen wie das inzwischen leider eingestellte <a href="https://de.wikipedia.org/wiki/Wunderlist">Wunderlist</a> bietet. Diese Beispielanwendung verwendet <a href="https://www.dotnet-doktor.de">Dr. Holger Schwichtenberg</a> in seinen <a href="https://www.IT-Visions.de/Verlag">Fachbüchern</a>, <a href="https://www.IT-Visions.de/Schulungen">Schulungen</a> und <a href="https://www.IT-Visions.de/Vortraege">Vorträgen</a>. 
- 
- <div class="alert alert-info">
-  Während in vielen Veröffentlichungen und Weiterbildungsmaßen immer nur einzelne kleine, aus dem Kontext gerissene Beispiele gezeigt werden, dient MiracleList dazu, Softwareentwicklern möglichst viele Funktionen in einem praxisnahen Gesamtzusammenhang zu zeigen.
- </div>
-</p>
+## Über MiracleList
 
-<h2>Vier Blazor-Implementierungen der MiracleList</h2>
+MiracleList ist eine umfangreiche, sehr realitätsnahe Beispielanwendung, die eine ähnliche Benutzeroberfläche und Funktionen wie das inzwischen leider eingestellte [Wunderlist](https://de.wikipedia.org/wiki/Wunderlist) bietet. Diese Beispielanwendung verwendet [Dr. Holger Schwichtenberg](https://www.dotnet-doktor.de) in seinen [Fachbüchern](https://www.IT-Visions.de/Verlag), [Schulungen](https://www.IT-Visions.de/Schulungen) und [Vorträgen](https://www.IT-Visions.de/Vortraege).
 
- Es gibt vier auf ASP.NET Core Blazor basierende Implementierung des MiracleList-Frontends:
-<ul>
- <li><b>MiracleList_BW</b>: MiracleList mit Blazor WebAssembly (3-Tier mit Zugriff auf die Daten über WebAPI-basierten Application Server)</li>
- <li><b>MiracleList_BS</b>: MiracleList mit Blazor Server (2-Tier mit Direktzugriff auf die Datenbank)</li>
- <li><b>MiracleList_BD</b>: MiracleList mit Blazor Desktop in einer WPF-Rahmenanwendung (2-Tier mit Direktzugriff auf die Datenbank)</li>
- <li><b>MiracleList_BM</b>: MiracleList mit Blazor MAUI (3-Tier mit Zugriff auf die Daten über WebAPI-basierten Application Server)</li>
-</ul>
+<div class="alert alert-info">Während in vielen Veröffentlichungen und Weiterbildungsmaßen immer nur einzelne kleine, aus dem Kontext gerissene Beispiele gezeigt werden, dient MiracleList dazu, Softwareentwicklern möglichst viele Funktionen in einem praxisnahen Gesamtzusammenhang zu zeigen.</div>
+
+## Vier Blazor-Implementierungen der MiracleList
+
+Es gibt vier auf ASP.NET Core Blazor basierende Implementierung des MiracleList-Frontends:
+
+*   **MiracleList_BW**: MiracleList mit Blazor WebAssembly (3-Tier mit Zugriff auf die Daten über WebAPI-basierten Application Server)
+*   **MiracleList_BS**: MiracleList mit Blazor Server (2-Tier mit Direktzugriff auf die Datenbank)
+*   **MiracleList_BD**: MiracleList mit Blazor Desktop in einer WPF-Rahmenanwendung (2-Tier mit Direktzugriff auf die Datenbank)
+*   **MiracleList_BM**: MiracleList mit Blazor MAUI (3-Tier mit Zugriff auf die Daten über WebAPI-basierten Application Server)
 
 ![image](https://user-images.githubusercontent.com/3673169/224552620-97f7c195-f365-4b67-80e7-cbf3fd98c34f.png)
-<p>Abbildung: MiracleList im Browser mit Blazor WebAssembly</p>
 
-<img src="https://user-images.githubusercontent.com/3673169/224502120-1e4a7310-b574-49f5-b7dd-72b240f9fe92.png">
-<p>Abbildung: MiracleList als hybride App in Blazor MAUI</p>
+Abbildung: MiracleList im Browser mit Blazor WebAssembly
 
-<h2>Architektur der Blazor-Implementierungen der MiracleList</h2>
-<img src="https://user-images.githubusercontent.com/3673169/224501737-dbe842a5-4db4-455f-a287-655c71b73967.png">
-<p>Abbildung: Die vier Blazor-Implementierungen der MiracleList verwenden sehr viel gemeinsamen Code.</p>
+![](https://user-images.githubusercontent.com/3673169/224502120-1e4a7310-b574-49f5-b7dd-72b240f9fe92.png)
 
-<h2>Features der Blazor-Implementierung der MiracleList</h2>
+Abbildung: MiracleList als hybride App in Blazor MAUI
 
-<p>Welche Funktionen die Blazor-Implementierungen der MiracleList aus Benutzersicht bieten, finden Sie in der Tabelle auf <a href="http://www.MiracleList.net">www.MiracleList.net</a></p>
+## Architektur der Blazor-Implementierungen der MiracleList
 
-<p>Aus technischer Sicht demonstrieren die Blazor-Implementierungen der MiracleList für Softwareentwickler folgende Funktionen von Blazor:</p>
-<ul>
- <li>Alle vier Blazor-Varianten (Blazor WebAssembly,Blazor Server,Blazor Desktop, Blazor MAUI) für Browser und als Hybridanwendung</li>
- <li>Sehr viel Shared Code zwischen allen Blazor-Varianten mit einem gemeinsamen UI in einer Razor Class Library </li>
- <li>Abstraktion zwischen einer 2-Tier- und 3-Tier-Anwendung: Mit dem gleichen Komponenten sowohl direkt auf eine Datenbank zugreifen als auch Nutzung von WebAPIs auf einem Application Server</li>
- <li>Listenansichten mit Suchen und Filtern</li>
- <li>Bearbeitungsformular mit Validierung</li>
- <li>Datei-Upload</li>
- <li>Tastaturereignisse</li>
- <li>Editierbares Datagrid</li>
- <li>Drag&Drop</li>
- <li>Kontextmenüs</li>
- <li>Modale Dialoge</li>
- <li>Toast-Benachrichtigungen</li>
- <li>Ständig aktualisierte Statusanzeige für Backendsysteme</li>
- <li>Generierung eines Berichts via Microsoft Word (nur in Hybridanwendung)</li>
- <li>Authentifizierung und Autorisierung</li>
- <li>Nutzung des Local Storage des Browsers</li>
- <li>Fenster-Synchronisation mit Push-Nachrichten via ASP.NET Core SignalR</li>
- <li>Progressive Web App (nur Blazor WebAssembly)</li>
- <li>Einsatz kostenfreier Zusatzkomponenten</li>
-</ul>
+![](https://user-images.githubusercontent.com/3673169/224501737-dbe842a5-4db4-455f-a287-655c71b73967.png)
+
+Abbildung: Die vier Blazor-Implementierungen der MiracleList verwenden sehr viel gemeinsamen Code.
+
+## Features der Blazor-Implementierung der MiracleList
+
+Welche Funktionen die Blazor-Implementierungen der MiracleList aus Benutzersicht bieten, finden Sie in der Tabelle auf [www.MiracleList.net](http://www.MiracleList.net)
+
+Aus technischer Sicht demonstrieren die Blazor-Implementierungen der MiracleList für Softwareentwickler folgende Funktionen von Blazor:
+
+*   Alle vier Blazor-Varianten (Blazor WebAssembly,Blazor Server,Blazor Desktop, Blazor MAUI) für Browser und als Hybridanwendung
+*   Sehr viel Shared Code zwischen allen Blazor-Varianten mit einem gemeinsamen UI in einer Razor Class Library
+*   Abstraktion zwischen einer 2-Tier- und 3-Tier-Anwendung: Mit dem gleichen Komponenten sowohl direkt auf eine Datenbank zugreifen als auch Nutzung von WebAPIs auf einem Application Server
+*   Listenansichten mit Suchen und Filtern
+*   Bearbeitungsformular mit Validierung
+*   Datei-Upload
+*   Tastaturereignisse
+*   Editierbares Datagrid
+*   Drag&Drop
+*   Kontextmenüs
+*   Modale Dialoge
+*   Toast-Benachrichtigungen
+*   Ständig aktualisierte Statusanzeige für Backendsysteme
+*   Generierung eines Berichts via Microsoft Word (nur in Hybridanwendung)
+*   Authentifizierung und Autorisierung
+*   Nutzung des Local Storage des Browsers
+*   Fenster-Synchronisation mit Push-Nachrichten via ASP.NET Core SignalR
+*   Progressive Web App (nur Blazor WebAssembly)
+*   Einsatz kostenfreier Zusatzkomponenten
 
 ## Verwendete Frameworks und Tools
 Backend:
@@ -119,7 +118,5 @@ Die Entwicklerdokumentation zu den vier MiracleList-Frontends mit Blazor finden 
 5. Legen Sie die Client-ID in der Datei MiracleList_BW/wwwRoot/appSettings.json fest
 6. Setzen Sie Ihre Server-URL in „Backend/DebugURL“ in der Datei MiracleList_BW/wwwRoot/appsettings.json
 
-<h2>Weitere Informationen</h2>
-<ul>
- <li>Website zum MiracleList-Projekt: <a href="http://www.miraclelist.de" rel="nofollow">www.miraclelist.de</a></li>
-</ul>
+## Weitere Informationen
+- Website zum MiracleList-Projekt: [www.miraclelist.de](http://www.miraclelist.de)

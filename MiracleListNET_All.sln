@@ -89,7 +89,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other UI", "Other UI", "{BA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiracleList_WinUI", "src\MiracleList_WinUI\MiracleList_WinUI.csproj", "{88237147-BD28-4489-904F-2AD10A1D32E6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeleniumTestsCore", "Test\SeleniumTests\SeleniumTestsCore.csproj", "{42C51058-FCA8-428D-9F83-09554C1183BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeleniumTests", "Test\SeleniumTests\SeleniumTests.csproj", "{42C51058-FCA8-428D-9F83-09554C1183BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -17,7 +17,9 @@
  <li><b>MiracleList_BM</b>: MiracleList mit Blazor MAUI (3-Tier mit Zugriff auf die Daten über WebAPI-basierten Application Server)</li>
 </ul>
 
-<img src="https://user-images.githubusercontent.com/3673169/224548735-40bf96b3-4141-4e58-868d-e679fb7b34c2.png">
+![image](https://user-images.githubusercontent.com/3673169/224552620-97f7c195-f365-4b67-80e7-cbf3fd98c34f.png)
+
+<img src="https://user-images.githubusercontent.com/3673169/224552077-daf80a88-50cc-4e10-b2a8-691263bdae54.png">
 <p>Abbildung: MiracleList im Browser mit Blazor WebAssembly</p>
 
 <img src="https://user-images.githubusercontent.com/3673169/224502120-1e4a7310-b574-49f5-b7dd-72b240f9fe92.png">

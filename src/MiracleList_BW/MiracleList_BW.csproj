@@ -100,6 +100,11 @@
  <ItemGroup>
   <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
  </ItemGroup>
+ 
+ <ItemGroup>
+   <Folder Include="Properties\PublishProfiles\" />
+   <Folder Include="Properties\ServiceDependencies\" />
+ </ItemGroup>
 
  <!--Optional: Native dependencies für Samples_BW/NativeCall.razor und Samples_BW/SQLite -> Verlängert die Kompilierung-->
 

@@ -6,7 +6,7 @@
 @inject BlazorUtil Util
 
 @*Nicht ständig sichtbarer Toast / Einbindung für alle Unterkomponenten*@
-<BlazoredToasts RemoveToastsOnNavigation="true" Position="Blazored.Toast.Configuration.ToastPosition.BottomLeft" />
+<BlazoredToasts Timeout="5" ShowProgressBar="true" Position="Blazored.Toast.Configuration.ToastPosition.BottomLeft" RemoveToastsOnNavigation="true" />
 @*Nicht ständig sichtbarer Dialog aus MLBlazorRCL / Einbindung für alle Unterkomponenten*@
 <ConfirmDialog></ConfirmDialog>
 

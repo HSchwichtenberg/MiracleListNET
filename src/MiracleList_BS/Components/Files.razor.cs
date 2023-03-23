@@ -2,6 +2,7 @@ using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Hosting;
+using MiracleList;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,13 +14,14 @@ namespace Web.Components
 {
  public partial class Files
  {
-  [Parameter]
   public string FolderName { get; set; } = "Demo";
 
   [Inject]
   private BlazorUtil Util { get; set; } = null;
   [Inject]
   private IWebHostEnvironment env { get; set; } = null;
+  [Inject]
+  private IAppState appstate { get; set; } = null;
 
   public const long MAXFILESIZE = (long)1073741824 * 4; // 4Gb 100 * 1024 * 1024; // 100 MB
   public const string FILEROOTFOLDER = "Files";
@@ -49,6 +51,9 @@ namespace Web.Components
   #region Standard-Lebenszyklus-Ereignisse
   protected async override Task OnParametersSetAsync()
   {
+
+   FolderName = new BL.UserManager(Int32.Parse(appstate.Token)).CurrentUser.UserGUID.ToString();
+
    if (String.IsNullOrEmpty(env.WebRootPath)) { throw new ApplicationException("WebRootPath ist leer. Gibt es kein wwwroot-Verzeichnis?"); }
    GetFiles();
    cancelation = new CancellationTokenSource();

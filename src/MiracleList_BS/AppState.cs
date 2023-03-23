@@ -10,6 +10,10 @@ using MiracleList;
 namespace Web;
 
 public class AppState : IAppState {
+
+ /// <summary>
+ /// In ML_BS ist das Token die UserID = Zahl
+ /// </summary>
  public string Token { get; set; }
  public string Username { get; set; }
  public string BackendURL { get; set; }

@@ -41,8 +41,6 @@ namespace BL
    if (clients.Count == 0) return new CheckClientResult() { CheckClientResultCode = CheckClientResultCode.ClientIDUnknown };
    if (clients.Count > 1) return new CheckClientResult() { CheckClientResultCode = CheckClientResultCode.ClientIDDuplicate };
    return new CheckClientResult() { client = clients.ElementAt(0), CheckClientResultCode = CheckClientResultCode.Ok };
-
-
   }
  }
 }

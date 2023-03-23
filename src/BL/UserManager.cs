@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using BO;
 using DA;
+using ITVisions;
 using ITVisions.EFCore;
+using ITVisions.Network;
 using Microsoft.EntityFrameworkCore;
 using Z.EntityFramework.Plus;
 
 namespace BL;
 
-public class UserManager : EntityManagerBase<Context, User> {
+public class UserManager : EntityManagerBase<Context, User>
+{
  // Simple DI without DI Framework ;-)
  public IEnv Env = new Env();
 
@@ -19,21 +22,25 @@ public class UserManager : EntityManagerBase<Context, User> {
  private TaskManager tm;
 
  // nur für Test
- public UserManager(Context ctx) {
+ public UserManager(Context ctx)
+ {
   this.ctx = ctx;
  }
 
- public UserManager() {
+ public UserManager()
+ {
 
  }
 
- public UserManager(int id) {
+ public UserManager(int id)
+ {
   this.CurrentUser = ctx.UserSet.SingleOrDefault(x => x.UserID == id);
   this.CurrentUser.PasswordHash = null;
   this.CurrentUser.Salt = null;
  }
 
- public static bool IsTokenValid(string token) {
+ public static bool IsTokenValid(string token)
+ {
   return (new BL.UserManager(token).CurrentUser != null);
  }
 
@@ -41,13 +48,15 @@ public class UserManager : EntityManagerBase<Context, User> {
  /// Create an instance of the class with user tokens. Saves last use in User.LastActivity.
  /// Statefull object with Current User in CurrentUser!
  /// </summary>
- public UserManager(string token, bool CreateIfNotExists = false, bool PasswordReset = false, IEnv env = null) {
+ public UserManager(string token, bool CreateIfNotExists = false, bool PasswordReset = false, IEnv env = null)
+ {
   if (env != null) this.Env = env;
   this.CurrentUser = GetUserByToken(token, CreateIfNotExists, PasswordReset);
   if (this.CurrentUser == null) return; // wrong token!
   this.CurrentUser.PasswordHash = null;
   this.CurrentUser.Salt = null;
-  if (this.CurrentUser != null) {
+  if (this.CurrentUser != null)
+  {
    cm = new CategoryManager(this.CurrentUser.UserID);
    tm = new TaskManager(this.CurrentUser.UserID);
   }
@@ -57,17 +66,19 @@ public class UserManager : EntityManagerBase<Context, User> {
  /// Create an instance of the class with username and password. If the data is valid, the user is logged in and receives a new token (a GUID!)
  /// Special feature ONLY FOR DEMO APPLICATION: If the user does not exist, a new user is created with the user name and password
  /// </summary>
- public UserManager(string username, string password, string token = "", IEnv env = null) {
+ public UserManager(string username, string password, string token = "", IEnv env = null, string clientID = null)
+ {
   if (env != null) this.Env = env;
   if (String.IsNullOrEmpty(password)) { this.CurrentUser = null; return; }
-  this.CurrentUser = GetOrCreateUser(username, password);
+  this.CurrentUser = GetOrCreateUser(username, password, clientID: clientID);
   if (this.CurrentUser == null) return; // wrong pasword!
 
   // we don't want to send these to the client!
   this.CurrentUser.PasswordHash = null;
   this.CurrentUser.Salt = null;
 
-  if (this.CurrentUser != null) {
+  if (this.CurrentUser != null)
+  {
    cm = new CategoryManager(this.CurrentUser.UserID);
    tm = new TaskManager(this.CurrentUser.UserID);
    // always set up standard tasks for new users and those who no longer have any categories!
@@ -75,8 +86,10 @@ public class UserManager : EntityManagerBase<Context, User> {
   }
  }
 
- public static bool Logout(User user) {
-  try {
+ public static bool Logout(User user)
+ {
+  try
+  {
    if (user == null) return false;
 
    // TODO: Das geht bisher nicht, weil mehrere Sitzungen eines Benutzers das gleiche Token haben
@@ -86,7 +99,8 @@ public class UserManager : EntityManagerBase<Context, User> {
    //ctx.SaveChanges();
    return true;
   }
-  catch {
+  catch
+  {
    return false;
   }
  }
@@ -96,25 +110,30 @@ public class UserManager : EntityManagerBase<Context, User> {
  /// </summary>
  /// <param name="token"></param>
  /// <returns></returns>
- public static bool Logout(string token) {
-  try {
+ public static bool Logout(string token)
+ {
+  try
+  {
    var ctx = new Context();
    var u = ctx.UserSet.SingleOrDefault(x => x.Token.ToLower() == token.ToLower());
    return Logout(u);
   }
-  catch {
+  catch
+  {
    return false;
   }
  }
 
- private User GetUserByToken(string token, bool CreateIfNotExists = true, bool PasswordReset = false) {
+ private User GetUserByToken(string token, bool CreateIfNotExists = true, bool PasswordReset = false)
+ {
   //Guid guid;
   //if (!Guid.TryParse(token, out guid)) return null;
   var ctx = new Context();
 
   var u = ctx.UserSet.SingleOrDefault(x => x.Token.ToLower() == token.ToLower());
 
-  if (u != null) {
+  if (u != null)
+  {
    // Token will be invalid after certain TimeSpan of Inactivity
    if ((Env.Now - u.LastActivity) > TokenValidity) return null;
    u.LastActivity = Env.Now;
@@ -129,7 +148,8 @@ public class UserManager : EntityManagerBase<Context, User> {
  /// <summary>
  /// Get existing user or creates a new one
  /// </summary>
- private User GetOrCreateUser(string name, string password, string token = "", bool PasswordReset = false) {
+ private User GetOrCreateUser(string name, string password, string token = "", bool PasswordReset = false, string clientID = null)
+ {
   this.StartTracking();
 
   var u = ctx.UserSet.SingleOrDefault(x => x.UserName.ToLower() == name.ToLower());
@@ -139,7 +159,8 @@ public class UserManager : EntityManagerBase<Context, User> {
    // is the password correct?
    var hashObj = ITVisions.Security.Hashing.HashPassword(password, u.Salt);
 
-   if (u.PasswordHash != hashObj.HashedText) {
+   if (u.PasswordHash != hashObj.HashedText)
+   {
     // wrong hash
     if (!PasswordReset) return null;
    }
@@ -156,7 +177,8 @@ public class UserManager : EntityManagerBase<Context, User> {
    this.SetTracking();
    return u; // return existing user
   }
-  else { //there is no user with this name -> create him/her!
+  else
+  { // there is no user with this name -> create him/her!
    u = new User();
    u.UserName = name;
 
@@ -165,22 +187,50 @@ public class UserManager : EntityManagerBase<Context, User> {
    u.PasswordHash = hashObj.HashedText;
    u.Salt = hashObj.Salt;
    u.Created = Env.Now;
+
+   Guid clientIDGUID;
+   if (Guid.TryParse(clientID, out clientIDGUID))
+   {
+    u.ClientID = clientIDGUID;
+   }
+
    if (token == "") token = Guid.NewGuid().ToString("D"); // 38 chrs including { and -
    u.Token = token;
    u.Memo = "Created " + Env.Now + "/" + password + "\n";
    this.New(u);
+
+   if (ITVisions.Network.MailUtil.IsValidEmail(u.UserName))
+   {
+    var text = ITVisions.TextGenerator.TextGen.GetGreeting() + " " + u.UserName + ",";
+    text = text.Add("\n\n", "Ihr Zugang zu MiracleList:");
+    text = text.Add("\n\n", "E-Mail-Adresse: " + u.UserName);
+    text = text.Add("\n", "Kennwort: " + password);
+    text = text.Add("\n\n", "Haben Sie Fragen zu MiracleList? http://www.miraclelist.net");
+    text = text.Add("\n\n", "Mit besten Grüßen");
+    text = text.Add("\n", "Ihr Expertenteam bei www.IT-Visions.de");
+    text = text.Add("\n\n", "Fachbücher: https://www.IT-Visions.de/buecher");
+    text = text.Add("\n", "Schulungen: https://www.IT-Visions.de/Schulungen");
+    text = text.Add("\n", "Beratung: https://www.IT-Visions.de/Beratung");
+    text = text.Add("\n", "Softwarentwicklung: https://www.IT-Visions.de/Softwarentwicklung");
+
+    var e1 = new MailUtil().SendMail("do-not-reply@mail.miraclelist.net", u.UserName, "Ihr Zugang zu MiracleList", text
+   );
+   }
+
    return u; // return new user
   }
  }
 
- public void ClearAllData() {
+ public void ClearAllData()
+ {
   ctx.CategorySet.Where(x => x.UserID == CurrentUser.UserID).Delete();
  }
 
  /// <summary>
  /// Creates some standard tasks for the current user. It is always called at every operation to ensure that a user always deals with some tasks
  /// </summary>
- public void InitDefaultTasks() {
+ public void InitDefaultTasks()
+ {
   if (CurrentUser == null) return;
   if (ctx.CategorySet.Where(x => x.UserID == CurrentUser.UserID).Count() > 0) return;
 
@@ -267,25 +317,31 @@ Env.Now.AddDays(1), Importance.A, 0.5m, new List<SubTask>() { st1, st2 });
 
  }
 
- public TokenValidationResult IsValid() {
+ public TokenValidationResult IsValid()
+ {
   if (this.CurrentUser == null) return TokenValidationResult.TokenUngültig;
   return TokenValidationResult.Ok; // everyone fine. Lockout of users not yet realized!
  }
 
- public enum TokenValidationResult {
+ public enum TokenValidationResult
+ {
   Ok, TokenUngültig, BenutzerIstDeaktiviert
  }
 
- public static List<User> GetLatestUserSet() {
-  using (var ctx = new Context()) {
+ public static List<User> GetLatestUserSet()
+ {
+  using (var ctx = new Context())
+  {
    var r = ctx.UserSet.FromSqlRaw("Select * from [User]").OrderByDescending(x => x.Created).Take(10).ToList();
 
    return r;
   }
  }
 
- public static List<UserStatistics> GetUserStatistics() {
-  using (var ctx = new Context()) {
+ public static List<UserStatistics> GetUserStatistics()
+ {
+  using (var ctx = new Context())
+  {
    // ctx.Log((x) =>
    //{
    // System.Diagnostics.Debug.WriteLine(x);
@@ -319,7 +375,8 @@ Env.Now.AddDays(1), Importance.A, 0.5m, new List<SubTask>() { st1, st2 });
                  select new { u.UserName, x.Count });
 
    var r = new List<UserStatistics>();
-   foreach (var g in groups) {
+   foreach (var g in groups)
+   {
     r.Add(new UserStatistics() { UserName = g.UserName, NumberOfTasks = g.Count });
    }
 

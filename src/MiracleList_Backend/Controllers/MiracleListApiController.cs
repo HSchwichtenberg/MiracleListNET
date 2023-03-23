@@ -185,7 +185,7 @@ namespace MiracleList.Controllers
    }
    else
    { // Login with username and password
-    u = new UserManager(loginInfo.Username, loginInfo.Password).CurrentUser;
+    u = new UserManager(loginInfo.Username, loginInfo.Password, clientID: loginInfo.ClientID).CurrentUser;
    }
 
    if (u == null)

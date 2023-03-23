@@ -108,6 +108,7 @@ Dictionary<string, FileInfoDTO> files;
 
   foreach (IBrowserFile currentFile in filesToUpload)
   {
+   if (currentFile.Size > MAXFILESIZE) { await Util.Alert("Datei " + currentFile.Name + " ist zu groﬂ!"); break; }
    var sw = new System.Diagnostics.Stopwatch();
    sw.Start();
    Info = "Hochladen der Datei <b>" + currentFile.Name + "</b>...";

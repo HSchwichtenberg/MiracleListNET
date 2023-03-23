@@ -208,10 +208,11 @@ public class UserManager : EntityManagerBase<Context, User>
     text = text.Add("\n\n", "Haben Sie Fragen zu MiracleList? http://www.miraclelist.net");
     text = text.Add("\n\n", "Mit besten Grüßen");
     text = text.Add("\n", "Ihr Expertenteam bei www.IT-Visions.de");
-    text = text.Add("\n\n", "Fachbücher: https://www.IT-Visions.de/buecher");
+    text = text.Add("\n\n", "Fachbücher: https://www.IT-Visions.de/Buecher");
     text = text.Add("\n", "Schulungen: https://www.IT-Visions.de/Schulungen");
     text = text.Add("\n", "Beratung: https://www.IT-Visions.de/Beratung");
-    text = text.Add("\n", "Softwarentwicklung: https://www.IT-Visions.de/Softwarentwicklung");
+    text = text.Add("\n", "Technischer Support: https://www.IT-Visions.de/Support");
+    text = text.Add("\n", "Softwareentwicklung: https://www.IT-Visions.de/Softwareentwicklung");
 
     var e1 = new MailUtil().SendMail("do-not-reply@mail.miraclelist.net", u.UserName, "Ihr Zugang zu MiracleList", text
    );

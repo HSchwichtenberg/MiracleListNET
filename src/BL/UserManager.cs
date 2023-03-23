@@ -214,8 +214,7 @@ public class UserManager : EntityManagerBase<Context, User>
     text = text.Add("\n", "Technischer Support: https://www.IT-Visions.de/Support");
     text = text.Add("\n", "Softwareentwicklung: https://www.IT-Visions.de/Softwareentwicklung");
 
-    var e1 = new MailUtil().SendMail("do-not-reply@mail.miraclelist.net", u.UserName, "Ihr Zugang zu MiracleList", text
-   );
+    new MailUtil().SendMail("do-not-reply@mail.miraclelist.net", u.UserName, "Ihr Zugang zu MiracleList", text);
    }
 
    return u; // return new user

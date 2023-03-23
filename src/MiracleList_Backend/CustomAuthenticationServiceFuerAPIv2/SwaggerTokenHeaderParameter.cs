@@ -40,8 +40,10 @@ namespace MiracleList.CustomAuthenticationService
    operation.Parameters.Add(new OpenApiParameter()
    {   
     Name = MLTokenAuthenticationHandler.MLTOKENNAME, // "ML-AuthToken"
-    In = ParameterLocation.Header,
-    Required = false
+    In = ParameterLocation.Header,  
+    Schema = new OpenApiSchema() {  Type = "string"},
+    Required = true,
+    Description = "Access Token",
    });
 
   }

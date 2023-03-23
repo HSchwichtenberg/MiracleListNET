@@ -81,7 +81,7 @@
    </EditForm>
 
    @if (AdditionalComponents.TaskEditAdditionalComponent != null) {
-    <DynamicComponent Type="@AdditionalComponents.TaskEditAdditionalComponent"></DynamicComponent>
+    <DynamicComponent Type="@AdditionalComponents.TaskEditAdditionalComponent" Parameters="@(new Dictionary<string, object>() { { "Task", this.Task} })"></DynamicComponent>
    }
   </div>
  </div>

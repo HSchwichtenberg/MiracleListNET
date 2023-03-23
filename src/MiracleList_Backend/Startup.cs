@@ -207,6 +207,8 @@ public class Startup {
    ).AddMessagePackProtocol();
 
   #endregion
+
+  services.AddSingleton<EnvInfo>(new EnvInfo());
  }
 
  /// <summary>
@@ -234,7 +236,6 @@ public class Startup {
   #endregion
 
   #region ASP.NET Core services
-
   app.UseSession();  // Sessions aktivieren
   app.UseDefaultFiles();
   app.UseStaticFiles();
@@ -252,17 +253,13 @@ public class Startup {
   #endregion
 
   #region CORS
-  // NUGET: install-Package Microsoft.AspNet.Cors
   // Namespace: using Microsoft.AspNet.Cors;
   app.UseCors(builder =>
-  builder.SetIsOriginAllowed((x) => true) // statt .AllowAnyOrigin(), notwendig für SignalR-JavaScript-Client
+  builder.SetIsOriginAllowed((x) => true) // statt .AllowAnyOrigin(), notwendig für SignalR-JavaScript-Client, da The CORS protocol does not allow specifying a wildcard (any) origin and credentials at the same time. Configure the CORS policy by listing individual origins if credentials needs to be supported
          .AllowAnyHeader()
          .AllowAnyMethod()
          .AllowCredentials() // notwendig für SignalR-JavaScript-Client, siehe https://docs.microsoft.com/en-us/aspnet/core/signalr/javascript-client?view=aspnetcore-6.0
           );
-
-  //.AllowCredentials() // InvalidOperationException: The CORS protocol does not allow specifying a wildcard (any) origin and credentials at the same time. Configure the CORS policy by listing individual origins if credentials needs to be supported
-
   #endregion
 
   #region Websockets CORS 
@@ -295,7 +292,7 @@ public class Startup {
    endpoints.MapRazorPages();
    //routes.MapAreaRoute("blog_route", "StandardPages",
    //"Standard/{controller}/{action}/{id?}");
-
+  
    endpoints.MapControllerRoute(
                name: "default",
                pattern: "{controller}/{action}/{id?}",
@@ -313,7 +310,7 @@ public class Startup {
             pattern: "Schulung",
             defaults: new { controller = "Client", action = "Index" });
 
-   // für ASP.NET SignarlR
+   // für ASP.NET SignalR
    endpoints.MapHub<MLHub>("/MLHub");
    endpoints.MapHub<MLHubV2>("/MLHubV2");
   });
@@ -336,7 +333,7 @@ public class GlobalExceptionFilter : IExceptionFilter {
 
   context.HttpContext.Response.WriteAsync(s + context.Exception.ToString());
 
-  context.HttpContext.Response.WriteAsync("\n---Config:\n");
+  context.HttpContext.Response.WriteAsync("\n---System Info:\n");
 
   IEnumerable<String> e = (context.HttpContext.RequestServices.GetService(typeof(EnvInfo)) as EnvInfo).GetStringList();
 

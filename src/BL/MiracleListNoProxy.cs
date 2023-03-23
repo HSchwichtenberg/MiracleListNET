@@ -76,6 +76,11 @@ public class MiracleListNoProxy : MiracleList.IMiracleListProxy
   throw new NotImplementedException();
  }
 
+ public Task<bool> RemoveFileAsync(int id, string name, string mL_AuthToken)
+ {
+  throw new NotImplementedException();
+ }
+
  public Task<LoginInfo> LoginAsync(LoginInfo loginInfo)
  {
   // wird bei 2-Tier nicht benötigt, Login/Logoff erledigen die Authentication State Provider direkt mit der BL!

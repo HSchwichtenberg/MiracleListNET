@@ -115,11 +115,15 @@ public class Program
 
   #endregion
 
-
   #region DI für sonstige Hilfsbibliotheken
   services.AddScoped<BlazorUtil>();
   // braucht BlazorUtil
   services.AddScoped<IHttpContextAccessor, HttpContextAccessorDummy>();
+  #endregion
+
+  #region Zusätzliche Komponenten, die MLBlazorRCL rendern soll
+  // Datei-UploadChangeEventArgs bei TaskEdit.razor
+  AdditionalComponents.TaskEditAdditionalComponent = typeof(Web.Components.Files);
   #endregion
  }
 }

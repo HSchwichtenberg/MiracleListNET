@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using MiracleList;
 using Radzen;
 
-namespace Web.Components;
+namespace BM.Web.Components;
 
 
 public record FileInfoDTO(string Name, string RelPath, long Length, DateTime LastWriteTime);

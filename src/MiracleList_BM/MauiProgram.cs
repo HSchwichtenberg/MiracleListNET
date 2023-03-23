@@ -72,6 +72,11 @@ public static class MauiProgram
   AdditionalComponents.TaskExportAdditionalComponent = typeof(Web.Components.Export);
   #endregion
   #endregion
+
+  #region Zusätzliche Komponenten, die MLBlazorRCL rendern soll
+  // Datei-UploadChangeEventArgs bei TaskEdit.razor
+  AdditionalComponents.TaskEditAdditionalComponent = typeof(Web.Components.Files);
+  #endregion
   return builder.Build();
  }
 }

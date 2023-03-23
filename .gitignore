@@ -261,13 +261,8 @@ __pycache__/
 *.pyc
 /src/Miraclelist/Pages/UserStatistics.cshtml
 /src/Miraclelist/Views/Shared/_Layout.cshtml
-/src/DAL/Migrations/20190225140754_v2_UserPlanet.Designer.cs
-/src/DAL/Migrations/20190225140754_v2_UserPlanet.cs
-/src/DAL/Migrations/20190225140013_v1.Designer.cs
-/src/DAL/Migrations/20190225140013_v1.cs
 /src/MiracleList_BD/MiracleList_BD - Backup.csproj
 /src/MLBlazorRCL/MLBlazorRCL - Backup.csproj
 /src/SamplesRCL/SamplesRCL - Backup.csproj
-/src/MiracleList_Backend/Uploads/38200
-/src/MiracleList_BS/wwwroot/Files
-/src/MiracleList_Backend/Uploads/adb89e13-df2e-4787-9fbe-951beb1e0b85/45528
+/src/MiracleList_Backend/Uploads/
+/src/MiracleList_BS/wwwroot/

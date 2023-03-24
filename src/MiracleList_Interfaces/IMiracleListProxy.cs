@@ -28,5 +28,5 @@ public interface IMiracleListProxy
  Task<List<BO.Task>> TaskSetAsync(int id, string mL_AuthToken);
  Task<string> VersionAsync();
  Task<bool> RemoveFileAsync(int id, string name, string mL_AuthToken);
- Task<System.Collections.Generic.IDictionary<string, FileInfoDTO>> FilelistAsync(int id, string mL_AuthToken);
+ Task<IDictionary<string, FileInfoDTO>> FilelistAsync(int id, string mL_AuthToken);
 }

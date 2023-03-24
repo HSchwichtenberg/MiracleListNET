@@ -61,7 +61,6 @@
 @code {
  private List<Assembly> lazyLoadedAssemblies = new() { typeof(MLBlazorRCL.Main).Assembly };
 
- // DEMO: 33b. Lazy Loading von RCL in App.Razor: Teil 2
  private async Task OnNavigateAsync(NavigationContext args)
  {
   Console.WriteLine("OnNavigateAsync: " + args.Path);

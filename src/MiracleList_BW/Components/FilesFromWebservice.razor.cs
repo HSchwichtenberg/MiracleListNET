@@ -97,13 +97,15 @@ public partial class FilesFromWebservice
    Info = "Hochladen der Datei <b>" + currentFile.Name + "</b>...";
 
    #region Datei senden per HTTPClient (Hier wird nicht der generierte Code aus der Klasse MiracleListProxy.cs verwendet, weil die Codegenerator hier versagt hat (siehe https://github.com/RicoSuter/NSwag/issues/2650))
+   // Stream der Datei holen
    var stream = currentFile.OpenReadStream(MAXFILESIZE);
+   // Stream festlegen als Form-Data im HTTP-Request
    using var content = new MultipartFormDataContent();
    content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
    content.Add(new StreamContent(stream, Convert.ToInt32(stream.Length)), "image", currentFile.Name);
    // Setzen des Token
    content.Headers.Add("ML-AuthToken", AppState.Token);
-   // Senden der HTTP-Anforderung mit dem MultipartFormDataContent-Objekt als Inhalt
+   // Senden per HTTP
    var url = new Uri(new Uri(AppState.BackendURL), "/v2/task/" + Task.TaskID + "/upload");
    var response = await HttpClient.PostAsync(url, content);
    // Serverantwort

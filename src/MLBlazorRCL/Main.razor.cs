@@ -307,7 +307,7 @@ public partial class Main : IAsyncDisposable {
   if (save) {
    await Proxy.ChangeTaskAsync(this.task, AppState.Token);
    toastService.ShowSuccess($"Aufgabe #" + task.TaskID + " wurde gespeichert.");
-   await SendTaskListUpdate();
+   await SendTaskListUpdate(task);
    this.task = null;
   }
   else {
@@ -353,11 +353,11 @@ public partial class Main : IAsyncDisposable {
  /// Sende Nachricht an Hub via ASP.NET SignalR
  /// </summary>
  public async Task SendTaskListUpdate(BO.Task t = null) {
-  BO.Category categoryUpdated;
-  if (t != null) { categoryUpdated = t.Category; }
-  else { categoryUpdated = this.category; }
-  Util.Log($"SignalR.{nameof(SendTaskListUpdate)}: {categoryUpdated.CategoryID}");
-  if (IsConnected) await AppState.HubConnection.SendAsync(nameof(IMLHub.TaskListUpdate), AppState.Username, categoryUpdated.CategoryID);
+  int categoryIDUpdated;
+  if (t != null) { categoryIDUpdated = t.CategoryID; }
+  else { categoryIDUpdated = this.category.CategoryID; }
+  Util.Log($"SignalR.{nameof(SendTaskListUpdate)}: {categoryIDUpdated}");
+  if (IsConnected) await AppState.HubConnection.SendAsync(nameof(IMLHub.TaskListUpdate), AppState.Username, categoryIDUpdated);
   else Util.Warn($"SignalR.{nameof(SendTaskListUpdate)}: not connected!", "");
  }
  #endregion

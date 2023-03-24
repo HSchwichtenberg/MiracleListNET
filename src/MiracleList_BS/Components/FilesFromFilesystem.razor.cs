@@ -12,7 +12,7 @@ using MiracleList;
 
 namespace Web.Components;
 
-public partial class Files
+public partial class FilesFromFilesystem
 {
  [Parameter]
  public BO.Task Task { get; set; }
@@ -42,10 +42,6 @@ public partial class Files
  IReadOnlyCollection<IBrowserFile> filesToUpload;
  //IBrowserFile fileToUpload; // falls man nur eine Datei pro Upload zulassen will
 
- public Files()
- {
-
- }
  #region Model wird nicht verwendet, ist aber notwendig für EditForm
  public object model { get; set; } = new Object();
  #endregion

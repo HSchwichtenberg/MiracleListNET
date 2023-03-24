@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace BD.Web.Components
 {
-    public partial class Files
-    {
+    public partial class FilesFromFilesystem
+ {
         [Parameter]
         public string FolderName { get; set; } = "Demo";
 
@@ -38,10 +38,6 @@ namespace BD.Web.Components
         IReadOnlyCollection<IBrowserFile> filesToUpload;
         //IBrowserFile fileToUpload; // falls man nur eine Datei pro Upload zulassen will
 
-        public Files()
-        {
-
-        }
         #region Model wird nicht verwendet, ist aber notwendig für EditForm
         public object model { get; set; } = new object();
         #endregion

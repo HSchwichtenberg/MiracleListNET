@@ -14,7 +14,6 @@ public class HybridSharedState
  // DEMO: BD-06: AppState
  public BlazorWebView HostControl { get; set; }
 
-
  private string location = null;
  /// <summary>
  /// Aktueller Benutzer in der Blazor-Anwendung

@@ -1,36 +1,26 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Pipes;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Net.Security;
 using System.Threading;
 using System.Threading.Tasks;
-using Azure;
-using Azure.Core;
 using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MiracleList;
-using Radzen;
 
 namespace Web.Components;
 
-public record FileInfoDTO(string Name, string RelPath, long Length, DateTime LastWriteTime);
-
 public partial class FilesFromWebservice
 {
-
+ /// <summary>Aktuelle Aufgabe</summary>
  [Parameter]
  public BO.Task Task { get; set; }
-
 
  [Inject]
  private BlazorUtil Util { get; set; } = null;
  [Inject]
- private IAppState appstate { get; set; } = null;
+ private IAppState AppState { get; set; } = null;
  [Inject]
  private HttpClient HttpClient { get; set; } = null;
  [Inject]
@@ -40,8 +30,9 @@ public partial class FilesFromWebservice
  public const string FILEROOTFOLDER = "Files";
 
  public string Info { get; set; }
- 
-Dictionary<string, FileInfoDTO> files;
+
+ /// <summary>Liste der Dateien auf dem Server</summary>
+ IDictionary<string, FileInfoDTO> files;
 
  bool displayProgress;
  int progressPercent;
@@ -57,8 +48,6 @@ Dictionary<string, FileInfoDTO> files;
  #region Standard-Lebenszyklus-Ereignisse
  protected override async Task OnParametersSetAsync()
  {
-
-
   await GetFiles();
   cancelation = new CancellationTokenSource();
  }
@@ -66,19 +55,20 @@ Dictionary<string, FileInfoDTO> files;
 
  async Task GetFiles()
  {
-  var url = new Uri(new Uri(appstate.BackendURL), "/v2/Task/" + Task.TaskID + "/FileList");
+  files = await Proxy.FilelistAsync(Task.TaskID, AppState.Token);
 
-  var request = new HttpRequestMessage(HttpMethod.Get, url);
-  request.Headers.Add("ML-AuthToken", appstate.Token);
-  using var httpResponse = await HttpClient.SendAsync(request);
-  files = await httpResponse.Content.ReadFromJsonAsync<Dictionary<string, FileInfoDTO>>();
+  // oder mit HttpClient:
+  //var url = new Uri(new Uri(appstate.BackendURL), "/v2/Task/" + Task.TaskID + "/FileList");
+  //var request = new HttpRequestMessage(HttpMethod.Get, url);
+  //request.Headers.Add("ML-AuthToken", appstate.Token);
+  //using var httpResponse = await HttpClient.SendAsync(request);
+  //files = await httpResponse.Content.ReadFromJsonAsync<Dictionary<string, FileInfoDTO>>();
  }
 
  async Task DeleteFile(FileInfoDTO f)
  {
   if (!await Util.Confirm("Datei " + f.Name + " wirklich löschen?")) return;
-
-  await Proxy.RemoveFileAsync(Task.TaskID, f.Name, appstate.Token);
+  await Proxy.RemoveFileAsync(Task.TaskID, f.Name, AppState.Token);
 
   // oder mit HttpClient:
   // var url = new Uri(new Uri(appstate.BackendURL), "/v2/Task/" + Task.TaskID + "/File/" + f.Name);
@@ -106,42 +96,33 @@ Dictionary<string, FileInfoDTO> files;
    sw.Start();
    Info = "Hochladen der Datei <b>" + currentFile.Name + "</b>...";
 
+   #region Datei senden per HTTPClient (Hier wird nicht der generierte Code aus der Klasse MiracleListProxy.cs verwendet, weil die Codegenerator hier versagt hat (siehe https://github.com/RicoSuter/NSwag/issues/2650))
    var stream = currentFile.OpenReadStream(MAXFILESIZE);
-
    using var content = new MultipartFormDataContent();
    content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
    content.Add(new StreamContent(stream, Convert.ToInt32(stream.Length)), "image", currentFile.Name);
-
-   // Setzen des Content-Type-Headers auf multipart/form-data
-   //long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
-   //string boundary = timestamp.ToString("x");
-   //content.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data; boundary=" + boundary);
    // Setzen des Token
-   content.Headers.Add("ML-AuthToken", appstate.Token);
-
+   content.Headers.Add("ML-AuthToken", AppState.Token);
    // Senden der HTTP-Anforderung mit dem MultipartFormDataContent-Objekt als Inhalt
-   var url = new Uri(new Uri(appstate.BackendURL), "/v2/task/" + Task.TaskID + "/upload");
+   var url = new Uri(new Uri(AppState.BackendURL), "/v2/task/" + Task.TaskID + "/upload");
    var response = await HttpClient.PostAsync(url, content);
-
-   // Ausgabe der Serverantwort
+   // Serverantwort
    var responseString = await response.Content.ReadAsStringAsync();
-
    stream.Close();
+   Util.Log($"{currentFile.Name}: {responseString}");
+   #endregion
 
    sw.Stop();
    Info = "Datei <b>" + currentFile.Name + "</b> hochgeladen in " + sw.ElapsedMilliseconds + "ms!";
    this.StateHasChanged();
-  
   }
 
   if (filesToUpload.Count > 1)
   {
    Info = filesToUpload.Count + " Dateien hochgeladen!";
   }
-  else
-  {
-   this.filesToUpload = null;
-  }
+
+  this.filesToUpload = null;
   progressPercent = 0;
   displayProgress = false;
   await GetFiles();
@@ -154,8 +135,6 @@ Dictionary<string, FileInfoDTO> files;
   return $"{((decimal)Bytes / 1024 / 1024):00.00} MB";
  }
 
-
  #endregion
 
 } // end class
-  // end namespace

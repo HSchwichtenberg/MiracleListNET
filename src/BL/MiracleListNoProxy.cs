@@ -115,4 +115,9 @@ public class MiracleListNoProxy : MiracleList.IMiracleListProxy
  {
   throw new NotImplementedException();
  }
+
+ public Task<IDictionary<string, FileInfoDTO>> FilelistAsync(int id, string mL_AuthToken)
+ {
+  throw new NotImplementedException();
+ }
 }

@@ -60,6 +60,7 @@
  <ItemGroup>
    <Folder Include="Properties\PublishProfiles\" />
    <Folder Include="Properties\ServiceDependencies\" />
+   <Folder Include="wwwroot\Files\" />
  </ItemGroup>
 
 </Project>

@@ -313,6 +313,7 @@ public class MiracleListApiV2Controller : Controller
  [HttpPost("Task/{id:int}/Upload")]
  [DisableRequestSizeLimit]
  [Consumes("multipart/form-data")]
+ [Authorize(AuthenticationSchemes = "MLToken")]
  public IActionResult Upload([FromRoute] int id)
  {
   if (id == 0) id = 46474;
@@ -360,6 +361,7 @@ public class MiracleListApiV2Controller : Controller
  /// <returns></returns>
  [HttpGet("Task/{id:int}/Filelist")]
  [DisableRequestSizeLimit]
+ [Authorize(AuthenticationSchemes = "MLToken")]
  public SortedDictionary<string, FileInfoDTO> FileList(int id)
  {
   Init();
@@ -376,8 +378,6 @@ public class MiracleListApiV2Controller : Controller
 
   return r;
  }
-
-
 
  /// <summary>
  /// Delete a file

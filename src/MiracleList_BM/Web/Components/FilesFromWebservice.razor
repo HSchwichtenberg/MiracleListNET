@@ -1,13 +1,5 @@
-﻿@page "/Samples/Files"
-@using ITVisions.Blazor
+﻿@using ITVisions.Blazor
 @using System.Globalization
-
-@*@if (this.FolderName == "Demo")
-{
- //wird nur verwendet, wenn die Komponente direkt angesprungen wurde
- <h2>Dateiaustausch</h2>
- <hr />
-}*@
 
 @*-------------------- Liste der Dateien*@
 <label>Dateien</label>
@@ -26,7 +18,7 @@
     <span class="badge badge-primary badge-pill" title="@f.RelPath">
      @GetMB(f.Length)
     </span>
-    <a href="@appstate.BackendURL/@f.RelPath" target="_blank">@f.Name</a>
+    <a href="@AppState.BackendURL/@f.RelPath" target="_blank">@f.Name</a>
    </li>
   }
  </ul>
@@ -41,7 +33,6 @@ else
 
 <EditForm Model="model" OnValidSubmit="OnSubmit">
  <label>Upload (max @GetMB(MAXFILESIZE) pro Datei)</label>
-
 
  <div class="form-group row">
   <div class="col-md-12">
@@ -60,8 +51,6 @@ else
   </div>
  </div>
 
-
-
  @if (this.filesToUpload != null && this.filesToUpload.Count > 0)
  {
   <ul>
@@ -69,7 +58,7 @@ else
    {
     var zugross = f.Size > MAXFILESIZE;
 
-    <li style='color:@(zugross ? "red" : "green")'>@f.Name: @(!zugross ? GetMB(f.Size) : " ist zu groß! Maximium ist " + GetMB(MAXFILESIZE))! </li>
+    <li style='color:@(zugross ? "red" : "green")'>@f.Name: @(!zugross ? GetMB(f.Size) : " ist zu groß! Maximium ist " + GetMB(MAXFILESIZE))</li>
    }
   </ul>
 

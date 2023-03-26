@@ -120,4 +120,9 @@ public class MiracleListNoProxy : MiracleList.IMiracleListProxy
  {
   throw new NotImplementedException();
  }
+
+ public System.Threading.Tasks.Task UploadAsync(int id, string mL_AuthToken, FileParameter file)
+ {
+  throw new NotImplementedException();
+ }
 }

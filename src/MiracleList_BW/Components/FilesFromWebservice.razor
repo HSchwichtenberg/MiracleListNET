@@ -9,7 +9,7 @@
   @foreach (var f in files.Values)
   {
    <li class="list-group-item">
-    <span class="glyphicon glyphicon-remove-circle close" style="margin-left:10px" aria-hidden="true" title="Datei löschen" @onclick="()=>DeleteFile(f)">  </span>
+    <span class="glyphicon glyphicon-remove-circle close" style="margin-left:10px" aria-hidden="true" title="Datei löschen" @onclick="()=>RemoveFile(f)">  </span>
 
     <span class="badge badge-primary badge-pill" title="@f.RelPath">
      @f.LastWriteTime.ToString("g", CultureInfo.CreateSpecificCulture("de-DE"))

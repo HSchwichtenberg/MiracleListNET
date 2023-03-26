@@ -1,0 +1,27 @@
+ function FibonacciBerechnungen(anzahl, start, end) {
+    const results = [];
+    for (var j = 0; j < anzahl; j++)
+    {
+     count = j;
+     for (var i = start; i < end; i++) {
+      results.push(Fibonacci(i));
+     }
+    }
+  return results.length;
+   }
+   
+    function Fibonacci(n) {
+    var a = 0;
+    var b = 1;
+    // In N steps compute Fibonacci sequence iteratively.
+    for (var i = 0; i < n; i++) {
+     var temp = a;
+     a = b;
+     b = temp + b;
+    // console.log(b)
+    }
+    return a;
+   }
+
+   var r = FibonacciBerechnungen(10,0,45);
+   console.log(r);

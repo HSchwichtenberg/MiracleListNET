@@ -314,14 +314,14 @@ public class MiracleListApiV2Controller : Controller
  [DisableRequestSizeLimit]
  [Consumes("multipart/form-data")]
  [Authorize(AuthenticationSchemes = "MLToken")]
- public IActionResult Upload([FromRoute] int id)
+ public IActionResult Upload([FromRoute] int id, IFormFile file)
  {
   if (id == 0) id = 46474;
   Init();
   var t = tm.GetTask(id);
   try
   {
-   var file = Request.Form.Files[0]; // weil Parameter "[FromForm] IFormFile file" machte Probleme, siehe https://github.com/RicoSuter/NSwag/issues/2650
+   //var file = Request.Form.Files[0]; // weil Parameter "[FromForm] IFormFile file" machte Probleme, siehe https://github.com/RicoSuter/NSwag/issues/2650
 
    var folderName = GetFolder(t);
    new DirectoryInfo(folderName).GetOrCreateDir();

@@ -34,7 +34,7 @@ namespace Web
   {
    get
    {
-    return Path.Combine(Environment.CurrentDirectory, CurrentUserDirectoryRelativePath);
+    return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), CurrentUserDirectoryRelativePath);
    }
   }
 

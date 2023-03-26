@@ -15,18 +15,18 @@ Es gibt vier auf ASP.NET Core Blazor basierende Implementierung des MiracleList-
 
 ![image](https://user-images.githubusercontent.com/3673169/224552620-97f7c195-f365-4b67-80e7-cbf3fd98c34f.png)
 
-Abbildung: MiracleList im Browser mit Blazor WebAssembly
+Abbildung 1: MiracleList im Browser mit Blazor WebAssembly
 
 ![](https://user-images.githubusercontent.com/3673169/224502120-1e4a7310-b574-49f5-b7dd-72b240f9fe92.png)
 
-Abbildung 1: MiracleList als hybride App in Blazor MAUI
+Abbildung 2: MiracleList als hybride App in Blazor MAUI
 
 ## Architektur der Blazor-Implementierungen der MiracleList
 
 Die vier Blazor-Implementierungen der MiracleList verwenden sehr viel gemeinsamen Code. Die Benutzeroberfläche ist nur einmal für alle vier Blazor-Implementierungen der MiracleList realisiert. Der Datenzugriffs erfolgt wahlweise direkt auf die Datenbank (2-Tier) oder via WebAPI/Application Server (3-Tier).
 
-![image](https://user-images.githubusercontent.com/3673169/227776527-8bbc1750-7783-479f-8bd6-9121f17df76a.png)
-Abbildung 2: Code-Sharing zwischen den vier Implementierungen einschließlich Abstraktion von 2-Tier/3-Tier
+![image](https://user-images.githubusercontent.com/3673169/227788424-d7ff21be-3770-41ff-9cbd-54f52996df2b.png)
+Abbildung 3: Code-Sharing zwischen den vier Implementierungen einschließlich Abstraktion von 2-Tier/3-Tier
 
 ## Features der Blazor-Implementierung der MiracleList
 

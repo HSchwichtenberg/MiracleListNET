@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using MiracleList;
+using MLBlazorRCL.MainView;
 using Web;
 
 namespace BM;

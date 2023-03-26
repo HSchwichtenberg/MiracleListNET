@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using MiracleList;
+using MLBlazorRCL.MainView;
 
 namespace Web;
 

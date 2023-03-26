@@ -5,5 +5,5 @@
 
 <a @onclick="ExportXMLFile"><span id="ShowGrid" title="Aufgabenliste in XML-Datei @ExportPath exportieren" class="glyphicon glyphicon-floppy-save"></span></a>
 @if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
- <a @onclick="ExportWord"><span id="ShowGrid" title="Word-Dokumente @ExportPathWord aus der Aufgabenliste erzeugen" class="glyphicon glyphicon-export"></span></a>
+ <a style="margin-left:10px" @onclick="ExportWord"><span id="ShowGrid" title="Word-Dokumente @ExportPathWord aus der Aufgabenliste erzeugen" class="glyphicon glyphicon-export"></span></a>
 }

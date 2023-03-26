@@ -4,7 +4,7 @@ using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
 using MiracleList;
 
-namespace MLBlazorRCL;
+namespace MLBlazorRCL.Login;
 
 public partial class ServerState {
  [Inject] public BlazorUtil Util { get; set; } = null;

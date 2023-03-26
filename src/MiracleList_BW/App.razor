@@ -5,10 +5,8 @@
 
 @inject NavigationManager NavigationManager
 
-@{/* DEMO: 33a. Lazy Loading von RCL in App.Razor: Teil 1 */ }
 @inject LazyAssemblyLoader LazyAssemblyLoader
 
-@{/* DEMO: 31. Routing */ }
 <CascadingAuthenticationState>
  <Router AppAssembly="typeof(Program).Assembly"
          AdditionalAssemblies="lazyLoadedAssemblies"
@@ -28,7 +26,7 @@
 
   <Found Context="routeData">
    <AuthorizeRouteView RouteData="@routeData"
-                       DefaultLayout="@typeof(MLBlazorRCL.MainLayout)">
+                       DefaultLayout="@typeof(MLBlazorRCL.Layout.MainLayout)">
     <Authorizing>
      <div class="spinner">
       <div class="rect1"></div>
@@ -59,7 +57,7 @@
 </CascadingAuthenticationState>
 
 @code {
- private List<Assembly> lazyLoadedAssemblies = new() { typeof(MLBlazorRCL.Main).Assembly };
+ private List<Assembly> lazyLoadedAssemblies = new() { typeof(MLBlazorRCL.MainView.Main).Assembly };
 
  private async Task OnNavigateAsync(NavigationContext args)
  {

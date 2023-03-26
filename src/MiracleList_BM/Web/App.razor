@@ -4,7 +4,7 @@
 <CascadingAuthenticationState>
 
 <Router AppAssembly="@typeof(App).Assembly"
-         AdditionalAssemblies="new[] { typeof(Samples.RazorSyntax.Listen).Assembly,typeof(MLBlazorRCL.Main).Assembly }">
+         AdditionalAssemblies="new[] { typeof(Samples.RazorSyntax.Listen).Assembly,typeof(MLBlazorRCL.MainView.Main).Assembly }">
   <Navigating>
    <div>
     <p>Loading the requested page...</p>
@@ -12,7 +12,7 @@
   </Navigating>
   <Found Context="routeData">
    <AuthorizeRouteView RouteData="@routeData"
-                       DefaultLayout="@typeof(MLBlazorRCL.MainLayout)">
+                       DefaultLayout="@typeof(MLBlazorRCL.Layout.MainLayout)">
     <Authorizing>
      <div class="spinner">
       <div class="rect1"></div>

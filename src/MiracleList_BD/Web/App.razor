@@ -6,7 +6,7 @@
 @inject HybridSharedState AppState
 
 <CascadingAuthenticationState>
- <Router AppAssembly="@this.GetType().Assembly" AdditionalAssemblies="new[] { typeof(Samples.RazorSyntax.Listen).Assembly,typeof(MLBlazorRCL.Main).Assembly }">
+ <Router AppAssembly="@this.GetType().Assembly" AdditionalAssemblies="new[] { typeof(Samples.RazorSyntax.Listen).Assembly,typeof(MLBlazorRCL.MainView.Main).Assembly }">
   <Navigating>
    <div>
     <p>Loading the requested page...</p>
@@ -14,7 +14,7 @@
   </Navigating>
   <Found Context="routeData">
    <AuthorizeRouteView RouteData="@routeData"
-                       DefaultLayout="@typeof(MLBlazorRCL.MainLayout)">
+                       DefaultLayout="@typeof(MLBlazorRCL.Layout.MainLayout)">
     <Authorizing>
      <div class="spinner">
       <div class="rect1"></div>

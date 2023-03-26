@@ -13,7 +13,7 @@ using Microsoft.JSInterop;
 using MiracleList;
 using MiracleList_Backend.Hubs;
 
-namespace MLBlazorRCL;
+namespace MLBlazorRCL.MainView;
 
 public partial class Main : IAsyncDisposable {
  #region DI

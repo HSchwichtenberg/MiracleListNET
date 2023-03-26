@@ -19,14 +19,14 @@ Abbildung: MiracleList im Browser mit Blazor WebAssembly
 
 ![](https://user-images.githubusercontent.com/3673169/224502120-1e4a7310-b574-49f5-b7dd-72b240f9fe92.png)
 
-Abbildung: MiracleList als hybride App in Blazor MAUI
+Abbildung 1: MiracleList als hybride App in Blazor MAUI
 
 ## Architektur der Blazor-Implementierungen der MiracleList
 
 Die vier Blazor-Implementierungen der MiracleList verwenden sehr viel gemeinsamen Code. Die Benutzeroberfläche ist nur einmal für alle vier Blazor-Implementierungen der MiracleList realisiert. Der Datenzugriffs erfolgt wahlweise direkt auf die Datenbank (2-Tier) oder via WebAPI/Application Server (3-Tier).
 
-![image](https://user-images.githubusercontent.com/3673169/224642674-8b739f2d-0596-4106-a4fb-d207f6e49667.png)
-Abbildung: Code-Sharing zwischen den vier Implementierungen einschließlich Abstraktion von 2-Tier/3-Tier
+![image](https://user-images.githubusercontent.com/3673169/227776527-8bbc1750-7783-479f-8bd6-9121f17df76a.png)
+Abbildung 2: Code-Sharing zwischen den vier Implementierungen einschließlich Abstraktion von 2-Tier/3-Tier
 
 ## Features der Blazor-Implementierung der MiracleList
 

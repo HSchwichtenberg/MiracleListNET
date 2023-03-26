@@ -1,10 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
+using System.Threading.Tasks;
 using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MiracleList;
 
-namespace BM.Web.Components;
+namespace MLBlazorRCL;
 
 public partial class FilesFromWebservice
 {
@@ -60,7 +65,7 @@ public partial class FilesFromWebservice
   //files = await httpResponse.Content.ReadFromJsonAsync<Dictionary<string, FileInfoDTO>>();
  }
 
- async Task DeleteFile(FileInfoDTO f)
+ async Task RemoveFile(FileInfoDTO f)
  {
   if (!await Util.Confirm("Datei " + f.Name + " wirklich löschen?")) return;
   await Proxy.RemoveFileAsync(Task.TaskID, f.Name, AppState.Token);
@@ -91,26 +96,33 @@ public partial class FilesFromWebservice
    sw.Start();
    Info = "Hochladen der Datei <b>" + currentFile.Name + "</b>...";
 
-   #region Datei senden per HTTPClient (Hier wird nicht der generierte Code aus der Klasse MiracleListProxy.cs verwendet, weil die Codegenerator hier versagt hat (siehe https://github.com/RicoSuter/NSwag/issues/2650))
-   // Stream der Datei holen
+   #region Datei senden per MiracleListProxy
    var stream = currentFile.OpenReadStream(MAXFILESIZE);
-   // Stream festlegen als Form-Data im HTTP-Request
-   using var content = new MultipartFormDataContent();
-   content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
-   content.Add(new StreamContent(stream, Convert.ToInt32(stream.Length)), "image", currentFile.Name);
-   // Setzen des Token
-   content.Headers.Add("ML-AuthToken", AppState.Token);
-   // Senden per HTTP
-   var url = new Uri(new Uri(AppState.BackendURL), "/v2/task/" + Task.TaskID + "/upload");
-   var response = await HttpClient.PostAsync(url, content);
-   // Serverantwort
-   var responseString = await response.Content.ReadAsStringAsync();
-   stream.Close();
-   Util.Log($"{currentFile.Name}: {responseString}");
+   var fileParameter = new FileParameter(stream,currentFile.Name);
+   await Proxy.UploadAsync(Task.TaskID, AppState.Token, fileParameter);
    #endregion
 
+   //#region Datei senden direkt per HTTPClient
+   //// Stream der Datei holen
+   //var stream = currentFile.OpenReadStream(MAXFILESIZE);
+   //// Stream festlegen als Form-Data im HTTP-Request
+   //using var content = new MultipartFormDataContent();
+   //content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
+   //content.Add(new StreamContent(stream, Convert.ToInt32(stream.Length)), "image", currentFile.Name);
+   //// Setzen des Token
+   //content.Headers.Add("ML-AuthToken", AppState.Token);
+   //// Senden per HTTP
+   //var url = new Uri(new Uri(AppState.BackendURL), "/v2/task/" + Task.TaskID + "/upload");
+   //var response = await HttpClient.PostAsync(url, content);
+   //// Serverantwort
+   //var responseString = await response.Content.ReadAsStringAsync();
+   //stream.Close();
+   //Util.Log($"{currentFile.Name}: {responseString}");
+   //#endregion
+
    sw.Stop();
-   Info = "Datei <b>" + currentFile.Name + "</b> hochgeladen in " + sw.ElapsedMilliseconds + "ms!";
+   Info = $"Datei <b>{currentFile.Name}</b> hochgeladen in {sw.ElapsedMilliseconds}ms!";
+   Util.Log($"File Upload {currentFile.Name}: {sw.ElapsedMilliseconds}ms!");
    this.StateHasChanged();
   }
 

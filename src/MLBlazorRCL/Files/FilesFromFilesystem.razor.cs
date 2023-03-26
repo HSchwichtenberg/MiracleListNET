@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MiracleList;
 
-namespace MLBlazorRCL;
+namespace MLBlazorRCL.Files;
 
 public partial class FilesFromFilesystem
 {

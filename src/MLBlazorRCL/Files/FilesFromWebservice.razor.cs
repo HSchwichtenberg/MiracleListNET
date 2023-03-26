@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MiracleList;
 
-namespace MLBlazorRCL;
+namespace MLBlazorRCL.Files;
 
 public partial class FilesFromWebservice
 {
@@ -27,7 +27,6 @@ public partial class FilesFromWebservice
  private IMiracleListProxy Proxy { get; set; } = null;
 
  public const long MAXFILESIZE = (long)1073741824 * 4; // 4Gb 100 * 1024 * 1024; // 100 MB
- public const string FILEROOTFOLDER = "Files";
 
  public string Info { get; set; }
 
@@ -98,7 +97,7 @@ public partial class FilesFromWebservice
 
    #region Datei senden per MiracleListProxy
    var stream = currentFile.OpenReadStream(MAXFILESIZE);
-   var fileParameter = new FileParameter(stream,currentFile.Name);
+   var fileParameter = new FileParameter(stream, currentFile.Name);
    await Proxy.UploadAsync(Task.TaskID, AppState.Token, fileParameter);
    #endregion
 

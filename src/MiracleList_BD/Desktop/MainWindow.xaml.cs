@@ -84,7 +84,7 @@ public partial class MainWindow : Window
 
   #region Zusätzliche Komponenten, die MLBlazorRCL rendern soll
   // Datei-UploadChangeEventArgs bei TaskEdit.razor
-  AdditionalComponents.TaskEditAdditionalComponent = typeof(MLBlazorRCL.FilesFromFilesystem);
+  AdditionalComponents.TaskEditAdditionalComponent = typeof(MLBlazorRCL.Files.FilesFromFilesystem);
   // Export-Schaltflächen
   AdditionalComponents.TaskExportAdditionalComponent = typeof(Web.Components.Export);
   #endregion

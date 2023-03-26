@@ -24,6 +24,9 @@ public class AppState : IAppState
  public HubConnection HubConnection { get; set; }
  private readonly IConfiguration configuration;
 
+ public string CurrentUserDirectoryAbsolutePath { get; }
+ public string CurrentUserDirectoryRelativePath { get; }
+
  // Diese Daten werden aus /wwwroot/appsettings.json gelesen
  // Bitte ändern Sie die Daten dort, siehe auch readme.md
  public string StagingURL;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Devart.Common;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -17,8 +18,10 @@ namespace Web
   private string signalRHubURL = "https://miraclelistbackend.azurewebsites.net/MLHUB";
   public string SignalRHubURL { get => signalRHubURL; set => signalRHubURL = value; }
   public HubConnection HubConnection { get; set; }
-  public string BackendDisplayName {
-   get {
+  public string BackendDisplayName
+  {
+   get
+   {
     if (String.IsNullOrEmpty(BackendURL)) return "";
     var csb = new SqlConnectionStringBuilder(BackendURL);
     var server = csb.DataSource;
@@ -27,6 +30,21 @@ namespace Web
    }
   }
 
+  public string CurrentUserDirectoryAbsolutePath
+  {
+   get
+   {
+    return Path.Combine(Environment.CurrentDirectory, CurrentUserDirectoryRelativePath);
+   }
+  }
+
+  public string CurrentUserDirectoryRelativePath
+  {
+   get
+   {
+    return Path.Combine("Files", new BL.UserManager(Int32.Parse(Token)).CurrentUser.UserGUID.ToString());
+   }
+  }
   public string ClientID => throw new NotImplementedException();
 
   private readonly IConfiguration configuration;

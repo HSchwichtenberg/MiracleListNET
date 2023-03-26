@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +11,8 @@ using MiracleList;
 
 namespace Web;
 
-public class AppState : IAppState {
+public class AppState : IAppState
+{
 
  /// <summary>
  /// In ML_BS ist das Token die UserID = Zahl
@@ -21,8 +24,10 @@ public class AppState : IAppState {
  private string signalRHubURL;
  public string SignalRHubURL { get => signalRHubURL; set => signalRHubURL = value; }
 
- public string BackendDisplayName {
-  get {
+ public string BackendDisplayName
+ {
+  get
+  {
    if (String.IsNullOrEmpty(BackendURL)) return "";
    var csb = new SqlConnectionStringBuilder(BackendURL);
    var server = csb.DataSource;
@@ -34,34 +39,55 @@ public class AppState : IAppState {
  public string ClientID => throw new NotImplementedException();
 
  public NavigationManager NavigationManager { get; }
- public IHostEnvironment Host { get; }
+
+ IWebHostEnvironment host;
+ public string CurrentUserDirectoryAbsolutePath
+ {
+  get
+  {
+   return Path.Combine(host.WebRootPath, CurrentUserDirectoryRelativePath);
+  }
+ }
+
+ public string CurrentUserDirectoryRelativePath
+ {
+  get
+  {
+   return Path.Combine("Files", new BL.UserManager(Int32.Parse(Token)).CurrentUser.UserGUID.ToString());
+  }
+ }
 
  private readonly IConfiguration configuration;
  public SortedDictionary<string, string> ConnectionStrings = new();
 
- public AppState(IConfiguration configuration, NavigationManager NavigationManager, IHostEnvironment host) {
+ public AppState(IConfiguration configuration, NavigationManager NavigationManager, IWebHostEnvironment host)
+ {
   this.NavigationManager = NavigationManager;
-  Host = host;
+  this.host = host;
   this.configuration = configuration;
 
   signalRHubURL = this.NavigationManager.ToAbsoluteUri("/MLHub").ToString();
 
-  try {
+  try
+  {
    Console.WriteLine($"AppSettings.ctor");
    IConfigurationSection section = configuration.GetSection("ConnectionStrings");
-   foreach (var s in section.GetChildren()) {
+   foreach (var s in section.GetChildren())
+   {
     Console.WriteLine("Lade connectionString: " + s.Key);
     var server = new Microsoft.Data.SqlClient.SqlConnectionStringBuilder(s.Value).DataSource;
     if (server.ToLower().Contains("windows.net")) server = "AZURE SQL DB";
     ConnectionStrings.Add(server, s.Value);
    }
   }
-  catch (Exception) {
+  catch (Exception)
+  {
 
   }
  }
 
- public SortedDictionary<string, string> GetBackendSet(bool includeLocalhost = false) {
+ public SortedDictionary<string, string> GetBackendSet(bool includeLocalhost = false)
+ {
   return this.ConnectionStrings;
  }
 }

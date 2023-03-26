@@ -21,7 +21,8 @@ public class AppState : IAppState
  public string ClientID => this.configuration["Backend:ClientID"];
  public string Token { get; set; }
  public string Username { get; set; }
-
+ public string CurrentUserDirectoryAbsolutePath { get;  }
+ public string CurrentUserDirectoryRelativePath { get;  }
  private readonly IConfiguration configuration;
 
  // Diese Daten werden aus /wwwroot/appsettings.json gelesen

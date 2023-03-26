@@ -16,6 +16,11 @@ public interface IAppState
  string Username { get; set; }
  string Token { get; set; }
 
+ /// <summary>Wird in ML_BS und ML_BD gebraucht für Datei-Upload</summary>
+ string CurrentUserDirectoryAbsolutePath { get; }
+ /// <summary>Wird in ML_BS und ML_BD gebraucht für Datei-Upload</summary>
+ string CurrentUserDirectoryRelativePath { get; }
+
  bool IsLoggedIn { get => !String.IsNullOrEmpty(Username); }
 
  const string DebugUser = "Max Mustermann";

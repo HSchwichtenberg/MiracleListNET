@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Hosting;
 using MiracleList;
 
-namespace Web.Components;
+namespace MLBlazorRCL;
 
 public partial class FilesFromFilesystem
 {
@@ -20,17 +19,12 @@ public partial class FilesFromFilesystem
  [Inject]
  private BlazorUtil Util { get; set; } = null;
  [Inject]
- private IWebHostEnvironment env { get; set; } = null;
- [Inject]
  private IAppState appstate { get; set; } = null;
 
  public const long MAXFILESIZE = (long)1073741824 * 4; // 4Gb 100 * 1024 * 1024; // 100 MB
- public const string FILEROOTFOLDER = "Files";
 
- public string FolderName { get; set; } = "GUID";
- public string relPathFilesDir => Path.Combine(FILEROOTFOLDER, FolderName);
-
- public string absolutePathFilesDir => Path.Combine(env.WebRootPath ?? "", relPathFilesDir);
+ public string relPathFilesDir => Path.Combine(appstate.CurrentUserDirectoryRelativePath, Task.TaskID.ToString());
+ public string absolutePathFilesDir => Path.Combine(appstate.CurrentUserDirectoryAbsolutePath, Task.TaskID.ToString());
 
  public string Info { get; set; }
  List<FileInfo> files;
@@ -50,9 +44,7 @@ public partial class FilesFromFilesystem
  protected override async Task OnParametersSetAsync()
  {
 
-  FolderName = new BL.UserManager(Int32.Parse(appstate.Token)).CurrentUser.UserGUID.ToString() + "/" + Task.TaskID;
-
-  if (String.IsNullOrEmpty(env.WebRootPath)) { throw new ApplicationException("WebRootPath ist leer. Gibt es kein wwwroot-Verzeichnis?"); }
+  if (String.IsNullOrEmpty(absolutePathFilesDir)) { throw new ApplicationException("CurrentUserDirectory nicht gefunden"); }
   GetFiles();
   cancelation = new CancellationTokenSource();
  }
@@ -63,6 +55,7 @@ public partial class FilesFromFilesystem
   var di = GetOrCreateDir(new DirectoryInfo(absolutePathFilesDir));
   if (di != null) files = di.GetFiles().ToList();
  }
+
  async Task DeleteFile(FileInfo f)
  {
   if (!await Util.Confirm("Datei " + f.Name + " wirklich löschen?")) return;

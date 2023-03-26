@@ -2,14 +2,6 @@
 @using ITVisions.Blazor
 @using System.Globalization
 
-
-@if (this.FolderName == "Demo")
-{
- //wird nur verwendet, wenn die Komponente direkt angesprungen wurde
- <h2>Dateiaustausch</h2>
- <hr />
-}
-
 @*-------------------- Liste der Dateien*@
 <label>Dateien</label>
 @if (files != null && files.Count > 0)
@@ -26,7 +18,14 @@
     <span class="badge badge-primary badge-pill" title="@f.FullName">
      @GetMB(f.Length)
     </span>
-    <a href="@relPathFilesDir/@f.Name" target="_blank">@f.Name</a>
+    @if (Util.IsHybrid)
+    {
+     <a href="@this.absolutePathFilesDir/@f.Name" title="@this.absolutePathFilesDir/@f.Name" target="_blank">@f.Name</a>
+    }
+    else
+    {
+     <a href="@this.relPathFilesDir/@f.Name" title="@this.relPathFilesDir/@f.Name" target="_blank">@f.Name</a>
+    }
    </li>
   }
  </ul>
@@ -41,8 +40,22 @@ else
 
 <EditForm Model="model" OnValidSubmit="OnSubmit">
  <label>Upload (max @GetMB(MAXFILESIZE) pro Datei)</label>
- <div class="custom-file">
-  <InputFile class="custom-file-input" OnChange="OnInputFileChange" multiple /><br />
+
+ <div class="form-group row">
+  <div class="col-md-12">
+   <div class="fileinput fileinput-new input-group " data-provides="fileinput">
+    <div class="form-control" data-trigger="fileinput">
+     <i class="glyphicon glyphicon-file fileinput-exists"></i>
+     <span class="fileinput-filename"></span>
+    </div>
+    <button class="input-group-addon btn btn-default btn-file">
+     <span class="fileinput-new">Wählen</span>
+     <span class="fileinput-exists">Ändern</span>
+     <InputFile class="custom-file-input btn btn-secondary" OnChange="OnInputFileChange" multiple />
+    </button>
+    <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Entfernen</a>
+   </div>
+  </div>
  </div>
 
 
@@ -53,7 +66,7 @@ else
    {
     var zugross = f.Size > MAXFILESIZE;
 
-    <li style='color:@(zugross ? "red" : "green")'>@f.Name: @(!zugross? GetMB(f.Size) : " ist zu groß! Maximium ist " + GetMB(MAXFILESIZE))! </li>
+    <li style='color:@(zugross ? "red" : "green")'>@f.Name: @(!zugross ? GetMB(f.Size) : " ist zu groß! Maximium ist " + GetMB(MAXFILESIZE))! </li>
    }
   </ul>
 

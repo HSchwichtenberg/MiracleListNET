@@ -6,9 +6,9 @@
 @attribute [Authorize]
 @using ITVisions.Blazor
 @using ITVisions.Blazor.Controls
-@using ITVisions.TextGenerator;
 @using Microsoft.AspNetCore.SignalR.Client;
 @using BlazorContextMenu;
+@using MLBlazorRCL.MainView;
 
 <div class="row">
 
@@ -115,7 +115,7 @@
    @{
     /* DEMO: 20. Unterkomponente: einbetten mit Parametern */
    }
-   <MLBlazorRCL.TaskEdit Task="@task" TaskHasChanged="@TaskHasChanged"></MLBlazorRCL.TaskEdit>
+   <TaskEdit Task="@task" TaskHasChanged="@TaskHasChanged"></TaskEdit>
   </div>
  }
 

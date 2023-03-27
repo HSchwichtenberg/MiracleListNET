@@ -1,12 +1,8 @@
-using System;
 using System.Linq;
-using FluentValidation;
-using ITVisions;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
-using Microsoft.JSInterop;
-using System.Threading.Tasks;
 
 namespace MLBlazorRCL.MainView
 {
@@ -34,9 +30,6 @@ namespace MLBlazorRCL.MainView
    Util.Log((nameof(OnParametersSet) + ": " + Task.TaskID));
    editContext = new(Task);
   }
-  #endregion Lebenszyklusereignisse
-
-  #region Gesamtzustand
 
   public async Task OnBeforeInternalNavigation(LocationChangingContext context)
   {
@@ -48,7 +41,9 @@ namespace MLBlazorRCL.MainView
     context.PreventNavigation();
    }
   }
+  #endregion Lebenszyklusereignisse
 
+  #region Hilfsfunktionen
   /// <summary>
   /// Liefert die Information, ob ein Property im EditContext gültige Inhalte hat
   /// </summary>
@@ -58,7 +53,7 @@ namespace MLBlazorRCL.MainView
    return editContext.GetValidationMessages(this.editContext.Field(fieldname)).Any();
   }
 
-  #endregion Gesamtzustand
+  #endregion Hilfsfunktionen
 
   #region Benutzeraktionen
   protected async Task Save()

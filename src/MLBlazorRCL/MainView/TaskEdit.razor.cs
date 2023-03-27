@@ -22,8 +22,6 @@ namespace MLBlazorRCL.MainView
 
   private EditContext editContext { get; set; } = null;
 
-
-
   #region Lebenszyklusereignisse
   protected override async System.Threading.Tasks.Task OnInitializedAsync()
   {
@@ -36,7 +34,7 @@ namespace MLBlazorRCL.MainView
    Util.Log((nameof(OnParametersSet) + ": " + Task.TaskID));
    editContext = new(Task);
   }
-  #endregion
+  #endregion Lebenszyklusereignisse
 
   #region Gesamtzustand
 
@@ -60,9 +58,10 @@ namespace MLBlazorRCL.MainView
    return editContext.GetValidationMessages(this.editContext.Field(fieldname)).Any();
   }
 
-  #endregion
+  #endregion Gesamtzustand
 
-  protected async void Save()
+  #region Benutzeraktionen
+  protected async Task Save()
   {
    if (this.editContext != null)
    {
@@ -75,11 +74,12 @@ namespace MLBlazorRCL.MainView
    await TaskHasChanged.InvokeAsync(true);
   }
 
-  protected async void Cancel()
+  protected async Task Cancel()
   {
    Util.Log(nameof(Cancel) + ": " + Task.TaskID);
    await TaskHasChanged.InvokeAsync(false);
   }
+  #endregion Benutzeraktionen
 
  } // end class TaskEdit
 }

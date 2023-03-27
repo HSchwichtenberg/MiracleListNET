@@ -8,25 +8,30 @@
  /* DEMO: 21. Unterkomponente mit EditForm / ohne Route */
 }
 
-@if (Task != null) {
+@if (Task != null)
+{
 
-  <NavigationLock ConfirmExternalNavigation="true"
-                 OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+
 
  <div style="padding: 0">
   <div>
    <h4>Task</h4>
+
+   <NavigationLock ConfirmExternalNavigation="@true"
+                   OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+
    <EditForm EditContext="@editContext">
     @*<DataAnnotationsValidator />*@
     <FluentValidationValidator />
     <!--Schaltflächen-->
     <button id="save" type="button" title="Änderungen speichern"
-           @onclick="Save" class="btn btn-success" disabled="@(!editContext.Validate())">
+    @onclick="Save" class="btn btn-success" disabled="@(!editContext.Validate())">
      <span class="glyphicon glyphicon-floppy-save"></span> <span class="hidden-xs" i18n>Speichern</span>
     </button>
     <button id="cancel" type="button" title="Änderungen verwerfen" @onclick="Cancel" class="btn btn-warning"><span class="glyphicon glyphicon-remove"></span> <span class="hidden-xs" i18n>Abbrechen</span></button>
     <!--Validierungsausgabe-->
-    @if (!editContext.Validate()) {
+    @if (!editContext.Validate())
+    {
      <div class="alert alert-danger" role="alert">
       <h5 class="alert-heading text-danger">Es gibt Eingabefehler:</h5>
       <ValidationSummary class="text-danger"></ValidationSummary>
@@ -37,7 +42,8 @@
     <div class='form-group has-feedback @(IsValid("Title")?"has-error":"")'>
      <label for="tasktitle">Titel</label>
      <InputText id="tasktitle" @bind-Value="Task.Title" required class="form-control" />
-     @if (IsValid("Title")) {
+     @if (IsValid("Title"))
+     {
       <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
      }
      <ValidationMessage class="text-danger" For="@(() => Task.Title)" />
@@ -48,7 +54,8 @@
       <div class="form-group">
        <label for="taskimportance" i18n>Wichtigkeit</label>
        <InputSelect id="taskimportance" name="taskimportance" @bind-Value="Task.ImportanceNN" class="form-control">
-        @foreach (object s in System.Enum.GetValues(typeof(BO.Importance))) {
+        @foreach (object s in System.Enum.GetValues(typeof(BO.Importance)))
+        {
          <option value="@s">@s</option>
         }
        </InputSelect>
@@ -59,7 +66,7 @@
       <div class='form-group @(IsValid("Effort")?"has-error":"")'>
        <label for="taskeffort " i18n>Aufwand</label>
        <InputNumber id="taskeffort" min="0" name="taskeffort" @bind-Value="Task.Effort" class="form-control" />
- 
+
        <ValidationMessage class="text-danger" For="@(() => Task.Effort)" />
       </div>
      </div>
@@ -68,13 +75,13 @@
       <div class='form-group @(IsValid("Due")?"has-error":"")'>
        <label for="taskDue" i18n>Fälligkeit</label>
        <InputDate id="taskdue" name="taskdue" @bind-Value="Task.Due" class="form-control" />
-   
+
        <ValidationMessage class="text-danger" For="@(() => Task.Due)" />
       </div>
      </div>
     </div>  <!--Ende row-->
     <!--Unteraufgaben-->
-    <MLBlazorRCL.SubTaskList Task="Task"></MLBlazorRCL.SubTaskList>
+    <SubTaskList Task="Task"></SubTaskList>
     <!--Notiz-->
     <div class="form-group ">
      <label for="tasknote" i18n>Notizen</label>
@@ -83,7 +90,8 @@
     </div>
    </EditForm>
 
-   @if (AdditionalComponents.TaskEditAdditionalComponent != null) {
+   @if (AdditionalComponents.TaskEditAdditionalComponent != null)
+   {
     <DynamicComponent Type="@AdditionalComponents.TaskEditAdditionalComponent" Parameters="@(new Dictionary<string, object>() { { "Task", this.Task} })"></DynamicComponent>
    }
   </div>

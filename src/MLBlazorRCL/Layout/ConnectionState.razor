@@ -25,8 +25,8 @@
 
   await Run();
 
-  // alle 60 Sekunden
-  using var periodicTimer = new PeriodicTimer(TimeSpan.FromSeconds(60));
+  // alle 10 Sekunden
+  using var periodicTimer = new PeriodicTimer(TimeSpan.FromSeconds(10));
   while (await periodicTimer.WaitForNextTickAsync())
   {
    await Run();

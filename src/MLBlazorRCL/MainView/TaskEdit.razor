@@ -9,6 +9,10 @@
 }
 
 @if (Task != null) {
+
+  <NavigationLock ConfirmExternalNavigation="true"
+                 OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+
  <div style="padding: 0">
   <div>
    <h4>Task</h4>

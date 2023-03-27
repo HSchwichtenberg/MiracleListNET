@@ -4,6 +4,9 @@ using FluentValidation;
 using ITVisions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.JSInterop;
+using System.Threading.Tasks;
 
 namespace MLBlazorRCL.MainView
 {
@@ -19,14 +22,9 @@ namespace MLBlazorRCL.MainView
 
   private EditContext editContext { get; set; } = null;
 
-  /// <summary>
-  /// Liefert die Information, ob ein Property im EditContext gültige Inhalte hat
-  /// </summary>
-  /// <param name="fieldname">Name des Properties</param>
-  public bool IsValid(string fieldname) {
-   return editContext.GetValidationMessages(this.editContext.Field(fieldname)).Any();
-  }
 
+
+  #region Lebenszyklusereignisse
   protected override async System.Threading.Tasks.Task OnInitializedAsync()
   {
    Util.Log(nameof(TaskEdit) + "." + nameof(OnInitialized) + ": " + Task.TaskID);
@@ -38,6 +36,31 @@ namespace MLBlazorRCL.MainView
    Util.Log((nameof(OnParametersSet) + ": " + Task.TaskID));
    editContext = new(Task);
   }
+  #endregion
+
+  #region Gesamtzustand
+
+  public async Task OnBeforeInternalNavigation(LocationChangingContext context)
+  {
+
+   var isConfirmed = await Util.Confirm("Möchten Sie die Seite verlassen ohne zu speichern?");
+
+   if (!isConfirmed)
+   {
+    context.PreventNavigation();
+   }
+  }
+
+  /// <summary>
+  /// Liefert die Information, ob ein Property im EditContext gültige Inhalte hat
+  /// </summary>
+  /// <param name="fieldname">Name des Properties</param>
+  public bool IsValid(string fieldname)
+  {
+   return editContext.GetValidationMessages(this.editContext.Field(fieldname)).Any();
+  }
+
+  #endregion
 
   protected async void Save()
   {

@@ -135,30 +135,6 @@ public partial class FilesFromFilesystem
   StateHasChanged();
  }
 
- #region Util
- //public string GetMB(long Bytes)
- //{
- // return $"{((decimal)Bytes / 1024 / 1024):00.00} MB";
- //}
-
- //public DirectoryInfo GetOrCreateDir(FileInfo obj, bool NoRecurse = false)
- //{
- // DirectoryInfo d = obj.Directory;
-
- // if (!d.Exists && !d.Parent.Exists && !NoRecurse) GetOrCreateDir(new DirectoryInfo(d.Parent.FullName), true);
- // if (!d.Exists) d.Create();
- // return d;
- //}
-
- //public DirectoryInfo GetOrCreateDir(DirectoryInfo obj, bool NoRecurse = false)
- //{
- // DirectoryInfo d = new DirectoryInfo(obj.FullName);
- // if (!d.Exists && d.Parent == null) throw new ApplicationException("Cannot Create Directory - No Parent Directory");
- // if (!d.Exists && !d.Parent.Exists && !NoRecurse) GetOrCreateDir(new DirectoryInfo(d.Parent.FullName), true);
- // if (!d.Exists) d.Create();
- // return d;
- //}
- #endregion
 
 } // end class
   // end namespace

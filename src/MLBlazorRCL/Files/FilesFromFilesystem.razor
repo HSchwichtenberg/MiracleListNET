@@ -1,6 +1,7 @@
 ﻿@page "/Samples/Files"
 @using ITVisions.Blazor
 @using System.Globalization
+@using ITVisions;
 
 @*-------------------- Liste der Dateien*@
 <label>Dateien</label>
@@ -16,7 +17,7 @@
     </span>
 
     <span class="badge badge-primary badge-pill" title="@f.FullName">
-     @GetMB(f.Length)
+     @MathUtil.MB(f.Length)
     </span>
     @if (Util.IsHybrid)
     {
@@ -39,7 +40,7 @@ else
 @*-------------------- Upload-Bereich*@
 
 <EditForm Model="model" OnValidSubmit="OnSubmit">
- <label>Upload (max @GetMB(MAXFILESIZE) pro Datei)</label>
+ <label>Upload (max @MathUtil.MB(MAXFILESIZE) pro Datei)</label>
 
  <div class="form-group row">
   <div class="col-md-12">
@@ -66,7 +67,7 @@ else
    {
     var zugross = f.Size > MAXFILESIZE;
 
-    <li style='color:@(zugross ? "red" : "green")'>@f.Name: @(!zugross ? GetMB(f.Size) : " ist zu groß! Maximium ist " + GetMB(MAXFILESIZE))! </li>
+    <li style='color:@(zugross ? "red" : "green")'>@f.Name: @(!zugross ? MathUtil.MB(f.Size) : " ist zu groß! Maximium ist " + MathUtil.MB(MAXFILESIZE))! </li>
    }
   </ul>
 

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ITVisions;
 using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -52,7 +53,7 @@ public partial class FilesFromFilesystem
 
  void GetFiles()
  {
-  var di = GetOrCreateDir(new DirectoryInfo(absolutePathFilesDir));
+  var di = new DirectoryInfo(absolutePathFilesDir).GetOrCreateDir();
   if (di != null) files = di.GetFiles().ToList();
  }
 
@@ -81,7 +82,8 @@ public partial class FilesFromFilesystem
    string newFilePath = Path.Combine(absolutePathFilesDir, currentFile.Name);
 
    // Sicherstellen, dass es Pfad gibt
-   GetOrCreateDir(new FileInfo(newFilePath));
+   var d = new DirectoryInfo(absolutePathFilesDir).GetOrCreateDir();
+
    // Wenn es die Datei schon gibt, dann löschen!
    if (File.Exists(newFilePath)) File.Delete(newFilePath);
 
@@ -134,28 +136,28 @@ public partial class FilesFromFilesystem
  }
 
  #region Util
- public string GetMB(long Bytes)
- {
-  return $"{((decimal)Bytes / 1024 / 1024):00.00} MB";
- }
+ //public string GetMB(long Bytes)
+ //{
+ // return $"{((decimal)Bytes / 1024 / 1024):00.00} MB";
+ //}
 
- public DirectoryInfo GetOrCreateDir(FileInfo obj, bool NoRecurse = false)
- {
-  DirectoryInfo d = obj.Directory;
+ //public DirectoryInfo GetOrCreateDir(FileInfo obj, bool NoRecurse = false)
+ //{
+ // DirectoryInfo d = obj.Directory;
 
-  if (!d.Exists && !d.Parent.Exists && !NoRecurse) GetOrCreateDir(new DirectoryInfo(d.Parent.FullName), true);
-  if (!d.Exists) d.Create();
-  return d;
- }
+ // if (!d.Exists && !d.Parent.Exists && !NoRecurse) GetOrCreateDir(new DirectoryInfo(d.Parent.FullName), true);
+ // if (!d.Exists) d.Create();
+ // return d;
+ //}
 
- public DirectoryInfo GetOrCreateDir(DirectoryInfo obj, bool NoRecurse = false)
- {
-  DirectoryInfo d = new DirectoryInfo(obj.FullName);
-  if (!d.Exists && d.Parent == null) throw new ApplicationException("Cannot Create Directory - No Parent Directory");
-  if (!d.Exists && !d.Parent.Exists && !NoRecurse) GetOrCreateDir(new DirectoryInfo(d.Parent.FullName), true);
-  if (!d.Exists) d.Create();
-  return d;
- }
+ //public DirectoryInfo GetOrCreateDir(DirectoryInfo obj, bool NoRecurse = false)
+ //{
+ // DirectoryInfo d = new DirectoryInfo(obj.FullName);
+ // if (!d.Exists && d.Parent == null) throw new ApplicationException("Cannot Create Directory - No Parent Directory");
+ // if (!d.Exists && !d.Parent.Exists && !NoRecurse) GetOrCreateDir(new DirectoryInfo(d.Parent.FullName), true);
+ // if (!d.Exists) d.Create();
+ // return d;
+ //}
  #endregion
 
 } // end class

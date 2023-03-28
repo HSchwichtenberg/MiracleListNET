@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using BL;
+using BO;
+using ITVisions;
+using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using MiracleList;
 
 namespace Web;
@@ -41,6 +46,8 @@ public class AppState : IAppState
  public NavigationManager NavigationManager { get; }
 
  IWebHostEnvironment host;
+ private readonly BlazorUtil util;
+
  public string CurrentUserDirectoryAbsolutePath
  {
   get
@@ -60,10 +67,11 @@ public class AppState : IAppState
  private readonly IConfiguration configuration;
  public SortedDictionary<string, string> ConnectionStrings = new();
 
- public AppState(IConfiguration configuration, NavigationManager NavigationManager, IWebHostEnvironment host)
+ public AppState(IConfiguration configuration, NavigationManager NavigationManager, IWebHostEnvironment host, BlazorUtil util)
  {
   this.NavigationManager = NavigationManager;
   this.host = host;
+  this.util = util;
   this.configuration = configuration;
 
   signalRHubURL = this.NavigationManager.ToAbsoluteUri("/MLHub").ToString();
@@ -82,8 +90,22 @@ public class AppState : IAppState
   }
   catch (Exception)
   {
-
   }
+
+  try
+  {
+   var d = new DirectoryInfo(Path.Combine(host.WebRootPath, "Files")).GetOrCreateDir();
+
+   // Cleanup Dateien älter als 10 Tage, damit der DEMO-Server nicht zugemüllt wird -> Dies ggf. ändern für eigene Zwecke!
+   var removecount = d.RemoveOldFiles(10);
+
+   util.Log("File-Cleanup-Error: " + removecount + " Dateien älter als 10 Tage entfernt!");
+  }
+  catch (Exception ex)
+  {
+   util.Log("File-Cleanup-Error: " + ex.ToString());
+  }
+
  }
 
  public SortedDictionary<string, string> GetBackendSet(bool includeLocalhost = false)

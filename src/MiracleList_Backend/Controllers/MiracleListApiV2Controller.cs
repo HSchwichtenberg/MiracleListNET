@@ -321,10 +321,15 @@ public class MiracleListApiV2Controller : Controller
   var t = tm.GetTask(id);
   try
   {
+
    //var file = Request.Form.Files[0]; // weil Parameter "[FromForm] IFormFile file" machte Probleme, siehe https://github.com/RicoSuter/NSwag/issues/2650
 
    var folderName = GetFolder(t);
-   new DirectoryInfo(folderName).GetOrCreateDir();
+   var d = new DirectoryInfo(folderName).GetOrCreateDir();
+
+   // Cleanup Dateien älter als 10 Tage, damit der DEMO-Server nicht zugemüllt wird -> Dies ggf. ändern für eigene Zwecke!
+   var count = d.RemoveOldFiles(10);
+
    var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
    if (file.Length > 0)
    {

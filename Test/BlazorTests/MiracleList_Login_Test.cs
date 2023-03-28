@@ -38,11 +38,11 @@ namespace MiracleListTests
   /// </summary>
   public MiracleListLoginTest()
   {
-  
+
   }
   TestContext ctx = new TestContext();
 
-  private IRenderedComponent<MLBlazorRCL.Login> ArrangeAndAct(string name, string kennwort)
+  private IRenderedComponent<MLBlazorRCL.Login.Login> ArrangeAndAct(string name, string kennwort)
   {
 
    ctx.JSInterop.Mode = JSRuntimeMode.Loose; // https://bunit.dev/docs/test-doubles/emulating-ijsruntime.html
@@ -65,7 +65,7 @@ namespace MiracleListTests
 
    //var state = Mock.Create<Task<AuthenticationState>>();
 
-   var cut = ctx.RenderComponent<MLBlazorRCL.Login>(); // parameters => parameters.Add(p => p.authenticationStateTask, state));
+   var cut = ctx.RenderComponent<MLBlazorRCL.Login.Login>(); // parameters => parameters.Add(p => p.authenticationStateTask, state));
 
    // Prüfung 1: Richtiges Fenster geladen?
    cut.Find("h2").MarkupMatches(@"<h2 class='Headline'>Benutzeranmeldung</h2>");
@@ -100,7 +100,7 @@ namespace MiracleListTests
    var stateProvider = Services.GetService<AuthenticationStateProvider>();
 
    // Arrange and Act
-   IRenderedComponent<MLBlazorRCL.Login> cut = ArrangeAndAct(name, kennwort);
+   IRenderedComponent<MLBlazorRCL.Login.Login> cut = ArrangeAndAct(name, kennwort);
 
    // Prüfung 1: Konsolenausgabe
    Assert.Contains(this.JSInterop.Invocations["console.info"], x => x.Arguments[0].ToString() == "BLAZOR: Login.DoLogin: Login OK!");
@@ -116,7 +116,7 @@ namespace MiracleListTests
    string kennwort = "";
 
    // Arrange and Act
-   IRenderedComponent<MLBlazorRCL.Login> cut = ArrangeAndAct(name, kennwort);
+   IRenderedComponent<MLBlazorRCL.Login.Login> cut = ArrangeAndAct(name, kennwort);
 
    // Prüfung 1: Konsolenausgabe
    var console = this.JSInterop.Invocations["console.info"];
@@ -129,6 +129,6 @@ namespace MiracleListTests
    Assert.Equal(UriBefore, cut.Instance.NavigationManager.Uri);
   }
 
- 
+
  }
 }

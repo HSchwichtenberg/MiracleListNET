@@ -1,8 +1,11 @@
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using BL;
 using Blazored.LocalStorage;
 using Blazored.Toast;
+using ITVisions;
 using ITVisions.Blazor;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -28,7 +31,9 @@ public class Startup
  {
   this.Env = env;
 
-  Console.WriteLine("WebRootPath: " + env.ContentRootPath);
+  Console.WriteLine("WebRootPath: " + env.WebRootPath);
+
+
 
   #region Load configuration
   // Get all configuration sources

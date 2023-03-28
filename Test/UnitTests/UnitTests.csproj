@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
  <PropertyGroup>
   <NoWarn>$(NoWarn);NU1605</NoWarn>
-  <Version>7.12.0.0</Version>
-  <AssemblyVersion>7.12.0.0</AssemblyVersion>
-  <FileVersion>7.12.0.0</FileVersion>
-  <InformationalVersion>7.12.0.0-03/23/2023 12:57:01</InformationalVersion>
+  <Version>7.12.1.0</Version>
+  <AssemblyVersion>7.12.1.0</AssemblyVersion>
+  <FileVersion>7.12.1.0</FileVersion>
+  <InformationalVersion>7.12.1.0-03/27/2023 21:18:27</InformationalVersion>
   <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
  </PropertyGroup>
 

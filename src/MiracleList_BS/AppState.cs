@@ -92,18 +92,19 @@ public class AppState : IAppState
   {
   }
 
+  var filesPath = Path.Combine(host.WebRootPath, "Files");
   try
   {
-   var d = new DirectoryInfo(Path.Combine(host.WebRootPath, "Files")).GetOrCreateDir();
+   var d = new DirectoryInfo(filesPath).GetOrCreateDir();
 
    // Cleanup Dateien älter als 10 Tage, damit der DEMO-Server nicht zugemüllt wird -> Dies ggf. ändern für eigene Zwecke!
    var removecount = d.RemoveOldFiles(10);
 
-   util.Log("File-Cleanup-Error: " + removecount + " Dateien älter als 10 Tage entfernt!");
+   util.Log("File-Cleanup-OK: " + removecount + " Dateien älter als 10 Tage entfernt aus " + filesPath);
   }
   catch (Exception ex)
   {
-   util.Log("File-Cleanup-Error: " + ex.ToString());
+   util.Log("File-Cleanup-Error in " + filesPath + ": " + ex.ToString());
   }
 
  }

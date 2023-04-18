@@ -23,7 +23,7 @@ namespace ITVisions.Blazor
   private NavigationManager NavigationManager { get; set; } = null;
   private IHttpContextAccessor httpContextAccessor { get; set; } = null;
   private BlazorUtil Util { get; set; } = null;
-  private ISessionStorageService LocalStorageService { get; set; } = null;
+  private ISessionStorageService SessionStorageService { get; set; } = null;
   // DI
   public JSUtil(IJSRuntime jsRuntime, NavigationManager NavigationManager, IHttpContextAccessor httpContextAccessor, BlazorUtil Util, ISessionStorageService LocalStorageService)
   {
@@ -31,7 +31,7 @@ namespace ITVisions.Blazor
    this.NavigationManager = NavigationManager;
    this.httpContextAccessor = httpContextAccessor;
    this.Util = Util;
-   this.LocalStorageService = LocalStorageService;
+   this.SessionStorageService = LocalStorageService;
   }
 
   public async Task<bool> Notification(string head, string text)
@@ -86,7 +86,7 @@ namespace ITVisions.Blazor
 
    try
    {
-    var guid = (await LocalStorageService.GetItemAsync<T>(key));
+    var guid = (await SessionStorageService.GetItemAsync<T>(key));
     if (guid != null) Util.Log(key + " from Local Storage: " + guid);
     return guid;
    }
@@ -111,7 +111,6 @@ namespace ITVisions.Blazor
    return (b == testvalue);
   }
 
-
   public async Task SetValueInBrowser(string Key, object value)
   {
    try
@@ -126,8 +125,8 @@ namespace ITVisions.Blazor
 
    try
    {
-    if (value == null) await LocalStorageService.RemoveItemAsync(Key);
-    else await LocalStorageService.SetItemAsync(Key, value);
+    if (value == null) await SessionStorageService.RemoveItemAsync(Key);
+    else await SessionStorageService.SetItemAsync(Key, value);
    }
    catch (Exception ex)
    {

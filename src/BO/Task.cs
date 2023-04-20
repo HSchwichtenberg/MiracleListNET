@@ -9,7 +9,7 @@ namespace BO
 
  /// <summary>
  /// Entity class representing a task
- /// Used on the server up to the WebAPI as well as on the .NET clients
+ /// Used on the server on all layers up to the WebAPI and also in .NET clients
  /// Corresponding proxy class in TypeScript is used on client
  /// </summary>
  public class Task

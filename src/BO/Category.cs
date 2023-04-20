@@ -6,7 +6,7 @@ namespace BO
 {
  /// <summary>
  /// Entity class representing a category of tasks
- /// Used on the server up to the WebAPI
+ /// Used on the server on all layers up to the WebAPI and also in .NET clients
  /// Corresponding proxy class in TypeScript is used on client
  /// </summary>
  public class Category

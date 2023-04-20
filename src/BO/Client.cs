@@ -5,7 +5,7 @@ namespace BO
 {
  /// <summary>
  /// Entity class representing a category of tasks
- /// Used on the server up to the WebAPI
+ /// Used on the server on all layers up to the WebAPI
  /// Not used in the client!
  /// </summary>
  public class Client

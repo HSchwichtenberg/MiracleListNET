@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using BO;
 using DA;
 using ITVisions.EFCore;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
 namespace BL
 {
@@ -35,7 +35,7 @@ namespace BL
   public List<BO.Task> GetTaskSet(int? categoryID = null)
   {
    var q = ctx.TaskSet.Include(x => x.SubTaskSet).Where(x => x.Category.UserID == this.userID);
-   if (categoryID>0) q=q.Where(x=>x.CategoryID == categoryID);
+   if (categoryID > 0) q = q.Where(x => x.CategoryID == categoryID);
    return q.ToList();
   }
 
@@ -121,10 +121,10 @@ namespace BL
    return t;
   }
 
-   /// <summary>
-   /// Change a task including subtasks
-   /// </summary>
-   public BO.Task ChangeTask(BO.Task tnew)
+  /// <summary>
+  /// Change a task including subtasks
+  /// </summary>
+  public BO.Task ChangeTask(BO.Task tnew)
   {
    if (tnew == null) return null;
 
@@ -138,7 +138,7 @@ namespace BL
 
    if (tnew.SubTaskSet != null) tnew.SubTaskSet.ForEach(x => x.SubTaskID = 0); // delete ID, so that EFCore regards this as a new object
 
-  if (tnew.CategoryID == 0) tnew.CategoryID = this.GetByID(tnew.TaskID).CategoryID; // Use existing category
+   if (tnew.CategoryID == 0) tnew.CategoryID = this.GetByID(tnew.TaskID).CategoryID; // Use  category from existing record in database
 
    // Attached the task and all attached subtasks
    ctx1.TaskSet.Update(tnew);

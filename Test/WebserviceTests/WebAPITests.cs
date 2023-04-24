@@ -15,7 +15,6 @@ public class WebAPITests
 
  public MiracleListProxy Proxy { get; }
 
-
  [Fact]
  private async Task<LoginInfo> Login()
  {

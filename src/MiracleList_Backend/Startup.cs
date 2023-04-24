@@ -25,11 +25,12 @@ using MiracleList_Backend.SwaggerExtensions;
 
 namespace MiracleList;
 
-
-public class Startup {
+public class Startup
+{
  public IConfigurationRoot Configuration { get; }
 
- public Startup(IWebHostEnvironment env) {
+ public Startup(IWebHostEnvironment env)
+ {
   CUI.Headline("Startup");
 
   #region Additional Columns added after compilation
@@ -38,7 +39,8 @@ public class Startup {
 
   Console.WriteLine("Loading Configuration...");
   // List of additional columns must be set before creating the first instance of the context!
-  if (additionalColumnSet.Count > 0) {
+  if (additionalColumnSet.Count > 0)
+  {
    DA.Context.AdditionalColumnSet = additionalColumnSet;
    Console.WriteLine("AdditionalColumnSet=" + String.Join("\n", additionalColumnSet));
   }
@@ -58,7 +60,8 @@ public class Startup {
       .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
       .AddEnvironmentVariables(); // only loads process env variables https://github.com/aspnet/Configuration/issues/721
 
-  if (env.EnvironmentName == "Development") {
+  if (env.EnvironmentName == "Development")
+  {
    // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
 #pragma warning disable CS0618 // Type or member is obsolete
    builder.AddApplicationInsightsSettings(developerMode: true);
@@ -66,7 +69,8 @@ public class Startup {
    // Connect to EFCore Profiler
    //HibernatingRhinos.Profiler.Appender.EntityFramework.EntityFrameworkProfiler.Initialize();
   }
-  else {
+  else
+  {
    // nothing to do currently
   }
 
@@ -81,20 +85,24 @@ public class Startup {
 
   #region testuser
 
-  try {
-   if (env.EnvironmentName == "Development") {
+  try
+  {
+   if (env.EnvironmentName == "Development")
+   {
     Console.WriteLine("Creating user 'test'..");
     var um = new UserManager("test", true, true);
     um.InitDefaultTasks();
    }
-   else {
+   else
+   {
     Console.WriteLine("Testing Database Access...");
     UserManager.GetUserStatistics();
     CUI.PrintSuccess("OK");
 
    }
   }
-  catch (Exception ex) {
+  catch (Exception ex)
+  {
 
    CUI.PrintError("ERROR: " + ex.Message);
   }
@@ -105,8 +113,14 @@ public class Startup {
  /// <summary>
  /// Called by ASP.NET Core during startup
  /// </summary>
- public void ConfigureServices(IServiceCollection services) {
+ public void ConfigureServices(IServiceCollection services)
+ {
   CUI.Headline("ConfigureServices");
+
+  #region Configuration/Settings
+  // Make configuration available everywhere
+  services.AddSingleton(Configuration);
+  #endregion
 
   #region Enable Auth service for MLToken in the HTTP header
   services.AddAuthentication().AddMLToken();
@@ -118,12 +132,14 @@ public class Startup {
 
   #region JSON configuration: no circular references and ISO date format
   services.AddMvc(
-   opt => { // null soll nicht 204 liefern! https://weblog.west-wind.com/posts/2020/Feb/24/Null-API-Responses-and-HTTP-204-Results-in-ASPNET-Core
+   opt =>
+   { // null soll nicht 204 liefern! https://weblog.west-wind.com/posts/2020/Feb/24/Null-API-Responses-and-HTTP-204-Results-in-ASPNET-Core
     opt.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
    }
     )
      //.SetCompatibilityVersion(CompatibilityVersion.Version_3_0) // war seit v2.2 notwendig
-     .AddNewtonsoftJson(options => {
+     .AddNewtonsoftJson(options =>
+     {
 
       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
       options.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.None;
@@ -138,7 +154,8 @@ public class Startup {
 
   #region Sessions (used in Razor Pages)
   services.AddMemoryCache();
-  services.AddSession(o => {
+  services.AddSession(o =>
+  {
    //o.CookieName = "MiracleListeBackend.Cookie"; // Name festlegen --> schon wieder veraltert _:-(, nicht mehr in 3.0
    o.Cookie.Name = "MiracleListeBackend.Cookie"; // Name festlegen --> neu in v2.0
    //o.CookieSecure = CookieSecurePolicy.SameAsRequest;
@@ -148,7 +165,8 @@ public class Startup {
   #endregion
 
   #region Enable MVC (this includes WebAPI Controllers and ASP.NET Core MVC+WebPages)
-  services.AddMvc(options => {
+  services.AddMvc(options =>
+  {
    // Exception Filter
    options.Filters.Add(typeof(GlobalExceptionFilter));
    //options.Filters.Add(typeof(GlobalExceptionAsyncFilter)); 
@@ -160,17 +178,17 @@ public class Startup {
   services.AddCors();
   #endregion
 
-  // Make configuration available everywhere
-  services.AddSingleton(Configuration);
 
   #region Swagger
-  services.AddSwaggerGen(options => {
+  services.AddSwaggerGen(options =>
+  {
 
    // https://github.com/domaindrivendev/Swashbuckle.AspNetCore/issues/1269
    //c.DescribeAllEnumsAsStrings(); // Important for Enums!
    options.SchemaFilter<EnumSchemaFilter>();
 
-   options.SwaggerDoc("v1", new OpenApiInfo {
+   options.SwaggerDoc("v1", new OpenApiInfo
+   {
     Version = "v1",
     Title = "MiracleList API",
     Description = "Backend for MiracleList.de with token in URL",
@@ -178,7 +196,8 @@ public class Startup {
     Contact = new OpenApiContact { Name = "Holger Schwichtenberg", Email = "", Url = new Uri("http://it-visions.de/kontakt") }
    });
 
-   options.SwaggerDoc("v2", new OpenApiInfo {
+   options.SwaggerDoc("v2", new OpenApiInfo
+   {
     Version = "v2",
     Title = "MiracleList API",
     Description = "Backend for MiracleList.de with token in HTTP header",
@@ -199,7 +218,8 @@ public class Startup {
 
   #region SignalR
   services.AddSignalR(
-   (options) => {
+   (options) =>
+   {
     //options.ClientTimeoutInterval = new TimeSpan(0,0,90);
     //options.HandshakeTimeout = new TimeSpan(0, 0, 90);
     //options.KeepAliveInterval = new TimeSpan(0, 0, 90);
@@ -214,16 +234,20 @@ public class Startup {
  /// <summary>
  /// Called by ASP.NET Core during startup
  /// </summary>
- public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory) {
+ public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+ {
   #region Error handling
 
-  app.UseExceptionHandler(errorApp => {
-   errorApp.Run(async context => {
+  app.UseExceptionHandler(errorApp =>
+  {
+   errorApp.Run(async context =>
+   {
     context.Response.StatusCode = 500;
     context.Response.ContentType = "text/plain";
 
     var error = context.Features.Get<IExceptionHandlerFeature>();
-    if (error != null) {
+    if (error != null)
+    {
      var ex = error.Error;
      await context.Response.WriteAsync("ASP.NET Core Exception Middleware:" + ex.ToString());
     }
@@ -266,7 +290,8 @@ public class Startup {
 
   //// bei Bedarf: siehe https://docs.microsoft.com/de-de/aspnet/core/fundamentals/websockets?view=aspnetcore-3.1#websocket-origin-restriction
 
-  var webSocketOptions = new WebSocketOptions() {
+  var webSocketOptions = new WebSocketOptions()
+  {
    KeepAliveInterval = TimeSpan.FromSeconds(120), // How frequently to send "ping" frames to the client to ensure proxies keep the connection open. The default is two minutes. https://docs.microsoft.com/en-us/aspnet/core/fundamentals/websockets?view=aspnetcore-6.0#websocket-origin-restriction
   };
   webSocketOptions.AllowedOrigins.Any();
@@ -277,22 +302,25 @@ public class Startup {
   #region Swagger
   // NUGET: Install-Package Swashbuckle.AspNetCore
   // Namespace: using Swashbuckle.AspNetCore.Swagger;
-  app.UseSwagger(c => {
+  app.UseSwagger(c =>
+  {
   });
 
   // Enable middleware to serve swagger-ui (HTML, JS, CSS etc.), specifying the Swagger JSON endpoint.
-  app.UseSwaggerUI(c => {
+  app.UseSwaggerUI(c =>
+  {
    c.SwaggerEndpoint("/swagger/v1/swagger.json", "MiracleList v1");
    c.SwaggerEndpoint("/swagger/v2/swagger.json", "MiracleList v2");
   });
   #endregion
 
   #region  MVC with Routing
-  app.UseEndpoints(endpoints => {
+  app.UseEndpoints(endpoints =>
+  {
    endpoints.MapRazorPages();
    //routes.MapAreaRoute("blog_route", "StandardPages",
    //"Standard/{controller}/{action}/{id?}");
-  
+
    endpoints.MapControllerRoute(
                name: "default",
                pattern: "{controller}/{action}/{id?}",
@@ -318,12 +346,16 @@ public class Startup {
  }
 }
 
-public class GlobalExceptionFilter : IExceptionFilter {
- public void OnException(ExceptionContext context) {
-  if (context.Exception is UnauthorizedAccessException) {
+public class GlobalExceptionFilter : IExceptionFilter
+{
+ public void OnException(ExceptionContext context)
+ {
+  if (context.Exception is UnauthorizedAccessException)
+  {
    context.HttpContext.Response.StatusCode = 403;
   }
-  else {
+  else
+  {
    context.HttpContext.Response.StatusCode = 500;
   }
   context.HttpContext.Response.ContentType = "text/plain";
@@ -341,8 +373,10 @@ public class GlobalExceptionFilter : IExceptionFilter {
  }
 }
 
-public class GlobalExceptionAsyncFilter : IAsyncExceptionFilter {
- public Task OnExceptionAsync(ExceptionContext context) {
+public class GlobalExceptionAsyncFilter : IAsyncExceptionFilter
+{
+ public Task OnExceptionAsync(ExceptionContext context)
+ {
   context.HttpContext.Response.StatusCode = 500;
   context.HttpContext.Response.ContentType = "text/plain";
   return context.HttpContext.Response.WriteAsync("MVC GlobalExceptionAsyncFilter:" + context.Exception.ToString());

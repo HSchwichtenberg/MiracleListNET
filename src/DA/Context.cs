@@ -53,7 +53,7 @@ namespace DA
 
   // This connection string is just for testing. It is read at runtime from configuration file.
   public static string ConnectionString { get; set; } = "Data Source=D120;Initial Catalog = MiracleList_TEST; Integrated Security = True; Connect Timeout = 2; Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;Application Name=EntityFramework";
-  //"Server=miraclelistmysql2.mysql.database.azure.com; Port=3306; Database=miraclelist; Uid=mysqladmin@miraclelistmysql2; Pwd=a52ad0f3-30f2-401c-af82-0b83c455ec48; SslMode=Preferred;oldguids=true "; //
+
   public static DbConnection Connection { get; set; } = null;
 
   protected override void OnConfiguring(DbContextOptionsBuilder builder)

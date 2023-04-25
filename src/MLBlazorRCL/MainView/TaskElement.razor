@@ -36,10 +36,10 @@
 
 @*Kontextmenü aus https://github.com/stavroskasidis/BlazorContextMenu*@
 <ContextMenu Id="@("TaskContextMenu" + Task.CategoryID.ToString() + "_" + Task.TaskID.ToString())">
- <Item OnClick="@OnContextAbout">Details zu dieser Aufgabe</Item>
+ <Item OnClick="@OnContextAbout"><span class="glyphicon glyphicon-zoom-in"></span>  Details zu dieser Aufgabe</Item>
  <Seperator />
- <Item OnClick="@OnContextEdit">Bearbeiten</Item>
- <Item OnClick="@OnContextRemove">Löschen</Item>
+ <Item OnClick="@OnContextEdit"><span class="glyphicon glyphicon-pencil"></span> Bearbeiten</Item>
+ <Item OnClick="@OnContextRemove"> <span class="glyphicon glyphicon-arrow-left"></span> Löschen</Item>
 </ContextMenu>
 
 @code {

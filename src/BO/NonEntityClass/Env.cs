@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BO.NonEntityClass;
 
-namespace BO.NonEntityClass;
+namespace BO;
 
 public class Env : IEnv
 {

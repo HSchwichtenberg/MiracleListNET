@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BO;
+namespace BO.NonEntityClass;
 
 public interface IEnv
 {
- DateTime Now { get;  }
- String Machine { get;  }
- String User { get;  }
+    DateTime Now { get; }
+    string Machine { get; }
+    string User { get; }
 }

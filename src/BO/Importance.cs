@@ -2,16 +2,14 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace BO
-{
+namespace BO;
 
- /// <summary>
- /// Used in class Task
- /// </summary>
- public enum Importance
- {
-  A,
-  B,
-  C
- }
+/// <summary>
+/// Verwendet in der Klasse Task
+/// </summary>
+public enum Importance
+{
+ A,
+ B,
+ C
 }

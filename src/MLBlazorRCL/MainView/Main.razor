@@ -13,18 +13,22 @@
 <div class="row">
 
  <!-- ### Spalte 1: Kategorien-->
- @if (categorySet != null) {
-  <div class="MLPanel col-xs-4 col-sm-4 col-md-3 col-lg-2 @(this.task!=null ? "hidden-sm hidden-xs": ""  )">
+ @if (categorySet != null)
+ {
+  <div class="MLPanel col-sm-4 col-md-3 col-lg-2 @(this.task!=null ? "hidden-sm hidden-xs": ""  ) @(this.category!=null ? "hidden-xs": ""  )">
    <!-- ---------- Überschrift Spalte 1-->
-   <h4 style="margin-top:9px;margin-bottom:6px"> @(categorySet.Count()) <span>Kategorien</span></h4>
+   <div style="margin-top:5px;margin-bottom:7px" class="form-inline">
+    <span class="columnHeadline"> @(categorySet.Count()) <span>Kategorien</span></span>
+   </div>
    <!-- ---------- neue Kategorie eingeben-->
-   <input name="newCategoryName" type="text" class="form-control blue"  @bind="newCategoryName" @onkeyup="(e) => NewCategory_Keyup(e)" placeholder="Neue Kategorie..." />
+   <input name="newCategoryName" type="text" class="form-control blue" @bind="newCategoryName" @onkeyup="(e) => NewCategory_Keyup(e)" placeholder="Neue Kategorie..." />
    <!-- ---------- Kategorieliste ausgeben-->
 
    <ol class="list-group scroll">
-    @foreach (BO.Category c in categorySet) {
+    @foreach (BO.Category c in categorySet)
+    {
      <li @key="c" class="list-group-item" title="Task Category #@c.CategoryID" style="Background-color:@(this.category != null && c.CategoryID == this.category.CategoryID ? "#E0EEFA" : "white")"
-       @onclick="() => ShowTaskSet(c)"
+     @onclick="() => ShowTaskSet(c)"
          ondragover="event.preventDefault();" @ondrop="(e) => DropTaskToCategory(e, c)">
       @c.Name
       <span id="Remove" style="float:right;" class="close" title="Remove Category #@c.CategoryID" @onclick="() => RemoveCategory(c)">x</span>
@@ -38,24 +42,31 @@
  }
 
  <!-- ### Spalte 2: Aufgabenliste in der gewählten Kategorie oder Suchergebnisse -->
- <div class="MLPanel @(this.task!=null ? "hidden-xs col-sm-6 col-md-5 col-lg-6" : "col-xs-8 col-sm-8 col-md-9 col-lg-10" )">
+ @if (category != null)
+ {
+  <div class="MLPanel @(this.task!=null ? "hidden-xs col-sm-6 col-md-5 col-lg-6" : "col-xs-12 col-sm-8 col-md-9 col-lg-10" )">
 
-  @if (this.searchResultSet == null) {
+   @if (this.searchResultSet == null)
+   {
 
-   <!-- ---------- Überschrift Spalte 2-->
-   <h4 style="margin-top:5px;margin-bottom:5px">
-    <div class="form-inline">
+    <!-- ---------- Überschrift Spalte 2-->
+    <div style="margin-top:5px;margin-bottom:5px;" class="form-inline">
 
-     <span id="TaskHeadline">
+     <span id="TaskHeadline" class="columnHeadline">
       @(
           taskSet == null ? 0 : taskSet.Count()
           )
       Aufgaben in <i> @category?.Name</i>
+
+      <button @onclick="ReturnToCategoryList" class="btn btn-primary hidden-sm hidden-md hidden-lg hidden-xl" title="Zurück zur Aufgabenkategorieliste">
+       <span class="glyphicon glyphicon-arrow-left"></span>
+      </button>
+
      </span>
 
      <!-- ---------- Filter-->
-     @*ACHTUNG: VS-Bug. Wird als fehlerhaft angezeigt, kompiliert und läuft aber! https://github.com/dotnet/razor/issues/8315*@
-     <select @bind="taskFilter" @bind:after="()=>ShowTaskSet(this.category)" style="margin-left:15px;height:25px;width:120px" class="form-control input-sm blue">
+     @*ACHTUNG: VS-Bug in älteren VS-Versionen. Wird dort als fehlerhaft angezeigt, kompiliert und läuft aber! https://github.com/dotnet/razor/issues/8315*@
+     <select @bind="taskFilter" @bind:after="()=>ShowTaskSet(this.category)" style="margin-left:15px;height:25px;width:120px;display:inline-block" class="form-control input-sm blue">
       <option value="0">Alle Aufgaben</option>
       <option value="1">Nur offene Aufgaben</option>
       <option value="2">Nur erledigte Aufgaben</option>
@@ -65,52 +76,61 @@
      <a href="/TaskGrid/@this.category?.CategoryID"><span id="DataGrid" title="Tabellenansicht" style="margin-left:20px" class="glyphicon glyphicon-align-justify"></span></a>
 
      @*Optionale Export-Befehle, die nur einige Blazor-Arten realisieren können*@
-     @if (AdditionalComponents.TaskExportAdditionalComponent != null) {
+     @if (AdditionalComponents.TaskExportAdditionalComponent != null)
+     {
       <span style="margin-left:10px">  <DynamicComponent Type="@AdditionalComponents.TaskExportAdditionalComponent" Parameters="@(new Dictionary<string, object>() { {"category", this.category }, { "taskSet", this.taskSet} })"></DynamicComponent></span>
      }
     </div>
-   </h4>
 
-   <!-- ---------- neue Aufgaben eingeben-->
-   <input name="newTaskTitle" type="text" class="form-control" disabled="@(this.category == null)" @bind="newTaskTitle" @onkeyup="(e) => NewTask_Keyup(e)" placeholder="Neue Aufgabe..." />
-   <!-- ---------- Aufgabenliste ausgeben-->
-   @if (taskSet != null) {
-    <ol id="TaskSet" class="list-group scroll">
+    <!-- ---------- neue Aufgaben eingeben-->
+    <input name="newTaskTitle" type="text" class="form-control" disabled="@(this.category == null)" @bind="newTaskTitle" @onkeyup="(e) => NewTask_Keyup(e)" placeholder="Neue Aufgabe..." />
+    <!-- ---------- Aufgabenliste ausgeben-->
+    @if (taskSet != null)
+    {
+     <ol id="TaskSet" class="list-group scroll">
 
-     @foreach (BO.Task t in taskSet) {
-      <TaskElement Task="t" @key="t"
-                   Active="(t.TaskID == this.task?.TaskID)"
-                   TaskChecked="async ()=>await this.SendTaskListUpdate()"
-                   TaskRemoved="ReloadTaskList"
-                   TaskClicked="(t)=>ShowTaskDetail(t)"
-                   TaskDragged="(t)=>DragTask(null,t)">
-      </TaskElement>
-     }
-    </ol>
+      @foreach (BO.Task t in taskSet)
+      {
+       <TaskElement Task="t" @key="t"
+                    Active="(t.TaskID == this.task?.TaskID)"
+                    TaskChecked="async ()=>await this.SendTaskListUpdate()"
+                    TaskRemoved="ReloadTaskList"
+                    TaskClicked="(t)=>ShowTaskDetail(t)"
+                    TaskDragged="(t)=>DragTask(null,t)">
+       </TaskElement>
+      }
+     </ol>
+    }
+
    }
-  }
-  else {
-   @*Suchergebnisse anzeigen*@
-   <h4 style="margin-top:9px;margin-bottom:6px">@TextGen.SingularPlural(searchResultSet.Sum(x=>x.TaskSet.Count), "Suchergebnis","Suchergebnisse") in @searchResultSet.Count Kategorien</h4>
-   @foreach (BO.Category c in searchResultSet) {
-    <h5 class="blue">@TextGen.SingularPlural(@c.TaskSet.Count, "Aufgabe","Aufgaben") gefunden in Kategorie <b>@c.Name</b></h5>
-    <div style="margin-bottom:5px;">
-     @foreach (BO.Task t in c.TaskSet) {
-      <TaskElement Task="t" @key="t"
-                   Active="(t.TaskID == this.task?.TaskID)"
-                   TaskChecked="async (t)=>await this.SendTaskListUpdate(t)"
-                   TaskRemoved="ReloadTaskList"
-                   TaskClicked="(t)=>ShowTaskDetail(t)"
-                   TaskDragged="(t)=>DragTask(null,t)">
-      </TaskElement>
-     }
-    </div>
+   else
+   {
+    @*Suchergebnisse anzeigen*@
+    <h4 style="margin-top:9px;margin-bottom:6px">@TextGen.SingularPlural(searchResultSet.Sum(x=>x.TaskSet.Count), "Suchergebnis","Suchergebnisse") in @searchResultSet.Count Kategorien</h4>
+    @foreach (BO.Category c in searchResultSet)
+    {
+     <h5 class="blue">@TextGen.SingularPlural(@c.TaskSet.Count, "Aufgabe","Aufgaben") gefunden in Kategorie <b>@c.Name</b></h5>
+     <div style="margin-bottom:5px;">
+      @foreach (BO.Task t in c.TaskSet)
+      {
+       <TaskElement Task="t" @key="t"
+                    Active="(t.TaskID == this.task?.TaskID)"
+                    TaskChecked="async (t)=>await this.SendTaskListUpdate(t)"
+                    TaskRemoved="ReloadTaskList"
+                    TaskClicked="(t)=>ShowTaskDetail(t)"
+                    TaskDragged="(t)=>DragTask(null,t)">
+       </TaskElement>
+      }
+     </div>
+    }
+
    }
-  }
- </div>
+  </div>
+ }
 
  <!-- ### Spalte 3: Aufgabendetails-->
- @if (task != null) {
+ @if (task != null)
+ {
   <div class="MLPanel col-xs-12 col-sm-6 col-md-4 col-lg-4">
    @{
     /* DEMO: 20. Unterkomponente: einbetten mit Parametern */

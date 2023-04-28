@@ -147,6 +147,17 @@ public partial class Main : IAsyncDisposable {
 
  #region Anzeigen von Kategorien und Aufgaben
 
+
+ /// <summary>
+ /// Sorgt für das Ausblenden der Aufgabenliste auf kleinen Bildschirmen
+ /// </summary>
+ /// <returns></returns>
+ public async Task ReturnToCategoryList()
+ {
+  this.category = null;
+ }
+
+
  /// <summary>
  /// Lädt die Liste der Kategorien und zeigt die Aufgaben der ersten Kategorie
  /// </summary>

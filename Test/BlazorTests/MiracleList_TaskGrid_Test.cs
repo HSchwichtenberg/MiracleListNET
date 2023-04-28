@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MiracleList;
+using MLBlazorRCL.Others;
 using Telerik.JustMock;
 using Telerik.JustMock.Helpers;
 using Web;
@@ -61,10 +62,10 @@ public class MiracleTaskGridTest : TestContext {
   DA.Context.ConnectionString = ""; // In Memory-DB!
  }
 
- private IRenderedComponent<MLBlazorRCL.TaskGrid> Prepare() {
+ private IRenderedComponent<TaskGrid> Prepare() {
 
   // Razor-Komponente laden
-  var cut = RenderComponent<MLBlazorRCL.TaskGrid>();
+  var cut = RenderComponent<TaskGrid>();
   Console.WriteLine(cut.Markup); // für Test-Debugging
   // Prüfung, ob alle erwarteten Aufgaben geladen
   Assert.Equal("All Tasks View: 15 Tasks", cut.Find("h3").TextContent);
@@ -73,7 +74,7 @@ public class MiracleTaskGridTest : TestContext {
 
  [Fact]
  public void FormatAndContent() {
-  IRenderedComponent<MLBlazorRCL.TaskGrid> cut = Prepare();
+  IRenderedComponent<TaskGrid> cut = Prepare();
 
   // Tabelleninhalt suchen
   var tbody = cut.Find("tbody");
@@ -102,7 +103,7 @@ public class MiracleTaskGridTest : TestContext {
 
  [Fact]
  public void EditTitle() {
-  IRenderedComponent<MLBlazorRCL.TaskGrid> cut = Prepare();
+  IRenderedComponent<TaskGrid> cut = Prepare();
   var tbody = cut.Find("tbody");
 
   // Spalte in Edit-Mode versetzen

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using MLBlazorRCL.MainView;
 using Xunit;
 
 // Testen der BD-Lösung
@@ -73,7 +74,7 @@ namespace MiracleListTests
    BO.Task task = Prepare();
 
    // Diese Komponente laden
-   var cut = RenderComponent<MLBlazorRCL.TaskEdit>(
+   var cut = RenderComponent<TaskEdit>(
     p => p
      .Add(x => x.Task, task)
      .Add(x => x.TaskHasChanged, (saved) => { Assert.True(saved); })
@@ -94,7 +95,7 @@ namespace MiracleListTests
    BO.Task task = Prepare();
 
    // Diese Komponente laden
-   var cut = RenderComponent<MLBlazorRCL.TaskEdit>(
+   var cut = RenderComponent<TaskEdit>(
     p => p
      .Add(x => x.Task, task)
      .Add(x => x.TaskHasChanged, (saved) => { Assert.False(saved); })

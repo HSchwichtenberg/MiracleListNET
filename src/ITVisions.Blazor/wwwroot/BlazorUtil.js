@@ -57,19 +57,22 @@
 
 
 
- var screenInfoID = "screenInfo";
+var screenInfoClassName = "screenInfo";
 
- window.initUpdateScreenSize = (id) => {
+window.initUpdateScreenSize = (screenInfoClassName) => {
   //console.warn("ITVBlazor:initDisplayScreenSize");
   window.addEventListener('resize', window.UpdateScreenSize);
   window.UpdateScreenSize();
  };
 
  window.UpdateScreenSize = () => {
-  var e = document.getElementById(screenInfoID);
-  //console.warn("ITVBlazor:UpdateScreenSize", e);
-  if (!e) return;
-  e.textContent = getScreenSize();
+  var els = document.getElementsByClassName(screenInfoClassName);
+
+  Array.prototype.forEach.call(els, function (el) {
+   el.textContent = getScreenSize();
+  });
+
+
  };
 
  // liefert die Bildschirmgröße

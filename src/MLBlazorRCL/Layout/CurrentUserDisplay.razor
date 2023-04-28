@@ -1,0 +1,45 @@
+﻿@using ITVisions.Blazor
+@using ITVisions.Blazor.Controls
+@using MLBlazorRCL
+@inject BlazorUtil Util
+@inject NavigationManager NavigationManager
+
+<AuthorizeView>
+ <Authorized>
+  <div class="HeadInfo">
+   <h4 class="HeadInfo" id="LoggedInUser">Benutzer: <b>@context.User.Identity.Name</b> <a href="/logout">Logout</a></h4>
+   <h4 class="HeadInfo">Angemeldet seit: <b>@GetLogInDateTime().Result</b> Screen: <b><span class="screenInfo">@screenInfo</span></b> </h4>
+   <h4 class="HeadInfo" id="LoggedInUser">Frontend: Blazor @(Util.BlazorType) auf @System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription</h4>
+   <h4 class="HeadInfo"><ConnectionState /></h4>
+  </div>
+ </Authorized>
+ <NotAuthorized>
+  @*<h4>You're not signed in</h4>*@
+ </NotAuthorized>
+</AuthorizeView>
+
+@code {
+ [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+ public string screenInfo { get; set; }
+
+ protected override async Task OnAfterRenderAsync(bool firstRender)
+ {
+  if (firstRender)
+  {
+   screenInfo = await Util.GetScreenSize();
+   await Util.InitUpdateScreenSize("screenInfo");
+
+   this.StateHasChanged();
+  }
+ }
+
+ async Task<string> GetLogInDateTime()
+ {
+  var authState = await authenticationStateTask;
+  var user = authState.User;
+  if (user == null) return "???";
+  return user.Claims.FirstOrDefault(x => x.Type == "LogInDateTime")?.Value ?? "???";
+ }
+
+}

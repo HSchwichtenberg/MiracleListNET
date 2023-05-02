@@ -28,7 +28,6 @@ namespace BL
    this.userID = userID;
   }
 
-
   /// <summary>
   /// Get a task list of one category for the current user
   /// </summary>
@@ -38,7 +37,6 @@ namespace BL
    if (categoryID > 0) q = q.Where(x => x.CategoryID == categoryID);
    return q.ToList();
   }
-
 
   /// <summary>
   /// Get a task including its subtasks
@@ -168,6 +166,7 @@ namespace BL
    if (tnew.CategoryID > 0)
    {
     var catAusDB = new CategoryManager(this.userID).GetByID(tnew.CategoryID);
+    if (catAusDB == null) throw new UnauthorizedAccessException("Category does not exist!");
     if (catAusDB.UserID != this.userID) throw new UnauthorizedAccessException("Task does not belong to this user!");
    }
   }

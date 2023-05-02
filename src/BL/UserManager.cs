@@ -320,13 +320,13 @@ Env.Now.AddDays(1), Importance.A, 0.5m, new List<SubTask>() { st1, st2 });
 
  public TokenValidationResult IsValid()
  {
-  if (this.CurrentUser == null) return TokenValidationResult.TokenUngültig;
-  return TokenValidationResult.Ok; // everyone fine. Lockout of users not yet realized!
+  if (this.CurrentUser == null) return TokenValidationResult.NotValid;
+  return TokenValidationResult.Ok; 
  }
 
  public enum TokenValidationResult
  {
-  Ok, TokenUngültig, BenutzerIstDeaktiviert
+  Ok, NotValid, UserLocked
  }
 
  public static List<User> GetLatestUserSet()

@@ -4,10 +4,10 @@
   <TargetFramework>net7.0</TargetFramework>
   <RazorLangVersion>7.0</RazorLangVersion>
   <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
-  <Version>7.12.2.0</Version>
-  <AssemblyVersion>7.12.2.0</AssemblyVersion>
-  <FileVersion>7.12.2.0</FileVersion>
-  <InformationalVersion>7.12.2.0-04/28/2023 10:08:01</InformationalVersion>
+  <Version>7.12.3.0</Version>
+  <AssemblyVersion>7.12.3.0</AssemblyVersion>
+  <FileVersion>7.12.3.0</FileVersion>
+  <InformationalVersion>7.12.3.0-05/02/2023 20:48:25</InformationalVersion>
   <LangVersion>latest</LangVersion>
   <RootNamespace>Samples</RootNamespace>
  </PropertyGroup>

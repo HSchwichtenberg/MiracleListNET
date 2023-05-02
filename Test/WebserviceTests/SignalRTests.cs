@@ -74,7 +74,7 @@ public class SignalRTests
   await hc2.SendAsync(nameof(IMLHub.Register), loginResult.Token);
 
   // Nachricht senden
-  await hc2.SendAsync(nameof(IMLHub.TaskListUpdate), username, categoryIDForTest);
+  await hc2.SendAsync(nameof(IMLHub.TaskListUpdate), loginResult.Token, categoryIDForTest);
 
   // Warten auf Ergebnis, max 5 Sekunden
   var start = DateTime.Now;

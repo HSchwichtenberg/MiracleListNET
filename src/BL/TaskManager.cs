@@ -106,16 +106,17 @@ namespace BL
    Debug.WriteLine(s);
   }
 
-
   /// <summary>
-  /// Change only property done of a task
+  /// Change only the property Done of one task
   public BO.Task ChangeTaskDone(int taskID, bool done)
   {
    var t = this.ctx.TaskSet.Find(taskID);
+   if (t == null) throw new ApplicationException("Task not found!");
    ctx.Attach(t);
    t.Done = done;
 
    var anz = ctx.SaveChanges();
+   if (anz != 1) throw new ApplicationException("Error saving task!");
    return t;
   }
 
@@ -207,7 +208,6 @@ namespace BL
    return r;
   }
 
-
   public List<BO.Task> GetImportantTaskSet()
   {
    // hier müsste kein SQL sein, das könnte man auch per LINQ regeln,
@@ -215,7 +215,6 @@ namespace BL
    var r = ctx.TaskSet.FromSqlRaw("Select * from [task] where importance = 1").OrderByDescending(x => x.Created).Take(10).ToList();
 
    return r;
-
   }
 
   /// <summary>
@@ -226,6 +225,5 @@ namespace BL
    ValidateTask(id);
    this.Remove(id);
   }
-
  }
 }

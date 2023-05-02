@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace MiracleList_Backend.Hubs;
 
-
 /// <summary>
 /// Version 2 des Hub: Für Gruppenzugehörigkeit wird User-GUID statt Token verwendet
 /// </summary>
@@ -77,7 +76,7 @@ public class MLHubV2 : Hub<IMLHub>
  private static void WriteToLog(string logMessage)
  {
   if (!LogActive) return;
-  using (StreamWriter w = File.AppendText(@"log.txt"))
+  using (StreamWriter w = File.AppendText(@"signallog.txt"))
   {
    w.WriteLine(logMessage + "\n");
   }

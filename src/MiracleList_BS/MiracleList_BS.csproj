@@ -47,7 +47,7 @@
   <!--Zusätzliche NuGet-Pakete von Microsoft -->
   <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.*" />
   <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.*" />
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="7.0.3" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="7.0.*" />
   <!--Zusätzliche NuGetPakete von Anderen-->
   <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.5.0" />
   <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />

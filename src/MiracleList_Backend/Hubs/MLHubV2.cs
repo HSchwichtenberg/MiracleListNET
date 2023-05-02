@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
-using DA;
 using ITVisions;
 using Microsoft.AspNetCore.SignalR;
 
@@ -18,26 +15,35 @@ namespace MiracleList_Backend.Hubs
   public async Task Register(string token)
   {
    var u = new BL.UserManager(token);
-   // Prüfe die Gültigkeit des usernames
+   // Prüfe die Gültigkeit des Tokens
    if (u.IsValid() != BL.UserManager.TokenValidationResult.Ok) return;
    // Alle Clients (== Browser) eines Benutzers bilden eine Gruppe (anhand des username)
-   await base.Groups.AddToGroupAsync(Context.ConnectionId, u.CurrentUser.UserName);
+   await base.Groups.AddToGroupAsync(Context.ConnectionId, u.CurrentUser.UserGUID.ToString());
+   CUI.PrintStep("SignalR.Register: Connection " + Context.ConnectionId + " for User" + u.CurrentUser.UserName);
   }
 
-  public async Task CategoryListUpdate(string username)
+  public async Task CategoryListUpdate(string token)
   {
+   var u = new BL.UserManager(token);
+   // Prüfe die Gültigkeit des Tokens
+   if (u.IsValid() != BL.UserManager.TokenValidationResult.Ok) return;
    // Protokollierung
-   new BL.LogManager().Log(BO.Event.Call, BO.Severity.Information, "User=" + username, nameof(CategoryListUpdate));
+   new BL.LogManager().Log(BO.Event.Call, BO.Severity.Information, "User=" + u.CurrentUser.UserName, nameof(CategoryListUpdate));
    // Sende Benachrichtigung an die ganze Gruppe, außer der aktuellen Verbindung!
-   await Clients.OthersInGroup(username).CategoryListUpdate(Context.ConnectionId);
+   await Clients.OthersInGroup(u.CurrentUser.UserGUID.ToString()).CategoryListUpdate(Context.ConnectionId);
+   CUI.PrintStep("SignalR.CategoryListUpdate: Connection " + Context.ConnectionId + " for User" + u.CurrentUser.UserName);
   }
 
-  public async Task TaskListUpdate(string username, int categoryID)
+  public async Task TaskListUpdate(string token, int categoryID)
   {
+   var u = new BL.UserManager(token);
+   // Prüfe die Gültigkeit des Tokens
+   if (u.IsValid() != BL.UserManager.TokenValidationResult.Ok) return;
    // Protokollierung
-   new BL.LogManager().Log(BO.Event.Call, BO.Severity.Information, "User=" + username + "Category=" + categoryID, nameof(TaskListUpdate));
+   new BL.LogManager().Log(BO.Event.Call, BO.Severity.Information, "User=" + u.CurrentUser.UserName + "Category=" + categoryID, nameof(TaskListUpdate));
    // Sende Benachrichtigung an die ganze Gruppe, außer der aktuellen Verbindung!
-   await Clients.OthersInGroup(username).TaskListUpdate(Context.ConnectionId, categoryID);
+   await Clients.OthersInGroup(u.CurrentUser.UserGUID.ToString()).TaskListUpdate(Context.ConnectionId, categoryID);
+   CUI.PrintStep("SignalR.TaskListUpdate: Connection " + Context.ConnectionId + " for User" + u.CurrentUser.UserName);
   }
 
   /// <summary>

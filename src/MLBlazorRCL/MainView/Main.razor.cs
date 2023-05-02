@@ -356,7 +356,7 @@ public partial class Main : IAsyncDisposable {
  public async Task SendCategoryListUpdate() {
   Util.Log($"SignalR.{nameof(SendCategoryListUpdate)}");
   // DEMO: 61. SignalR-Event auslösen
-  if (IsConnected) await AppState.HubConnection.SendAsync(nameof(IMLHub.CategoryListUpdate), AppState.Username);
+  if (IsConnected) await AppState.HubConnection.SendAsync(nameof(IMLHub.CategoryListUpdate), AppState.Token);
   else Util.Warn($"SignalR.{nameof(SendCategoryListUpdate)}: not connected!", "");
  }
 
@@ -368,7 +368,7 @@ public partial class Main : IAsyncDisposable {
   if (t != null) { categoryIDUpdated = t.CategoryID; }
   else { categoryIDUpdated = this.category.CategoryID; }
   Util.Log($"SignalR.{nameof(SendTaskListUpdate)}: {categoryIDUpdated}");
-  if (IsConnected) await AppState.HubConnection.SendAsync(nameof(IMLHub.TaskListUpdate), AppState.Username, categoryIDUpdated);
+  if (IsConnected) await AppState.HubConnection.SendAsync(nameof(IMLHub.TaskListUpdate), AppState.Token, categoryIDUpdated);
   else Util.Warn($"SignalR.{nameof(SendTaskListUpdate)}: not connected!", "");
  }
  #endregion

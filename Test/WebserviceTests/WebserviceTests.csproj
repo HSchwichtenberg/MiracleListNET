@@ -28,7 +28,7 @@
   <ProjectReference Include="..\..\src\MiracleListAPI_Proxy\MiracleListAPI_Proxy.csproj" />
 
   <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.*" />
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="7.0.3" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="7.0.*" />
  </ItemGroup>
 
 </Project>

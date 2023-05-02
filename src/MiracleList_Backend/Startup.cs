@@ -140,7 +140,6 @@ public class Startup
      //.SetCompatibilityVersion(CompatibilityVersion.Version_3_0) // war seit v2.2 notwendig
      .AddNewtonsoftJson(options =>
      {
-
       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
       options.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.None;
       options.SerializerSettings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat;

@@ -1,18 +1,22 @@
 using MiracleList;
+using MiracleList_MAUI.ViewModels;
 using System.Collections.ObjectModel;
 
 namespace MiracleList_MAUI.Views;
 
 public partial class CategoriesPage : ContentPage
 {
+    private readonly CategoriesPageViewModel viewModel;
     private readonly IAppState appState;
     private readonly IMiracleListProxy proxy;
 
-    public CategoriesPage(IAppState appState, IMiracleListProxy proxy)
+    public CategoriesPage(CategoriesPageViewModel viewModel, IAppState appState, IMiracleListProxy proxy)
     {
 		InitializeComponent();
+        this.viewModel = viewModel;
         this.appState = appState;
         this.proxy = proxy;
+        this.BindingContext = viewModel;
     }
 
     protected override async void OnNavigatedTo(NavigatedToEventArgs args)
@@ -31,10 +35,7 @@ public partial class CategoriesPage : ContentPage
             appState.Token = loginResult.Token;
             appState.Username = loginResult.Username;
 
-            var categorySet = await proxy.CategorySetAsync(appState.Token);
-
-            CategoriesCollectionView.ItemsSource = categorySet;
-            HeaderLabel.Text = $"{categorySet.Count} Kategorien";
+            await viewModel.InitializeAsync();
         }
 
         base.OnNavigatedTo(args);

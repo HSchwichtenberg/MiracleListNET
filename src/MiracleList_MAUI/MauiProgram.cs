@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MiracleList;
+using MiracleList_MAUI.ViewModels;
 using MiracleList_MAUI.Views;
 using System.Reflection;
 
@@ -36,6 +37,7 @@ namespace MiracleList_MAUI
             services.AddScoped<IMiracleListProxy, MiracleListProxy>();
             services.AddScoped<MainPage>();
             services.AddScoped<CategoriesPage>();
+            services.AddScoped<CategoriesPageViewModel>();
         }
 
         private static void ReadConfig(MauiAppBuilder builder)

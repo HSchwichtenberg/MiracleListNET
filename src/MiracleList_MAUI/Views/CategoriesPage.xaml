@@ -7,7 +7,14 @@
         <Label x:Name="HeaderLabel"/>
         <Entry Grid.Row="1" Placeholder="Neue Kategorie ..."/>
         <CollectionView x:Name="CategoriesCollectionView" Grid.Row="2">
-
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="*, auto">
+                        <Label Text="{Binding Name}"/>
+                        <Label Grid.Column="1" Text="X"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
         </CollectionView>
         <Entry Grid.Row="3" Placeholder="Suche ..."/>
     </Grid>

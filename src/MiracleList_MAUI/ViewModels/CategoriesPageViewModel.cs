@@ -8,18 +8,24 @@ namespace MiracleList_MAUI.ViewModels
     public class CategoriesPageViewModel : INotifyPropertyChanged
     {
         private int categoryCount;
+        private string newCategoryName;
         private readonly IAppState appState;
         private readonly IMiracleListProxy proxy;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        
+
         public CategoriesPageViewModel(IAppState appState, IMiracleListProxy proxy)
         {
             this.appState = appState;
             this.proxy = proxy;
+            CreateNewCategoryCommand = new Command(async () => { await CreateNewCategory(); }, CanCreateNewCategory);
         }
 
         public ObservableCollection<BO.Category> Categories { get; } = new ObservableCollection<BO.Category>();
+
+        public Command CreateNewCategoryCommand { get; }
 
         public int CategoryCount
         {
@@ -30,6 +36,20 @@ namespace MiracleList_MAUI.ViewModels
                 {
                     categoryCount = value;
                     OnPropertyChanged();
+                }
+            }
+        }
+
+        public string NewCategoryName
+        {
+            get { return newCategoryName; }
+            set
+            {
+                if (newCategoryName != value)
+                {
+                    newCategoryName = value;
+                    OnPropertyChanged();
+                    CreateNewCategoryCommand.ChangeCanExecute();
                 }
             }
         }
@@ -46,6 +66,19 @@ namespace MiracleList_MAUI.ViewModels
             }
 
             CategoryCount = categorySet.Count;
+        }
+
+
+        private async Task CreateNewCategory()
+        {
+            await proxy.CreateCategoryAsync(NewCategoryName, appState.Token);
+            NewCategoryName = string.Empty;
+            await InitializeAsync();
+        }
+
+        private bool CanCreateNewCategory()
+        {
+            return !string.IsNullOrEmpty(NewCategoryName);
         }
 
 

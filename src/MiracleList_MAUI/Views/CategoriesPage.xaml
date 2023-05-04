@@ -8,7 +8,9 @@
              Title="CategoriesPage">
     <Grid RowDefinitions="auto, auto, *, auto">
         <Label Text="{Binding CategoryCount, StringFormat='{0} Kategorien'}"/>
-        <Entry Grid.Row="1" Placeholder="Neue Kategorie ..."/>
+        <Entry Grid.Row="1" Placeholder="Neue Kategorie ..." 
+               ReturnCommand="{Binding CreateNewCategoryCommand}"
+               Text="{Binding NewCategoryName}" />
         <CollectionView Grid.Row="2" ItemsSource="{Binding Categories}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="bo:Category">

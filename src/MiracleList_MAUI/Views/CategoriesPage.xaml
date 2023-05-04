@@ -16,7 +16,12 @@
                 <DataTemplate x:DataType="bo:Category">
                     <Grid ColumnDefinitions="*, auto">
                         <Label Text="{Binding Name}"/>
-                        <Label Grid.Column="1" Text="X"/>
+                        <Label Grid.Column="1" Text="X">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriesPageViewModel}}, Path=DeleteCategoryCommand}"
+                                                      CommandParameter="{Binding .}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

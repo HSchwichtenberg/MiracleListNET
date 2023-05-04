@@ -1,63 +1,35 @@
-﻿using MiracleList;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using MiracleList;
+using MiracleList_MAUI.Services;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Threading.Channels;
+
 
 namespace MiracleList_MAUI.ViewModels
 {
-    public class CategoriesPageViewModel : INotifyPropertyChanged
+    [INotifyPropertyChanged]
+    public partial class CategoriesPageViewModel
     {
+        [ObservableProperty]
         private int categoryCount;
+        
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(CreateNewCategoryCommand))]
         private string newCategoryName;
+        
         private readonly IAppState appState;
         private readonly IMiracleListProxy proxy;
+        private readonly IDialogService dialogService;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-
-
-        public CategoriesPageViewModel(IAppState appState, IMiracleListProxy proxy)
+        public CategoriesPageViewModel(IAppState appState, IMiracleListProxy proxy, IDialogService dialogService)
         {
             this.appState = appState;
             this.proxy = proxy;
-            CreateNewCategoryCommand = new Command(async () => { await CreateNewCategory(); }, CanCreateNewCategory);
-            DeleteCategoryCommand = new Command<BO.Category>(async (BO.Category c) => { await DeleteCategory(c); });
-
+            this.dialogService = dialogService;
         }
 
         public ObservableCollection<BO.Category> Categories { get; } = new ObservableCollection<BO.Category>();
 
-        public Command CreateNewCategoryCommand { get; }
-
-        public Command<BO.Category> DeleteCategoryCommand { get; }
-
-        public int CategoryCount
-        {
-            get { return categoryCount; }
-            set
-            {
-                if (categoryCount != value)
-                {
-                    categoryCount = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public string NewCategoryName
-        {
-            get { return newCategoryName; }
-            set
-            {
-                if (newCategoryName != value)
-                {
-                    newCategoryName = value;
-                    OnPropertyChanged();
-                    CreateNewCategoryCommand.ChangeCanExecute();
-                }
-            }
-        }
 
         public async Task InitializeAsync()
         {
@@ -73,7 +45,7 @@ namespace MiracleList_MAUI.ViewModels
             CategoryCount = categorySet.Count;
         }
 
-
+        [RelayCommand(CanExecute = nameof(CanCreateNewCategory))]
         private async Task CreateNewCategory()
         {
             await proxy.CreateCategoryAsync(NewCategoryName, appState.Token);
@@ -81,12 +53,12 @@ namespace MiracleList_MAUI.ViewModels
             await InitializeAsync();
         }
 
-
+        [RelayCommand]
         private async Task DeleteCategory(BO.Category category)
         {
 
             var message = $"Löschen der Kategorie #{category.CategoryID} mit {category.TaskSet.Count} Aufgaben?";
-            if (await Application.Current.MainPage.DisplayAlert("Kategorie löschen", message, "Ja", "Nein"))
+            if (await dialogService.DisplayAlert("Kategorie löschen", message, "Ja", "Nein"))
             {
                 await proxy.DeleteCategoryAsync(category.CategoryID, appState.Token);
                 await InitializeAsync();
@@ -99,10 +71,5 @@ namespace MiracleList_MAUI.ViewModels
             return !string.IsNullOrEmpty(NewCategoryName);
         }
 
-
-        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

@@ -39,6 +39,7 @@
 
 	<!--ML: Zusätzliche NuGet-Pakete -->
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.*" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.JSON" Version="7.0.*" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.*" />

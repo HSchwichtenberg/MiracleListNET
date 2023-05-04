@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MiracleList;
+using MiracleList_MAUI.Services;
 using MiracleList_MAUI.ViewModels;
 using MiracleList_MAUI.Views;
 using System.Reflection;
@@ -33,6 +34,7 @@ namespace MiracleList_MAUI
         private static void RegisterServices(IServiceCollection services)
         {
             services.AddSingleton<IAppState, AppState>();
+            services.AddSingleton<IDialogService, DialogService>();
             services.AddSingleton(new HttpClient());
             services.AddScoped<IMiracleListProxy, MiracleListProxy>();
             services.AddScoped<MainPage>();

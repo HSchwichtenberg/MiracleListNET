@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MiracleList_MAUI.ViewModels"
+             xmlns:bo="clr-namespace:BO;assembly=BO"
+                  x:DataType="vm:TasksPageViewModel"
+             x:Class="MiracleList_MAUI.Views.TasksPage"
+             Title="{Binding Category.Name}">
+        <VerticalStackLayout>
+        <Label FontSize="20">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="{Binding TaskCount}"/>
+                    <Span Text=" Aufgaben in "/>
+                    <Span Text="{Binding Category.Name}" FontAttributes="Italic"/>
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        <Entry Text="{Binding NewTaskTitle}" ReturnCommand="{Binding CreateNewTaskCommand}" Placeholder="Neue Aufgabe ..."/>
+        <CollectionView ItemsSource="{Binding Tasks}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="bo:Task">
+                    <Grid ColumnDefinitions="auto,*,auto,auto" RowDefinitions="auto,auto" ColumnSpacing="6" RowSpacing="6">
+                        <Label Text="{Binding Title}" FontAttributes="Bold" LineBreakMode="WordWrap"/>
+                        <Border Grid.Column="2" StrokeShape="RoundRectangle 45,45,45,45" StrokeThickness="0" BackgroundColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray100}}"  >
+                            <Label Text="{Binding Importance}" Padding="2,10"
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray500}}"
+                                   FontAttributes="Bold"/>
+                        </Border>
+                        <Label Grid.Column="3" Text="X">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksPageViewModel}}, Path=DeleteTaskCommand}"
+                                                      CommandParameter="{Binding .}"/>
+                            </Label.GestureRecognizers>
+                        </Label>                        
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>

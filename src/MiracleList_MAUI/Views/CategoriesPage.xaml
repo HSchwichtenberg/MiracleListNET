@@ -15,6 +15,10 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="bo:Category">
                     <Grid ColumnDefinitions="*, auto">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriesPageViewModel}}, Path=NavigateToTaskListCommand}"
+                                                      CommandParameter="{Binding .}"/>
+                        </Grid.GestureRecognizers>
                         <Label Text="{Binding Name}"/>
                         <Label Grid.Column="1" Text="X">
                             <Label.GestureRecognizers>

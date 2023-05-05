@@ -35,11 +35,15 @@ namespace MiracleList_MAUI
         {
             services.AddSingleton<IAppState, AppState>();
             services.AddSingleton<IDialogService, DialogService>();
+            services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton(new HttpClient());
             services.AddScoped<IMiracleListProxy, MiracleListProxy>();
             services.AddScoped<MainPage>();
             services.AddScoped<CategoriesPage>();
             services.AddScoped<CategoriesPageViewModel>();
+
+            services.AddScoped<TasksPageViewModel>();
+            services.AddScoped<TasksPage>();
         }
 
         private static void ReadConfig(MauiAppBuilder builder)

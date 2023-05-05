@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using MiracleList;
 using MiracleList_MAUI.Services;
 using System.Collections.ObjectModel;
-
+using System.Drawing.Text;
 
 namespace MiracleList_MAUI.ViewModels
 {
@@ -20,12 +20,15 @@ namespace MiracleList_MAUI.ViewModels
         private readonly IAppState appState;
         private readonly IMiracleListProxy proxy;
         private readonly IDialogService dialogService;
+        private readonly INavigationService navigationService;
 
-        public CategoriesPageViewModel(IAppState appState, IMiracleListProxy proxy, IDialogService dialogService)
+        public CategoriesPageViewModel(IAppState appState, IMiracleListProxy proxy,
+            IDialogService dialogService, INavigationService navigationService)
         {
             this.appState = appState;
             this.proxy = proxy;
             this.dialogService = dialogService;
+            this.navigationService = navigationService;
         }
 
         public ObservableCollection<BO.Category> Categories { get; } = new ObservableCollection<BO.Category>();
@@ -56,13 +59,23 @@ namespace MiracleList_MAUI.ViewModels
         [RelayCommand]
         private async Task DeleteCategory(BO.Category category)
         {
-
             var message = $"Löschen der Kategorie #{category.CategoryID} mit {category.TaskSet.Count} Aufgaben?";
             if (await dialogService.DisplayAlert("Kategorie löschen", message, "Ja", "Nein"))
             {
                 await proxy.DeleteCategoryAsync(category.CategoryID, appState.Token);
                 await InitializeAsync();
             }
+        }
+
+        [RelayCommand]
+        private async Task NavigateToTaskList(BO.Category category)
+        {
+            var navigationParameters = new Dictionary<string, object>
+            {
+                { "Category", category }
+            };
+
+            await navigationService.GoToAsync("TasksPage", navigationParameters);
         }
 
 

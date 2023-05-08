@@ -34,7 +34,7 @@ public partial class CategoriesPage : ContentPage
             // Das merken wir uns im AppState
             appState.Token = loginResult.Token;
             appState.Username = loginResult.Username;
-
+            appState.BackendURL = proxy.BaseUrl;
             await viewModel.InitializeAsync();
         }
 

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:bo="clr-namespace:BO;assembly=BO"
+             xmlns:ml="clr-namespace:MiracleList;assembly=MiracleList_Interfaces"
+             xmlns:converters="clr-namespace:MiracleList_MAUI.Converters"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:MiracleList_MAUI.ViewModels"
+             x:Class="MiracleList_MAUI.Views.TaskDetailsPage"
+             x:DataType="vm:TaskDetailsPageViewModel"
+             Title="{Binding Title}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BytesToMBConverter x:Key="BytesToMBConverter"/>
+            <toolkit:IsNotNullConverter x:Key="IsNotNullConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ScrollView>
+        <Grid RowDefinitions="auto, auto, auto, auto, auto, auto, auto, *, auto, auto, auto, auto, auto,auto" ColumnDefinitions="*, 2*, 3*">
+            <HorizontalStackLayout Grid.ColumnSpan="3">
+                <Button Text="Speichern" Command="{Binding SaveCommand}"/>
+                <Button Text="Abbrechen" Command="{Binding CancelCommand}"/>
+            </HorizontalStackLayout>
+            <Label Grid.Row="1" Grid.ColumnSpan="3" Text="Titel"/>
+            <Entry Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding Title}"/>
+            <Label Grid.Row="3" Text="Wichtigkeit"/>
+            <Label Grid.Row="3" Grid.Column="1" Text="Aufwand"/>
+            <Label Grid.Row="3" Grid.Column="2" Text="Fälligkeit"/>
+            <Picker Grid.Row="4" ItemsSource="{Binding ImportanceList}" SelectedItem="{Binding Importance}"/>
+            <Entry Grid.Row="4" Grid.Column="1" Text="{Binding Effort}" Keyboard="Numeric"/>
+            <DatePicker Grid.Row="4" Grid.Column="2" Date="{Binding Due}"/>
+            <Label Grid.Row="5" Grid.ColumnSpan="3" Text="Unteraufgaben"/>
+            <Entry Grid.Row="6" Grid.ColumnSpan="3" Text="{Binding NewSubTaskTitle}" ReturnCommand="{Binding CreateSubTaskCommand}"/>
+            <CollectionView Grid.Row="7" Grid.ColumnSpan="3" ItemsSource="{Binding SubTasks}">
+                <CollectionView.ItemTemplate >
+                    <DataTemplate x:DataType="bo:SubTask">
+                        <HorizontalStackLayout>
+                            <CheckBox IsChecked="{Binding Done}" VerticalOptions="Center"/>
+                            <Label Text="{Binding Title}" VerticalOptions="Center">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding Done}" Value="True">
+                                        <Setter Property="TextDecorations" Value="Strikethrough" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </HorizontalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Label Grid.Row="8" Grid.ColumnSpan="3" Text="Notizen"/>
+            <Editor Grid.Row="9" Grid.ColumnSpan="3" Text="{Binding Note}"/>
+            <Label Grid.Row="10" Grid.ColumnSpan="3" Text="Dateien"/>
+            <VerticalStackLayout Grid.Row="11" Grid.ColumnSpan="3" BindableLayout.ItemsSource="{Binding Files}"
+                                 Padding="10"
+                                 BindableLayout.EmptyView="keine">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="ml:FileInfoDTO">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Text="{Binding Name}" TextColor="Blue">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TaskDetailsPageViewModel}}, Path=OpenFileCommand}"
+                                                      CommandParameter="{Binding .}"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Border Grid.Column="1" StrokeShape="RoundRectangle 45,45,45,45" StrokeThickness="0" BackgroundColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray100}}"  >
+                                <Label Text="{Binding Length, Converter={StaticResource BytesToMBConverter}}" Padding="10,2"
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray500}}"
+                                   FontAttributes="Bold"/>
+                            </Border>
+                            <Border Grid.Column="2" StrokeShape="RoundRectangle 45,45,45,45" StrokeThickness="0" BackgroundColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray100}}"  >
+                                <Label Text="{Binding LastWriteTime, StringFormat='{0:g}'}" Padding="10,2"
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray500}}"
+                                   FontAttributes="Bold"/>
+                            </Border>
+                            <Label Grid.Column="3" Text="X">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TaskDetailsPageViewModel}}, Path=DeleteFileCommand}"
+                                                      CommandParameter="{Binding .}"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+
+            <Label Grid.Row="12" Grid.ColumnSpan="3">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Upload (max "/>
+                        <Span Text="{Binding MaxFileSize, Converter={StaticResource BytesToMBConverter}}"/>
+                        <Span Text=" pro Datei) "/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Button Grid.Row="13" Text="Datei wählen" Command="{Binding PickFileCommand}"/>
+            <VerticalStackLayout Grid.Row="14" IsVisible="{Binding FileToUpload, Converter={StaticResource IsNotNullConverter}}">
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding FileToUpload.Name}"/>
+                            <Span Text=": "/>
+                            <Span Text="{Binding FileToUpload.Length, Converter={StaticResource BytesToMBConverter}}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Button Text="Datei nun hochladen" Command="{Binding UploadFileCommand}"/>
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

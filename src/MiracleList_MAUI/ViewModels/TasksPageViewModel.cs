@@ -22,14 +22,16 @@ namespace MiracleList_MAUI.ViewModels
         private readonly IAppState appState;
         private readonly IMiracleListProxy proxy;
         private readonly IDialogService dialogService;
+        private readonly INavigationService navigationService;
 
         public ObservableCollection<BO.Task> Tasks { get; } = new ObservableCollection<BO.Task>();
 
-        public TasksPageViewModel(IAppState appState, IMiracleListProxy proxy, IDialogService dialogService)
+        public TasksPageViewModel(IAppState appState, IMiracleListProxy proxy, IDialogService dialogService, INavigationService navigationService)
         {
             this.appState = appState;
             this.proxy = proxy;
             this.dialogService = dialogService;
+            this.navigationService = navigationService;
         }
 
         public async Task InitializeAsync()
@@ -85,6 +87,18 @@ namespace MiracleList_MAUI.ViewModels
         {
             return !string.IsNullOrEmpty(NewTaskTitle);
         }
+
+        [RelayCommand]
+        private async Task NavigateToTask(BO.Task task)
+        {
+            var navigationParameters = new Dictionary<string, object>
+            {
+                { "Task", task }
+            };
+
+            await navigationService.GoToAsync("TaskDetailsPage", navigationParameters);
+        }
+
 
     }
 }

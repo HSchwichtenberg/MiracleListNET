@@ -8,6 +8,7 @@ namespace MiracleList_MAUI
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(TasksPage), typeof(TasksPage));
+            Routing.RegisterRoute(nameof(TaskDetailsPage), typeof(TaskDetailsPage));
         }
     }
 }

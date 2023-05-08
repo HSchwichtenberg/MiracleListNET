@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MiracleList;
 using MiracleList_MAUI.Services;
@@ -15,6 +16,7 @@ namespace MiracleList_MAUI
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -44,6 +46,9 @@ namespace MiracleList_MAUI
 
             services.AddScoped<TasksPageViewModel>();
             services.AddScoped<TasksPage>();
+
+            services.AddScoped<TaskDetailsPageViewModel>();
+            services.AddScoped<TaskDetailsPage>();
         }
 
         private static void ReadConfig(MauiAppBuilder builder)

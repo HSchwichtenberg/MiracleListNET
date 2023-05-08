@@ -39,6 +39,7 @@
 
 	<!--ML: Zusätzliche NuGet-Pakete -->
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="5.1.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.*" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.JSON" Version="7.0.*" />
@@ -82,6 +83,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\CategoriesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\TaskDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\TasksPage.xaml">

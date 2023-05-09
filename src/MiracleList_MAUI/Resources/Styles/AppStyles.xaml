@@ -67,4 +67,13 @@
         <Setter Property="FontSize" Value="24" />
         <Setter Property="Margin" Value="0,5,0,7" />
     </Style>
+
+    <Style TargetType="Border" x:Key="LoginBorder">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}"/>
+        <Setter Property="StrokeShape" Value="RoundRectangle 4,4,4,4"/>
+    </Style>
+
+    <Style TargetType="VerticalStackLayout">
+        <Setter Property="Spacing" Value="6"/>
+    </Style>
 </ResourceDictionary>

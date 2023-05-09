@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MiracleList_MAUI.ViewModels"
+             x:Class="MiracleList_MAUI.Views.LoginPage"
+             x:DataType="vm:LoginPageViewModel"
+             Title="Miracle List">
+    <VerticalStackLayout>
+        <Border Style="{StaticResource LoginBorder}">
+            <VerticalStackLayout>
+                <VerticalStackLayout BackgroundColor="{StaticResource Primary}">
+                    <Label Text="Benutzeranmeldung" Padding="10" TextColor="{StaticResource White}" FontSize="30"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout Padding="10">
+                    <Label Text="{Binding HinweisText}"/>
+                    <Label Text="E-Mail-Adresse" Style="{StaticResource CaptionLabel}"/>
+                    <Entry Text="{Binding Username}"/>
+                    <Label Text="Kennwort" Style="{StaticResource CaptionLabel}"/>
+                    <Entry Text="{Binding Password}" IsPassword="True"/>
+                    <Label Text="Server" Style="{StaticResource CaptionLabel}"/>
+                    <Picker ItemsSource="{Binding Servers}" SelectedItem="{Binding BackendUrl}"/>
+                    <Button Text="Anmelden" Command="{Binding LoginCommand}"/>
+                    <Label Text="{Binding CurrentState}" TextColor="{StaticResource Error}"/>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+    </VerticalStackLayout>
+</ContentPage>

@@ -9,6 +9,7 @@
     <Color x:Key="Tertiary">#2a5a94</Color>
     <Color x:Key="Success">#5cb85c</Color>
     <Color x:Key="Warning">#f0ad4e</Color>
+    <Color x:Key="Error">#a94442</Color>
     <Color x:Key="PageBackground">#ffdd86</Color>
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MiracleList;
@@ -35,11 +36,14 @@ namespace MiracleList_MAUI
 
         private static void RegisterServices(IServiceCollection services)
         {
+            services.AddSingleton<App>();
+            services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
             services.AddSingleton<IAppState, AppState>();
             services.AddSingleton<IDialogService, DialogService>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton(new HttpClient());
-            services.AddScoped<IMiracleListProxy, MiracleListProxy>();
+            services.AddSingleton<IMiracleListProxy, MiracleListProxy>();
+
             services.AddScoped<MainPage>();
             services.AddScoped<CategoriesPage>();
             services.AddScoped<CategoriesPageViewModel>();
@@ -49,6 +53,9 @@ namespace MiracleList_MAUI
 
             services.AddScoped<TaskDetailsPageViewModel>();
             services.AddScoped<TaskDetailsPage>();
+
+            // View und ViewModel gemeinsam über das Community Toolkit registrieren
+            services.AddScoped<LoginPage, LoginPageViewModel>();
         }
 
         private static void ReadConfig(MauiAppBuilder builder)

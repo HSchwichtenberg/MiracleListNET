@@ -11,4 +11,10 @@ public partial class LoginPage : ContentPage
 		InitializeComponent();
         BindingContext = this.viewModel = viewModel;
     }
+
+    protected override async void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        await viewModel.InitializeAsync();
+        base.OnNavigatedTo(args);
+    }
 }

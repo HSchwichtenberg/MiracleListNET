@@ -38,6 +38,8 @@ namespace MiracleList_MAUI
         {
             services.AddSingleton<App>();
             services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
+            services.AddSingleton<ISecureStorage>(SecureStorage.Default);
+            services.AddSingleton<IPreferences>(Preferences.Default);
             services.AddSingleton<IAppState, AppState>();
             services.AddSingleton<IDialogService, DialogService>();
             services.AddSingleton<INavigationService, NavigationService>();

@@ -15,7 +15,7 @@
 		<ApplicationTitle>MiracleList_MAUI</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.miraclelist_maui</ApplicationId>
+		<ApplicationId>de.it-visions.ak.miraclelist_maui</ApplicationId>
 		<ApplicationIdGuid>aab44cd9-ed6d-40e4-b3b5-deb6ec800d2f</ApplicationIdGuid>
 
 		<!-- Versions -->

@@ -13,8 +13,8 @@
             <converters:RelativeDateConverter x:Key="RelativeDateConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-        <VerticalStackLayout>
-        <Label FontSize="20">
+    <VerticalStackLayout>
+        <Label Style="{StaticResource TitleStyle}">
             <Label.FormattedText>
                 <FormattedString>
                     <Span Text="{Binding TaskCount}"/>
@@ -27,37 +27,37 @@
         <CollectionView ItemsSource="{Binding Tasks}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="bo:Task">
-                    <Grid ColumnDefinitions="auto,*,auto,auto" RowDefinitions="auto,auto" ColumnSpacing="6" RowSpacing="6">
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksPageViewModel}}, Path=NavigateToTaskCommand}"
+                    <Border Style="{StaticResource CollectionItemBorder}">
+                        <Grid ColumnDefinitions="auto,*,auto,auto" RowDefinitions="auto,auto" ColumnSpacing="6" RowSpacing="6">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksPageViewModel}}, Path=NavigateToTaskCommand}"
                                                       CommandParameter="{Binding .}"/>
-                        </Grid.GestureRecognizers>
-                        <Label Text="{Binding Title}" FontAttributes="Bold" LineBreakMode="WordWrap"/>
-                        <Border Grid.Column="2" StrokeShape="RoundRectangle 45,45,45,45" StrokeThickness="0" BackgroundColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray100}}"  >
-                            <Label Text="{Binding Importance}" Padding="10,2"
-                                   TextColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray500}}"
-                                   FontAttributes="Bold"/>
-                        </Border>
-                        <Label Grid.Column="3" Text="X">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksPageViewModel}}, Path=DeleteTaskCommand}"
+                            </Grid.GestureRecognizers>
+                            <Label Text="{Binding Title}" FontAttributes="Bold" LineBreakMode="WordWrap"/>
+                            <Border Grid.Column="2" Style="{StaticResource BadgeBorder}"  >
+                                <Label Text="{Binding Importance}" Style="{StaticResource BadgeLabel}"/>
+                            </Border>
+                            <Label Grid.Column="3" Text="X">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksPageViewModel}}, Path=DeleteTaskCommand}"
                                                       CommandParameter="{Binding .}"/>
-                            </Label.GestureRecognizers>
-                        </Label>
-                        <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Text="Fällig">
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label" Binding="{Binding Due, Converter={StaticResource TaskStatusConverter}}" Value="overdue">
-                                    <Setter Property="TextColor" Value="Red"/>
-                                    <Setter Property="Text" Value="{Binding Due, Converter={StaticResource RelativeDateConverter}, StringFormat='Fällig seit {0:d}'}"/>
-                                </DataTrigger>
-                                <DataTrigger TargetType="Label" Binding="{Binding Due, Converter={StaticResource TaskStatusConverter}}" Value="open">
-                                    <Setter Property="TextColor" Value="DarkGreen"/>
-                                    <Setter Property="Text" Value="{Binding Due, StringFormat='Fällig am {0:d}'}"/>
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Text="Fällig">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding Due, Converter={StaticResource TaskStatusConverter}}" Value="overdue">
+                                        <Setter Property="TextColor" Value="Red"/>
+                                        <Setter Property="Text" Value="{Binding Due, Converter={StaticResource RelativeDateConverter}, StringFormat='Fällig seit {0:d}'}"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label" Binding="{Binding Due, Converter={StaticResource TaskStatusConverter}}" Value="open">
+                                        <Setter Property="TextColor" Value="DarkGreen"/>
+                                        <Setter Property="Text" Value="{Binding Due, StringFormat='Fällig am {0:d}'}"/>
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
 
-                    </Grid>
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

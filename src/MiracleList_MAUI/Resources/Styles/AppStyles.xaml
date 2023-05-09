@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Content Pages können nur implizit gestyled werden, wenn ApplyToDerivedTypes auf True gestellt wird!
+          Siehe https://github.com/dotnet/maui/issues/10895 und https://github.com/xamarin/Xamarin.Forms/issues/12350 -->
+    <Style TargetType="ContentPage" ApplyToDerivedTypes="True">
+        <Setter Property="BackgroundColor" Value="{StaticResource PageBackground}"/>
+        <Setter Property="Padding" Value="10"/>
+    </Style>
+
+    <Style TargetType="Entry">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}"/>
+    </Style>
+
+    <Style TargetType="Editor">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}"/>
+    </Style>
+
+    <Style TargetType="Picker">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}"/>
+    </Style>
+
+    <Style TargetType="DatePicker">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}"/>
+    </Style>
+
+    <Style TargetType="CheckBox">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="Succes">
+        <Setter Property="BackgroundColor" Value="{StaticResource Success}"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="Warning">
+        <Setter Property="BackgroundColor" Value="{StaticResource Warning}"/>
+    </Style>
+
+    <Style TargetType="Grid">
+        <Setter Property="RowSpacing" Value="6"/>
+    </Style>
+
+    <Style TargetType="Border" x:Key="CollectionItemBorder">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray600}}"/>
+        <Setter Property="Padding" Value="15,10"/>
+        <Setter Property="Margin" Value="-1"/>
+        <Setter Property="StrokeShape" Value="RoundRectangle 4,4,4,4"/>
+    </Style>
+
+    <Style TargetType="Border" x:Key="BadgeBorder">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray100}}"/>
+        <Setter Property="StrokeThickness" Value="0"/>
+        <Setter Property="StrokeShape" Value="RoundRectangle 45,45,45,45"/>
+    </Style>
+    <Style TargetType="Label" x:Key="BadgeLabel">
+        <Setter Property="Padding" Value="10,2"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray500}}"/>
+    </Style>
+    <Style TargetType="Label" x:Key="CaptionLabel">
+        <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+    <Style x:Key="TitleStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="Margin" Value="0,5,0,7" />
+    </Style>
+</ResourceDictionary>

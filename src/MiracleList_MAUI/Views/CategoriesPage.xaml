@@ -5,28 +5,30 @@
              xmlns:bo="clr-namespace:BO;assembly=BO"
              x:Class="MiracleList_MAUI.Views.CategoriesPage"
              x:DataType="vm:CategoriesPageViewModel"
-             Title="CategoriesPage">
+             Title="Miracle List .NET MAUI">
     <Grid RowDefinitions="auto, auto, *, auto">
-        <Label Text="{Binding CategoryCount, StringFormat='{0} Kategorien'}"/>
+        <Label Text="{Binding CategoryCount, StringFormat='{0} Kategorien'}" Style="{StaticResource TitleStyle}"/>
         <Entry Grid.Row="1" Placeholder="Neue Kategorie ..." 
                ReturnCommand="{Binding CreateNewCategoryCommand}"
                Text="{Binding NewCategoryName}" />
         <CollectionView Grid.Row="2" ItemsSource="{Binding Categories}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="bo:Category">
-                    <Grid ColumnDefinitions="*, auto">
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriesPageViewModel}}, Path=NavigateToTaskListCommand}"
+                    <Border Style="{StaticResource CollectionItemBorder}">
+                        <Grid ColumnDefinitions="*, auto">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriesPageViewModel}}, Path=NavigateToTaskListCommand}"
                                                       CommandParameter="{Binding .}"/>
-                        </Grid.GestureRecognizers>
-                        <Label Text="{Binding Name}"/>
-                        <Label Grid.Column="1" Text="X">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriesPageViewModel}}, Path=DeleteCategoryCommand}"
+                            </Grid.GestureRecognizers>
+                            <Label Text="{Binding Name}"/>
+                            <Label Grid.Column="1" Text="X">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriesPageViewModel}}, Path=DeleteCategoryCommand}"
                                                       CommandParameter="{Binding .}"/>
-                            </Label.GestureRecognizers>
-                        </Label>
-                    </Grid>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

@@ -73,7 +73,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <Content Include="Resources\AppIcon\miraclelistlogo.png">
+	  <Content Include="Resources\Images\miraclelistlogo.png">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 	  </Content>
@@ -91,6 +91,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Resources\Styles\AppStyles.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\AboutPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\CategoriesPage.xaml">

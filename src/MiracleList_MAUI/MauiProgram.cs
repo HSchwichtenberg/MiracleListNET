@@ -40,11 +40,15 @@ namespace MiracleList_MAUI
             services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
             services.AddSingleton<ISecureStorage>(SecureStorage.Default);
             services.AddSingleton<IPreferences>(Preferences.Default);
+            services.AddSingleton<IBrowser>(Browser.Default);
             services.AddSingleton<IAppState, AppState>();
             services.AddSingleton<IDialogService, DialogService>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton(new HttpClient());
             services.AddSingleton<IMiracleListProxy, MiracleListProxy>();
+
+            services.AddScoped<AppShell>();
+            services.AddScoped<AppShellViewModel>();
 
             services.AddScoped<MainPage>();
             services.AddScoped<CategoriesPage>();

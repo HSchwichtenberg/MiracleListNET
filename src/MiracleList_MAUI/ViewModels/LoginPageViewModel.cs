@@ -101,7 +101,7 @@ namespace MiracleList_MAUI.ViewModels
                 await secureStorage.SetAsync(nameof(Username), Username);
                 await secureStorage.SetAsync(nameof(Password), Password);
                 preferences.Set(nameof(BackendUrl), BackendUrl);
-
+                CurrentState = string.Empty;
                 messenger.Send(new UserLoggedInMessage(Username));
             }
             else

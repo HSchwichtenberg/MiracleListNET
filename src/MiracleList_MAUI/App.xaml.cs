@@ -30,7 +30,7 @@ namespace MiracleList_MAUI
 
         private void ShowAppShell()
         {
-            MainPage = new AppShell();
+            MainPage = services.GetService<AppShell>();
         }
     }
 }

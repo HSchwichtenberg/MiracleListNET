@@ -5,16 +5,40 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MiracleList_MAUI"
     xmlns:views="clr-namespace:MiracleList_MAUI.Views"
-    Shell.FlyoutBehavior="Disabled">
+    xmlns:vm="clr-namespace:MiracleList_MAUI.ViewModels"
+    x:DataType="vm:AppShellViewModel"
+    Shell.FlyoutBehavior="Flyout">
 
-    <!--<ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />-->
-
+    <Shell.FlyoutHeader>
+        <VerticalStackLayout Padding="10">
+            <Image Source="miraclelistlogo.png"/>
+            <Label Text="Benutzer:" Style="{StaticResource CaptionLabel}"/>
+            <Label Text="{Binding Username}"/>
+        </VerticalStackLayout>
+    </Shell.FlyoutHeader>
     <ShellContent
-        Title="Kategorien"
+        Title="MiracleList-Aufgabenverwaltung"
         ContentTemplate="{DataTemplate views:CategoriesPage}"
         Route="CategoryPage" />
+    
+    <ShellContent
+        Title="Über diese App"
+        ContentTemplate="{DataTemplate views:AboutPage}"
+        Route="AboutPage" />
 
+
+
+    <ToolbarItem Text="Logout" Command="{Binding LogoutCommand}"/>
+    <ToolbarItem Text="www.MiracleList.net" Command="{Binding NavigateToUrlCommand}" CommandParameter="https://www.it-visions.de/miraclelist"/>
+    <ToolbarItem Text="Beratung und Schulung zu .NET MAUI" Command="{Binding NavigateToUrlCommand}" CommandParameter="https://www.it-visions.de/thema/maui"/>
+    <ToolbarItem Text="Fachbuch zu .NET MAUI" Command="{Binding NavigateToUrlCommand}" CommandParameter="https://www.andrekraemer.de/maui-buch"/>
+    <ToolbarItem Text="www.it-visions.de" Command="{Binding NavigateToUrlCommand}" CommandParameter="https://www.it-visions.de"/>
+    <ToolbarItem Text="Quality Bytes GmbH" Command="{Binding NavigateToUrlCommand}" CommandParameter="https://www.qualitybytes.de"/>
+
+    <Shell.FlyoutFooter>
+        <VerticalStackLayout Padding="10" BackgroundColor="{StaticResource Primary}">
+           <Label Text="Info:" Style="{StaticResource CaptionLabel}" TextColor="White"/>
+           <Label Text="{Binding Statustext}"  TextColor="White"/>
+       </VerticalStackLayout>
+    </Shell.FlyoutFooter>
 </Shell>

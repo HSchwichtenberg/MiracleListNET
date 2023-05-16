@@ -66,7 +66,7 @@
   <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 
   <!--Zusätzliche Pakete von Anderen-->
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.5.0" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.6.0" />
   <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
   <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
   <PackageReference Include="Blazored.Toast" Version="4.1.0" />

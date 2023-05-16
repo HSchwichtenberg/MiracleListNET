@@ -29,6 +29,11 @@ namespace BlazorTests.Mocks
    NotifyLocationChanged(isInterceptedLink);
   }
 
+  protected override void SetNavigationLockState(bool value)
+  {
+   value = false; // Navigation ist erlaubt!
+  }
+
   /// <inheritdoc />
   protected override void NavigateToCore(string uri, bool forceLoad)
   {

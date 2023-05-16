@@ -49,12 +49,12 @@
   <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.*" />
   <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="7.0.*" />
   <!--Zusätzliche NuGetPakete von Anderen-->
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.5.0" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.6.0" />
   <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
   <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
   <PackageReference Include="Blazored.Toast" Version="4.1.0" />
   <PackageReference Include="UAParser" Version="3.1.47" />
-  <PackageReference Include="Radzen.Blazor" Version="4.7.6" />
+  <PackageReference Include="Radzen.Blazor" Version="4.11.0" />
  </ItemGroup>
  
  <ItemGroup>

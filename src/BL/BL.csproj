@@ -31,13 +31,13 @@
  </ItemGroup>
 
  <ItemGroup>
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.5.0" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.6.0" />
   <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
   <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="7.0.*" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.*" />
   <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.*" />
   <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
-  <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="7.18.5" />
+  <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="7.21.1" />
  </ItemGroup>
 
  <ItemGroup>

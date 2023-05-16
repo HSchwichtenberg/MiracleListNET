@@ -74,9 +74,9 @@ namespace MiracleListTests
    Assert.Equal("Benutzeranmeldung", cut.Find("h2").TextContent);
 
    // Setze Werte
-   cut.Find("#name").Change(name);
+   cut.Find("#username").Change(name);
    cut.Find("#password").Change(kennwort);
-   cut.Find("#Anmelden").Click();
+   cut.Find("#login").Click();
    #region SO NICHT: Das geht nicht, die Werte landen nicht in der Component!
    //cut.Find("#name").SetAttribute("value", name);
    //cut.Find("#password").SetAttribute("value", kennwort);

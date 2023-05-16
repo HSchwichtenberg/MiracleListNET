@@ -85,9 +85,18 @@
  protected override async System.Threading.Tasks.Task OnInitializedAsync()
  {
   // Setzt den Seitentitel für Browser-Registerkarte auf Projektnmame und Versionsnummer
-  var entryAssemblyName = System.Reflection.Assembly.GetEntryAssembly().GetName();
-  var projektname = entryAssemblyName.Name;
-  await Util.SetTitle(projektname + " / v" + entryAssemblyName.Version.ToString());
+
+  try
+  {
+   var entryAssemblyName = System.Reflection.Assembly.GetEntryAssembly()?.GetName();
+   var projektname = entryAssemblyName?.Name;
+   await Util.SetTitle(projektname + " / v" + entryAssemblyName?.Version?.ToString());
+  }
+  catch (Exception ex)
+  {
+   // Workaround für Android (dort funktioniert GetEntryAssembly() nicht!)
+  }
+
 
   // ermittelte den aktuellen Benutzer
   var authState = await authenticationStateTask;

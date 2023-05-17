@@ -15,7 +15,8 @@ using MiracleList_Backend.Hubs;
 
 namespace MLBlazorRCL.MainView;
 
-public partial class Main : IAsyncDisposable {
+public partial class Main : IAsyncDisposable
+{
  #region DI
  [Inject] AuthenticationStateProvider mLAuthenticationStateProvider { get; set; } = null;
  [Inject] IJSRuntime js { get; set; } = null;
@@ -32,7 +33,8 @@ public partial class Main : IAsyncDisposable {
 
  #region ShouldRender
  private bool shouldRender = true;
- protected override bool ShouldRender() {
+ protected override bool ShouldRender()
+ {
   return shouldRender;
  }
  #endregion
@@ -60,21 +62,25 @@ public partial class Main : IAsyncDisposable {
  /// Lebenszyklusereignis: Komponente wird initialisiert
  /// </summary>
  /// <returns></returns>
- protected override async Task OnInitializedAsync() {
+ protected override async Task OnInitializedAsync()
+ {
   Util.Log((nameof(Main) + "." + "OnInitializedAsync"));
 
   // Lade Daten (Kategorieliste)
   await ShowCategorySet();
  }
 
- protected override async Task OnParametersSetAsync() {
+ protected override async Task OnParametersSetAsync()
+ {
   #region Direktansprung einer Aufgabe per URL
   // https://localhost:44387/task/12345
   // oder bei [SupplyParameterFromQuery(Name = "t")]: https://localhost:44387/app?t=12345
 
-  if (TaskID > 0) {
+  if (TaskID > 0)
+  {
    var t = await Proxy.TaskAsync(this.TaskID, AppState.Token);
-   if (t is not null) {
+   if (t is not null)
+   {
     this.taskSet = await Proxy.TaskSetAsync(t.CategoryID, AppState.Token);
     await ShowTaskDetail(t);
    }
@@ -82,7 +88,8 @@ public partial class Main : IAsyncDisposable {
   #endregion
  }
 
- protected override async Task OnAfterRenderAsync(bool firstRender) {
+ protected override async Task OnAfterRenderAsync(bool firstRender)
+ {
 
   if (!firstRender && !String.IsNullOrEmpty(AppState.SignalRHubURL)) return; // alles Folgende nur 1x machen, wenn es eine HubURL gibt
   if (AppState.HubConnection != null && AppState.HubConnection.State == HubConnectionState.Connected) return; // nicht nochmals verbinden, wenn es schon eine bestehende Verbindung gibt!
@@ -94,14 +101,16 @@ public partial class Main : IAsyncDisposable {
       .WithUrl(hubURL)
       .AddMessagePackProtocol()
       .WithAutomaticReconnect()
-      .ConfigureLogging(logging => {
+      .ConfigureLogging(logging =>
+      {
        logging.AddProvider(new ITVisions.Logging.UniversalLoggerProvider(Util.Warn));
        logging.SetMinimumLevel(LogLevel.Debug);
       })
       .Build();
 
   // Reaktion auf eingehende Nachricht
-  AppState.HubConnection.On<string>(nameof(IMLHub.CategoryListUpdate), async (sender) => {
+  AppState.HubConnection.On<string>(nameof(IMLHub.CategoryListUpdate), async (sender) =>
+  {
    Util.Log($"SignalR.CategoryListUpdate from {sender} (Thread #{System.Threading.Thread.CurrentThread.ManagedThreadId})");
    toastService.ShowSuccess($"Die Aufgabenliste wurde in einer anderen Anwendungsinstanz verändert.");
    await ShowCategorySet(); // Daten neu laden
@@ -109,15 +118,18 @@ public partial class Main : IAsyncDisposable {
   });
 
   // Reaktion auf eingehende Nachricht
-  AppState.HubConnection.On<string, int>(nameof(IMLHub.TaskListUpdate), async (sender, categoryID) => {
+  AppState.HubConnection.On<string, int>(nameof(IMLHub.TaskListUpdate), async (sender, categoryID) =>
+  {
    Util.Log($"SignalR.TaskListUpdate from {sender}: {categoryID} (Thread #{System.Threading.Thread.CurrentThread.ManagedThreadId})");
 
-   if (categoryID == this.category.CategoryID) {
+   if (categoryID == this.category.CategoryID)
+   {
     toastService.ShowSuccess($"Die Aufgabe dieser Kategorie #{category.CategoryID}: \"{this.category.Name}\" wurden auf n einer anderen Anwendungsinstanz verändert.");
     await ShowTaskSet(this.category); // Daten neu laden
     await InvokeAsync(StateHasChanged); // InvokeAsync() notwendig hier, weil die Nachricht im Hintergrund (anderer Thread) kommt
    }
-   else {
+   else
+   {
     var changedCategory = this.categorySet.Where(x => x.CategoryID == categoryID).FirstOrDefault();
     if (changedCategory != null) toastService.ShowSuccess($"Die Aufgabe der Kategorie #{category.CategoryID}: \"{this.category.Name}\" wurden auf n einer anderen Anwendungsinstanz verändert.");
     // Kein UI-Update notwendig
@@ -136,8 +148,10 @@ public partial class Main : IAsyncDisposable {
  /// <summary>
  /// Beenden der SignalR-Verbindung zum Hub
  /// </summary>
- public async ValueTask DisposeAsync() {
-  if (AppState.HubConnection != null) {
+ public async ValueTask DisposeAsync()
+ {
+  if (AppState.HubConnection != null)
+  {
    Util.Log("SignalR.Connection closing...");
    await AppState.HubConnection.StopAsync();
    Util.Log("SignalR.Connection closed!");
@@ -162,19 +176,25 @@ public partial class Main : IAsyncDisposable {
  /// Lädt die Liste der Kategorien und zeigt die Aufgaben der ersten Kategorie
  /// </summary>
  /// <returns></returns>
- public async Task ShowCategorySet() {
+ public async Task ShowCategorySet()
+ {
+  // Lade Daten vom Backend
   categorySet = await Proxy.CategorySetAsync(AppState.Token);
   Util.Log("Loaded Categories: " + categorySet.Count);
 
   #region Wähle aktuelle Kategorie
-  if (this.categorySet.Count > 0) {
-   if (this.category == null) {
+  if (this.categorySet.Count > 0)
+  {
+   if (this.category == null)
+   {
     // Kategorie wiederherstellen?
     var storedCategoryID = await localStorage.GetItemAsync<int>("Category");
-    if (storedCategoryID > 0) {
+    if (storedCategoryID > 0)
+    {
      // ist die gespeicherte Kategorie eine aktuelle Kategorie?
      var storedCategory = this.categorySet.SingleOrDefault(x => x.CategoryID == storedCategoryID);
-     if (storedCategory != null) {
+     if (storedCategory != null)
+     {
       Util.Log("Restore Category", storedCategoryID);
       await ShowTaskSet(storedCategory);
      }
@@ -182,14 +202,16 @@ public partial class Main : IAsyncDisposable {
    }
 
    // immer noch keine Kategorie gewählt? dann nimm die erste
-   if (this.category == null) {
+   if (this.category == null)
+   {
     await ShowTaskSet(categorySet[0]);
    }
   }
   #endregion
  }
 
- public async Task ShowTaskSet(BO.Category c) {
+ public async Task ShowTaskSet(BO.Category c)
+ {
   if (c == null) { return; }
   Util.Log(nameof(ShowTaskSet) + ": " + c.CategoryID + " (" + c.Name + ")");
   // eventuelle Suchergebnisse ausblenden
@@ -209,13 +231,15 @@ public partial class Main : IAsyncDisposable {
   this.task = null;
  }
 
- public async Task ShowTaskDetail(BO.Task t) {
+ public async Task ShowTaskDetail(BO.Task t)
+ {
   Util.Log(nameof(ShowTaskDetail) + ": " + t.TaskID);
   this.task = t;
   if (t.Category != null) this.category = t.Category; // notwendig, falls Suchergebnisse gezeigt werden
  }
 
- public async Task ReloadTaskList() {
+ public async Task ReloadTaskList()
+ {
   // Deaktivieren von ShouldRender führt dazu, dass es kein Flackern gibt, bei dem man kurz die abgebrochene Änderung aus <TaskEdit> hier sieht
   shouldRender = false;
   await ShowTaskSet(this.category);
@@ -229,8 +253,10 @@ public partial class Main : IAsyncDisposable {
  /// <summary>
  /// Use Keyup instead of Keypress as the actual data binding did not yet happen when Keypress is fired
  /// </summary>
- public async Task NewCategory_Keyup(KeyboardEventArgs e) {
-  if (e.Key == "Enter") {
+ public async Task NewCategory_Keyup(KeyboardEventArgs e)
+ {
+  if (e.Key == "Enter")
+  {
    Util.Log("CreateCategory: " + this.newCategoryName);
    if (!String.IsNullOrEmpty(this.newCategoryName)) await CreateCategory(this.newCategoryName);
   }
@@ -239,15 +265,18 @@ public partial class Main : IAsyncDisposable {
  /// <summary>
  /// Use Keyup instead of Keypress as the actual data binding did not yet happen when Keypress is fired
  /// </summary>
- public async Task NewTask_Keyup(KeyboardEventArgs e) {
-  if (e.Key == "Enter") {
+ public async Task NewTask_Keyup(KeyboardEventArgs e)
+ {
+  if (e.Key == "Enter")
+  {
    Util.Log("CreateTask: " + this.newTaskTitle);
    if (!String.IsNullOrEmpty(this.newTaskTitle)) await CreateTask(this.newTaskTitle);
    newTaskTitle = "";
   }
  }
 
- public async Task CreateCategory(string newCategoryName) {
+ public async Task CreateCategory(string newCategoryName)
+ {
   if (string.IsNullOrEmpty(newCategoryName)) return;
   Util.Log("createCategory: " + newCategoryName);
   var newcategory = await Proxy.CreateCategoryAsync(newCategoryName, AppState.Token);
@@ -257,7 +286,8 @@ public partial class Main : IAsyncDisposable {
   await SendCategoryListUpdate();
  }
 
- public async Task CreateTask(string newTaskTitle) {
+ public async Task CreateTask(string newTaskTitle)
+ {
   if (string.IsNullOrEmpty(newTaskTitle)) return;
   Util.Log("createTask: " + newTaskTitle + " in category: " + this.category.Name);
   var t = new BO.Task();
@@ -284,7 +314,8 @@ public partial class Main : IAsyncDisposable {
  /// <summary>
  /// Ereignisbehandlung: Benutzer löscht Kategorie
  /// </summary>
- public async System.Threading.Tasks.Task RemoveCategory(BO.Category c) {
+ public async System.Threading.Tasks.Task RemoveCategory(BO.Category c)
+ {
   obj = DotNetObjectReference.Create(this);
   await Util.ConfirmDialog("Löschen der Kategorie #" + c.CategoryID + " mit " + c.TaskSet.Count + " Aufgaben?", c.CategoryID, obj, ConfirmedRemoveCategory);
  }
@@ -293,7 +324,8 @@ public partial class Main : IAsyncDisposable {
  /// Ereignisbehandlung: Benutzer löscht Kategorie
  /// </summary>
  [JSInvokable]
- public async Task ConfirmedRemoveCategory(int categoryID, bool result) {
+ public async Task ConfirmedRemoveCategory(int categoryID, bool result)
+ {
   if (result == false) return;
   // Löschen via WebAPI-Aufruf
   await Proxy.DeleteCategoryAsync(categoryID, AppState.Token);
@@ -312,16 +344,19 @@ public partial class Main : IAsyncDisposable {
  /// wird gerufen, wenn <TaskEdit> fertig ist
  /// </summary>
  /// <param name="save">true = Änderung soll gespeichert werden</param>
- public async Task TaskHasChanged(bool save) {
+ public async Task TaskHasChanged(bool save)
+ {
   Util.Log(nameof(TaskHasChanged) + ": saved=" + save);
   // reload all tasks in current category
-  if (save) {
+  if (save)
+  {
    await Proxy.ChangeTaskAsync(this.task, AppState.Token);
    toastService.ShowSuccess($"Aufgabe #" + task.TaskID + " wurde gespeichert.");
    await SendTaskListUpdate(task);
    this.task = null;
   }
-  else {
+  else
+  {
    await ReloadTaskList();
   }
  }
@@ -331,11 +366,14 @@ public partial class Main : IAsyncDisposable {
  /// <summary>
  /// Use Keyup instead of Keypress as the actual data binding did not yet happen when Keypress is fired
  /// </summary>
- public async Task Search(KeyboardEventArgs e) {
+ public async Task Search(KeyboardEventArgs e)
+ {
   Util.Log(e.Key);
-  if (e.Key == "Enter") {
+  if (e.Key == "Enter")
+  {
    Util.Log("Search: " + this.searchText);
-   if (!String.IsNullOrEmpty(this.searchText)) {
+   if (!String.IsNullOrEmpty(this.searchText))
+   {
     this.category = null;
     this.searchResultSet = await Proxy.SearchAsync(this.searchText, AppState.Token);
    }
@@ -353,7 +391,8 @@ public partial class Main : IAsyncDisposable {
  /// <summary>
  /// Sende Nachricht an Hub via ASP.NET SignalR
  /// </summary>
- public async Task SendCategoryListUpdate() {
+ public async Task SendCategoryListUpdate()
+ {
   Util.Log($"SignalR.{nameof(SendCategoryListUpdate)}");
   // DEMO: 61. SignalR-Event auslösen
   if (IsConnected) await AppState.HubConnection.SendAsync(nameof(IMLHub.CategoryListUpdate), AppState.Token);
@@ -363,7 +402,8 @@ public partial class Main : IAsyncDisposable {
  /// <summary>
  /// Sende Nachricht an Hub via ASP.NET SignalR
  /// </summary>
- public async Task SendTaskListUpdate(BO.Task t = null) {
+ public async Task SendTaskListUpdate(BO.Task t = null)
+ {
   int categoryIDUpdated;
   if (t != null) { categoryIDUpdated = t.CategoryID; }
   else { categoryIDUpdated = this.category.CategoryID; }
@@ -375,12 +415,14 @@ public partial class Main : IAsyncDisposable {
 
  #region Drag&Drop
  public BO.Task taskInDragAndDrop = null;
- public void DragTask(DragEventArgs e, BO.Task task) {
+ public void DragTask(DragEventArgs e, BO.Task task)
+ {
   Util.Log("DragTask", task);
   taskInDragAndDrop = task;
  }
 
- public async Task DropTaskToCategory(DragEventArgs e, BO.Category category) {
+ public async Task DropTaskToCategory(DragEventArgs e, BO.Category category)
+ {
   if (taskInDragAndDrop == null) return;
   Util.Log("DropTaskToCategory", taskInDragAndDrop, category);
   taskInDragAndDrop.CategoryID = category.CategoryID;

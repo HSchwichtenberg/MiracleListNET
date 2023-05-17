@@ -2,10 +2,10 @@
 
  <PropertyGroup>
   <TargetFramework>net7.0</TargetFramework>
-  <Version>7.12.4.0</Version>
-  <AssemblyVersion>7.12.4.0</AssemblyVersion>
-  <FileVersion>7.12.4.0</FileVersion>
-  <InformationalVersion>7.12.4.0-05/17/2023 08:42:55</InformationalVersion>
+  <Version>7.12.5.0</Version>
+  <AssemblyVersion>7.12.5.0</AssemblyVersion>
+  <FileVersion>7.12.5.0</FileVersion>
+  <InformationalVersion>7.12.5.0-05/17/2023 11:49:30</InformationalVersion>
   <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
   <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
  </PropertyGroup>

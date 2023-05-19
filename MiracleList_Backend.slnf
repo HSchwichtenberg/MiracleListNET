@@ -1,22 +1,21 @@
 {
   "solution": {
-    "path": "MiracleList_All.sln",
+    "path": "MiracleListNET_All.sln",
     "projects": [
-      "..\\MiracleListClientSeleniumTests\\MiracleListClientSeleniumTestsCore\\MiracleListClientSeleniumTestsCore.csproj",
       "Test\\BlazorTests\\BlazorTests.csproj",
+      "Test\\SeleniumTests\\SeleniumTests.csproj",
+      "Test\\WebserviceTests\\WebserviceTests.csproj",
       "src\\BL\\BL.csproj",
       "src\\BO\\BO.csproj",
       "src\\DA\\DA.csproj",
       "src\\EFCTools\\EFCTools.csproj",
-      "src\\ITVBlazorRCL\\ITVBlazorRCL.csproj",
       "src\\ITVRazorPagesRCL\\ITVRazorPagesClassLibrary.csproj",
       "src\\ITVTagHelper\\ITVTagHelper.csproj",
+      "src\\ITVisions.Blazor\\ITVisions.Blazor.csproj",
       "src\\MLBlazorRCL\\MLBlazorRCL.csproj",
       "src\\MiracleListAPI_Proxy\\MiracleListAPI_Proxy.csproj",
-      "src\\MiracleList_BD\\MiracleList_BD.csproj",
-      "src\\MiracleList_BS\\MiracleList_BS.csproj",
-      "src\\MiracleList_BW\\MiracleList_BW.csproj",
       "src\\MiracleList_Backend\\MiracleList_Backend.csproj",
+      "src\\MiracleList_Interfaces\\MiracleList_Interfaces.csproj",
       "src\\SamplesRCL\\SamplesRCL.csproj",
       "test\\UnitTests\\UnitTests.csproj"
     ]

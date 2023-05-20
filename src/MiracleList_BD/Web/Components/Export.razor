@@ -3,7 +3,7 @@
 @inject BlazorUtil Util
 
 <a @onclick="ExportXMLFile"><span id="ShowGrid" title="Aufgabenliste in XML-Datei @ExportPath exportieren" class="glyphicon glyphicon-floppy-save"></span></a>
-<a @onclick="ExportWord"><span id="ShowGrid" title="Word-Dokumente @ExportPathWord aus der Aufgabenliste erzeugen" class="glyphicon glyphicon-export"></span></a>
+<a @onclick="ExportWord"><span id="ShowGrid" title="Word-Dokument @ExportPathWord aus der Aufgabenliste erzeugen (via COM-Interop)" class="glyphicon glyphicon-export"></span></a>
 
 @code {
 
@@ -12,8 +12,10 @@
  [Parameter]
  public List<BO.Task> taskSet { get; set; }
 
- public string ExportPath {
-  get {
+ public string ExportPath
+ {
+  get
+  {
    if (category == null) return "";
    string fileName = "MiracleList_Export_" + category.Name + "_" + DateTime.Now.ToDateString() + ".xml";
    string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), fileName);
@@ -21,8 +23,10 @@
   }
  }
 
- public string ExportPathWord {
-  get {
+ public string ExportPathWord
+ {
+  get
+  {
    if (category == null) return "";
    string fileName = "MiracleList_Export_ " + category.Name + "_" + DateTime.Now.ToDateString() + ".docx";
    string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), fileName);
@@ -33,17 +37,21 @@
  /// <summary>
  /// Nur in BD und BM: Direkter Export ins Dateisystem
  /// </summary>
- public async Task ExportXMLFile() {
+ public async Task ExportXMLFile()
+ {
   if (category == null) return;
 
-  if (System.IO.File.Exists(ExportPath)) {
+  if (System.IO.File.Exists(ExportPath))
+  {
    if (!await Util.Confirm($"Datei {ExportPath} existiert bereits. Überschreiben?")) return;
   }
-  else {
+  else
+  {
    if (!await Util.Confirm($"Datei {ExportPath} anlegen?")) return;
   }
 
-  try {
+  try
+  {
    // TODO: Zirkuläre Referenzen ausschalten!!!
    DataContractSerializer xs = new(typeof(List<BO.Task>));
    System.IO.FileStream file = System.IO.File.Create(ExportPath);
@@ -51,7 +59,8 @@
    file.Close();
    await Util.Alert($"XML-Datei {ExportPath} wurde erzeugt!");
   }
-  catch (Exception ex) {
+  catch (Exception ex)
+  {
    await Util.Alert($"XML-Datei {ExportPath} kann nicht erzeugt werden: {ex.Message}");
    return;
   }
@@ -60,40 +69,51 @@
  /// <summary>
  /// Nur in BD und BM auf Windows: Word-Dokumentengenerierung
  /// </summary>
- public async Task ExportWord() {
-  // Neues Word-Dokument
-  var word = new Microsoft.Office.Interop.Word.Application();
-  word.Visible = true;
-  var doc = word.Documents.Add();
+ public async Task ExportWord()
+ {
 
-  // Anzeige aktualisieren
-  await DoEvents();
+  try
+  {
+   // Neues Word-Dokument
+   var word = new Microsoft.Office.Interop.Word.Application();
+   word.Visible = true;
+   var doc = word.Documents.Add();
 
-  // Kopfzeile
-  word.ActiveWindow.ActivePane.View.SeekView = Microsoft.Office.Interop.Word.WdSeekView.wdSeekCurrentPageHeader;
-  Microsoft.Office.Interop.Word.Find findObject = word.Selection.Find;
-  findObject.ClearFormatting();
-  findObject.Text = "Dokumententitel [ITV DokHead]";
-  findObject.Replacement.ClearFormatting();
-  findObject.Replacement.Text = "Alle Aufgaben in der Kategorie " + category.Name;
-  object replaceAll = Microsoft.Office.Interop.Word.WdReplace.wdReplaceAll;
-  findObject.Execute(Replace: replaceAll);
+   // Anzeige aktualisieren
+   await DoEvents();
 
-  // Seiteninhalt
-  word.ActiveWindow.ActivePane.View.SeekView = Microsoft.Office.Interop.Word.WdSeekView.wdSeekMainDocument;
-  word.Selection.WholeStory();
-  word.Selection.Delete();
+   // Kopfzeile
+   word.ActiveWindow.ActivePane.View.SeekView = Microsoft.Office.Interop.Word.WdSeekView.wdSeekCurrentPageHeader;
+   Microsoft.Office.Interop.Word.Find findObject = word.Selection.Find;
+   findObject.ClearFormatting();
+   findObject.Text = "Dokumententitel [ITV DokHead]";
+   findObject.Replacement.ClearFormatting();
+   findObject.Replacement.Text = "Alle Aufgaben in der Kategorie " + category.Name;
+   object replaceAll = Microsoft.Office.Interop.Word.WdReplace.wdReplaceAll;
+   findObject.Execute(Replace: replaceAll);
 
-  foreach (var t in taskSet) {
-   var line = "Aufgabe #" + t.TaskID + ": " + t.Title + " Fällig: " + t.Due.GetValueOrDefault().ToShortDateString() + "\n";
-   word.Selection.TypeText(line);
+   // Seiteninhalt
+   word.ActiveWindow.ActivePane.View.SeekView = Microsoft.Office.Interop.Word.WdSeekView.wdSeekMainDocument;
+   word.Selection.WholeStory();
+   word.Selection.Delete();
+
+   foreach (var t in taskSet)
+   {
+    var line = "Aufgabe #" + t.TaskID + ": " + t.Title + " Fällig: " + t.Due.GetValueOrDefault().ToShortDateString() + "\n";
+    word.Selection.TypeText(line);
+   }
+
+   // Dokument speichern
+   doc.SaveAs2(ExportPathWord);
   }
-
-  // Dokument speichern
-  doc.SaveAs2(ExportPathWord);
+  catch (Exception ex)
+  {
+   Util.Error("Word-Dokument kann nicht erzeugt werden: " + ex.Message);
+  }
  }
 
- async Task DoEvents() {
+ async Task DoEvents()
+ {
   this.StateHasChanged();
   await Task.Delay(1); // notwendig in Blazor WebAssembly und Blazor Desktop
  }

@@ -104,7 +104,7 @@ public partial class Export
   }
   catch (Exception ex)
   {
-   Util.Error("Word-Dokument kann nicht erzeugt werden: " + ex.Message);
+   await Util.Alert("Word-Dokument kann nicht erzeugt werden: " + ex.Message);
   }
   // Dokument speichern
 

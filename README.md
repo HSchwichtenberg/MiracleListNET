@@ -91,13 +91,13 @@ Die Entwicklerdokumentation zu den vier MiracleList-Frontends mit Blazor finden 
 
 ## Erste Schritte zur Einrichtung auf Ihrem Entwickler-PC
 
-### Erstellen Sie die Datenbank (nur für Backend und 2-Tier-Varianten notwendig!)
+### Erstellen Sie die Datenbank (nur für bei einem Self-Hosting des Backends und 2-Tier-Varianten notwendig!)
 - Ändern Sie die Verbindungszeichenfolge in: DA/Context.cs
 - Projektmappen Explorer: Als Startprojekt festlegen = EFCTools
 - Package Manager Console: Standardprojekt = DA
 - Package Manager Console: Ausführen: Update-Database
 
-### Setzen Sie die Verbindungszeichenfolge auf Ihre Datenbank (nur für Backend und 2-Tier-Varianten notwendig!)
+### Setzen Sie die Verbindungszeichenfolge auf Ihre Datenbank (nur für Self-Hosting des Backends und 2-Tier-Varianten notwendig!)
 - in: MiracleList_BD/appsettings.json
 - in: MiracleList_BS/appsettings.json
 - in: MiracleList_Backend/appsettings.json
@@ -105,18 +105,18 @@ Die Entwicklerdokumentation zu den vier MiracleList-Frontends mit Blazor finden 
 - in: Tests/appsettings.json
 
 ### Nur für MiracleList_BW und MiracleList_BM, wenn Sie das vorhandene Cloud-Backend verwenden wollen
-- Öffnen Sie https://miraclelistbackend.azurewebsites.net/
-- Füllen Sie das Formular „Kunden-ID beantragen“ aus
-- Holen Sie sich die Client-ID aus dem E-Mail-Konto
-- Setzen Sie die Client-ID in der Datei MiracleList_BW/wwwRoot/appSettings.json
+1. Öffnen Sie https://miraclelistbackend.azurewebsites.net/
+2. Füllen Sie das Formular „Kunden-ID beantragen“ aus
+3. Holen Sie sich die Client-ID aus dem E-Mail-Konto
+4. Setzen Sie die Client-ID in der Datei MiracleList_BW/wwwRoot/appSettings.json
 
-### Nur für MiracleList_BW und MiracleList_BM, wenn diese auf Ihrem lokalen Server laufen
+### Nur für MiracleList_BW und MiracleList_BM, wenn diese das Self-Hosted Backend verwenden sollen
 1. Starten Sie den Server MiracleList_Backend
 2. Öffnen Sie die laufende Site im Browser
-3. Füllen Sie das Formular „Kunden-ID beantragen“ aus
+3. Füllen Sie das Formular "Kunden-ID beantragen" aus
 4. Holen Sie sich die Client-ID aus dem E-Mail-Konto. Wenn Sie keine E-Mail erhalten haben: Öffnen Sie die Tabelle "Client" in der Datenbank, um die erstellte Client-ID zu erhalten
-5. Legen Sie die Client-ID in der Datei MiracleList_BW/wwwRoot/appSettings.json fest
-6. Setzen Sie Ihre Server-URL in „Backend/DebugURL“ in der Datei MiracleList_BW/wwwRoot/appsettings.json
+5. Legen Sie die Client-ID in der Datei MiracleList_BW/wwwRoot/appSettings.json und MiracleList_BM/wwwRoot/appSettings.json fest
+6. Setzen Sie Ihre Server-URL in "Backend/DebugURL" in der Datei MiracleList_BW/wwwRoot/appsettings.json und MiracleList_BM/wwwRoot/appsettings.json
 
 ## Weitere Informationen
 - Website zum MiracleList-Projekt: [www.miraclelist.de](http://www.miraclelist.de)

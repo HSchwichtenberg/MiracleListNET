@@ -5,14 +5,19 @@
     x:Class="MiracleList_WinUI.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:MiracleList_WinUI.Converters"
     RequestedTheme="Dark">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <ResourceDictionary Source="Resources/Brushes.xaml"/>
+                
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
+            <converters:OverdueToBrushConverter x:Key="OverdueToBrushConverter"/>
+            <converters:DateTimeOffsetConverter x:Key="DateTimeOffsetConverter"/>
+            <converters:DecimalToDoubleConverter x:Key="DecimalToDoubleConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

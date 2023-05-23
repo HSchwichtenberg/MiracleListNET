@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using MiracleList;
+using MiracleList_WinUI.Dialogs;
 using MiracleList_WinUI.ViewModels;
 using MiracleList_WinUI.Views;
 using MvvmGen.Events;
@@ -40,11 +41,21 @@ public partial class App : Application
         services.AddSingleton<IAppState, AppState>();
         services.AddSingleton(new HttpClient());
         services.AddSingleton<IEventAggregator, EventAggregator>();
+        services.AddTransient<IDialogService>(sp =>
+        {
+            var mainWindow = sp.GetService<MainWindow>();
+            var dialogService = new DialogService(mainWindow);
+            return dialogService;
+        });
         services.AddSingleton<MainWindow>();
         services.AddTransient<AboutView>();
         services.AddTransient<TaskManagementView>();
+        services.AddTransient<TaskManagementViewModel>();
         services.AddTransient<LoginView>();
         services.AddTransient<LoginViewModel>();
+        services.AddTransient<ITaskItemViewModelFactory, TaskItemViewModelFactory>();
+        services.AddTransient<ITaskDetailViewModelFactory, TaskDetailViewModelFactory>();
+        services.AddTransient<ICategoryItemViewModelFactory, CategoryItemViewModelFactory>();
         services.AddScoped<IMiracleListProxy>(sp =>
         {
             var appState = sp.GetService<IAppState>();

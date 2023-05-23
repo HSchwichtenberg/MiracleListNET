@@ -6,9 +6,97 @@
     xmlns:local="using:MiracleList_WinUI.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:behaviours="using:MiracleList_WinUI.Behaviours"
+    xmlns:viewModels="using:MiracleList_WinUI.ViewModels"
     mc:Ignorable="d">
 
     <Grid>
-        <TextBlock>Task management view</TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+
+        <TextBlock Margin="5 0 5 5"
+                   FontWeight="Bold"><Run Text="{x:Bind ViewModel.CategoryCount,Mode=OneWay}"/> Kategorien</TextBlock>
+        <StackPanel Margin="5" Width="250" Grid.Row="1">
+            <TextBox PlaceholderText="Neue Kategorie"
+                     Text="{x:Bind ViewModel.NewCategoryName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                     behaviours:EnterKeyCommandBehaviour.Command="{x:Bind ViewModel.CreateCategoryCommand,Mode=OneWay}"/>
+            <ListView ItemsSource="{x:Bind ViewModel.Categories,Mode=OneWay}"
+                      SelectedItem="{x:Bind ViewModel.SelectedCategory,Mode=TwoWay}"
+                      SelectionChanged="{x:Bind ViewModel.LoadTasksAsync}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="viewModels:CategoryItemViewModel">
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{x:Bind Name}" VerticalAlignment="Center"/>
+                            <Button Grid.Column="1" Command="{x:Bind DeleteCategoryCommand}">
+                                <SymbolIcon Symbol="Delete"/>
+                            </Button>
+
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+
+        <TextBlock Margin="5 0 5 5" Grid.Column="1"
+                   FontWeight="Bold"><Run Text="{x:Bind ViewModel.TaskCount,Mode=OneWay}"/> Aufgaben in <Run FontStyle="Italic" Text="{x:Bind ViewModel.SelectedCategory.Name,Mode=OneWay}"/></TextBlock>
+        <StackPanel Margin="5" Grid.Row="1" Grid.Column="1" Visibility="{x:Bind ViewModel.IsCategorySelected,Mode=OneWay}">
+            <TextBox PlaceholderText="Neuer Task"
+                     Text="{x:Bind ViewModel.NewTaskTitle,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                     behaviours:EnterKeyCommandBehaviour.Command="{x:Bind ViewModel.CreateTaskCommand,Mode=OneWay}"/>
+            <ListView ItemsSource="{x:Bind ViewModel.Tasks,Mode=OneWay}"
+                      SelectedItem="{x:Bind ViewModel.SelectedTask,Mode=TwoWay}"
+                      SelectionChanged="{x:Bind ViewModel.ShowTaskDetailsAsync}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="viewModels:TaskItemViewModel">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox IsChecked="{x:Bind Done,Mode=TwoWay}"
+                                      Command="{x:Bind DoneChangedCommand}"/>
+                            <TextBlock Grid.Column="1" Text="{x:Bind Title,Mode=OneWay}" VerticalAlignment="Center"/>
+                            <Border Grid.Column="2" CornerRadius="10" Padding="5"
+                                    Margin="5" Background="#333">
+                                <TextBlock FontSize="12" Text="{x:Bind Importance,Mode=OneWay}"/>
+                            </Border>
+                            <Button Grid.Column="3" CommandParameter="{x:Bind}"
+                                    Command="{x:Bind DeleteTaskCommand}">
+                                <SymbolIcon Symbol="Delete"/>
+                            </Button>
+                                
+                            <TextBlock Grid.Row="1" Grid.ColumnSpan="4" Margin="0 0 0 10"
+                                       Text="{x:Bind DueText,Mode=OneWay}"
+                                       Foreground="{x:Bind IsOverdue,Mode=OneWay,Converter={StaticResource OverdueToBrushConverter}}">
+                            </TextBlock>
+                        </Grid>
+                            
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+
+        <local:TaskDetailView Margin="10 0 0 0" Grid.RowSpan="2" Grid.Column="2"
+                              Visibility="{x:Bind ViewModel.HasTaskDetailViewModel,Mode=OneWay}"
+                              ViewModel="{Binding ViewModel.TaskDetailViewModel,Mode=OneWay}"
+                              Width="400"/>
     </Grid>
 </UserControl>

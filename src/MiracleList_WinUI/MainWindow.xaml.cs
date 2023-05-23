@@ -2,79 +2,68 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Net.Http;
-using System.Reflection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using Microsoft.UI.Xaml;
 using MiracleList;
+using MiracleList_WinUI.Events;
+using MiracleList_WinUI.Views;
+using MvvmGen.Events;
 
 namespace MiracleList_WinUI;
-/// <summary>
-/// An empty window that can be used on its own or navigated to within a Frame.
-/// </summary>
-public sealed partial class MainWindow : Window {
 
- private ServiceCollection services { get; set; }
- private ServiceProvider ServiceProvider { get; set; }
- private IConfiguration Configuration { get; set; }
- private IAppState appState { get; set; }
- private IMiracleListProxy proxy { get; set; }
+public sealed partial class MainWindow : Window,
+    IEventSubscriber<UserLoggedInEvent,
+        UserLoggedOutEvent,
+        ShowViewEvent>
+{
+    private readonly IAppState appState;
+    private Dictionary<Type, object> _viewCache = new();
 
- const string DebugUser = "T.Huber@IT-Visions.de";
- const string DebugPassword = "Sehr+Geheim"; // :-)
+    public MainWindow(IEventAggregator eventAggregator,IAppState appState)
+    {
+        this.InitializeComponent();
+        ShowView(typeof(LoginView));
+        eventAggregator.RegisterSubscriber(this);
+        MaximizeWindow();
+        this.appState = appState;
+    }
 
- public MainWindow() {
+    public void MaximizeWindow()
+    {
+        var windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(this);
 
-  this.InitializeComponent();
+        PInvoke.User32.ShowWindow(windowHandle, PInvoke.User32.WindowShowStyle.SW_MAXIMIZE);
+    }
 
-  #region DI für ML
-  services = new ServiceCollection();
-  var builder = new ConfigurationBuilder()
-     .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-     .AddUserSecrets(Assembly.GetExecutingAssembly(), true);
-  Configuration = builder.Build();
-  services.AddSingleton<IConfiguration>(Configuration);
-  services.AddSingleton<IAppState, AppState>();
-  services.AddSingleton(new HttpClient());
-  services.AddScoped<MiracleList.IMiracleListProxy, MiracleList.MiracleListProxy>();
-  ServiceProvider = services.BuildServiceProvider();
-  #endregion
+    public void OnEvent(UserLoggedInEvent eventData)
+    {
+        footerControl.UpdateStatusText();
+        ShowView(typeof(TaskManagementView));
+    }
+    
+    public void OnEvent(UserLoggedOutEvent eventData)
+    {
+        appState.Username = "";
+        _viewCache.Clear();
+        footerControl.UpdateStatusText();
+        ShowView(typeof(LoginView));
+    }
 
- }
+    public void OnEvent(ShowViewEvent eventData)
+    {
+        ShowView(eventData.ViewType);
+    }
 
- private async void LoginButton_Click(object sender, RoutedEventArgs e) {
+    private void ShowView(Type viewType)
+    {
+        if (!_viewCache.ContainsKey(viewType))
+        {
+            var view = ((App)App.Current).ServiceProvider.GetService(viewType)
+                ?? throw new Exception($"View not registered {viewType}");
+            _viewCache.Add(viewType, view);
+        }
 
-  var output = "";
-
-  appState = ServiceProvider.GetService<IAppState>();
-  proxy = ServiceProvider.GetService<IMiracleListProxy>();
-
-  var loginInfo = new LoginInfo() { ClientID = appState.ClientID, Username = DebugUser, Password = DebugPassword };
-
-  var loginResult = await proxy.LoginAsync(loginInfo);
-
-  if (String.IsNullOrEmpty(loginResult.Message)) // OK
-   {
-
-   // Das merken wir uns im AppState
-   appState.Token = loginResult.Token;
-   appState.Username = loginResult.Username;
-
-   output += $"User: {appState.Username}\n";
-   output += $"Token: {appState.Token}\n";
-
-   var categorySet = await proxy.CategorySetAsync(appState.Token);
-
-   foreach (var item in categorySet) {
-    output = $"{output}{item.Name}: {item.TaskSet.Count} Tasks\n";
-   }
-  }
-  else {
-   output = "Login Error: " + loginResult.Message;
-  }
-
-  this.Output.Text = output;
- }
+        contentArea.Content = _viewCache[viewType];
+    }
 }
+

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="MiracleList_WinUI.Controls.HeaderControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MiracleList_WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource HeaderBackgroundBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Image Source="/Images/MiracleListLogo.png" x:Name="logo"/>
+        <TextBlock Grid.Column="1" x:Name="loggedInUserTextBlock"
+                   VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10"
+                   Foreground="#BBB"/>
+        <Button Grid.Column="2" Margin="20">
+            <SymbolIcon Symbol="GlobalNavigationButton"/>
+            <Button.Flyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem x:Name="loginItem"
+                                    Text="Login"
+                                    Click="LoginItemClick"/>
+                    <MenuFlyoutItem x:Name="logoutItem"
+                                    Text="Logout"
+                                    Click="LogoutItemClick"/>
+                    <MenuFlyoutItem x:Name="taskManagementItem"
+                                    Text="MiracleList-Aufgabenverwaltung"
+                                    Click="TaskManagementItemClick"/>
+                    <MenuFlyoutItem x:Name="aboutItem"
+                                    Text="Über diese App"
+                                    Click="AboutItemClick"/>
+                </MenuFlyout>
+            </Button.Flyout>
+        </Button>
+    </Grid>
+</UserControl>

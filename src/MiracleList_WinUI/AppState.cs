@@ -12,43 +12,40 @@ namespace MiracleList_WinUI;
 /// </summary>
 public class AppState : IAppState
 {
+    public string Token { get; set; }
+    public string Username { get; set; }
+    public string BackendURL { get; set; }
+    private string signalRHubURL = "https://miraclelistbackend.azurewebsites.net/MLHUBV2";
+    public string SignalRHubURL { get => signalRHubURL; set => signalRHubURL = value; }
+    public string BackendDisplayName => BackendURL ?? "";
+    public string ClientID => this.configuration["Backend:ClientID"];
+    public HubConnection HubConnection { get; set; }
+    private readonly IConfiguration configuration;
 
+    public string CurrentUserDirectoryAbsolutePath { get; }
+    public string CurrentUserDirectoryRelativePath { get; }
 
- public string Token { get; set; }
- public string Username { get; set; }
- public string BackendURL { get; set; }
- private string signalRHubURL = "https://miraclelistbackend.azurewebsites.net/MLHUBV2";
- public string SignalRHubURL { get => signalRHubURL; set => signalRHubURL = value; }
- public string BackendDisplayName => BackendURL ?? "";
- public string ClientID => this.configuration["Backend:ClientID"];
- public HubConnection HubConnection { get; set; }
- private readonly IConfiguration configuration;
+    // Diese Daten werden aus /wwwroot/appsettings.json gelesen
+    // Bitte ändern Sie die Daten dort, siehe auch readme.md
+    public string StagingURL;
+    public string LiveURL;
+    public string DebugURL;
 
- public string CurrentUserDirectoryAbsolutePath { get; }
- public string CurrentUserDirectoryRelativePath { get; }
+    public AppState(IConfiguration configuration)
+    {
+        this.configuration = configuration;
 
- // Diese Daten werden aus /wwwroot/appsettings.json gelesen
- // Bitte ändern Sie die Daten dort, siehe auch readme.md
- public string StagingURL;
- public string LiveURL;
- public string DebugURL;
+        //this.StagingURL = this.configuration["Backend:StagingURL"];
+        this.LiveURL = this.configuration["Backend:LiveURL"];
+        this.DebugURL = this.configuration["Backend:DebugURL"];
 
- public AppState(IConfiguration configuration)
- {
+    }
 
-  this.configuration = configuration;
-
-  //this.StagingURL = this.configuration["Backend:StagingURL"];
-  this.LiveURL = this.configuration["Backend:LiveURL"];
-  this.DebugURL = this.configuration["Backend:DebugURL"];
-
- }
-
- public SortedDictionary<string, string> GetBackendSet(bool includeLocalhost = false)
- {
-  var list = new SortedDictionary<string, string>() {
-   { LiveURL, LiveURL }, 
+    public SortedDictionary<string, string> GetBackendSet(bool includeLocalhost = false)
+    {
+        var list = new SortedDictionary<string, string>() {
+   { LiveURL, LiveURL },
    { DebugURL, DebugURL } };
-  return list;
- }
+        return list;
+    }
 }

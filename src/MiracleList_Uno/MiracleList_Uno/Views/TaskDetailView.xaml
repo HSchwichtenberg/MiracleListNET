@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="MiracleList_WinUI.Views.TaskDetailView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MiracleList_WinUI.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:behaviours="using:MiracleList_WinUI.Behaviours"
+    xmlns:viewModels="using:MiracleList_WinUI.ViewModels"
+    mc:Ignorable="d">
+    <ScrollViewer>
+        <StackPanel>
+            <TextBlock FontWeight="Bold" Margin="5 0 5 5">Task</TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Speichern"
+                    Width="125" Margin="0 5 5 5"
+                    Command="{x:Bind ViewModel.SaveCommand,Mode=OneWay}"/>
+                <Button Content="Abbrechen" Width="125" Margin="5"
+                    Command="{x:Bind ViewModel.CancelCommand,Mode=OneWay}"/>
+            </StackPanel>
+
+            <TextBox Header="Title" Margin="0 10 0 0"
+                 Text="{x:Bind ViewModel.Title,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+            <Grid Margin="0 10 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <!-- ComboBox setzt SelectedItem (Importance in ViewModel)
+                 beim Wechseln der ItemsSource auf null, wenn Data Binding genutzt wird.
+                 Daher wird das ganze mit einem SelectionChanged EventHandler statt Data Binding gelöst-->
+                <ComboBox Header="Wichtigkeit" x:Name="comboBox"
+                      SelectionChanged="comboBox_SelectionChanged"
+                      HorizontalAlignment="Stretch" Margin="5"/>
+                <NumberBox Grid.Column="1" Header="Aufwand" Margin="5"
+                       Value="{x:Bind ViewModel.Effort,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource DecimalToDoubleConverter}}"/>
+                <CalendarDatePicker Grid.Column="2" Header="Fälligkeit" Margin="5"
+                        Date="{x:Bind ViewModel.Due,Mode=TwoWay,Converter={StaticResource DateTimeOffsetConverter}}"/>
+            </Grid>
+            <TextBlock Margin="0 10 0 0">Unteraufgaben</TextBlock>
+            <TextBox PlaceholderText="Neue Unteraufgabe..."
+                     Text="{x:Bind ViewModel.NewSubTaskTitle,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                     behaviours:EnterKeyCommandBehaviour.Command="{x:Bind ViewModel.CreateSubTaskCommand,Mode=OneWay}"/>
+            <ListView ItemsSource="{x:Bind ViewModel.SubTasks,Mode=OneWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="viewModels:SubTaskViewModel">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox IsChecked="{x:Bind Done,Mode=TwoWay}"/>
+                            <TextBlock Grid.Column="1" Text="{x:Bind Title,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button Grid.Column="2" Command="{x:Bind DeleteCommand,Mode=OneWay}">
+                                <SymbolIcon Symbol="Delete"/>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <TextBox Header="Notizen" AcceptsReturn="True" Height="100" Margin="0 20 0 0"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                 Text="{x:Bind ViewModel.Note,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

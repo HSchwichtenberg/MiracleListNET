@@ -1,0 +1,10 @@
+{
+  "background_color": "#ffffff",
+  "description": "MiracleList_Uno",
+  "display": "standalone",
+  "name": "MiracleList_Uno",
+  "short_name": "MiracleList_Uno",
+  "start_url": "/index.html",
+  "theme_color": "#ffffff",
+  "scope": "/"
+}

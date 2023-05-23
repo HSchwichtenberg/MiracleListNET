@@ -1,0 +1,135 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) or '$(EnableWindowsTargeting)' == 'true'">$(TargetFrameworks);net7.0-windows10.0.19041</TargetFrameworks>
+		<TargetFrameworks>$(TargetFrameworks);net7.0;</TargetFrameworks>
+
+		<!-- Ensures the .xr.xml files are generated in a proper layout folder -->
+		<GenerateLibraryLayout>true</GenerateLibraryLayout>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Uno.WinUI" Version="4.8.33" />
+		<PackageReference Include="Uno.Resizetizer" Version="1.0.4" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
+	</ItemGroup>
+  
+  
+  <!--ML: Projektreferenzen-->
+  <ItemGroup>
+    <ProjectReference Include="..\..\MiracleList_Interfaces\MiracleList_Interfaces.csproj" />
+    <ProjectReference Include="..\..\BO\BO.csproj" />
+    <ProjectReference Include="..\..\MiracleListAPI_Proxy\MiracleListAPI_Proxy.csproj" />
+    <ProjectReference Include="..\MiracleList.ViewModels\MiracleList.ViewModels.csproj" />
+  </ItemGroup>
+
+  <!--ML: Zusätzliche NuGet-Pakete -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.JSON" Version="7.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.*" />
+    <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.6.0" />
+    <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
+    <PackageReference Include="MvvmGen" Version="1.2.1" />
+    <PackageReference Include="PInvoke.User32" Version="0.7.124" />
+  </ItemGroup>
+
+
+	<Choose>
+		<When Condition="$(IsWinAppSdk)">
+			<ItemGroup>
+				<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.230313.1" />
+				<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.755" />
+			</ItemGroup>
+
+			<ItemGroup>
+				<!--
+				If you encounter this error message:
+
+					error NETSDK1148: A referenced assembly was compiled using a newer version of Microsoft.Windows.SDK.NET.dll.
+					Please update to a newer .NET SDK in order to reference this assembly.
+
+				This means that the two packages below must be aligned with the "build" version number of
+				the "Microsoft.Windows.SDK.BuildTools" package above, and the "revision" version number
+				must be the highest found in https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref.
+				-->
+				<!-- <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" RuntimeFrameworkVersion="10.0.22621.28" />
+				<FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" TargetingPackVersion="10.0.22621.28" /> -->
+			</ItemGroup>
+		</When>
+		<Otherwise>
+			<ItemGroup>
+				<Content Include="Assets\**" />
+				<Page Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
+				<Compile Update="**\*.xaml.cs">
+					<DependentUpon>%(Filename)</DependentUpon>
+				</Compile>
+				<PRIResource Include="**\*.resw" />
+			</ItemGroup>
+		</Otherwise>
+	</Choose>
+
+	<ItemGroup>
+		<UnoImage Include="Assets\**\*.svg" />
+		<UpToDateCheckInput Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Controls\FooterControl.xaml" />
+	  <None Remove="Controls\HeaderControl.xaml" />
+	  <None Remove="Resources\Brushes.xaml" />
+	  <None Remove="Views\AboutView.xaml" />
+	  <None Remove="Views\LoginView.xaml" />
+	  <None Remove="Views\TaskDetailView.xaml" />
+	  <None Remove="Views\TaskManagementView.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Controls\FooterControl.xaml" />
+	  <UpToDateCheckInput Remove="Controls\HeaderControl.xaml" />
+	  <UpToDateCheckInput Remove="Resources\Brushes.xaml" />
+	  <UpToDateCheckInput Remove="Views\AboutView.xaml" />
+	  <UpToDateCheckInput Remove="Views\LoginView.xaml" />
+	  <UpToDateCheckInput Remove="Views\TaskDetailView.xaml" />
+	  <UpToDateCheckInput Remove="Views\TaskManagementView.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="Images\MiracleListLogo.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="Controls\FooterControl.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	    <SubType>Designer</SubType>
+	  </Page>
+	  <Page Update="Controls\HeaderControl.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	    <SubType>Designer</SubType>
+	  </Page>
+	  <Page Update="Resources\Brushes.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	    <SubType>Designer</SubType>
+	  </Page>
+	  <Page Update="Views\AboutView.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	    <SubType>Designer</SubType>
+	  </Page>
+	  <Page Update="Views\LoginView.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	    <SubType>Designer</SubType>
+	  </Page>
+	  <Page Update="Views\TaskDetailView.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	  </Page>
+	  <Page Update="Views\TaskManagementView.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	    <SubType>Designer</SubType>
+	  </Page>
+	</ItemGroup>
+</Project>

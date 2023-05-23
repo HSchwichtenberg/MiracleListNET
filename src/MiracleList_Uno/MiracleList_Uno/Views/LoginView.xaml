@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="MiracleList_WinUI.Views.LoginView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MiracleList_WinUI.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel>
+        <Border Background="{StaticResource LoginMessageBackgroundBrush}" 
+                Padding="10" CornerRadius="5">
+            <StackPanel>
+                <TextBlock FontSize="20">Benutzeranmeldung</TextBlock>
+                <TextBlock TextWrapping="Wrap">
+                    MiracleList ist eine praxisnahe Beispielanwendung für eine Aufgabenverwaltung. 
+                    <LineBreak/>
+                    Diese Variante des Frontends läuft mit WinUI 3 auf 
+                    <Run Text="{x:Bind ViewModel.FrameworkDescription,Mode=OneWay}"/>
+                    <LineBreak/>
+                    <LineBreak/>
+                    Zur Benutzeranmeldung geben Sie die Kombination aus Ihrer E-Mail-Adresse
+                    und einem beliebigen Kennwort ein. Wenn es für diese E-Mail-Adresse 
+                    noch kein Benutzerkonto gibt, wird automatisch ein neues Benutzerkonto 
+                    mit einigen Beispielaufgaben angelegt. Merken Sie sich das Kennwort für
+                    zukünftige Anmeldungen. Das Kennwort kann nicht geändert werden.
+                    Das Benutzeranmeldeverfahren ist bewusst vereinfacht, um die Hürde 
+                    zum Einstieg in die Anwendung gering zu halten.
+                </TextBlock>
+            </StackPanel>
+        </Border>
+        <TextBox Header="E-Mail-Adresse" IsSpellCheckEnabled="False"  Margin="0 10 0 0"
+                 Text="{x:Bind ViewModel.Username,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+        <PasswordBox Header="Kennwort"  Margin="0 10 0 0"
+                     Password="{x:Bind ViewModel.Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+        <ComboBox Header="Server" Margin="0 10 0 0"
+                  ItemsSource="{x:Bind ViewModel.Servers,Mode=OneWay}"
+                  SelectedItem="{x:Bind ViewModel.BackendUrl,Mode=TwoWay}"
+                  HorizontalAlignment="Stretch"/>
+        <Button Content="Login" Margin="0 20 0 0"
+                Command="{x:Bind ViewModel.LoginCommand,Mode=OneWay}"/>
+        <TextBlock Foreground="LightCoral" Margin="10"
+                   Text="{x:Bind ViewModel.CurrentState,Mode=OneWay}"/>
+    </StackPanel>
+</UserControl>

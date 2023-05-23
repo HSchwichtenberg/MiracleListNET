@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MvvmGen" Version="1.2.1" />
+  </ItemGroup>
+
+  <!--ML: Projektreferenzen-->
+  <ItemGroup>
+    <ProjectReference Include="..\..\MiracleList_Interfaces\MiracleList_Interfaces.csproj" />
+    <ProjectReference Include="..\..\BO\BO.csproj" />
+    <ProjectReference Include="..\..\MiracleListAPI_Proxy\MiracleListAPI_Proxy.csproj" />
+  </ItemGroup>
+
+</Project>

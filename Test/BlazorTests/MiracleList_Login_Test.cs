@@ -123,7 +123,7 @@ namespace MiracleListTests
    Assert.Contains(console, x => x.Arguments[0].ToString() == "BLAZOR: Login.DoLogin: Login Error!");
 
    // Prüfung 2: Konsolenausgabe
-   Assert.Contains("Login Error: not ok", cut.Find("#errorMsg").TextContent);
+   Assert.Contains("Anmeldefehler: not ok", cut.Find("#errorMsg").TextContent);
 
    // Prüfung 3: Navigation
    Assert.Equal(UriBefore, cut.Instance.NavigationManager.Uri);

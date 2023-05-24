@@ -37,7 +37,7 @@ public class LoginModel : ComponentBase
  public string Username { get; set; }
  public string Password { get; set; }
  public string Backend { get; set; }
- public string ErrorMsg { get; set; }
+ public string LoginStatus { get; set; }
  private bool shouldRender { get; set; }
  public SortedDictionary<string, string> BackendList { get; set; } = new();
  #endregion
@@ -107,7 +107,7 @@ public class LoginModel : ComponentBase
  /// </summary>
  protected async Task Login()
  {
-  ErrorMsg = "Logging in...";
+  LoginStatus = "Anmeldung wird geprüft...";
   Util.Log($"{nameof(LoginModel)}.{nameof(Login)}: {Username}/{Password}/{Backend}");
 
   // Anmelden versuchen
@@ -125,7 +125,7 @@ public class LoginModel : ComponentBase
 
    if (!String.IsNullOrEmpty(Username))
    {
-    ErrorMsg = "";
+    LoginStatus = "";
     // DEMO: 32. NavigationManager
     Util.Log("Login.DoLogin: Login OK!");
     this.NavigationManager.NavigateTo("/main");
@@ -133,13 +133,13 @@ public class LoginModel : ComponentBase
    }
    else
    {
-    ErrorMsg = "Unknown Login Error!";
+    LoginStatus = "Anmeldefehler: unbekannter Fehler im Backend.";
     Util.Log("Login.DoLogin: Unknown Login Error!");
    }
   }
   else
   {
-   ErrorMsg = "Login Error: " + loginInfo?.Message;
+   LoginStatus = "Anmeldefehler: " + loginInfo?.Message;
    Util.Log("Login.DoLogin: Login Error!");
   }
  }

@@ -44,7 +44,7 @@ namespace MiracleList_WinUI.ViewModels
         [Command(CanExecuteMethod =nameof(CanLogin))]
         private async Task Login()
         {
-            CurrentState = "Logging in...";
+            CurrentState = "Anmeldung läuft...";
 
             var loginInfo = new LoginInfo
             {
@@ -69,7 +69,7 @@ namespace MiracleList_WinUI.ViewModels
             }
             else
             {
-                CurrentState= "Login Error: " + loginResult.Message;
+                CurrentState= "Anmeldefehler: " + loginResult.Message;
             }
         }
 

@@ -18,10 +18,10 @@
 
  <!--Versionsinfos-->
  <PropertyGroup>
-  <Version>7.12.4.0</Version>
-  <AssemblyVersion>7.12.4.0</AssemblyVersion>
-  <FileVersion>7.12.4.0</FileVersion>
-  <InformationalVersion>7.12.4.0-05/17/2023 08:09:19</InformationalVersion>
+  <Version>7.12.5.0</Version>
+  <AssemblyVersion>7.12.5.0</AssemblyVersion>
+  <FileVersion>7.12.5.0</FileVersion>
+  <InformationalVersion>7.12.5.0-05/17/2023 11:49:31</InformationalVersion>
   <UserSecretsId>f4ee1587-6574-4ece-b932-69c8c91abe04</UserSecretsId>
  </PropertyGroup>
 
@@ -49,12 +49,12 @@
   <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.*" />
   <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="7.0.*" />
   <!--Zusätzliche NuGetPakete von Anderen-->
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.5.0" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.6.0" />
   <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
   <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
   <PackageReference Include="Blazored.Toast" Version="4.1.0" />
   <PackageReference Include="UAParser" Version="3.1.47" />
-  <PackageReference Include="Radzen.Blazor" Version="4.7.6" />
+  <PackageReference Include="Radzen.Blazor" Version="4.11.0" />
  </ItemGroup>
  
  <ItemGroup>

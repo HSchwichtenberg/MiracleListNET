@@ -33,8 +33,6 @@ public class Startup
 
   Console.WriteLine("WebRootPath: " + env.WebRootPath);
 
-
-
   #region Load configuration
   // Get all configuration sources
   // NUGET: Microsoft.Extensions.Configuration.JSON

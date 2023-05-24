@@ -2,8 +2,8 @@
 @page "/Index"
 @page "/app"
 @page "/task/{TaskID:int}"
-@using ITVisions.TextGenerator;
 @attribute [Authorize]
+@using ITVisions.TextGenerator;
 @using ITVisions.Blazor
 @using ITVisions.Blazor.Controls
 @using Microsoft.AspNetCore.SignalR.Client
@@ -58,7 +58,7 @@
           )
       Aufgaben in <i> @category?.Name</i>
 
-      <button @onclick="ReturnToCategoryList" class="btn btn-primary hidden-sm hidden-md hidden-lg hidden-xl" title="Zurück zur Aufgabenkategorieliste">
+      <button @onclick="ReturnToCategoryList" style="margin-left:10px" class="btn btn-primary hidden-sm hidden-md hidden-lg hidden-xl" title="Zurück zur Aufgabenkategorieliste">
        <span class="glyphicon glyphicon-arrow-left"></span>
       </button>
 

@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
  <PropertyGroup>
   <NoWarn>$(NoWarn);NU1605</NoWarn>
-  <Version>7.12.4.0</Version>
-  <AssemblyVersion>7.12.4.0</AssemblyVersion>
-  <FileVersion>7.12.4.0</FileVersion>
-  <InformationalVersion>7.12.4.0-05/17/2023 08:09:20</InformationalVersion>
+  <Version>7.12.5.0</Version>
+  <AssemblyVersion>7.12.5.0</AssemblyVersion>
+  <FileVersion>7.12.5.0</FileVersion>
+  <InformationalVersion>7.12.5.0-05/17/2023 11:49:31</InformationalVersion>
   <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
  </PropertyGroup>
 
@@ -64,7 +64,7 @@
   <PackageReference Include="xunit" Version="2.4.2" />
   <PackageReference Include="Xunit.SkippableFact" Version="1.4.13" />
   <PackageReference Include="DeepEqual" Version="4.2.1" />
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.5.0" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.6.0" />
   <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
  </ItemGroup>
 

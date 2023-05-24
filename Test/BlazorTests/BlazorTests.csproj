@@ -3,10 +3,10 @@
  <PropertyGroup>
   <TargetFramework>net7.0-windows</TargetFramework>
   <RazorLangVersion>7.0</RazorLangVersion>
-  <Version>7.12.4.0</Version>
-  <AssemblyVersion>7.12.4.0</AssemblyVersion>
-  <FileVersion>7.12.4.0</FileVersion>
-  <InformationalVersion>7.12.4.0-05/17/2023 08:09:20</InformationalVersion>
+  <Version>7.12.5.0</Version>
+  <AssemblyVersion>7.12.5.0</AssemblyVersion>
+  <FileVersion>7.12.5.0</FileVersion>
+  <InformationalVersion>7.12.5.0-05/17/2023 11:49:31</InformationalVersion>
   <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
   <UserSecretsId>dea999a2-e05e-4e12-a9b7-c300e5791ab7</UserSecretsId>
  </PropertyGroup>
@@ -17,7 +17,7 @@
 
  <ItemGroup>
   <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
-  <PackageReference Include="bunit" Version="1.18.4" />
+  <PackageReference Include="bunit" Version="1.19.14" />
   <PackageReference Include="JustMock" Version="2023.1.117.1" />
   <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
   <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />

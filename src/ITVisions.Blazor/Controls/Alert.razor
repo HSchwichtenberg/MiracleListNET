@@ -1,0 +1,22 @@
+﻿
+<div class="alert @Type alert-dismissible fade show" role="alert">
+  <h4>@Title</h4>
+@Text
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div
+
+
+@code {
+
+ [Parameter]
+ public string Type { get; set; } = "alert-warning";
+
+ [Parameter]
+ public RenderFragment? Title { get; set; }
+
+ [Parameter]
+ public RenderFragment? Text { get; set; }
+
+}

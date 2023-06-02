@@ -2,13 +2,12 @@
 using Microsoft.AspNetCore.Components;
 using System;
 
-namespace ITVisions.Blazor.Controls
-{
+namespace ITVisions.Blazor.Controls;
 
- public class BlazorTimer : ComponentBase, IDisposable
- {
-  [Inject]
-  public BlazorUtil Util { get; set; } = null;
+public class BlazorTimer : ComponentBase, IDisposable
+{
+ [Inject]
+ public BlazorUtil Util { get; set; } = null;
 
   [Parameter]
   public double Seconds { get; set; }

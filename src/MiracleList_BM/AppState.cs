@@ -7,7 +7,6 @@ using MiracleList;
 
 namespace Web;
 
-
 /// <summary>
 /// Eigene Datei als Wrapper für /wwwroot/appsettings.json
 /// </summary>

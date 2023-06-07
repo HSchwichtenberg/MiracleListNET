@@ -32,4 +32,3 @@ public class BlazorTimer : ComponentBase, IDisposable
    if (timer != null) timer.Dispose();
   }
  }
-}

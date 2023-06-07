@@ -12,14 +12,18 @@ namespace Web;
 /// </summary>
 public class AppState : IAppState
 {
+ public string Token { get; set; }
+ public string Username { get; set; }
  public string BackendURL { get; set; }
+
+ public string BackendDisplayName => BackendURL ?? "";
+ public string ClientID => this.configuration["Backend:ClientID"];
+
  private string signalRHubURL = "https://miraclelistbackend.azurewebsites.net/MLHUBV2";
  public string SignalRHubURL { get => signalRHubURL; set => signalRHubURL = value; }
  public HubConnection HubConnection { get; set; }
- public string BackendDisplayName => BackendURL ?? "";
- public string ClientID => this.configuration["Backend:ClientID"];
- public string Token { get; set; }
- public string Username { get; set; }
+
+
  public string CurrentUserDirectoryAbsolutePath { get;  }
  public string CurrentUserDirectoryRelativePath { get;  }
  private readonly IConfiguration configuration;

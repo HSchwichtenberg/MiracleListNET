@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
 using MiracleList;
-using Radzen.Blazor.Rendering;
 
 namespace Web;
 
@@ -17,9 +15,10 @@ public class AppState : IAppState
  public string Token { get; set; }
  public string Username { get; set; }
  public string BackendURL { get; set; }
- public string SignalRHubURL { get; set; }
  public string BackendDisplayName => BackendURL ?? "";
  public string ClientID => this.configuration["Backend:ClientID"];
+
+ public string SignalRHubURL { get; set; }
  public HubConnection HubConnection { get; set; }
 
  public string CurrentUserDirectoryAbsolutePath { get; }

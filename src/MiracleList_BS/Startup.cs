@@ -137,7 +137,7 @@ public class Startup
   #endregion
 
   #region DI für sonstige Hilfsbibliotheken
-  services.AddScoped<BlazorUtil>();
+  services.AddBlazorUtilForBlazorServer();
   #endregion
 
   #region Zusätzliche Komponenten, die MLBlazorRCL rendern soll

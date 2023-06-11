@@ -59,8 +59,7 @@ public partial class MainWindow : Window
   #endregion
 
   #region Services für MiracleList-Web
-  services.AddScoped<BlazorUtil>();
-  services.AddScoped<IHttpContextAccessor, HttpContextAccessorDummy>(); // das braucht BlazorUtil!
+  services.AddBlazorUtil();
   services.AddScoped<IMLAuthenticationStateProvider, MLAuthenticationStateProvider2Tier>();
   services.AddScoped<AuthenticationStateProvider, MLAuthenticationStateProvider2Tier>();
   services.AddAuthorizationCore();

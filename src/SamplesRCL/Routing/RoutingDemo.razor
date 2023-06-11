@@ -144,12 +144,6 @@
  public bool AllowNavigation { get; set; } = true;
  public string Ausgabe { get; set; }
 
- protected override void OnParametersSet()
- {
-  // Standardwerte setzen
-  c = c ?? DateTime.Now;
-  this.StateHasChanged();
- }
 
  protected override void OnInitialized()
  {

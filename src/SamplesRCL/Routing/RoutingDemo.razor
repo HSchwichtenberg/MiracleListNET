@@ -1,9 +1,7 @@
 ﻿@*Multi-Routing*@
 @page "/Samples/Routing"
 @*Parameter sind nicht case-senstive*@
-@page "/Samples/Routing/{a}"
-@page "/Samples/Routing/{a}/{b:int}"
-@page "/Samples/Routing/{a}/{b:int}/{c:datetime}"
+@page "/Samples/Routing/{a}/{b:int?}/{c:datetime?}"
 @page "/Samples/RoutingGUID/{g:guid}"
 @page "/RoutingDemo"
 
@@ -13,8 +11,8 @@
 
 <style>
  a.active {
-     font-weight: bold;
-     background-color: antiquewhite;
+  font-weight: bold;
+  background-color: antiquewhite;
  }
 </style>
 
@@ -134,7 +132,6 @@
  [Inject]
  public NavigationManager navigationManager { get; set; } = null;
 
-
  [Parameter]
  public string a { get; set; }
  [Parameter]
@@ -147,9 +144,18 @@
  public bool AllowNavigation { get; set; } = true;
  public string Ausgabe { get; set; }
 
+ protected override void OnParametersSet()
+ {
+  // Standardwerte setzen
+  c = c ?? DateTime.Now;
+  this.StateHasChanged();
+ }
 
  protected override void OnInitialized()
  {
+  c = c ?? DateTime.Now;
+
+
   navigationManager.LocationChanged += LocationChanged;
   //var registration = navigationManager.RegisterLocationChangingHandler(async context =>
   //{
@@ -163,6 +169,8 @@
   //  }
   // }
   //});
+
+
 
   PrintURLDetails("OnInitialized");
  }

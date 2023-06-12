@@ -117,9 +117,7 @@ public class Program
   #endregion
 
   #region DI für sonstige Hilfsbibliotheken
-  services.AddScoped<BlazorUtil>();
-  // braucht BlazorUtil
-  services.AddScoped<IHttpContextAccessor, HttpContextAccessorDummy>();
+  services.AddBlazorUtil();
   #endregion
 
   #region Zusätzliche Komponenten, die MLBlazorRCL rendern soll

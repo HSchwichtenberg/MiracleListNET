@@ -58,8 +58,7 @@ public static class MauiProgram
   services.AddBlazoredToast();
   services.AddBlazoredLocalStorage();
   services.AddBlazorContextMenu();
-  services.AddScoped<BlazorUtil>();
-  services.AddScoped<IHttpContextAccessor, HttpContextAccessorDummy>();   // braucht BlazorUtil
+  services.AddBlazorUtil();
   #endregion
 
   #region DI für Beispiele außerhalb der MiracleList

@@ -25,8 +25,6 @@ namespace BL
 
   public static void Run(int userCount = 100, int catPerUserCount = 15, int tasksPerUserCount = 100)
   {
-
-
    for (int i = 0; i < userCount; i++)
    {
     string Firstname = PilotFirstnames[rnd.Next(0, PilotFirstnames.Length - 1)];
@@ -44,7 +42,6 @@ namespace BL
      for (int j = 0; j < rnd.Next(tasksPerUserCount); j++)
      {
       var t = new TaskManager(u.UserID).CreateTask(c.CategoryID, "Test", "", DateTime.Now, BO.Importance.B, 1);
-
      }
     }
    }

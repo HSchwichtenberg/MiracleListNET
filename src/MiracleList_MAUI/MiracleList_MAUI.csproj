@@ -45,7 +45,7 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.JSON" Version="7.0.*" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.*" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.*" />
-		<PackageReference Include="ITV.AppUtil.NETStandard" Version="9.5.0" />
+		<PackageReference Include="ITV.AppUtil.NETStandard" Version="9.6.0" />
 		<PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
 	</ItemGroup>
 	

@@ -23,6 +23,20 @@ namespace MiracleList_MAUI
             ShowLogin();
         }
 
+        protected override Window CreateWindow(IActivationState activationState)
+        {
+            var window = base.CreateWindow(activationState);
+
+            // Fensterposition setzen
+            window.X = 300;
+            window.Y = 100;
+
+            // Größe des Fensters definieren
+            window.Width = 400;
+            window.Height = 800;
+            return window;
+        }
+
         private void ShowLogin()
         {
             MainPage = new NavigationPage(services.GetService<LoginPage>());

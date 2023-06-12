@@ -4,9 +4,19 @@
              xmlns:converters="clr-namespace:MiracleList_MAUI.Converters"
              xmlns:vm="clr-namespace:MiracleList_MAUI.ViewModels"
              xmlns:bo="clr-namespace:BO;assembly=BO"
-                  x:DataType="vm:TasksPageViewModel"
+             x:DataType="vm:TasksPageViewModel"
+             x:Name="page"
              x:Class="MiracleList_MAUI.Views.TasksPage"
              Title="{Binding Category.Name}">
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="Datei">
+            <MenuFlyoutItem Text="Export"/>
+            <MenuFlyoutItem Text="Beenden"/>
+        </MenuBarItem>
+        <MenuBarItem Text="Hilfe">
+            <MenuFlyoutItem Text="Info"/>
+        </MenuBarItem>
+    </ContentPage.MenuBarItems>
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:TaskStatusConverter x:Key="TaskStatusConverter"/>
@@ -29,6 +39,13 @@
                 <DataTemplate x:DataType="bo:Task">
                     <Border Style="{StaticResource CollectionItemBorder}">
                         <Grid ColumnDefinitions="auto,*,auto,auto" RowDefinitions="auto,auto" ColumnSpacing="6" RowSpacing="6">
+                            <FlyoutBase.ContextFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem Text="Aufgabe öffnen" 
+                                                    Command="{Binding Source={x:Reference page}, Path=BindingContext.NavigateToTaskCommand}"
+                                                      CommandParameter="{Binding .}"/>
+                                </MenuFlyout>
+                            </FlyoutBase.ContextFlyout>
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksPageViewModel}}, Path=NavigateToTaskCommand}"
                                                       CommandParameter="{Binding .}"/>
@@ -37,7 +54,8 @@
                             <Border Grid.Column="2" Style="{StaticResource BadgeBorder}"  >
                                 <Label Text="{Binding Importance}" Style="{StaticResource BadgeLabel}"/>
                             </Border>
-                            <Label Grid.Column="3" Text="X">
+                            <Label Grid.Column="3" Text="X"
+                                   ToolTipProperties.Text="{Binding Title, StringFormat='Aufgabe: {0} löschen'}">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksPageViewModel}}, Path=DeleteTaskCommand}"
                                                       CommandParameter="{Binding .}"/>

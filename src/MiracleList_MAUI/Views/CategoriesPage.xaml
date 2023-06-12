@@ -21,7 +21,8 @@
                                                       CommandParameter="{Binding .}"/>
                             </Grid.GestureRecognizers>
                             <Label Text="{Binding Name}"/>
-                            <Label Grid.Column="1" Text="X">
+                            <Label Grid.Column="1" Text="X" 
+                                   ToolTipProperties.Text="{Binding Name, StringFormat='Kategorie: {0} löschen'}">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoriesPageViewModel}}, Path=DeleteCategoryCommand}"
                                                       CommandParameter="{Binding .}"/>

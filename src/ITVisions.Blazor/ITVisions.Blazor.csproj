@@ -37,8 +37,8 @@
 
  <!--NuGets-->
  <ItemGroup>
-  <PackageReference Include="Blazored.LocalStorage" Version="4.3.*" />
-  <PackageReference Include="Blazored.SessionStorage" Version="2.3.*" />
+  <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
+  <PackageReference Include="Blazored.SessionStorage" Version="2.4.0" />
   <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.7.0" />
   <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.*" />
   <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.*" />

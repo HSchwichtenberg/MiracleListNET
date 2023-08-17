@@ -328,8 +328,8 @@ public class MiracleListApiV2Controller : Controller
    var d = new DirectoryInfo(folderName).GetOrCreateDir();
 
    // Cleanup Dateien älter als 10 Tage, damit der DEMO-Server nicht zugemüllt wird -> Dies ggf. ändern für eigene Zwecke!
-   var count = d.RemoveOldFiles(10);
-   d = new DirectoryInfo(folderName).GetOrCreateDir(); // Sicherstellen, dass es das Wurzel-Dir noch gibt!
+   var count = d.DeleteOldFiles(10);
+   new DirectoryInfo(folderName).CreateIfNotExists(); // Sicherstellen, dass es das Wurzel-Dir noch gibt!
 
    var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
    if (file.Length > 0)

@@ -31,7 +31,7 @@
  </ItemGroup>
 
  <ItemGroup>
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.6.0" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.8.0" />
   <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
   <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="7.0.*" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.*" />

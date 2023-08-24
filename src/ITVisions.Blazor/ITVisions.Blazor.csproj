@@ -29,7 +29,7 @@
   <!--<PackageIcon>ITVisions.jpg</PackageIcon>-->
   <Description>
    Hilfsklassen für Blazor WebAssembly, Blazor Server und Blazor Desktop inkl. JavaScript-Datei
-   Startup.cs:  services.AddScoped&lt;BlazorUtil&gt;();
+   Startup.cs:  services.AddBlazorUtil(); bzw. AddBlazorUtilForBlazorServer();
    index.html bzw. _host.cshtml: &lt;script src="/_content/ITVisions.Blazor/BlazorUtil.js"&gt;&lt;/script&gt;
   </Description>
   <PackageOutputPath>H:\DB\NugetHS</PackageOutputPath>

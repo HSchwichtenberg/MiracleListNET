@@ -1,0 +1,66 @@
+﻿<button disabled="@ShowAnimation" data-toggle="tooltip" data-placement="bottom" @attributes="AdditionalAttributes" @onclick="Run">
+ @if (ShowAnimation)
+ {
+  <text>
+   <img src="loadingBW.gif" width="20" style="margin-right:8px;" />
+  </text>
+ }
+ @ChildContent
+</button>
+
+@code {
+
+ [Parameter] public RenderFragment ChildContent { get; set; }
+ [Parameter] public byte AnimationSeconds { get; set; } = 1;
+
+ [Parameter]
+ public EventCallback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> onClick { get; set; }
+
+ [Parameter(CaptureUnmatchedValues = true)]
+ public IDictionary<string, object> AdditionalAttributes { get; set; }
+
+ bool ShowAnimation = false;
+ bool Working = false;
+ bool MinDone = false;
+ System.Timers.Timer t;
+
+ public async Task Run()
+ {
+  ShowAnimation = true;
+  MinDone = false;
+  Working = true;
+  await this.InvokeAsync(this.StateHasChanged);
+  await Task.Delay(1);
+
+  // Animation soll min. x Sekunden laufen
+  if (AnimationSeconds > 0)
+  {
+   t = new System.Timers.Timer(new TimeSpan(0, 0, AnimationSeconds));
+   t.AutoReset = false;
+
+   t.Elapsed += (s, e) =>
+   {
+    MinDone = true;
+    if (!Working)
+    {
+     ShowAnimation = false;
+     this.InvokeAsync(this.StateHasChanged);
+    }
+    t.Close();
+   };
+   t.Start();
+  }
+
+  await this.InvokeAsync(this.StateHasChanged);
+  await onClick.InvokeAsync();
+  Working = false;
+
+  if (MinDone)
+  {
+   ShowAnimation = false;
+   await this.InvokeAsync(this.StateHasChanged);
+  }
+ }
+
+
+}

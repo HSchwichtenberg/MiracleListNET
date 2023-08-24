@@ -2,7 +2,7 @@
  @if (ShowAnimation)
  {
   <text>
-   <img src="loadingBW.gif" width="20" style="margin-right:8px;" />
+   <img src="/_content/ITVisions.Blazor/img/ITVButtonProgress.gif" width="20" style="margin-right:8px;" />
   </text>
  }
  @ChildContent
@@ -15,6 +15,8 @@
 
  [Parameter]
  public EventCallback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> onClick { get; set; }
+ [Parameter]
+ public EventCallback<Exception> onError { get; set; }
 
  [Parameter(CaptureUnmatchedValues = true)]
  public IDictionary<string, object> AdditionalAttributes { get; set; }
@@ -26,15 +28,17 @@
 
  public async Task Run()
  {
-  ShowAnimation = true;
+  ShowAnimation = false;
   MinDone = false;
   Working = true;
+
   await this.InvokeAsync(this.StateHasChanged);
   await Task.Delay(1);
 
   // Animation soll min. x Sekunden laufen
   if (AnimationSeconds > 0)
   {
+   ShowAnimation = true;
    t = new System.Timers.Timer(new TimeSpan(0, 0, AnimationSeconds));
    t.AutoReset = false;
 
@@ -52,7 +56,22 @@
   }
 
   await this.InvokeAsync(this.StateHasChanged);
-  await onClick.InvokeAsync();
+
+  try
+  {
+   await onClick.InvokeAsync();
+  }
+  catch (Exception ex)
+  {
+   if (onError.HasDelegate)
+   {
+    await onError.InvokeAsync(ex);
+   }
+   else
+   {
+    util.Error(ex.ToString()); await util.Alert(ex.Message);
+   }
+  }
   Working = false;
 
   if (MinDone)

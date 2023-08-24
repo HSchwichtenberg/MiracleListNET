@@ -14,10 +14,10 @@
 
  <!--Versionen-->
  <PropertyGroup>
-  <Version>7.13.1.1</Version>
-  <AssemblyVersion>7.13.1.1</AssemblyVersion>
-  <FileVersion>7.13.1.1</FileVersion>
-  <InformationalVersion>7.13.1.1-06/02/2023</InformationalVersion>
+  <Version>7.16.0.0</Version>
+  <AssemblyVersion>7.16.0.0</AssemblyVersion>
+  <FileVersion>7.16.0.0</FileVersion>
+  <InformationalVersion>7.16.0.0-08/24/2023 10:30:52</InformationalVersion>
  </PropertyGroup>
 
  <!--Autor-->

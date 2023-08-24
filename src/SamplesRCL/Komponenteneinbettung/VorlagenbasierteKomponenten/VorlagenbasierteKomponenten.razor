@@ -1,5 +1,6 @@
 ﻿@page "/Samples/VorlagenbasierteKomponenten"
 @using ITVisions.Blazor
+@using ITVisions.Blazor.Controls
 @inject BlazorUtil Util
 <h3>Komponentenvorlagen</h3>
 
@@ -12,8 +13,38 @@
  public int ErstesMVPJahr { get; set; } = 2004;
 }
 
+@code
+{
+ int counter = 0;
+ async Task Aktion()
+ {
+  counter++;
+ }
+
+ async Task AktionMitFehler()
+ {
+  throw new ApplicationException("Etwas ist falsch gelaufen!");
+ }
+}
+
+<ITVButton onClick="Aktion" AnimationSeconds="1" class="btn btn-success">
+ <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich! (mit Animation)
+</ITVButton>
+
+<ITVButton onClick="Aktion" AnimationSeconds="0" class="btn btn-warning">
+ <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich! (ohne Animation)
+</ITVButton>
+<br />
+<ITVButton onClick="AktionMitFehler" AnimationSeconds="1" class="btn btn-danger">
+ <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich! (mit Animation und Fehler ohne Fehlerbehandlung)
+</ITVButton>
+
+<ITVButton onClick="AktionMitFehler" onError='async (ex)=>await Util.Alert("FEHLER: " + ex.Message)' AnimationSeconds="1" class="btn btn-danger">
+ <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich! (mit Animation und Fehler mit Fehlerbehandlung)
+</ITVButton>
+
 <Expander>
- <u>@Name</u> ist seit <u>@(DateTime.Now.Year-ErstesMVPJahr+1) Jahren</u> als Microsoft Most Valuable Professional (MVP) ausgezeichnet.
+ <u>@Name</u> ist seit <u>@(DateTime.Now.Year - ErstesMVPJahr + 1) Jahren</u> als Microsoft Most Valuable Professional (MVP) ausgezeichnet.
 </Expander>
 
 <h1>FlexExpander</h1>
@@ -27,10 +58,9 @@
  </HeadlineExpanded>
  <Content>
   <u>@Name</u> ist seit
-  <u>@(DateTime.Now.Year-ErstesMVPJahr+1) Jahren</u> als Microsoft Most Valuable Professional (MVP) ausgezeichnet.
+  <u>@(DateTime.Now.Year - ErstesMVPJahr + 1) Jahren</u> als Microsoft Most Valuable Professional (MVP) ausgezeichnet.
  </Content>
 </FlexExpander>
-
 
 
 @code

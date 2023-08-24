@@ -3,10 +3,10 @@
  <PropertyGroup>
   <TargetFramework>net7.0</TargetFramework>
   <EnableDefaultGlobalUsings>false</EnableDefaultGlobalUsings>
-  <Version>7.12.5.0</Version>
-  <AssemblyVersion>7.12.5.0</AssemblyVersion>
-  <FileVersion>7.12.5.0</FileVersion>
-  <InformationalVersion>7.12.5.0-05/17/2023 11:49:30</InformationalVersion>
+  <Version>7.16.0.0</Version>
+  <AssemblyVersion>7.16.0.0</AssemblyVersion>
+  <FileVersion>7.16.0.0</FileVersion>
+  <InformationalVersion>7.16.0.0-08/24/2023 10:30:52</InformationalVersion>
   <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
   <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
  </PropertyGroup>

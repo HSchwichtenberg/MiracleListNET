@@ -9,17 +9,33 @@
 </button>
 
 @code {
-
+ /// <summary>
+ /// Inhalt der Schaltfläche
+ /// </summary>
  [Parameter] public RenderFragment ChildContent { get; set; }
+
+ /// <summary>
+ ///  Anzahl der Mindestsekunden für die Deaktivierung und Animation
+ /// </summary>
  [Parameter] public byte AnimationSeconds { get; set; } = 1;
 
- [Parameter]
- public EventCallback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> onClick { get; set; }
- [Parameter]
- public EventCallback<Exception> onError { get; set; }
-
+ /// <summary>
+ /// Weitergabe sonstiger Attribute, z.B. class und style
+ /// </summary>
  [Parameter(CaptureUnmatchedValues = true)]
  public IDictionary<string, object> AdditionalAttributes { get; set; }
+
+ /// <summary>
+ /// Aktion bei Klick
+ /// </summary>
+ [Parameter]
+ public EventCallback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> onClick { get; set; }
+
+ /// <summary>
+ /// Aktion bei Fehler
+ /// </summary>
+ [Parameter]
+ public EventCallback<Exception> onError { get; set; }
 
  bool ShowAnimation = false;
  bool Working = false;
@@ -65,11 +81,14 @@
   {
    if (onError.HasDelegate)
    {
+    await this.InvokeAsync(this.StateHasChanged);
     await onError.InvokeAsync(ex);
    }
    else
    {
-    util.Error(ex.ToString()); await util.Alert(ex.Message);
+    await this.InvokeAsync(this.StateHasChanged);
+    util.Error(ex.ToString()); 
+    await util.Alert(ex.GetFullMessage());
    }
   }
   Working = false;
@@ -80,6 +99,5 @@
    await this.InvokeAsync(this.StateHasChanged);
   }
  }
-
 
 }

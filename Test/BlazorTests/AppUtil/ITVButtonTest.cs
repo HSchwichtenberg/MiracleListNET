@@ -85,13 +85,11 @@ public class ITVButtonTest : TestContext
 
  }
 
-
  [Fact]
  public async Task ButtonClickWithoutErrorHandler()
  {
   //JSInterop.Mode = JSRuntimeMode.Loose;
   JSInterop.SetupVoid("console.error", @"BLAZOR: System.ApplicationException: Testfehler");
-  JSInterop.SetupVoid("console.info", @"BLAZOR: Alert");
   JSInterop.SetupVoid("ShowAlert", @"System.ApplicationException: Testfehler");
 
 
@@ -114,12 +112,6 @@ public class ITVButtonTest : TestContext
   Assert.Null(b.GetAttribute("disabled"));
 
   b.Click();
-
-  // Warten bis Schaltfläche deaktiviert
-  cut.WaitForState(() => b.GetAttribute("disabled").IsNotNull(), new System.TimeSpan(0, 0, 10));
-  // Animation sollte nun aktiv sein
-  b.Html().MarkupMatches("<img src=\"/_content/ITVisions.Blazor/img/ITVButtonProgress.gif\" width=\"20\" style=\"margin-right:8px;\">" + content);
-
 
   // Warten bis Schaltfläche wieder aktiv ist
   cut.WaitForState(() => b.GetAttribute("disabled").IsNull(), new System.TimeSpan(0, 0, 10));

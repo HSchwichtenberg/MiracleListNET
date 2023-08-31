@@ -27,8 +27,6 @@ namespace BlazorTests
    }
   }
 
-
-
   List<int> ValueList = new List<int>();
   [Fact]
   public void ParameterTest()

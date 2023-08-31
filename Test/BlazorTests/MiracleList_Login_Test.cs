@@ -45,10 +45,9 @@ namespace MiracleListTests
   private IRenderedComponent<MLBlazorRCL.Login.Login> ArrangeAndAct(string name, string kennwort)
   {
 
-   ctx.JSInterop.Mode = JSRuntimeMode.Loose; // https://bunit.dev/docs/test-doubles/emulating-ijsruntime.html
+   ctx.JSInterop.Mode = JSRuntimeMode.Loose; // Loose mode configures the implementation to just return the default value when it receives an invocation that has not been explicitly set up https://bunit.dev/docs/test-doubles/emulating-ijsruntime.html
    ctx.Services.AddSingleton<IWebHostEnvironment>(new MockWebHostEnvironment());
    ctx.Services.AddSingleton<NavigationManager>(new MockNavigationManager(UriBefore));
-   //jsMock = Services.AddMockJSRuntime(JSRuntimeMockMode.Loose); // loose is default
    ctx.Services.AddSingleton<BlazorUtil>(new BlazorUtil(this.JSInterop.JSRuntime, new MockNavigationManager(UriBefore), null));
    ctx.Services.AddScoped<IMLAuthenticationStateProvider, MockAuthenticationStateProvider>();
    ctx.Services.AddScoped<AuthenticationStateProvider, MockAuthenticationStateProvider>();
@@ -61,7 +60,6 @@ namespace MiracleListTests
    IMiracleListProxy mockProxy = Mock.Create<IMiracleListProxy>();
    ctx.Services.AddSingleton(mockProxy);
    ctx.Services.AddScoped<IAppState, AppState>();
-   JSInterop.Mode = JSRuntimeMode.Loose; // Loose mode configures the implementation to just return the default value when it receives an invocation that has not been explicitly set up
 
    //var state = Mock.Create<Task<AuthenticationState>>();
 

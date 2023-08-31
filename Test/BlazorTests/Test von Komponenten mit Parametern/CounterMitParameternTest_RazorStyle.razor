@@ -1,0 +1,58 @@
+@inherits TestContext
+These tests are written entirely in razor and C# syntax.
+
+Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating-basic-tests-in-razor-files
+
+@code {
+ [Fact]
+ public void CounterStartsAtZero()
+ {
+  // Arrange
+  var cut = Render(@<CounterMitParametern/>);
+
+  // Assert that content of the paragraph shows counter at zero
+  cut.Find("p").MarkupMatches(@<p>Current count: 0</p>);
+ }
+
+ [Fact]
+ public void ClickingButtonIncrementsCounter()
+ {
+  // Arrange
+  var cut = Render(@<CounterMitParametern/>);
+
+  // Act - click button to increment counter
+  cut.Find("button").Click();
+
+  // Assert that the counter was incremented
+  cut.Find("p").MarkupMatches(@<p>Current count: 1</p>);
+ }
+
+ [Fact]
+ public void ClickingButtonIncrement2Counter()
+ {
+  // Arrange
+  int increment = 2;
+  var cut = Render(@<CounterMitParametern CurrentCount="38" Increment="increment" />);
+
+  // Act - click button to increment counter
+  cut.Find("button").Click();
+
+  // Assert that the counter was incremented
+  cut.Find("p").MarkupMatches(@<p>Current count: 40</p>);
+
+  // Act - click button to increment counter
+  cut.Find("button").Click();
+
+  // Assert that the counter was incremented
+  var p = cut.Find("p");
+
+  // So liefert der Vergleich wahr:
+  Assert.Equal("<p>\r\n  Current count: 42</p>", p.ToMarkup().Trim());
+  p.MarkupMatches(@<p>Current count: 42</p>);
+  p.MarkupMatches(@<p>Current count:  42</p>);
+
+  // so nicht gleich:
+  Assert.NotEqual("<p>Current count: 42</p>", p.ToMarkup());
+  Assert.Throws<HtmlEqualException>(() => cut.Find("p").MarkupMatches(@<p>Current count:42</p>));
+ }
+}

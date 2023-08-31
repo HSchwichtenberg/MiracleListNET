@@ -81,12 +81,14 @@
   }
   catch (Exception ex)
   {
-   if (onError.HasDelegate)
+   ShowAnimation = false;
+   await this.InvokeAsync(this.StateHasChanged);
+
+   if (onError.HasDelegate) // Host hat Fehlerbehandlung definiert
    {
-    await this.InvokeAsync(this.StateHasChanged);
     await onError.InvokeAsync(ex);
    }
-   else
+   else // Host hat keine Fehlerbehandlung definiert
    {
     ShowAnimation = false;
     await this.InvokeAsync(this.StateHasChanged);

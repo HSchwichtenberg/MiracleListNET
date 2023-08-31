@@ -1,4 +1,6 @@
-﻿<button disabled="@ShowAnimation" data-toggle="tooltip" data-placement="bottom" @attributes="AdditionalAttributes" @onclick="Run">
+﻿@inject BlazorUtil util
+
+<button disabled="@ShowAnimation" data-toggle="tooltip" data-placement="bottom" @attributes="AdditionalAttributes" @onclick="Run">
  @if (ShowAnimation)
  {
   <text>
@@ -86,9 +88,11 @@
    }
    else
    {
+    ShowAnimation = false;
     await this.InvokeAsync(this.StateHasChanged);
     util.Error(ex.ToString()); 
     await util.Alert(ex.GetFullMessage());
+
    }
   }
   Working = false;
@@ -96,8 +100,8 @@
   if (MinDone)
   {
    ShowAnimation = false;
-   await this.InvokeAsync(this.StateHasChanged);
   }
+  await this.InvokeAsync(this.StateHasChanged);
  }
 
 }

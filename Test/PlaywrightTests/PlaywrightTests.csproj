@@ -17,4 +17,8 @@
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
   </ItemGroup>
 
+ <PropertyGroup>
+  <RunSettingsFilePath>$(MSBuildProjectDirectory)\.runsettings</RunSettingsFilePath>
+ </PropertyGroup>
+
 </Project>

@@ -5,14 +5,9 @@
   <BrowserName>chromium</BrowserName>
   <LaunchOptions>
    <Headless>false</Headless>
-   <!--<Channel>msedge</Channel>-->
-   <SlowMo>500</SlowMo>
+   <Channel>msedge</Channel>
+   <!--<SlowMo>1000</SlowMo>-->
   </LaunchOptions>
  </Playwright>
-
- <!--BrowserName lets you pick between the chromium, firefox, or webkit browser.
- Headless is set to true by default, but you can set it to true so that you can see the browser UI as the test is run.
- Channel configures which version of the browser to run. When you pick chromium as the browser name, you can pick chrome or msedge to use Google Chrome or Microsoft Edge which are both browser built on top of Chromium. You can also choose to test against the beta version and dev version by suffixing the channel with -beta or -dev, for example msedge-beta. You can learn more about the supported browsers and channels at the Playwright docs.
- SlowMo lets you slow down automation steps by the specified amount of miliseconds.-->
  
 </RunSettings>

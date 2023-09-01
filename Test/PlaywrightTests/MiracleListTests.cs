@@ -84,6 +84,13 @@ public class MiracleListTests : PageTest
  {
   string aufgabenTitel = "Testaufgabe " + Guid.NewGuid();
 
+  await Context.Tracing.StartAsync(new()
+  {
+   Screenshots = true,
+   Snapshots = true,
+   Sources = true
+  });
+
   await Login();
   await Page.ScreenshotAsync();
 
@@ -126,6 +133,12 @@ public class MiracleListTests : PageTest
   await Expect(Page.Locator(".list-group-item").Filter(new() { Has = Page.GetByText(aufgabenTitel) }).Locator(".badge")).ToHaveTextAsync("A");
 
   await Page.ScreenshotAsync();
+
+  // Stop tracing and export it into a zip archive.
+  await Context.Tracing.StopAsync(new()
+  {
+   Path = "trace.zip"
+  });
  }
 }
 

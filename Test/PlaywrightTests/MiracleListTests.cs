@@ -24,15 +24,26 @@ public class MiracleListTests : PageTest
   //var context = await browser.NewContextAsync();
 
 
-  await Page.GotoAsync("https://localhost:44387/"); //  https://miraclelist-bs.azurewebsites.net");
+  await Page.GotoAsync("https://miraclelist-bs.azurewebsites.net"); //  https://miraclelist-bs.azurewebsites.net"); https://localhost:44387/
 
   // Expect a title "to contain" a substring.
   await Expect(Page).ToHaveTitleAsync(new Regex("MiracleList_BS"));
 
   // Login-Formular ausfüllen
-  await Page.GetByPlaceholder("Ihre E-Mail-Adresse").FillAsync(anmeldename);
-  await Page.GetByPlaceholder("Ihr Kennwort").FillAsync(kennwort);
-  await Page.GetByRole(AriaRole.Button, new() { Name = "Anmelden" }).ClickAsync();
+  //await Page.GetByPlaceholder("Ihre E-Mail-Adresse").FillAsync(anmeldename);
+  //await Page.GetByPlaceholder("Ihr Kennwort").FillAsync(kennwort);
+  //await Page.GetByRole(AriaRole.Button, new() { Name = "Anmelden" }).ClickAsync();
+  // oder
+  await Page.FillAsync("#username", anmeldename);
+  await Page.FillAsync("#password", kennwort);
+  await Page.ClickAsync("#login");
+
+  // Nun sollten wir auf der Hauptseite sein, der Titel sollte aber gleich sein
+  await Expect(Page).ToHaveURLAsync(new Regex("main"));
+  await Expect(Page).ToHaveTitleAsync(new Regex("MiracleList_BS"));
+
+  // Der Anmeldename sollte dargestellt sein
+  await Expect(Page.Locator("#LoggedInUser").Nth(0)).ToContainTextAsync(anmeldename);
 
  }
 

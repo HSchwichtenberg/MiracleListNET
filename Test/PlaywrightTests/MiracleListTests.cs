@@ -2,7 +2,6 @@
 using Microsoft.Playwright;
 using Microsoft.Playwright.MSTest;
 
-
 namespace PlaywrightTests;
 
 [TestClass]
@@ -16,13 +15,11 @@ public class MiracleListTests : PageTest
   string anmeldename = "testuser " + DateTime.Now.ToString();
   string kennwort = "geheim";
 
-
   //await using var browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
   //{
   // Headless = true,
   //});
   //var context = await browser.NewContextAsync();
-
 
   await Page.GotoAsync("https://miraclelist-bs.azurewebsites.net"); //  https://miraclelist-bs.azurewebsites.net"); https://localhost:44387/
 
@@ -152,5 +149,3 @@ public class MiracleListTests : PageTest
   });
  }
 }
-
-

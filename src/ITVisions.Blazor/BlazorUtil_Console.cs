@@ -41,8 +41,6 @@ namespace ITVisions.Blazor
    Log(s);
   }
 
-
-
   public async void Log(object o)
   {
    Log(ObjectToString(o));

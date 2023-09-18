@@ -38,7 +38,7 @@ public class MiracleList_MainView_Test : TestContext
   #region Blazor-Dienste
   this.JSInterop.Mode = JSRuntimeMode.Loose; // https://bunit.dev/docs/test-doubles/emulating-ijsruntime.html
   this.Services.AddSingleton<IWebHostEnvironment>(new MockWebHostEnvironment());
-  this.Services.AddSingleton<NavigationManager>(new MockNavigationManager());
+  //this.Services.AddSingleton<NavigationManager>(new MockNavigationManager());
   this.Services.AddSingleton<BlazorUtil>(new BlazorUtil(this.JSInterop.JSRuntime, new MockNavigationManager(), null));
   this.Services.AddScoped<AuthenticationStateProvider, MockAuthenticationStateProvider>();
   IConfiguration c = Mock.Create<IConfiguration>();
@@ -83,14 +83,15 @@ public class MiracleList_MainView_Test : TestContext
   mockProxy.Arrange(x => x.CategorySetAsync(null)).ReturnsAsync(categorySet).MustBeCalled();
   mockProxy.Arrange(x => x.TaskSetAsync(1, null)).ReturnsAsync(taskSet).MustBeCalled();
   mockProxy.Arrange(x => x.TaskSetAsync(2, null)).ReturnsAsync(taskSet).MustBeCalled();
-  mockProxy.Arrange(x => x.TaskSetAsync(Arg.IsInRange(3, 13, RangeKind.Inclusive), null)).DoInstead((int categoryID) => 
+  mockProxy.Arrange(x => x.TaskSetAsync(Arg.IsInRange(3, 13, RangeKind.Inclusive), null)).DoInstead((int categoryID) =>
   {
    var c = categorySet.FirstOrDefault(x => x.CategoryID == categoryID);
    if (c.TaskSet.IsNull()) c.TaskSet = new List<BO.Task>();
   }
   ).ReturnsAsync((int categoryID) => categorySet.FirstOrDefault(x => x.CategoryID == categoryID).TaskSet);
-  mockProxy.Arrange(x => x.CreateCategoryAsync("", null)).IgnoreArguments().DoInstead((string name) => { 
-   categorySet.Add(new Category() { CategoryID = categorySet.Max(x => x.CategoryID) + 1, Name = name }); 
+  mockProxy.Arrange(x => x.CreateCategoryAsync("", null)).IgnoreArguments().DoInstead((string name) =>
+  {
+   categorySet.Add(new Category() { CategoryID = categorySet.Max(x => x.CategoryID) + 1, Name = name });
   });
   mockProxy.Arrange(x => x.CreateTaskAsync(Arg.IsAny<BO.Task>(), null)).DoInstead((BO.Task t) =>
   {
@@ -117,6 +118,8 @@ public class MiracleList_MainView_Test : TestContext
   #region 10x Neue Kategorie ergänzen
   for (int i = 0; i < 10; i++)
   {
+   Console.WriteLine("Kategorie anlegen: " + i);
+
    Assert.Equal("input", col1List.ChildNodes.ElementAt(categorySet.Count).NodeName, true);
    var inputNewCategoryName = cut.Find("input[name=newCategoryName]");
    inputNewCategoryName.Change("Neue Kategorie");
@@ -125,8 +128,13 @@ public class MiracleList_MainView_Test : TestContext
    cut.WaitForState(() => cut.Find("#categoryCount").Text() == categorySet.Count.ToString());
 
    // Neue Kategorie als aktuelle wählen
-   var liElement = cut.FindAll("#col1 ol li").ElementAt(i + 2);
-   liElement.Click();
+
+   // Das kann Probleme machen:  "Bunit.Rendering.UnknownEventHandlerIdException : There is no event handler with ID '44' associated with the 'onclick' event in the current render tree."
+   //var liElement = cut.FindAll("#col1 ol li").ElementAt(i + 2);
+   //liElement.Click();
+
+   // Lösung: "This ensures that there are no changes to the DOM between Find method and the Click method calls."
+   cut.InvokeAsync(() => cut.FindAll("#col1 ol li").ElementAt(i + 2).Click());
 
    // Da gibt es erstmal keine Aufgaben
    cut.WaitForState(() => cut.Find("#taskCount").Text() == "0");

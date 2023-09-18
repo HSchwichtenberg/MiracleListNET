@@ -1,13 +1,10 @@
-
-
 namespace BlazorTests.Test_von_Komponenten_mit_Parametern;
-
 
 /// <summary>
 /// These tests are written entirely in C#.
 /// Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating-basic-tests-in-cs-files
 /// </summary>
-public class ITVButtonTest : TestContext
+public class CounterMitParameternTest_CodeOnly : TestContext
 {
  [Fact]
  public void CounterStartsAtZero()
@@ -23,7 +20,7 @@ public class ITVButtonTest : TestContext
  public void ClickingButtonIncrementsCounter()
  {
   // Arrange
-  var cut = RenderComponent<CounterMitParametern>(p=>p.Add(x=>x.Increment,2).Add(x=>x.CurrentCount,40));
+  var cut = RenderComponent<CounterMitParametern>(p => p.Add(x => x.Increment, 2).Add(x => x.CurrentCount, 40));
 
   // Act - click button to increment counter
   cut.Find("button").Click();

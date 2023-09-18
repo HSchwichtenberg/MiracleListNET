@@ -1,18 +1,18 @@
 using System;
-using Xunit;
-using Bunit;
-using Samples.Komponentendateien;
-using Microsoft.Extensions.DependencyInjection;
-using ITVisions.Blazor;
-using Microsoft.JSInterop;
-using Microsoft.AspNetCore.Components;
 using System.Diagnostics;
-using System.Linq;
 using System.Globalization;
+using System.Linq;
 using BlazorTests;
 using BlazorTests.Mocks;
+using Bunit;
+using ITVisions.Blazor;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.JSInterop;
+using Samples.Komponentendateien;
+using Xunit;
 
-namespace BlazorTests
+namespace BlazorTests.HelloWorld
 {
 
  public class CodeBehindPartielleKlasse_Test : TestContext
@@ -68,13 +68,10 @@ namespace BlazorTests
    cut.Find("#x").MarkupMatches(@"<input id=""x"" type=""number"" value=""5.91"">");
    Assert.Equal("5.91", cut.Find("#x").GetAttribute("value"));
 
-
    // Wird komplettes DOM ausgeben im Fehler: cut.MarkupMatches("2");
    // Sieht man beim Debugging im "Output"-Fenster:
    Console.WriteLine(cut.Markup);
    Trace.WriteLine(cut.Markup);
-
-
   }
 
   [Fact]
@@ -108,8 +105,6 @@ namespace BlazorTests
    cut.Find("#x").MarkupMatches(@$"<input id=""x"" type=""number"" value=""{erwartetDOMFormat}"">");
    // c) Prüfen eines HTML-Attributes
    Assert.Equal(erwartetDOMFormat, cut.Find("#x").GetAttribute("value"));
-
-
   }
  }
 }

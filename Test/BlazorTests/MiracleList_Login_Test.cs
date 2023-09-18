@@ -8,6 +8,7 @@ using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,8 +29,8 @@ namespace MiracleListTests
  {
 
   //myserver ist beliebiges Wort. Es wird kein HTTP-Request dahin gesendet!
-  string UriBefore = "http://myserver/login";
-  string UriAfter = "http://myserver/main";
+  string UriBefore = "http://localhost/";
+  string UriAfter = "http://localhost/main";
 
   //public MockJSRuntimeInvokeHandler jsMock { get; set; }
 
@@ -47,8 +48,11 @@ namespace MiracleListTests
 
    ctx.JSInterop.Mode = JSRuntimeMode.Loose; // Loose mode configures the implementation to just return the default value when it receives an invocation that has not been explicitly set up https://bunit.dev/docs/test-doubles/emulating-ijsruntime.html
    ctx.Services.AddSingleton<IWebHostEnvironment>(new MockWebHostEnvironment());
-   ctx.Services.AddSingleton<NavigationManager>(new MockNavigationManager(UriBefore));
-   ctx.Services.AddSingleton<BlazorUtil>(new BlazorUtil(this.JSInterop.JSRuntime, new MockNavigationManager(UriBefore), null));
+   //ctx.Services.AddSingleton<NavigationManager>(new MockNavigationManager(UriBefore));
+
+   ctx.Services.AddSingleton<IHttpContextAccessor>(Mock.Create<IHttpContextAccessor>());
+
+   ctx.Services.AddSingleton<BlazorUtil>();
    ctx.Services.AddScoped<IMLAuthenticationStateProvider, MockAuthenticationStateProvider>();
    ctx.Services.AddScoped<AuthenticationStateProvider, MockAuthenticationStateProvider>();
    IConfiguration c = Mock.Create<IConfiguration>();
@@ -62,6 +66,8 @@ namespace MiracleListTests
    ctx.Services.AddScoped<IAppState, AppState>();
 
    //var state = Mock.Create<Task<AuthenticationState>>();
+
+   var navMan = Services.GetRequiredService<FakeNavigationManager>();
 
    var cut = ctx.RenderComponent<MLBlazorRCL.Login.Login>(); // parameters => parameters.Add(p => p.authenticationStateTask, state));
 
@@ -101,7 +107,7 @@ namespace MiracleListTests
    IRenderedComponent<MLBlazorRCL.Login.Login> cut = ArrangeAndAct(name, kennwort);
 
    // Prüfung 1: Konsolenausgabe
-   Assert.Contains(this.JSInterop.Invocations["console.info"], x => x.Arguments[0].ToString() == "BLAZOR: Login.DoLogin: Login OK!");
+   Assert.Contains(ctx.JSInterop.Invocations["console.info"], x => x.Arguments[0].ToString() == "BLAZOR: Login.DoLogin: Login OK!");
 
    // Prüfung 2: Ist Navigation erfolgt?
    Assert.Equal(UriAfter, cut.Instance.NavigationManager.Uri);
@@ -117,7 +123,7 @@ namespace MiracleListTests
    IRenderedComponent<MLBlazorRCL.Login.Login> cut = ArrangeAndAct(name, kennwort);
 
    // Prüfung 1: Konsolenausgabe
-   var console = this.JSInterop.Invocations["console.info"];
+   var console = ctx.JSInterop.Invocations["console.info"];
    Assert.Contains(console, x => x.Arguments[0].ToString() == "BLAZOR: Login.DoLogin: Login Error!");
 
    // Prüfung 2: Konsolenausgabe
@@ -126,7 +132,5 @@ namespace MiracleListTests
    // Prüfung 3: Navigation
    Assert.Equal(UriBefore, cut.Instance.NavigationManager.Uri);
   }
-
-
  }
 }

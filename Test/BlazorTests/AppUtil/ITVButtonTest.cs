@@ -43,6 +43,47 @@ public class ITVButtonTest : TestContext
  }
 
  [Fact]
+ public async Task ButtonClick()
+ {
+  //JSInterop.Mode = JSRuntimeMode.Loose;
+  JSInterop.SetupVoid("console.error", @"BLAZOR: System.ApplicationException: Testfehler");
+  JSInterop.SetupVoid("ShowAlert", @"System.ApplicationException: Testfehler");
+
+  int delay = 2;
+  string content = "Test<b>button</b>";
+  // Arrange
+
+  Action<MouseEventArgs> onClickHandler = (x) =>
+  {
+
+  };
+
+  var cut = RenderComponent<ITVButton>(p => p.AddChildContent(content).Add(x => x.AnimationSeconds, (byte)delay).Add(x => x.onClick, onClickHandler));
+
+  Assert.Equal(1, cut.RenderCount);
+
+  IElement b = cut.Find("button");
+  b.Html().MarkupMatches(content);
+  Assert.Null(b.GetAttribute("disabled"));
+
+  //b.Click();
+  // oder:
+  var mea = new MouseEventArgs();
+  mea.CtrlKey = true;
+  b.TriggerEvent("onclick", mea);
+
+  // Warten bis Schaltfläche inaktiv ist
+  cut.WaitForState(() => b.GetAttribute("disabled").IsNotNull(), new System.TimeSpan(0, 0, 10));
+
+  // Warten bis Schaltfläche wieder aktiv ist
+  cut.WaitForState(() => b.GetAttribute("disabled").IsNull(), new System.TimeSpan(0, 0, 10));
+  cut.Render();
+
+  // jetzt sollte die Animation fertig sein
+  b.Html().MarkupMatches(content);
+ }
+
+ [Fact]
  public async Task ButtonClickWithErrorHandler()
  {
   int delay = 3;
@@ -97,7 +138,6 @@ public class ITVButtonTest : TestContext
   //JSInterop.Mode = JSRuntimeMode.Loose;
   JSInterop.SetupVoid("console.error", @"BLAZOR: System.ApplicationException: Testfehler");
   JSInterop.SetupVoid("ShowAlert", @"System.ApplicationException: Testfehler");
-
 
   int delay = 2;
   string content = "Test<b>button</b>";

@@ -44,45 +44,50 @@
  bool MinDone = false;
  System.Timers.Timer t;
 
+ public async Task UIUpdate()
+ {
+  await this.InvokeAsync(this.StateHasChanged);
+  await Task.Delay(1);
+ }
+
  public async Task Run()
  {
   ShowAnimation = false;
   MinDone = false;
   Working = true;
-
-  await this.InvokeAsync(this.StateHasChanged);
-  await Task.Delay(1);
+  await UIUpdate();
 
   // Animation soll min. x Sekunden laufen
   if (AnimationSeconds > 0)
   {
    ShowAnimation = true;
+   await UIUpdate();
+
    t = new System.Timers.Timer(new TimeSpan(0, 0, AnimationSeconds));
    t.AutoReset = false;
 
-   t.Elapsed += (s, e) =>
+   t.Elapsed += async (s, e) =>
    {
     MinDone = true;
     if (!Working)
     {
      ShowAnimation = false;
-     this.InvokeAsync(this.StateHasChanged);
+     await UIUpdate();
     }
     t.Close();
    };
    t.Start();
   }
 
-  await this.InvokeAsync(this.StateHasChanged);
-
   try
   {
    await onClick.InvokeAsync();
+   await UIUpdate();
   }
   catch (Exception ex)
   {
    ShowAnimation = false;
-   await this.InvokeAsync(this.StateHasChanged);
+   await UIUpdate();
 
    if (onError.HasDelegate) // Host hat Fehlerbehandlung definiert
    {
@@ -103,7 +108,7 @@
   {
    ShowAnimation = false;
   }
-  await this.InvokeAsync(this.StateHasChanged);
+  await UIUpdate();
  }
 
 }

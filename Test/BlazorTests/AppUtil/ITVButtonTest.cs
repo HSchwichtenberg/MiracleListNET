@@ -8,7 +8,7 @@ using ITVisions.Blazor;
 using ITVisions.Blazor.Controls;
 using Telerik.JustMock;
 
-namespace BlazorTests.AppUtil;
+namespace BlazorTests.BlazorUtilTests;
 
 /// <summary>
 /// These tests are written entirely in C#.
@@ -45,10 +45,10 @@ public class ITVButtonTest : TestContext
  [Fact]
  public async Task ButtonClickWithErrorHandler()
  {
-  int delay = 2;
+  int delay = 3;
   string content = "Test<b>button</b>";
-  // Arrange
 
+  // Arrange
   Action<MouseEventArgs> onClickHandler = (x) =>
   {
    throw new ApplicationException("Testfehler");
@@ -60,7 +60,7 @@ public class ITVButtonTest : TestContext
    Assert.Equal("Testfehler", ex.Message);
   };
 
-  var cut = RenderComponent<ITVButton>(p => p.AddChildContent(content).Add(x => x.AnimationSeconds, (byte)delay).Add(x=>x.onClick, onClickHandler).Add(x=>x.onError, onErrorHandler));
+  var cut = RenderComponent<ITVButton>(p => p.AddChildContent(content).Add(x => x.AnimationSeconds, (byte)delay).Add(x => x.onClick, onClickHandler).Add(x => x.onError, onErrorHandler));
 
   Assert.Equal(1, cut.RenderCount);
 
@@ -70,14 +70,20 @@ public class ITVButtonTest : TestContext
 
   b.Click();
 
+  IElement b2 = cut.Find("button");
+  var t = b2.Html();
+
   // Warten bis Schaltfläche deaktiviert
-  cut.WaitForState(() => b.GetAttribute("disabled").IsNotNull());
+  cut.WaitForState(() => b.GetAttribute("disabled").IsNotNull(), new TimeSpan(0, 0, 5));
+  // Warten bis Schaltflächeninhalt korrekt
+
+  cut.WaitForState(() => b2.Html().StartsWith("<img"), new TimeSpan(0, 0, 5));
+
   // Animation sollte nun aktiv sein
   b.Html().MarkupMatches("<img src=\"/_content/ITVisions.Blazor/img/ITVButtonProgress.gif\" width=\"20\" style=\"margin-right:8px;\">" + content);
 
-
   // Warten bis Schaltfläche wieder aktiv ist
-  cut.WaitForState(() => b.GetAttribute("disabled").IsNull(),new System.TimeSpan(0,0,delay));
+  cut.WaitForState(() => b.GetAttribute("disabled").IsNull(), new System.TimeSpan(0, 0, delay));
   cut.Render();
 
   // jetzt sollte die Animation fertig sein

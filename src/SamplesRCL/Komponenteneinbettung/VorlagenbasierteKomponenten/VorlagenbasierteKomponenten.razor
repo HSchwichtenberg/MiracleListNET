@@ -7,6 +7,9 @@
 
 <h3>ITVButton (vorlagenbasiert + AdditionalAttributes)</h3>
 
+<p>
+
+
 <ITVButton onClick="Aktion" AnimationSeconds="1" class="btn btn-success" title="mit Animation">
  <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
 </ITVButton>
@@ -14,14 +17,17 @@
 <ITVButton onClick="Aktion" AnimationSeconds="0" class="btn btn-warning" style="color:black" title="ohne Animation">
  <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
 </ITVButton>
-<br />
-<ITVButton onClick="AktionMitFehler" AnimationSeconds="1" class="btn btn-danger" style="margin-top:5px" title="mit Animation und Fehler ohne Fehlerbehandlung">
+</p>
+
+<p>
+<ITVButton onClick="AktionMitFehler" AnimationSeconds="1" class="btn btn-danger" title="mit Animation und Fehler ohne Fehlerbehandlung">
  <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
 </ITVButton>
 
 <ITVButton onClick="AktionMitFehler" onError='async (ex)=>await Util.Alert("FEHLER: " + ex.Message)' AnimationSeconds="1" class="btn btn-danger" title="mit Animation und Fehler mit Fehlerbehandlung">
  <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
 </ITVButton>
+</p>
 
 @code
 {

@@ -68,7 +68,6 @@ public class MiracleList_MainView_Test : TestContext
 
   // neuer Benutzer mit Standardkategorien
   string name = "testuser " + Guid.NewGuid();
-
   var authContext = this.AddTestAuthorization();
   authContext.SetAuthorized(name);
  }
@@ -76,10 +75,12 @@ public class MiracleList_MainView_Test : TestContext
  [Fact] // Pattern "Arrange-Act-Assert"
  public void MainTest()
  {
+  #region Testdaten
   var categorySet = new List<Category>() { new Category() { Name = "Test1", CategoryID = 1 }, new Category() { Name = "Test2", CategoryID = 2 } };
   var taskSet = new List<BO.Task>() { new BO.Task() { Title = "Task1", TaskID = 1 }, new BO.Task() { Title = "Task2", TaskID = 2 }, new BO.Task() { Title = "Task3", TaskID = 3 } };
+  #endregion
 
-  #region Mocking des Backends
+  #region Einrichten des Mocks für das Backened
   mockProxy.Arrange(x => x.CategorySetAsync(null)).ReturnsAsync(categorySet).MustBeCalled();
   mockProxy.Arrange(x => x.TaskSetAsync(1, null)).ReturnsAsync(taskSet).MustBeCalled();
   mockProxy.Arrange(x => x.TaskSetAsync(2, null)).ReturnsAsync(taskSet).MustBeCalled();
@@ -101,6 +102,7 @@ public class MiracleList_MainView_Test : TestContext
   });
   #endregion
 
+  // Komponente rendern
   IRenderedComponent<MLBlazorRCL.MainView.Main> cut = RenderComponent<MLBlazorRCL.MainView.Main>();
 
   // Stimmt die angezeigte Anzahl der Kategorien und Aufgaben?
@@ -111,9 +113,9 @@ public class MiracleList_MainView_Test : TestContext
   var col1List = cut.Find("#col1 ol");
   Assert.Equal(categorySet.Count + 1, col1List.ChildNodes.Count());
 
-  // 1 bis n-1 sind <li> Elemente
+  // 1 bis n-1 sind <li> Elemente (Letztes Element ist <input>)
   Assert.All(col1List.ChildNodes.Take(categorySet.Count), x => Assert.Equal("li", x.NodeName, true));
-  // Letztes Element ist <input>
+  Assert.Equal("input", col1List.ChildNodes.Last().NodeName, true);
 
   #region 10x Neue Kategorie ergänzen
   for (int i = 0; i < 10; i++)
@@ -132,21 +134,25 @@ public class MiracleList_MainView_Test : TestContext
    // Das kann Probleme machen:  "Bunit.Rendering.UnknownEventHandlerIdException : There is no event handler with ID '44' associated with the 'onclick' event in the current render tree."
    //var liElement = cut.FindAll("#col1 ol li").ElementAt(i + 2);
    //liElement.Click();
-
    // Lösung: "This ensures that there are no changes to the DOM between Find method and the Click method calls."
    cut.InvokeAsync(() => cut.FindAll("#col1 ol li").ElementAt(i + 2).Click());
 
-   // Da gibt es erstmal keine Aufgaben
+   // In der neuen Kategorie gibt es erstmal keine Aufgaben
    cut.WaitForState(() => cut.Find("#taskCount").Text() == "0");
 
-   // Aufgabe ergänzen
+   // Nun eine Aufgabe ergänzen
    var inputnewTaskTitle = cut.Find("input[name=newTaskTitle]");
    inputnewTaskTitle.Change("Neue Aufgabe");
    inputnewTaskTitle.KeyUp("Enter");
 
-   // Nun eine Aufgabe
+   // Nun sollte eine Aufgabe da sein
    cut.WaitForState(() => cut.Find("#taskCount").Text() == "1");
 
+   inputnewTaskTitle.Change("Zweite Aufgabe");
+   inputnewTaskTitle.KeyUp("Enter");
+
+   // Nun sollte zwei Aufgaben da sein
+   cut.WaitForState(() => cut.Find("#taskCount").Text() == "2");
   }
 
   #endregion

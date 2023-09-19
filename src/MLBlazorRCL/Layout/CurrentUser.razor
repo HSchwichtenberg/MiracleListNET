@@ -30,7 +30,7 @@
    screenInfo = await Util.GetScreenSize();
    await Util.InitUpdateScreenSize("screenInfo");
 
-   this.StateHasChanged();
+   await InvokeAsync(StateHasChanged);
   }
  }
 

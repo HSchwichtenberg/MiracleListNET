@@ -229,6 +229,8 @@ public partial class Main : IAsyncDisposable
   await localStorage.SetItemAsync<int>("Category", c.CategoryID);
   // Kein Task soll ausgewählt sein
   this.task = null;
+
+  await InvokeAsync(StateHasChanged);
  }
 
  public async Task ShowTaskDetail(BO.Task t)

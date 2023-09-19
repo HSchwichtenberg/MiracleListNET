@@ -5,7 +5,7 @@
 @implements IDisposable
 
 @{
-    /* DEMO: 25. Razor Component in RCL (hier: Single-File ohne Code-Behind) */
+ /* DEMO: 25. Razor Component in RCL (hier: Single-File ohne Code-Behind) */
 }
 
 <br />
@@ -14,13 +14,13 @@
 <b>RAM used: </b>
 @if (usedRAM is null)
 {
-    <span class="Loading">...</span>
+ <span class="Loading">...</span>
 }
 else
 {
-    <span title="Click to run Garbage Collection!" @onclick="GCCollect">
-        @(Math.Round((double)(usedRAM.Value), 2)) MB
-    </span>
+ <span title="Click to run Garbage Collection!" @onclick="GCCollect">
+  @(Math.Round((double)(usedRAM.Value), 2)) MB
+ </span>
 }
 
 <br />
@@ -29,115 +29,115 @@ else
 <br />
 
 @code {
-    private double? usedRAM;
-    public string Browser { get; set; }
-    public string BrowserDetails { get; set; }
+ private double? usedRAM;
+ public string Browser { get; set; }
+ public string BrowserDetails { get; set; }
 
-    [Parameter]
-    public IJSRuntime JS { get; set; }
+ [Parameter]
+ public IJSRuntime JS { get; set; }
 
-    [Parameter]
-    public System.Reflection.Assembly Assembly { get; set; }
+ [Parameter]
+ public System.Reflection.Assembly Assembly { get; set; }
 
-    System.Threading.Timer timer;
-    const int UpdateIntervallSekunden = 1;
+ System.Threading.Timer timer;
+ const int UpdateIntervallSekunden = 1;
 
-    public string EnvInfo { get; set; }
+ public string EnvInfo { get; set; }
 
-    protected override void OnInitialized()
-    {
+ protected override void OnInitialized()
+ {
 
-        var d1 = new Dictionary<string, string>();
-        //d1.Add("Web Framework", Util.GetBlazorVersionInfo());
-        //d1.Add("JavaScript Runtime", JSRuntime.GetType().FullName);
-        //d1.Add("Browser", Browser);
-        //d1.Add("Browser Details", BrowserDetails);
-        //d1.Add(" Client IP", Util.GetClientIP());
-        EnvInfo = new ITVisions.EnvInfo(callingAssembly: Assembly, moreInfo: d1).GetHTMLString();
+  var d1 = new Dictionary<string, string>();
+  //d1.Add("Web Framework", Util.GetBlazorVersionInfo());
+  //d1.Add("JavaScript Runtime", JSRuntime.GetType().FullName);
+  //d1.Add("Browser", Browser);
+  //d1.Add("Browser Details", BrowserDetails);
+  //d1.Add(" Client IP", Util.GetClientIP());
+  EnvInfo = new ITVisions.EnvInfo(callingAssembly: Assembly, moreInfo: d1).GetHTMLString();
 
-        // Workaround für BD
-        if (JS != null)
-        {
-            this.JSRuntime = JS;
-            this.Util = new BlazorUtil(JS, null, null);
-        }
+  // Workaround für BD
+  if (JS != null)
+  {
+   this.JSRuntime = JS;
+   this.Util = new BlazorUtil(JS, null, null);
+  }
 
-        try
-        {
-            Util.Log("SystemInfo.OnInitializedAsync");
+  try
+  {
+   Util.Log("SystemInfo.OnInitializedAsync");
 
-            timer = new System.Threading.Timer(async _ =>
-            {
-                Calc();
-                await InvokeAsync(StateHasChanged);
-            }, null, UpdateIntervallSekunden * 1000, UpdateIntervallSekunden * 1000);
-        }
-        catch (Exception)
-        {
+   timer = new System.Threading.Timer(async _ =>
+   {
+    Calc();
+    await InvokeAsync(StateHasChanged);
+   }, null, UpdateIntervallSekunden * 1000, UpdateIntervallSekunden * 1000);
+  }
+  catch (Exception)
+  {
 
-            throw;
-        }
-    }
-
-    public void Dispose()
-    {
-        // wichtig, damit Timer nicht weiterläuft, wenn die Komponente schon nicht mehr lebt
-        if (timer != null) timer.Dispose();
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        try
-        {
-            Util.Log("OnAfterRender(firstRender=" + firstRender + ")");
-            if (firstRender)
-            {
-                Browser = await Util.GetBrowserShortInfo();
-                BrowserDetails = await Util.GetBrowserInfo();
-                var d1 = new Dictionary<string, string>();
-                d1.Add("Web Framework", Util.GetBlazorVersionInfo());
-                d1.Add("JavaScript Runtime", JSRuntime.GetType().FullName);
-                d1.Add("Browser", Browser);
-                d1.Add("Browser Details", BrowserDetails);
-                d1.Add("Client IP", Util.GetClientIP());
-                EnvInfo = new ITVisions.EnvInfo(callingAssembly: Assembly, moreInfo: d1).GetHTMLString();
-                Calc();
-                this.StateHasChanged();
-            }
-        }
-        catch (Exception)
-        {
-
-        }
-    }
-
-    public async Task GCCollect()
-    {
-        try
-        {
-            usedRAM = null;
-            this.StateHasChanged();
-            GC.Collect();
-        }
-        catch (Exception ex)
-        {
-            await Util.Alert(ex.Message);
-        }
-
-    }
-
-    public void Calc()
-    {
-
-        try
-        {
-            var proc = System.Diagnostics.Process.GetCurrentProcess();
-            usedRAM = (double)proc.PrivateMemorySize64 / 1024 / 1014;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            usedRAM = null;
-        }
-    }
+   throw;
+  }
  }
+
+ public void Dispose()
+ {
+  // wichtig, damit Timer nicht weiterläuft, wenn die Komponente schon nicht mehr lebt
+  if (timer != null) timer.Dispose();
+ }
+
+ protected override async Task OnAfterRenderAsync(bool firstRender)
+ {
+  try
+  {
+   Util.Log("OnAfterRender(firstRender=" + firstRender + ")");
+   if (firstRender)
+   {
+    Browser = await Util.GetBrowserShortInfo();
+    BrowserDetails = await Util.GetBrowserInfo();
+    var d1 = new Dictionary<string, string>();
+    d1.Add("Web Framework", Util.GetBlazorVersionInfo());
+    d1.Add("JavaScript Runtime", JSRuntime.GetType().FullName);
+    d1.Add("Browser", Browser);
+    d1.Add("Browser Details", BrowserDetails);
+    d1.Add("Client IP", Util.GetClientIP());
+    EnvInfo = new ITVisions.EnvInfo(callingAssembly: Assembly, moreInfo: d1).GetHTMLString();
+    Calc();
+    await InvokeAsync(StateHasChanged);
+   }
+  }
+  catch (Exception)
+  {
+
+  }
+ }
+
+ public async Task GCCollect()
+ {
+  try
+  {
+   usedRAM = null;
+   await InvokeAsync(StateHasChanged);
+   GC.Collect();
+  }
+  catch (Exception ex)
+  {
+   await Util.Alert(ex.Message);
+  }
+
+ }
+
+ public void Calc()
+ {
+
+  try
+  {
+   var proc = System.Diagnostics.Process.GetCurrentProcess();
+   usedRAM = (double)proc.PrivateMemorySize64 / 1024 / 1014;
+  }
+  catch (Exception ex)
+  {
+   Console.WriteLine(ex.Message);
+   usedRAM = null;
+  }
+ }
+}

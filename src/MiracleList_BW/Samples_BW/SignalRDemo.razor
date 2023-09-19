@@ -46,7 +46,7 @@
    var encodedMsg = $"{user}: {message}";
    Console.WriteLine("On: " + encodedMsg);
    _messages.Add(encodedMsg);
-   StateHasChanged();
+   await InvokeAsync(StateHasChanged);
   });
 
   await _hubConnection.StartAsync();

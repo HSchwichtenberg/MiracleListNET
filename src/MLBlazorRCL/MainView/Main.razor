@@ -68,7 +68,7 @@
 
      <!-- ---------- Filter-->
      @*ACHTUNG: VS-Bug in älteren VS-Versionen. Wird dort als fehlerhaft angezeigt, kompiliert und läuft aber! https://github.com/dotnet/razor/issues/8315*@
-     <select @bind="taskFilter" @bind:after="()=>ShowTaskSet(this.category)" style="margin-left:15px;height:25px;width:120px;display:inline-block" class="form-control input-sm blue">
+     <select @bind="taskFilter" @bind:after="()=>ShowTaskSet(this.category)" style="margin-left:15px;height:25px;width:170px;display:inline-block" class="form-control input-sm blue">
       <option value="0">Alle Aufgaben</option>
       <option value="1">Nur offene Aufgaben</option>
       <option value="2">Nur erledigte Aufgaben</option>

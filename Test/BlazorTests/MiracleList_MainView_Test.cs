@@ -14,6 +14,7 @@ using ITVisions.Reflection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using MiracleList;
@@ -61,13 +62,19 @@ public class MiracleList_MainView_Test : TestContext
   #endregion
 
   #region Dienste für eigene Dienste
+  var appState = Mock.Create<IAppState>();
+  appState.HubConnection = null;// SignalR HubConnection ist schlecht zu mocken, siehe https://github.com/dotnet/aspnetcore/issues/8133
+  appState.SignalRHubURL = null;
+  this.Services.AddSingleton<IAppState>(appState);
+
   this.Services.AddScoped<IMLAuthenticationStateProvider, MockAuthenticationStateProvider>();
-  this.Services.AddSingleton<AppState>();
-  //Services.AddSingleton<BD.AppState>(); // nur bei BD
+
   this.Services.AddBlazoredLocalStorage(); // ggf. ersetzen durch Mock. Bisher nicht notwendig :-)
   mockProxy = Mock.Create<IMiracleListProxy>();
   this.Services.AddSingleton(mockProxy);
-  this.Services.AddScoped<IAppState, AppState>();
+  //this.Services.AddScoped<IAppState, AppState>();
+
+
   #endregion
 
   // neuer Benutzer mit Standardkategorien
@@ -76,7 +83,7 @@ public class MiracleList_MainView_Test : TestContext
   authContext.SetAuthorized(name);
  }
 
- [Fact] // Pattern "Arrange-Act-Assert"
+ [Fact]
  public async System.Threading.Tasks.Task AufgabenAnlegenUndLoeschen()
  {
   #region Testdaten
@@ -85,18 +92,18 @@ public class MiracleList_MainView_Test : TestContext
   #endregion
 
   #region Einrichten des Mocks für das Backened
-  mockProxy.Arrange(x => x.CategorySetAsync(null)).ReturnsAsync(categorySet).MustBeCalled();
-  mockProxy.Arrange(x => x.TaskSetAsync(1, null)).ReturnsAsync(taskSet).MustBeCalled();
-  mockProxy.Arrange(x => x.TaskSetAsync(2, null)).ReturnsAsync(taskSet).MustBeCalled();
+  mockProxy.Arrange(x => x.CategorySetAsync(Arg.IsAny<string>())).ReturnsAsync(categorySet).MustBeCalled();
+  mockProxy.Arrange(x => x.TaskSetAsync(1, Arg.IsAny<string>())).ReturnsAsync(taskSet).MustBeCalled();
+  mockProxy.Arrange(x => x.TaskSetAsync(2, Arg.IsAny<string>())).ReturnsAsync(taskSet).MustBeCalled();
 
-  mockProxy.Arrange(x => x.TaskSetAsync(Arg.IsInRange(3, 13, RangeKind.Inclusive), null)).DoInstead((int categoryID) =>
+  mockProxy.Arrange(x => x.TaskSetAsync(Arg.IsInRange(3, 13, RangeKind.Inclusive), Arg.IsAny<string>())).DoInstead((int categoryID) =>
   {
    var c = categorySet.FirstOrDefault(x => x.CategoryID == categoryID);
    if (c.TaskSet.IsNull()) c.TaskSet = new List<BO.Task>();
   }
   ).ReturnsAsync((int categoryID) => categorySet.FirstOrDefault(x => x.CategoryID == categoryID).TaskSet);
 
-  mockProxy.Arrange(x => x.CreateCategoryAsync("", Arg.IsAny<string>())).IgnoreArguments().DoInstead((string name) =>
+  mockProxy.Arrange(x => x.CreateCategoryAsync(Arg.IsAny<string>(), Arg.IsAny<string>())).IgnoreArguments().DoInstead((string name) =>
   {
    categorySet.Add(new Category() { CategoryID = categorySet.Max(x => x.CategoryID) + 1, Name = name });
   });
@@ -129,6 +136,8 @@ public class MiracleList_MainView_Test : TestContext
   IRenderedComponent<MLBlazorRCL.MainView.Main> cut = RenderComponent<MLBlazorRCL.MainView.Main>();
 
   // Stimmt die angezeigte Anzahl der Kategorien und Aufgaben? (basiert auf Fake-Daten)
+
+  var t = cut.Find("#categoryCount").Text();
   cut.WaitForState(() => cut.Find("#categoryCount").Text() == "2");
   Assert.Equal("3", cut.Find("#taskCount").Text());
 

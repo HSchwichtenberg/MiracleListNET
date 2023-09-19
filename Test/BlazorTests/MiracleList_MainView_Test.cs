@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using BlazorContextMenu;
 using BlazorContextMenu.Services;
@@ -9,12 +10,14 @@ using BlazorTests.Mocks;
 using BO;
 using ITVisions;
 using ITVisions.Blazor;
+using ITVisions.Reflection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using MiracleList;
+using MLBlazorRCL.MainView;
 using Telerik.JustMock;
 using Telerik.JustMock.Helpers;
 using Web;
@@ -29,6 +32,7 @@ namespace MiracleListTests;
 public class MiracleList_MainView_Test : TestContext
 {
  IMiracleListProxy mockProxy;
+ int anzahlAufgaben = 5;
 
  /// <summary>
  /// Setup the test: DI of mocking classes
@@ -73,7 +77,7 @@ public class MiracleList_MainView_Test : TestContext
  }
 
  [Fact] // Pattern "Arrange-Act-Assert"
- public void MainTest()
+ public async System.Threading.Tasks.Task AufgabenAnlegenUndLoeschen()
  {
   #region Testdaten
   var categorySet = new List<Category>() { new Category() { Name = "Test1", CategoryID = 1 }, new Category() { Name = "Test2", CategoryID = 2 } };
@@ -84,33 +88,53 @@ public class MiracleList_MainView_Test : TestContext
   mockProxy.Arrange(x => x.CategorySetAsync(null)).ReturnsAsync(categorySet).MustBeCalled();
   mockProxy.Arrange(x => x.TaskSetAsync(1, null)).ReturnsAsync(taskSet).MustBeCalled();
   mockProxy.Arrange(x => x.TaskSetAsync(2, null)).ReturnsAsync(taskSet).MustBeCalled();
+
   mockProxy.Arrange(x => x.TaskSetAsync(Arg.IsInRange(3, 13, RangeKind.Inclusive), null)).DoInstead((int categoryID) =>
   {
    var c = categorySet.FirstOrDefault(x => x.CategoryID == categoryID);
    if (c.TaskSet.IsNull()) c.TaskSet = new List<BO.Task>();
   }
   ).ReturnsAsync((int categoryID) => categorySet.FirstOrDefault(x => x.CategoryID == categoryID).TaskSet);
-  mockProxy.Arrange(x => x.CreateCategoryAsync("", null)).IgnoreArguments().DoInstead((string name) =>
+
+  mockProxy.Arrange(x => x.CreateCategoryAsync("", Arg.IsAny<string>())).IgnoreArguments().DoInstead((string name) =>
   {
    categorySet.Add(new Category() { CategoryID = categorySet.Max(x => x.CategoryID) + 1, Name = name });
   });
-  mockProxy.Arrange(x => x.CreateTaskAsync(Arg.IsAny<BO.Task>(), null)).DoInstead((BO.Task t) =>
+
+  mockProxy.Arrange(x => x.CreateTaskAsync(Arg.IsAny<BO.Task>(), Arg.IsAny<string>())).DoInstead((BO.Task t) =>
   {
    var c = categorySet.FirstOrDefault(x => x.CategoryID == t.CategoryID);
    if (c.TaskSet.IsNull()) c.TaskSet = new List<BO.Task>();
    c.TaskSet.Add(new Task());
   });
+
+  mockProxy.Arrange(x => x.DeleteTaskAsync(Arg.IsAny<int>(), Arg.IsAny<string>())).DoInstead((int id) =>
+  {
+   foreach (var c in categorySet)
+   {
+    if (c.TaskSet != null)
+    {
+     var t = c.TaskSet.FirstOrDefault(t => t.TaskID == id);
+     if (t != null)
+     {
+      c.TaskSet.Remove(t);
+     }
+    }
+   }
+
+  }).Returns(System.Threading.Tasks.Task.CompletedTask);
   #endregion
 
   // Komponente rendern
   IRenderedComponent<MLBlazorRCL.MainView.Main> cut = RenderComponent<MLBlazorRCL.MainView.Main>();
 
-  // Stimmt die angezeigte Anzahl der Kategorien und Aufgaben?
+  // Stimmt die angezeigte Anzahl der Kategorien und Aufgaben? (basiert auf Fake-Daten)
   cut.WaitForState(() => cut.Find("#categoryCount").Text() == "2");
   Assert.Equal("3", cut.Find("#taskCount").Text());
 
   // Anzahl der li-Elemente in der Kategorienliste (eins mehr, weil "Suche" dabei ist)
   var col1List = cut.Find("#col1 ol");
+  Assert.NotNull(col1List);
   Assert.Equal(categorySet.Count + 1, col1List.ChildNodes.Count());
 
   // 1 bis n-1 sind <li> Elemente (Letztes Element ist <input>)
@@ -135,24 +159,60 @@ public class MiracleList_MainView_Test : TestContext
    //var liElement = cut.FindAll("#col1 ol li").ElementAt(i + 2);
    //liElement.Click();
    // Lösung: "This ensures that there are no changes to the DOM between Find method and the Click method calls."
-   cut.InvokeAsync(() => cut.FindAll("#col1 ol li").ElementAt(i + 2).Click());
+   await cut.InvokeAsync(() => cut.FindAll("#col1 ol li").ElementAt(i + 2).Click());
 
    // In der neuen Kategorie gibt es erstmal keine Aufgaben
    cut.WaitForState(() => cut.Find("#taskCount").Text() == "0");
 
-   // Nun eine Aufgabe ergänzen
-   var inputnewTaskTitle = cut.Find("input[name=newTaskTitle]");
-   inputnewTaskTitle.Change("Neue Aufgabe");
-   inputnewTaskTitle.KeyUp("Enter");
+   for (int j = 1; j <= anzahlAufgaben; j++)
+   {
+    Assert.Equal((j - 1).ToString(), cut.Find("#taskCount").Text());
+    // Nun eine Aufgabe ergänzen
+    var inputnewTaskTitle = cut.Find("input[name=newTaskTitle]");
+    inputnewTaskTitle.Change("Aufgabe #" + j);
+    inputnewTaskTitle.KeyUp("Enter");
+    // Nun sollte neue Aufgabe da sein
+    cut.WaitForState(() => cut.Find("#taskCount").Text() == j.ToString());
+   }
 
-   // Nun sollte eine Aufgabe da sein
-   cut.WaitForState(() => cut.Find("#taskCount").Text() == "1");
+   var checkBox = cut.Find("input[type='checkbox']");
+   checkBox.Change(true);
 
-   inputnewTaskTitle.Change("Zweite Aufgabe");
-   inputnewTaskTitle.KeyUp("Enter");
+   #region Erste drei Aufgaben abharken
+   var list = cut.FindAll("#col2 ol li input");
+   list[2].Change(true);
+   list[1].Change(true);
+   list[0].Change(true);
+   cut.Render();
 
-   // Nun sollte zwei Aufgaben da sein
-   cut.WaitForState(() => cut.Find("#taskCount").Text() == "2");
+   for (int k = 0; k < 3; k++)
+   {
+    Assert.True((cut.FindAll("#col2 ol li input")[k] as IElement).IsChecked());
+   }
+   #endregion
+
+   #region Alle Aufgaben löschen: Immer die oberste löschen
+
+   for (int l = 0; l < anzahlAufgaben; l++)
+   {
+    var element = cut.FindAll("#col2 li")[0];
+    var id = element.Attributes["title"].Value.Replace("Task #", "").ToInt32();
+    var remove = element.QuerySelector("#Remove");
+    Assert.Equal("x", remove.InnerHtml);
+    remove.Click();
+
+    // Rufe Methode direkt auf, da kein Dialog gezeigt wird
+    Assert.Equal(id, cut.FindComponent<TaskElement>().Instance.Task.TaskID);
+    await cut.FindComponent<TaskElement>().Instance.ConfirmedRemoveTask(id, true);
+    //nicht notwendig: await cut.Instance.ReloadTaskList();
+    cut.Render();
+
+    //var x = cut.Find("#taskCount").Text();
+    cut.WaitForState(() => cut.Find("#taskCount").Text() == (anzahlAufgaben - (l + 1)).ToString());
+   }
+
+
+   #endregion
   }
 
   #endregion

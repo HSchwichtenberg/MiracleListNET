@@ -1,4 +1,8 @@
 ﻿using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Linq;
+using ITVisions;
+using ITVisions.Reflection;
 using Microsoft.Playwright;
 using Microsoft.Playwright.MSTest;
 
@@ -21,7 +25,7 @@ public class MiracleListTests : PageTest
   //});
   //var context = await browser.NewContextAsync();
 
-  await Page.GotoAsync("https://miraclelist-bs.azurewebsites.net"); //  https://miraclelist-bs.azurewebsites.net"); https://localhost:44387/
+  await Page.GotoAsync("https://localhost:44387/"); //  https://miraclelist-bs.azurewebsites.net"); https://localhost:44387/
 
   // Expect a title "to contain" a substring.
   await Expect(Page).ToHaveTitleAsync(new Regex("MiracleList_BS"));
@@ -44,32 +48,55 @@ public class MiracleListTests : PageTest
 
  }
 
+
+
+
  [TestMethod]
  public async Task AufgabenAnlegenUndLoeschen()
  {
   await Login();
 
-  #region Kategorien und Aufgaben anlegen
+  // Kein direkter Zugang zu children() 
+  #region Prüfe korrektes Rendern der Kategorieliste
+
+  // Wähle das <ol>-Element aus
+  var col1List = await Page.QuerySelectorAsync("#col1 ol");
+
+  // Überprüfe, ob es ein <ol>-Element gibt
+  Assert.IsNotNull(col1List);
+
+  // // 1 bis n-1 sind <li> Elemente (Letztes Element ist <input>)
+  // Das ist leider umständlich in Playwright, siehe auch https://github.com/microsoft/playwright/issues/17703 und https://github.com/microsoft/playwright/issues/4845
+  await PlaywrightUtil.VerifyChilddren(col1List, "li", 1);
+  Assert.AreEqual("input", await PlaywrightUtil.GetLastChildTag(col1List));
+  #endregion
+
+  #region Kategorien anlegen
+  int anzKategorienVorher = (await Page.Locator("#categoryCount").InnerTextAsync()).ToInt32();
   await Page.GetByPlaceholder("Neue Kategorie...").ClickAsync();
   await Page.GetByPlaceholder("Neue Kategorie...").FillAsync("Kat1");
   await Page.GetByPlaceholder("Neue Kategorie...").PressAsync("Enter");
   await Page.GetByPlaceholder("Neue Kategorie...").FillAsync("Kat2");
   await Page.GetByPlaceholder("Neue Kategorie...").PressAsync("Enter");
+  await Expect(Page.Locator("#categoryCount")).ToHaveTextAsync((anzKategorienVorher + 2).ToString());
+  #endregion
 
-  for (int i = 0; i < anzahlAufgaben; i++)
+  #region Aufgaben anlegen
+  for (int i = 1; i <= anzahlAufgaben; i++)
   {
+   await Expect(Page.Locator("#taskCount")).ToHaveTextAsync((i - 1).ToString());
    await Page.GetByPlaceholder("Neue Aufgabe...").ClickAsync();
    await Page.GetByPlaceholder("Neue Aufgabe...").FillAsync("Aufgabe #" + i);
    await Page.GetByPlaceholder("Neue Aufgabe...").PressAsync("Enter");
+   await Expect(Page.Locator("#taskCount")).ToHaveTextAsync(i.ToString());
   }
-
-  await Expect(Page.Locator("#taskCount")).ToHaveTextAsync(anzahlAufgaben.ToString());
   #endregion
 
   #region Erste drei Aufgaben abharken
-  await Page.Locator("#col2 ol li input").Nth(2).CheckAsync();
-  await Page.Locator("#col2 ol li input").Nth(1).CheckAsync();
-  await Page.Locator("#col2 ol li input").Nth(0).CheckAsync();
+  var list = Page.Locator("#col2 ol li input");
+  await list.Nth(2).CheckAsync();
+  await list.Nth(1).CheckAsync();
+  await list.Nth(0).CheckAsync();
 
   for (int i = 0; i < 3; i++)
   {
@@ -77,7 +104,7 @@ public class MiracleListTests : PageTest
   }
   #endregion
 
-  #region Alle Aufgaben löschen
+  #region Alle Aufgaben löschen: Immer die oberste löschen
   for (int i = 0; i < anzahlAufgaben; i++)
   {
    await Page.Locator("#col2 #Remove").Nth(0).ClickAsync();

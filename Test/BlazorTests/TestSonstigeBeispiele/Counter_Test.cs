@@ -10,11 +10,13 @@ using Samples.Komponentendateien;
 using Xunit;
 using static Samples.Komponenteneinbettung.Komponentenhost_Misc.CounterPanel;
 
-namespace BlazorTests.HelloWorld
+namespace BlazorTests.TestSonstigeBeispiele
 {
 
  public class CounterPanel_Test : TestContext
  {
+
+
   [Fact]
   public void OneClickTest()
   {

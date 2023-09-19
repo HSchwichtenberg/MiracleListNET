@@ -12,7 +12,7 @@ using Microsoft.JSInterop;
 using Samples.Komponentendateien;
 using Xunit;
 
-namespace BlazorTests.HelloWorld
+namespace BlazorTests.TestSonstigeBeispiele
 {
 
  public class CodeBehindPartielleKlasse_Test : TestContext

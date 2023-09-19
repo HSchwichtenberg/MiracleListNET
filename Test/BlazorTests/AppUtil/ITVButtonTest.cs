@@ -77,7 +77,6 @@ public class ITVButtonTest : TestContext
 
   // Warten bis Schaltfläche wieder aktiv ist
   cut.WaitForState(() => b.GetAttribute("disabled").IsNull(), new System.TimeSpan(0, 0, 10));
-  cut.Render();
 
   // jetzt sollte die Animation fertig sein
   b.Html().MarkupMatches(content);
@@ -125,7 +124,6 @@ public class ITVButtonTest : TestContext
 
   // Warten bis Schaltfläche wieder aktiv ist
   cut.WaitForState(() => b.GetAttribute("disabled").IsNull(), new System.TimeSpan(0, 0, delay));
-  cut.Render();
 
   // jetzt sollte die Animation fertig sein
   b.Html().MarkupMatches(content);

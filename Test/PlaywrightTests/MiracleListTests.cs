@@ -25,7 +25,9 @@ public class MiracleListTests : PageTest
   //});
   //var context = await browser.NewContextAsync();
 
-  await Page.GotoAsync("https://localhost:44387/"); //  https://miraclelist-bs.azurewebsites.net"); https://localhost:44387/
+  string URL = TestContext.Properties["URL"].ToString();
+  Assert.IsTrue(URL.IsNotNullOrEmpty());
+  await Page.GotoAsync(URL);
 
   // Expect a title "to contain" a substring.
   await Expect(Page).ToHaveTitleAsync(new Regex("MiracleList_BS"));
@@ -47,9 +49,6 @@ public class MiracleListTests : PageTest
   await Expect(Page.Locator("#LoggedInUser").Nth(0)).ToContainTextAsync(anmeldename);
 
  }
-
-
-
 
  [TestMethod]
  public async Task AufgabenAnlegenUndLoeschen()

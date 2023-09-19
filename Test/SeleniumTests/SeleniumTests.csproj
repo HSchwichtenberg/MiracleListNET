@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <IsPackable>false</IsPackable>
-    <Version>7.16.1.0</Version>
-    <AssemblyVersion>7.16.1.0</AssemblyVersion>
-    <FileVersion>7.16.1.0</FileVersion>
-  <InformationalVersion>7.16.1.0-08/25/2023 10:43:36</InformationalVersion></PropertyGroup>
+    <Version>7.17.0.0</Version>
+    <AssemblyVersion>7.17.0.0</AssemblyVersion>
+    <FileVersion>7.17.0.0</FileVersion>
+  <InformationalVersion>7.17.0.0-09/19/2023 20:08:44</InformationalVersion></PropertyGroup>
 
   <ItemGroup>
     <None Remove="appsettings.json" />

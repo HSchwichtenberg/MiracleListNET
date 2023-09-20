@@ -92,7 +92,7 @@
    var projektname = entryAssemblyName?.Name;
    await Util.SetTitle(projektname + " / v" + entryAssemblyName?.Version?.ToString());
   }
-  catch (Exception ex)
+  catch (Exception)
   {
    // Workaround für Android (dort funktioniert GetEntryAssembly() nicht!)
   }

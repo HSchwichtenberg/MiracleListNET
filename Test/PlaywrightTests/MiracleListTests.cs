@@ -52,7 +52,7 @@ public class MiracleListTests : PageTest
   //var context = await browser.NewContextAsync();
   #endregion
 
-  string URL = TestContext.Properties["URL"].ToString();
+  string URL = TestContext?.Properties["URL"]?.ToString() ?? "";
   Assert.IsTrue(URL.IsNotNullOrEmpty());
   await Page.GotoAsync(URL);
 

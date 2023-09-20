@@ -123,7 +123,7 @@
   <PackageReference Include="Blazored.LocalStorage" Version="4.4.*" />
   <PackageReference Include="Blazored.Toast" Version="4.1.*" />
 
-  <!--Nuget-Pakethölle-->
+  <!--Lösungen für Nuget-Pakethölle-->
   <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.*" />
   <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.*" />
  </ItemGroup>

@@ -10,15 +10,15 @@
   <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
   <UseWinUI>true</UseWinUI>
   <EnableMsixTooling>true</EnableMsixTooling>
-  <Version>7.17.0.0</Version>
+  <Version>8.0.0.0</Version>
  </PropertyGroup>
 
  <!--Versionsinfos-->
  <PropertyGroup>
   <Version>7.11.0.0</Version>
-  <AssemblyVersion>7.17.0.0</AssemblyVersion>
-  <FileVersion>7.17.0.0</FileVersion>
-  <InformationalVersion>7.17.0.0-09/19/2023 20:08:43</InformationalVersion>
+  <AssemblyVersion>8.0.0.0</AssemblyVersion>
+  <FileVersion>8.0.0.0</FileVersion>
+  <InformationalVersion>8.0.0.0-09/20/2023 22:58:39</InformationalVersion>
   <ApplicationDisplayVersion>7.11</ApplicationDisplayVersion>
   <ApplicationVersion>7</ApplicationVersion>
  </PropertyGroup>

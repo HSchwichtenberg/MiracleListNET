@@ -3,10 +3,10 @@
  <PropertyGroup>
   <TargetFramework>net8.0-windows</TargetFramework>
   <RazorLangVersion>7.0</RazorLangVersion>
-  <Version>7.17.0.0</Version>
-  <AssemblyVersion>7.17.0.0</AssemblyVersion>
-  <FileVersion>7.17.0.0</FileVersion>
-  <InformationalVersion>7.17.0.0-09/19/2023 20:08:43</InformationalVersion>
+  <Version>8.0.0.0</Version>
+  <AssemblyVersion>8.0.0.0</AssemblyVersion>
+  <FileVersion>8.0.0.0</FileVersion>
+  <InformationalVersion>8.0.0.0-09/20/2023 22:58:39</InformationalVersion>
   <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
   <UserSecretsId>dea999a2-e05e-4e12-a9b7-c300e5791ab7</UserSecretsId>
  </PropertyGroup>

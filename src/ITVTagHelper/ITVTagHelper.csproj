@@ -1,26 +1,31 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup Label="Globals">
-    <SccProjectName>SAK</SccProjectName>
-    <SccProvider>SAK</SccProvider>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
-  <Version>8.0.0.0</Version><AssemblyVersion>8.0.0.0</AssemblyVersion><FileVersion>8.0.0.0</FileVersion><InformationalVersion>8.0.0.0-09/20/2023 22:58:38</InformationalVersion><Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright></PropertyGroup>
+ <PropertyGroup Label="Globals">
+  <SccProjectName>SAK</SccProjectName>
+  <SccProvider>SAK</SccProvider>
+  <SccAuxPath>SAK</SccAuxPath>
+  <SccLocalPath>SAK</SccLocalPath>
+  <Version>8.0.0.0</Version>
+  <AssemblyVersion>8.0.0.0</AssemblyVersion>
+  <FileVersion>8.0.0.0</FileVersion>
+  <InformationalVersion>8.0.0.0-09/20/2023 22:58:38</InformationalVersion>
+  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
+ </PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <AssemblyName>ITVTagHelper</AssemblyName>
-    <PackageId>ITVTagHelper</PackageId>
-    <NetStandardImplicitPackageVersion>2.0.3</NetStandardImplicitPackageVersion>
+ <PropertyGroup>
+  <TargetFramework>net8.0</TargetFramework>
+  <AssemblyName>ITVTagHelper</AssemblyName>
+  <PackageId>ITVTagHelper</PackageId>
+  <NetStandardImplicitPackageVersion>2.0.3</NetStandardImplicitPackageVersion>
 
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-  </PropertyGroup>
+  <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+  <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+  <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+ </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
-  </ItemGroup>
+ <ItemGroup>
+  <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="2.2.0" />
+  <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
+ </ItemGroup>
 
 </Project>

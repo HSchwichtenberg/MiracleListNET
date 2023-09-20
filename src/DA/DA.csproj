@@ -13,7 +13,7 @@
  </PropertyGroup>
 
  <PropertyGroup>
-  <TargetFramework>net7.0</TargetFramework>
+  <TargetFramework>net8.0</TargetFramework>
 
   <EnableDefaultGlobalUsings>false</EnableDefaultGlobalUsings>
   <AssemblyName>DAL</AssemblyName>
@@ -60,12 +60,12 @@
  </ItemGroup>
 
  <ItemGroup>
-  <PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.1.134.7" />
+  <PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.1.151.7" />
   <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0-rc.1.23419.6" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0-rc.1.23419.6" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-rc.1.23419.6" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0-rc.1.23419.6" />
   <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.*" />
  </ItemGroup>
 

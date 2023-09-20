@@ -9,7 +9,7 @@
  </PropertyGroup>
 
  <PropertyGroup>
-  <TargetFrameworks>net6.0</TargetFrameworks>
+  <TargetFrameworks>net8.0</TargetFrameworks>
   <AssemblyName>BO</AssemblyName>
   <PackageId>BO</PackageId>
   <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -19,7 +19,7 @@
 
  <ItemGroup>
   <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.10.0" />
-  <PackageReference Include="FluentValidation" Version="11.5.*" />
+  <PackageReference Include="FluentValidation" Version="11.7.1" />
   <PackageReference Include="Newtonsoft.Json" Version="13.0.*" />
   <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
  </ItemGroup>

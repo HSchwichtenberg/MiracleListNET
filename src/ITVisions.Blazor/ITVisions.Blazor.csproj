@@ -2,7 +2,7 @@
 
  <!--Runtime-->
  <PropertyGroup>
-  <TargetFramework>net7.0</TargetFramework>
+  <TargetFramework>net8.0</TargetFramework>
  </PropertyGroup>
 
  <!--Namen-->
@@ -40,13 +40,13 @@
   <PackageReference Include="Blazored.LocalStorage" Version="4.4.*" />
   <PackageReference Include="Blazored.SessionStorage" Version="2.4.*" />
   <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.10.0" />
-  <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.*" />
-  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.0-rc.1.23421.29" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0-rc.1.23421.29" />
   <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="7.0.*" />
-  <PackageReference Include="Microsoft.JSInterop" Version="7.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0-rc.1.23419.4" />
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-rc.1.23419.4" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="8.0.0-rc.1.23419.4" />
+  <PackageReference Include="Microsoft.JSInterop" Version="8.0.0-rc.1.23421.29" />
   <PackageReference Include="UAParser" Version="3.1.*" />
  </ItemGroup>
 

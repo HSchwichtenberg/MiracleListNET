@@ -57,12 +57,12 @@
  <!--Nuget-Pakete-->
  <ItemGroup>
   <!--Standardreferenzen für BD-->
-  <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="7.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="8.0.0-rc.1.9171" />
 
   <!--Zusätzliche Pakete von Microsoft -->
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
-  <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.0-rc.1.23421.29" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0-rc.1.23419.4" />
+  <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.0-rc.1.23421.29" />
   <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 
   <!--Zusätzliche Pakete von Anderen-->

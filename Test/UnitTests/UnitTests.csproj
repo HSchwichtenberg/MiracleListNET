@@ -16,7 +16,7 @@
  </PropertyGroup>
 
  <PropertyGroup>
-  <TargetFramework>net7.0</TargetFramework>
+  <TargetFramework>net8.0</TargetFramework>
   <DebugType>Full</DebugType>
   <AssemblyName>UnitTests</AssemblyName>
   <PackageId>UnitTests</PackageId>
@@ -47,21 +47,21 @@
  </ItemGroup>
 
  <ItemGroup>
-  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="7.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
-  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="8.0.0-rc.1.23421.29" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-rc.1.23419.6" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0-rc.1.23419.4" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0-rc.1.23419.4" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0-rc.1.23419.4" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0-rc.1.23419.4" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0-rc.1.23419.4" />
+  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0-preview-23424-02" />
   <PackageReference Include="NHibernateProfiler.Appender" Version="6.0.6040" />
   <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
-  <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+  <PackageReference Include="xunit.runner.visualstudio" Version="2.5.2-pre.3">
    <PrivateAssets>all</PrivateAssets>
    <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
   </PackageReference>
-  <PackageReference Include="xunit" Version="2.4.2" />
+  <PackageReference Include="xunit" Version="2.5.1" />
   <PackageReference Include="Xunit.SkippableFact" Version="1.4.13" />
   <PackageReference Include="DeepEqual" Version="4.2.1" />
   <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.10.0" />

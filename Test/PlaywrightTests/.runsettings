@@ -4,7 +4,7 @@
  <!-- Eigene Einstellungen-->
  <TestRunParameters>
   <!-- https://miraclelist-bs.azurewebsites.net" oder https://localhost:44387/ -->
-  <Parameter name="URL" value="https://localhost:44387" />
+  <Parameter name="URL" value="https://miraclelist-bs.azurewebsites.net" />
  </TestRunParameters>
 
  <!-- Einstellungen für Playwright-->

@@ -9,6 +9,10 @@ namespace PlaywrightTests;
 
 public class PlaywrightUtil
 {
+
+ /// <summary>
+ /// Prüfe, ob alle Kinder (bis auf die letzten n) ein bestimmtes Tag sind
+ /// </summary>
  public static async Task VerifyChilddren(IElementHandle parent, string expectedTag, int tail = 0)
  {
   Assert.IsTrue(await parent.EvaluateAsync<bool>($$"""
@@ -25,6 +29,9 @@ public class PlaywrightUtil
 ));
  }
 
+ /// <summary>
+ /// Liefere letztes Kind-Tag
+ /// </summary>
  public static async Task<string> GetLastChildTag(IElementHandle parent)
  {
   return await parent.EvaluateAsync<string>(@"(x) => {

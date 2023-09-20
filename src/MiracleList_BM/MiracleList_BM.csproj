@@ -2,8 +2,8 @@
 
  <!--Compilation & Runtime-->
  <PropertyGroup>
-  <TargetFrameworks>net7.0-android;</TargetFrameworks>
-  <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
+  <TargetFrameworks>net8.0-android;net8.0-windows10.0.19041.0</TargetFrameworks>
+ </PropertyGroup>
   <!--<TargetFrameworks>net7.0-windows10.0.19041.0</TargetFrameworks>-->
   <!--net7.0-ios;net7.0-maccatalyst;net7.0-tizen;net7.0-android;-->
   <TargetPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">33</TargetPlatformVersion>
@@ -134,7 +134,7 @@
 
  <!--COM-Referenz für Word-Dokumentengenerierung - geht nur auf Windows!!!-->
  <ItemGroup>
-  <COMReference Include="Microsoft.Office.Interop.Word" Condition="'$(TargetFramework)' == 'net7.0-windows10.0.19041.0'">
+  <COMReference Include="Microsoft.Office.Interop.Word" Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">
    <WrapperTool>tlbimp</WrapperTool>
    <VersionMinor>7</VersionMinor>
    <VersionMajor>8</VersionMajor>

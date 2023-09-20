@@ -35,9 +35,9 @@
  </ItemGroup>-->
 
  <!--Lazy Loading-->
- <ItemGroup>
+ <!--<ItemGroup>
   <BlazorWebAssemblyLazyLoad Include="SamplesRCL.dll" />
- </ItemGroup>
+ </ItemGroup>-->
 
  <!--für Zeigerpororrogrammierung erlauben neue JSinterop ab Blazor WebAssembly 7.0-->
  <PropertyGroup>

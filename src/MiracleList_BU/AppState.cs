@@ -63,8 +63,8 @@ public class AppState : IAppState
    //{ "Staging", StagingURL },
    };
 
-  //if (includeLocalhost || host.Environment == "Development") list.Add(DebugURL, DebugURL);
-  //if (host.Environment == "Staging") list.Add(StagingURL, StagingURL);
+  if (includeLocalhost || host.IsDevelopment()) list.Add(DebugURL, DebugURL);
+  if (host.IsEnvironment("Staging")) list.Add(StagingURL, StagingURL);
   return list;
  }
 }

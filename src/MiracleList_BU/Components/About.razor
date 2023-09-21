@@ -1,0 +1,49 @@
+﻿@page "/about"
+@using ITVisions.Blazor
+@using MLBlazorRCL.Texts
+@inject Microsoft.AspNetCore.Hosting.Server.IServer server
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
+@* @inject Microsoft.AspNetCore.Http.IHttpContextAccessor contextAccessor *@
+
+@*Obsolet: IHostingEnvironment*@
+
+
+<div class="row">
+
+ <div class="col-xs-6">
+
+  <h2>Technische Daten</h2>
+  @*Dies ist ein Steuerelement aus ITVisions.Blazor*@
+  <SystemInfo></SystemInfo>
+
+  <b> WebServer-Typ:</b> @server.ToString()
+  <br>
+  <b> WebServer-Version:</b> @serverSoftware
+  <br>
+  <b> ApplicationName:</b> @env.ApplicationName
+  <br>
+  <b> ContentRootPath:</b> @env.ContentRootPath
+  <br />
+  <b> ContentRootFileProvider:</b> @env.ContentRootFileProvider
+  <br />
+  <b> WebRootPath:</b> @env.WebRootPath
+  <br />
+  <b> WebRootFileProvider:</b> @env.WebRootFileProvider
+  <br />
+  <b> Environment:</b> @env.EnvironmentName
+ </div>
+
+ <div class="col-xs-6">
+  <AboutMiracleList />
+ </div>
+
+</div>
+
+@code
+{
+ string serverSoftware = "n/a";
+ protected override async System.Threading.Tasks.Task OnInitializedAsync() {
+  // var serverVars = contextAccessor.HttpContext.Features.Get<Microsoft.AspNetCore.Http.Features.IServerVariablesFeature>();
+  // serverSoftware = (serverVars == null ? null : serverVars["SERVER_SOFTWARE"]);
+ }
+}

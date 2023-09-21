@@ -4,7 +4,7 @@
 @using Microsoft.AspNetCore.Http
 @using Microsoft.Extensions.DependencyInjection
 @inject BlazorUtil Util
-@inject IHttpContextAccessor HttpContextAccessor
+@* @inject IHttpContextAccessor HttpContextAccessor *@
 @inject IServiceProvider ServiceProvider
 
 <button @onclick="DI">DI-Demo</button>
@@ -13,6 +13,7 @@
 
 @code
 {
+
  public string Ausgabe { get; set; }
 
  interface IXY { }
@@ -53,7 +54,7 @@
 
   try
   {
-   httpContext = HttpContextAccessor.HttpContext;
+   // httpContext = HttpContextAccessor.HttpContext;
   }
   catch (Exception ex)
   {
@@ -63,13 +64,13 @@
   if (httpContext == null) Ausgabe += "HttpContext ist null<br>";
   else
   { // das geht nur in Blazor Server!
-   IJSRuntime js10 = (IJSRuntime)HttpContextAccessor.HttpContext.RequestServices.GetService(typeof(IJSRuntime));
+   IJSRuntime js10 = (IJSRuntime)httpContext.RequestServices.GetService(typeof(IJSRuntime));
    Ausgabe += js10.GetType().FullName + "<br>";
 
-   IJSRuntime js11 = (IJSRuntime)HttpContextAccessor.HttpContext.RequestServices.GetService<IJSRuntime>();
+   IJSRuntime js11 = (IJSRuntime)httpContext.RequestServices.GetService<IJSRuntime>();
    Ausgabe += js11.GetType().FullName + "<br>";
 
-   var request = HttpContextAccessor.HttpContext.Request;
+   var request = httpContext.Request;
    Ausgabe += "<h3>Request-Objekt</h3>" + request.ToNameValueString(attributeSeparator: "<br>");
   }
 

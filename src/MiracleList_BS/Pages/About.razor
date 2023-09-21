@@ -3,7 +3,7 @@
 @using MLBlazorRCL.Texts
 @inject Microsoft.AspNetCore.Hosting.Server.IServer server
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
-@inject Microsoft.AspNetCore.Http.IHttpContextAccessor contextAccessor
+@* @inject Microsoft.AspNetCore.Http.IHttpContextAccessor contextAccessor *@
 
 @*Obsolet: IHostingEnvironment*@
 
@@ -43,7 +43,7 @@
 {
  string serverSoftware = "n/a";
  protected override async System.Threading.Tasks.Task OnInitializedAsync() {
-  var serverVars = contextAccessor.HttpContext.Features.Get<Microsoft.AspNetCore.Http.Features.IServerVariablesFeature>();
-  serverSoftware = (serverVars == null ? null : serverVars["SERVER_SOFTWARE"]);
+  // var serverVars = contextAccessor.HttpContext.Features.Get<Microsoft.AspNetCore.Http.Features.IServerVariablesFeature>();
+  // serverSoftware = (serverVars == null ? null : serverVars["SERVER_SOFTWARE"]);
  }
 }

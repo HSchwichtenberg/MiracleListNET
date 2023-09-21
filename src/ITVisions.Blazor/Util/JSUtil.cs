@@ -25,11 +25,11 @@ namespace ITVisions.Blazor
   private BlazorUtil Util { get; set; } = null;
   private ISessionStorageService SessionStorageService { get; set; } = null;
   // DI
-  public JSUtil(IJSRuntime jsRuntime, NavigationManager NavigationManager, IHttpContextAccessor httpContextAccessor, BlazorUtil Util, ISessionStorageService LocalStorageService)
+  public JSUtil(IJSRuntime jsRuntime, NavigationManager NavigationManager, BlazorUtil Util, ISessionStorageService LocalStorageService) // TODO: IHttpContextAccessor httpContextAccessor 
   {
    _jsRuntime = jsRuntime;
    this.NavigationManager = NavigationManager;
-   this.httpContextAccessor = httpContextAccessor;
+   //this.httpContextAccessor = httpContextAccessor;
    this.Util = Util;
    this.SessionStorageService = LocalStorageService;
   }

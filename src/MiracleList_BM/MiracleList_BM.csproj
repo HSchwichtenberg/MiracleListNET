@@ -22,6 +22,7 @@
  <PropertyGroup>
   <OutputType>Exe</OutputType>
   <UseMaui>true</UseMaui>
+  <SkipValidateMauiImplicitPackageReferences>true</SkipValidateMauiImplicitPackageReferences>
   <SingleProject>true</SingleProject>
   <ImplicitUsings>enable</ImplicitUsings>
   <EnableDefaultCssItems>false</EnableDefaultCssItems>
@@ -100,8 +101,6 @@
   <EmbeddedResource Include="appsettings.json" />
  </ItemGroup>
 
-
- 
  <!--Projektreferenzen-->
  <ItemGroup>
   <ProjectReference Include="..\MiracleList_Interfaces\MiracleList_Interfaces.csproj" />
@@ -112,7 +111,7 @@
   <ProjectReference Include="..\SamplesRCL\SamplesRCL.csproj" />
  </ItemGroup>
 
- <!--Neue NuGet-Pakete für MAUI ab .NET 8.0-->
+ <!--Neue NuGet-Pakete für MAUI, die ab .NET 8.0 explicit sein müssen-->
  <ItemGroup>
   <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
   <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />

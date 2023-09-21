@@ -20,11 +20,11 @@ namespace ITVisions.Blazor
   private IHttpContextAccessor httpContextAccessor { get; set; } = null;
 
   // DI
-  public BlazorUtil(IJSRuntime jsRuntime, NavigationManager NavigationManager, IHttpContextAccessor httpContextAccessor)
+  public BlazorUtil(IJSRuntime jsRuntime, NavigationManager NavigationManager)
   {
    _jsRuntime = jsRuntime;
    this.NavigationManager = NavigationManager;
-   this.httpContextAccessor = httpContextAccessor;
+   //TODO: this.httpContextAccessor = httpContextAccessor;
   }
 
   #region Blazor Type

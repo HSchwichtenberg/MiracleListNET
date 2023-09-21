@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using MiracleList;
 using MLBlazorRCL.MainView;
+using MiracleList_BU;
 
 namespace Web;
 public class Program
@@ -52,7 +53,7 @@ public class Program
   app.MapRazorComponents<App>()
     .AddServerRenderMode()
     .AddWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(
+    .AddAdditionalAssemblies( // Discover components from additional assemblies for static server rendering
      typeof(MiracleList_BU.Client.Pages.Counter).Assembly,
      typeof(MLBlazorRCL.Login.Login).Assembly,
      typeof(Samples.SamplesList).Assembly

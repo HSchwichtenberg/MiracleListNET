@@ -1,4 +1,7 @@
-﻿<Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="new[] { typeof(Client._Imports).Assembly,      typeof(MLBlazorRCL.Login.Login).Assembly,      typeof(Samples.SamplesList).Assembly }">
+﻿@using Microsoft.AspNetCore.Components.Authorization
+
+<CascadingAuthenticationState>
+ <Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="new[] { typeof(Client._Imports).Assembly,      typeof(MLBlazorRCL.Login.Login).Assembly,      typeof(Samples.SamplesList).Assembly }">
 
  <Navigating>
   <div>
@@ -13,3 +16,4 @@
     </Found>
 
 </Router>
+</CascadingAuthenticationState>

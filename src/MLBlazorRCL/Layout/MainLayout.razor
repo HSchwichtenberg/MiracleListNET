@@ -19,7 +19,7 @@
 
  <!-- ### Statusanzeige: Anzeige dieses Blocks oben nur auf großen Displays -->
  <div class="col-xs-6 col-lg-9 col-sm-7 col-md-8 hidden-xs" style="vertical-align: middle;margin-top:10px">
-  @* <CurrentUser></CurrentUser> *@
+  <CurrentUser></CurrentUser>
  </div>
 
  <!-- ### Hamburger-Menü rechts oben -->
@@ -32,7 +32,7 @@
     <ul class="dropdown-menu">
      <!-- Menüpunkte für MiracleList-->
      <li><a href="/About">Über diese App</a></li>
-    @*  <AuthorizeView>
+     <AuthorizeView>
       <Authorized>
        <li><a href="/Main">MiracleList-Aufgabenverwaltung</a></li>
        <li><a href="/Logout">Logout</a></li>
@@ -40,7 +40,7 @@
       <NotAuthorized>
        <li><a href="/Login">Login</a></li>
       </NotAuthorized>
-     </AuthorizeView> *@
+     </AuthorizeView>
      <!-- Menüpunkte für weitere Blazor-Beispiele außerhalb von MiracleList-->
      <li><a href="/SamplesList">Blazor-Beispiele außerhalb der MiracleList</a></li>
      <!-- Links ins WWW-->
@@ -73,7 +73,7 @@
  <!-- Alternative Anzeige dieses Blocks unten auf kleinen Displays (!!! Codedopplung, könnte man noch in eine Komponente auslagern !!!) -->
  <div class="row">
   <div class="col-xs-12 hidden-sm hidden-md hidden-lg" style="padding:0px;">
-  @* <CurrentUser></CurrentUser> *@
+  <CurrentUser></CurrentUser>
   </div>
  </div>
 </div>

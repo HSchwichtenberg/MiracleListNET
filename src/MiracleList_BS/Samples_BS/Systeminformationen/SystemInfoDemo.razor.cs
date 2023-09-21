@@ -21,7 +21,7 @@ namespace Web.Samples_BS.Systeminformationen
   [Inject]
   public NavigationManager NavigationManager { get; set; } = null;
   //[Inject]
-  //IHttpContextAccessor HttpContextAccessor { get; set; } = null;
+  IHttpContextAccessor HttpContextAccessor { get; set; } = null;
 
   public string Ausgabe1 { get; set; }
   public string Ausgabe2 { get; set; }

@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <base href="/" />
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+ <base href="/" />
 
  <title>MiracleList_BS / @("v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString())</title>
  <meta charset="utf-8" />
@@ -32,18 +32,21 @@
  <link rel="stylesheet" href="/_content/Blazor.ContextMenu/blazorContextMenu.min.css" />
  <script src="/_content/Blazor.ContextMenu/blazorContextMenu.min.js"></script>
 
+ <!-- -------- Für BlazorUtil -->
  <script src="/_content/ITVisions.Blazor/BlazorUtil.js"></script>
 
- <!--Für CHARTIST.JS -->
+ <!-- -------- Für CHARTIST.JS -->
  <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
  <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 
-    <HeadOutlet />
+ <HeadOutlet />
 </head>
 
 <body>
  <Routes @rendermode="@(new ServerRenderMode(prerender: false))" />
-    <script src="_framework/blazor.web.js"></script>
+ <script src="_framework/blazor.web.js"></script>
+
+
 </body>
 
 </html>

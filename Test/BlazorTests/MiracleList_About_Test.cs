@@ -46,7 +46,7 @@ namespace MiracleListTests
    Services.AddSingleton<NavigationManager>(new MockNavigationManager(UriBefore));
    Services.AddSingleton<IWebHostEnvironment>(Mock.Create<IWebHostEnvironment>());
    //jsMock = Services.AddMockJSRuntime(JSRuntimeMode.Loose); // loose is default
-   Services.AddSingleton<BlazorUtil>(new BlazorUtil(this.JSInterop.JSRuntime, new MockNavigationManager(UriBefore), null));
+   Services.AddSingleton<BlazorUtil>(new BlazorUtil(this.JSInterop.JSRuntime, new MockNavigationManager(UriBefore)));
 
    //Services.AddSingleton<BD.AppState>();
 

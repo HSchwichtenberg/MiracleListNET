@@ -44,7 +44,7 @@ public class MiracleList_MainView_Test : TestContext
   this.JSInterop.Mode = JSRuntimeMode.Loose; // https://bunit.dev/docs/test-doubles/emulating-ijsruntime.html
   this.Services.AddSingleton<IWebHostEnvironment>(new MockWebHostEnvironment());
   //this.Services.AddSingleton<NavigationManager>(new MockNavigationManager());
-  this.Services.AddSingleton<BlazorUtil>(new BlazorUtil(this.JSInterop.JSRuntime, new MockNavigationManager(), null));
+  this.Services.AddSingleton<BlazorUtil>(new BlazorUtil(this.JSInterop.JSRuntime, new MockNavigationManager()));
   this.Services.AddScoped<AuthenticationStateProvider, MockAuthenticationStateProvider>();
   IConfiguration c = Mock.Create<IConfiguration>();
   this.Services.AddSingleton<IConfiguration>(c);

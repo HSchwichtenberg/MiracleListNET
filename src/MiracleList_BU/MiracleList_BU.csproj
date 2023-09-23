@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+  <Version>8.0.0.0</Version><AssemblyVersion>8.0.0.0</AssemblyVersion><FileVersion>8.0.0.0</FileVersion><InformationalVersion>8.0.0.0-09/23/2023 19:02:33</InformationalVersion></PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MiracleList_BU.Client\MiracleList_BU.Client.csproj" />

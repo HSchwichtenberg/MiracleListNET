@@ -3,10 +3,10 @@
  <PropertyGroup>
   <TargetFramework>net7.0-windows</TargetFramework>
   <RazorLangVersion>7.0</RazorLangVersion>
-  <Version>7.12.5.0</Version>
-  <AssemblyVersion>7.12.5.0</AssemblyVersion>
-  <FileVersion>7.12.5.0</FileVersion>
-  <InformationalVersion>7.12.5.0-05/17/2023 11:49:31</InformationalVersion>
+  <Version>7.17.0.0</Version>
+  <AssemblyVersion>7.17.0.0</AssemblyVersion>
+  <FileVersion>7.17.0.0</FileVersion>
+  <InformationalVersion>7.17.0.0-09/19/2023 20:08:43</InformationalVersion>
   <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
   <UserSecretsId>dea999a2-e05e-4e12-a9b7-c300e5791ab7</UserSecretsId>
  </PropertyGroup>
@@ -16,13 +16,13 @@
  </PropertyGroup>
 
  <ItemGroup>
-  <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
-  <PackageReference Include="bunit" Version="1.19.14" />
-  <PackageReference Include="JustMock" Version="2023.1.117.1" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
-  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
-  <PackageReference Include="xunit" Version="2.4.2" />
-  <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+  <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
+  <PackageReference Include="bunit" Version="1.23.9" />
+  <PackageReference Include="JustMock" Version="2023.2.719.137" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0-rc.1.23419.4" />
+  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0-preview-23424-02" />
+  <PackageReference Include="xunit" Version="2.5.1" />
+  <PackageReference Include="xunit.runner.visualstudio" Version="2.5.1">
    <PrivateAssets>all</PrivateAssets>
    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
   </PackageReference>

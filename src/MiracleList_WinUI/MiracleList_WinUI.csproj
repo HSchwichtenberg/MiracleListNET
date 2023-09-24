@@ -10,15 +10,15 @@
   <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
   <UseWinUI>true</UseWinUI>
   <EnableMsixTooling>true</EnableMsixTooling>
-  <Version>7.12.5.0</Version>
+  <Version>7.17.0.0</Version>
  </PropertyGroup>
 
  <!--Versionsinfos-->
  <PropertyGroup>
   <Version>7.11.0.0</Version>
-  <AssemblyVersion>7.12.5.0</AssemblyVersion>
-  <FileVersion>7.12.5.0</FileVersion>
-  <InformationalVersion>7.12.5.0-05/17/2023 11:49:31</InformationalVersion>
+  <AssemblyVersion>7.17.0.0</AssemblyVersion>
+  <FileVersion>7.17.0.0</FileVersion>
+  <InformationalVersion>7.17.0.0-09/19/2023 20:08:43</InformationalVersion>
   <ApplicationDisplayVersion>7.11</ApplicationDisplayVersion>
   <ApplicationVersion>7</ApplicationVersion>
  </PropertyGroup>
@@ -62,7 +62,7 @@
   <PackageReference Include="Microsoft.Extensions.Configuration.JSON" Version="7.0.*" />
   <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.*" />
   <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.*" />
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.6.0" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.10.0" />
   <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
  </ItemGroup>
 

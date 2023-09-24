@@ -39,10 +39,10 @@
 
  <!--Versionsinfos-->
  <PropertyGroup>
-  <Version>7.12.5.0</Version>
-  <AssemblyVersion>7.12.5.0</AssemblyVersion>
-  <FileVersion>7.12.5.0</FileVersion>
-  <InformationalVersion>7.12.5.0-05/17/2023 11:49:30</InformationalVersion>
+  <Version>7.17.0.0</Version>
+  <AssemblyVersion>7.17.0.0</AssemblyVersion>
+  <FileVersion>7.17.0.0</FileVersion>
+  <InformationalVersion>7.17.0.0-09/19/2023 20:08:42</InformationalVersion>
   <ApplicationDisplayVersion>7.11</ApplicationDisplayVersion>
   <ApplicationVersion>7</ApplicationVersion>
   <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
@@ -110,6 +110,7 @@
 
  <!--NuGet-Pakete-->
  <ItemGroup>
+
   <!--Zusätzliche Pakete von Microsoft-->
   <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.*" />
   <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.*" />
@@ -118,13 +119,17 @@
   <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.*" />
 
   <!--Zusätzliche Pakete von Anderen-->
-  <PackageReference Include="Blazor.Extensions.Logging" Version="2.0.4" />
-  <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
-  <PackageReference Include="Blazored.Toast" Version="4.1.0" />
+  <PackageReference Include="Blazor.Extensions.Logging" Version="2.0.*" />
+  <PackageReference Include="Blazored.LocalStorage" Version="4.4.*" />
+  <PackageReference Include="Blazored.Toast" Version="4.1.*" />
+
+  <!--Nuget-Pakethölle-->
+  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.*" />
  </ItemGroup>
 
  <ItemGroup>
- <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.*" />
+
  </ItemGroup>
 
  <!--COM-Referenz für Word-Dokumentengenerierung - geht nur auf Windows!!!-->

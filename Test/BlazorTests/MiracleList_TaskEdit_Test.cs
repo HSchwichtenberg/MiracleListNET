@@ -67,7 +67,6 @@ namespace MiracleListTests
    return task;
   }
 
-
   [Fact]
   public void SaveTest()
   {

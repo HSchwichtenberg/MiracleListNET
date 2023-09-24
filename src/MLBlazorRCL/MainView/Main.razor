@@ -15,10 +15,10 @@
  <!-- ### Spalte 1: Kategorien-->
  @if (categorySet != null)
  {
-  <div class="MLPanel col-sm-4 col-md-3 col-lg-2 @(this.task!=null ? "hidden-sm hidden-xs": ""  ) @(this.category!=null ? "hidden-xs": ""  )">
+  <div id="col1" class="MLPanel col-sm-4 col-md-3 col-lg-2 @(this.task!=null ? "hidden-sm hidden-xs": ""  ) @(this.category!=null ? "hidden-xs": ""  )">
    <!-- ---------- Überschrift Spalte 1-->
    <div style="margin-top:5px;margin-bottom:7px" class="form-inline">
-    <span class="columnHeadline"> @(categorySet.Count()) <span>Kategorien</span></span>
+    <span class="columnHeadline"><span id="categoryCount">@(categorySet.Count())</span> <span>Kategorien</span></span>
    </div>
    <!-- ---------- neue Kategorie eingeben-->
    <input name="newCategoryName" type="text" class="form-control blue" @bind="newCategoryName" @onkeyup="(e) => NewCategory_Keyup(e)" placeholder="Neue Kategorie..." />
@@ -44,7 +44,7 @@
  <!-- ### Spalte 2: Aufgabenliste in der gewählten Kategorie oder Suchergebnisse -->
  @if (category != null)
  {
-  <div class="MLPanel @(this.task!=null ? "hidden-xs col-sm-6 col-md-5 col-lg-6" : "col-xs-12 col-sm-8 col-md-9 col-lg-10" )">
+  <div id="col2" class="MLPanel @(this.task!=null ? "hidden-xs col-sm-6 col-md-5 col-lg-6" : "col-xs-12 col-sm-8 col-md-9 col-lg-10" )">
 
    @if (this.searchResultSet == null)
    {
@@ -53,9 +53,11 @@
     <div style="margin-top:5px;margin-bottom:5px;" class="form-inline">
 
      <span id="TaskHeadline" class="columnHeadline">
-      @(
-          taskSet == null ? 0 : taskSet.Count()
-          )
+      <span id="taskCount">
+       @(
+           taskSet == null ? 0 : taskSet.Count()
+           )
+      </span>
       Aufgaben in <i> @category?.Name</i>
 
       <button @onclick="ReturnToCategoryList" style="margin-left:10px" class="btn btn-primary hidden-sm hidden-md hidden-lg hidden-xl" title="Zurück zur Aufgabenkategorieliste">
@@ -66,7 +68,7 @@
 
      <!-- ---------- Filter-->
      @*ACHTUNG: VS-Bug in älteren VS-Versionen. Wird dort als fehlerhaft angezeigt, kompiliert und läuft aber! https://github.com/dotnet/razor/issues/8315*@
-     <select @bind="taskFilter" @bind:after="()=>ShowTaskSet(this.category)" style="margin-left:15px;height:25px;width:120px;display:inline-block" class="form-control input-sm blue">
+     <select @bind="taskFilter" @bind:after="()=>ShowTaskSet(this.category)" style="margin-left:15px;height:25px;width:170px;display:inline-block" class="form-control input-sm blue">
       <option value="0">Alle Aufgaben</option>
       <option value="1">Nur offene Aufgaben</option>
       <option value="2">Nur erledigte Aufgaben</option>
@@ -131,7 +133,7 @@
  <!-- ### Spalte 3: Aufgabendetails-->
  @if (task != null)
  {
-  <div class="MLPanel col-xs-12 col-sm-6 col-md-4 col-lg-4">
+  <div id="col3" class="MLPanel col-xs-12 col-sm-6 col-md-4 col-lg-4">
    @{
     /* DEMO: 20. Unterkomponente: einbetten mit Parametern */
    }

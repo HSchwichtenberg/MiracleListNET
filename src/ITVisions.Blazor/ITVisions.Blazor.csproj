@@ -14,10 +14,10 @@
 
  <!--Versionen-->
  <PropertyGroup>
-  <Version>7.13.1.1</Version>
-  <AssemblyVersion>7.13.1.1</AssemblyVersion>
-  <FileVersion>7.13.1.1</FileVersion>
-  <InformationalVersion>7.13.1.1-06/02/2023</InformationalVersion>
+  <Version>7.17.0.0</Version>
+  <AssemblyVersion>7.17.0.0</AssemblyVersion>
+  <FileVersion>7.17.0.0</FileVersion>
+  <InformationalVersion>7.17.0.0-09/19/2023 20:08:42</InformationalVersion>
  </PropertyGroup>
 
  <!--Autor-->
@@ -29,7 +29,7 @@
   <!--<PackageIcon>ITVisions.jpg</PackageIcon>-->
   <Description>
    Hilfsklassen für Blazor WebAssembly, Blazor Server und Blazor Desktop inkl. JavaScript-Datei
-   Startup.cs:  services.AddScoped&lt;BlazorUtil&gt;();
+   Startup.cs:  services.AddBlazorUtil(); bzw. AddBlazorUtilForBlazorServer();
    index.html bzw. _host.cshtml: &lt;script src="/_content/ITVisions.Blazor/BlazorUtil.js"&gt;&lt;/script&gt;
   </Description>
   <PackageOutputPath>H:\DB\NugetHS</PackageOutputPath>
@@ -37,15 +37,15 @@
 
  <!--NuGets-->
  <ItemGroup>
-  <PackageReference Include="Blazored.LocalStorage" Version="4.3.*" />
-  <PackageReference Include="Blazored.SessionStorage" Version="2.3.*" />
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.6.0" />
+  <PackageReference Include="Blazored.LocalStorage" Version="4.4.*" />
+  <PackageReference Include="Blazored.SessionStorage" Version="2.4.*" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.10.0" />
   <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.*" />
   <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.*" />
   <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
-  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-  <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="7.0.0" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.*" />
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="7.0.*" />
   <PackageReference Include="Microsoft.JSInterop" Version="7.0.*" />
   <PackageReference Include="UAParser" Version="3.1.*" />
  </ItemGroup>

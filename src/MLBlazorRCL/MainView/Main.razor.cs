@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ITVisions;
 using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -91,57 +92,61 @@ public partial class Main : IAsyncDisposable
  protected override async Task OnAfterRenderAsync(bool firstRender)
  {
 
-  if (!firstRender && !String.IsNullOrEmpty(AppState.SignalRHubURL)) return; // alles Folgende nur 1x machen, wenn es eine HubURL gibt
-  if (AppState.HubConnection != null && AppState.HubConnection.State == HubConnectionState.Connected) return; // nicht nochmals verbinden, wenn es schon eine bestehende Verbindung gibt!
+  if (!firstRender) return; // alles Folgende nur 1x machen
 
   #region ---- ASP.NET Core SignalR-Verbindung aufbauen
-  var hubURL = new Uri(AppState.SignalRHubURL);
-  Util.Log("SignalR.Connecting to " + hubURL.ToString());
-  AppState.HubConnection = new HubConnectionBuilder()
-      .WithUrl(hubURL)
-      .AddMessagePackProtocol()
-      .WithAutomaticReconnect()
-      .ConfigureLogging(logging =>
-      {
-       logging.AddProvider(new ITVisions.Logging.UniversalLoggerProvider(Util.Warn));
-       logging.SetMinimumLevel(LogLevel.Debug);
-      })
-      .Build();
-
-  // Reaktion auf eingehende Nachricht
-  AppState.HubConnection.On<string>(nameof(IMLHub.CategoryListUpdate), async (sender) =>
+  if (AppState.SignalRHubURL.IsNotNullOrEmpty())
   {
-   Util.Log($"SignalR.CategoryListUpdate from {sender} (Thread #{System.Threading.Thread.CurrentThread.ManagedThreadId})");
-   toastService.ShowSuccess($"Die Aufgabenliste wurde in einer anderen Anwendungsinstanz verändert.");
-   await ShowCategorySet(); // Daten neu laden
-   await InvokeAsync(StateHasChanged); // InvokeAsync() notwendig hier, weil die Nachricht im Hintergrund (anderer Thread) kommt
-  });
 
-  // Reaktion auf eingehende Nachricht
-  AppState.HubConnection.On<string, int>(nameof(IMLHub.TaskListUpdate), async (sender, categoryID) =>
-  {
-   Util.Log($"SignalR.TaskListUpdate from {sender}: {categoryID} (Thread #{System.Threading.Thread.CurrentThread.ManagedThreadId})");
+   if (AppState.HubConnection != null && AppState.HubConnection.State == HubConnectionState.Connected) return; // nicht nochmals verbinden, wenn es schon eine bestehende Verbindung gibt!
 
-   if (categoryID == this.category.CategoryID)
+   var hubURL = new Uri(AppState.SignalRHubURL);
+   Util.Log("SignalR.Connecting to " + hubURL.ToString());
+   AppState.HubConnection = new HubConnectionBuilder()
+       .WithUrl(hubURL)
+       .AddMessagePackProtocol()
+       .WithAutomaticReconnect()
+       .ConfigureLogging(logging =>
+       {
+        logging.AddProvider(new ITVisions.Logging.UniversalLoggerProvider(Util.Warn));
+        logging.SetMinimumLevel(LogLevel.Debug);
+       })
+       .Build();
+
+   // Reaktion auf eingehende Nachricht
+   AppState.HubConnection.On<string>(nameof(IMLHub.CategoryListUpdate), async (sender) =>
    {
-    toastService.ShowSuccess($"Die Aufgabe dieser Kategorie #{category.CategoryID}: \"{this.category.Name}\" wurden auf n einer anderen Anwendungsinstanz verändert.");
-    await ShowTaskSet(this.category); // Daten neu laden
+    Util.Log($"SignalR.CategoryListUpdate from {sender} (Thread #{System.Threading.Thread.CurrentThread.ManagedThreadId})");
+    toastService.ShowSuccess($"Die Aufgabenliste wurde in einer anderen Anwendungsinstanz verändert.");
+    await ShowCategorySet(); // Daten neu laden
     await InvokeAsync(StateHasChanged); // InvokeAsync() notwendig hier, weil die Nachricht im Hintergrund (anderer Thread) kommt
-   }
-   else
+   });
+
+   // Reaktion auf eingehende Nachricht
+   AppState.HubConnection.On<string, int>(nameof(IMLHub.TaskListUpdate), async (sender, categoryID) =>
    {
-    var changedCategory = this.categorySet.Where(x => x.CategoryID == categoryID).FirstOrDefault();
-    if (changedCategory != null) toastService.ShowSuccess($"Die Aufgabe der Kategorie #{category.CategoryID}: \"{this.category.Name}\" wurden auf n einer anderen Anwendungsinstanz verändert.");
-    // Kein UI-Update notwendig
-   }
-  });
+    Util.Log($"SignalR.TaskListUpdate from {sender}: {categoryID} (Thread #{System.Threading.Thread.CurrentThread.ManagedThreadId})");
 
-  // Verbindung zum SignalR-Hub starten
-  await AppState.HubConnection.StartAsync();
-  // Registrieren für Events
-  await AppState.HubConnection.SendAsync(nameof(IMLHub.Register), AppState.Token);
-  Util.Log("SignalR.Connection started!");
+    if (categoryID == this.category.CategoryID)
+    {
+     toastService.ShowSuccess($"Die Aufgabe dieser Kategorie #{category.CategoryID}: \"{this.category.Name}\" wurden auf n einer anderen Anwendungsinstanz verändert.");
+     await ShowTaskSet(this.category); // Daten neu laden
+     await InvokeAsync(StateHasChanged); // InvokeAsync() notwendig hier, weil die Nachricht im Hintergrund (anderer Thread) kommt
+    }
+    else
+    {
+     var changedCategory = this.categorySet.Where(x => x.CategoryID == categoryID).FirstOrDefault();
+     if (changedCategory != null) toastService.ShowSuccess($"Die Aufgabe der Kategorie #{category.CategoryID}: \"{this.category.Name}\" wurden auf n einer anderen Anwendungsinstanz verändert.");
+     // Kein UI-Update notwendig
+    }
+   });
 
+   // Verbindung zum SignalR-Hub starten
+   await AppState.HubConnection.StartAsync();
+   // Registrieren für Events
+   await AppState.HubConnection.SendAsync(nameof(IMLHub.Register), AppState.Token);
+   Util.Log("SignalR.Connection started!");
+  }
   #endregion
  }
 

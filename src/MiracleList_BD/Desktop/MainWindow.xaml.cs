@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Components.WebView.Wpf;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Web.WebView2.Core;
 using MiracleList;
 using MLBlazorRCL.MainView;
 using Web;
@@ -164,7 +165,9 @@ public partial class MainWindow : Window
  /// </summary>
  public void StatusBarUpdate()
  {
-  this.C_Status.Content = $"{System.Runtime.InteropServices.RuntimeInformation.OSDescription} | {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription} | Blazor Desktop {FileVersionInfo.GetVersionInfo(typeof(BlazorWebView).Assembly.Location).FileVersion} | Process #{System.Environment.ProcessId} | {System.IO.Path.GetFileName(System.Environment.ProcessPath)} | {System.Diagnostics.Process.GetCurrentProcess().WorkingSet64 / 1024 / 1024} MB | {DateTime.Now.ToLongTimeString()} | {(AppState.IsLoggedIn ? AppState.Username : "Kein Benutzer")} | {HybridSharedState.Location ?? "Starting..."}";
+  this.C_Status.Content = $"{System.Runtime.InteropServices.RuntimeInformation.OSDescription} | {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription} | Blazor Desktop {FileVersionInfo.GetVersionInfo(typeof(BlazorWebView).Assembly.Location).FileVersion} | " +
+    "WebView " + CoreWebView2Environment.GetAvailableBrowserVersionString() + " | " +
+   $"Process #{System.Environment.ProcessId} | {System.IO.Path.GetFileName(System.Environment.ProcessPath)} | {System.Diagnostics.Process.GetCurrentProcess().WorkingSet64 / 1024 / 1024} MB | {DateTime.Now.ToLongTimeString()} | {(AppState.IsLoggedIn ? AppState.Username : "Kein Benutzer")} | {HybridSharedState.Location ?? "Starting..."}";
   this.C_Status.ToolTip = "Letzte Aktualisierung in Managed Thread #" + System.Threading.Thread.CurrentThread.ManagedThreadId;
  }
 }

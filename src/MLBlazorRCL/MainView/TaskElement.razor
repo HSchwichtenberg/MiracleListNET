@@ -81,8 +81,12 @@
   if (result == false) return;
   // Löschen via Proxy-Aufruf
   await Proxy.DeleteTaskAsync(taskID, AppState.Token);
-  // Ereignis an Mutterkomponente
-  await TaskRemoved.InvokeAsync(Task);
+  // Ereignis an Mutterkomponente weitergeben
+  // ACHTUNG: Hier 2x InvokeAsync(), da bUnit bei nur einem Mal mit "The current thread is not associated with the renderer's synchronization context'?" aussteigt
+  await InvokeAsync(async () =>
+  {
+   await TaskRemoved.InvokeAsync(Task);
+  });
  }
 
  ///// <summary>
@@ -131,7 +135,6 @@
   // Ereignis an Mutterkomponente
   await TaskChecked.InvokeAsync(t);
  }
-
 
  #endregion
 }

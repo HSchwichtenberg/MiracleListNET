@@ -16,12 +16,10 @@ namespace ITVisions.Blazor
  public partial class BlazorUtil
  {
 
-
   public async ValueTask Alert(string text)
   {
    if (_jsRuntime == null) return;
-   Log("Alert");
-   await _jsRuntime.InvokeVoidAsync("ShowAlert", text);
+   await _jsRuntime.InvokeVoidAsync("ShowAlert", text.Trim());
   }
 
   /// <summary>

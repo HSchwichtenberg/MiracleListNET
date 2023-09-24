@@ -18,7 +18,7 @@ partial class JSInteropBWOnly
   if (script == null) script = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./JSInteropBWOnly.js");
 
   NETOutput = await script.InvokeAsync<string>("getMessage", "Holger");
-  this.StateHasChanged();
+  await InvokeAsync(StateHasChanged);
 
   await script.InvokeAsync<string>("setMessageNew");
  }

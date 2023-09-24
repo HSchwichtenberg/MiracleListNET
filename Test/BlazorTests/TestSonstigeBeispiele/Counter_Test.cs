@@ -1,20 +1,22 @@
 using System;
-using Xunit;
-using Bunit;
-using Samples.Komponentendateien;
-using Microsoft.Extensions.DependencyInjection;
-using ITVisions.Blazor;
-using Microsoft.JSInterop;
-using Microsoft.AspNetCore.Components;
-using System.Diagnostics;
 using System.Collections.Generic;
+using System.Diagnostics;
+using Bunit;
+using ITVisions.Blazor;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.JSInterop;
+using Samples.Komponentendateien;
+using Xunit;
 using static Samples.Komponenteneinbettung.Komponentenhost_Misc.CounterPanel;
 
-namespace BlazorTests
+namespace BlazorTests.TestSonstigeBeispiele
 {
 
  public class CounterPanel_Test : TestContext
  {
+
+
   [Fact]
   public void OneClickTest()
   {
@@ -27,20 +29,18 @@ namespace BlazorTests
    }
   }
 
-
-
   List<int> ValueList = new List<int>();
   [Fact]
   public void ParameterTest()
   {
 
    const int StartWert = 100;
-   var cut = RenderComponent<Samples.Komponenteneinbettung.Komponentenhost_ValueType.CounterPanel> 
-    (parameters=>parameters.Add(x=>x.StartValue, StartWert).Add(x => x.ValueHasChanged,(int x) => ValueHasChanged(x)));
+   var cut = RenderComponent<Samples.Komponenteneinbettung.Komponentenhost_ValueType.CounterPanel>
+    (parameters => parameters.Add(x => x.StartValue, StartWert).Add(x => x.ValueHasChanged, (int x) => ValueHasChanged(x)));
 
-    //(nameof(Samples.Komponenteneinbettung.Komponentenhost_ValueType.CounterPanel.StartValue), StartWert),
-    //   new EventCallback(nameof(Samples.Komponenteneinbettung.Komponentenhost_ValueType.CounterPanel.ValueHasChanged), )
-    //);
+   //(nameof(Samples.Komponenteneinbettung.Komponentenhost_ValueType.CounterPanel.StartValue), StartWert),
+   //   new EventCallback(nameof(Samples.Komponenteneinbettung.Komponentenhost_ValueType.CounterPanel.ValueHasChanged), )
+   //);
 
    cut.Find("button").Click();
    cut.GetChangesSinceFirstRender().ShouldHaveSingleTextChange("Current count: " + (StartWert + 1));

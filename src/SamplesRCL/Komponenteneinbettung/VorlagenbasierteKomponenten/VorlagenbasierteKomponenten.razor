@@ -1,10 +1,52 @@
 ﻿@page "/Samples/VorlagenbasierteKomponenten"
 @using ITVisions.Blazor
+@using ITVisions.Blazor.Controls
 @inject BlazorUtil Util
-<h3>Komponentenvorlagen</h3>
+
+<h1>Vorlagenbasierte Komponentenvorlagen</h1>
+
+<h3>ITVButton (vorlagenbasiert + AdditionalAttributes)</h3>
+
+<p>
 
 
-<h1>Expander</h1>
+<ITVButton onClick="Aktion" AnimationSeconds="1" class="btn btn-success" title="mit Animation">
+ <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
+</ITVButton>
+
+<ITVButton onClick="Aktion" AnimationSeconds="0" class="btn btn-warning" style="color:black" title="ohne Animation">
+ <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
+</ITVButton>
+</p>
+
+<p>
+<ITVButton onClick="AktionMitFehler" AnimationSeconds="1" class="btn btn-danger" title="mit Animation und Fehler ohne Fehlerbehandlung">
+ <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
+</ITVButton>
+
+<ITVButton onClick="AktionMitFehler" onError='async (ex)=>await Util.Alert("FEHLER: " + ex.Message)' AnimationSeconds="1" class="btn btn-danger" title="mit Animation und Fehler mit Fehlerbehandlung">
+ <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
+</ITVButton>
+</p>
+
+@code
+{
+ int counter = 41;
+
+ async Task Aktion()
+ {
+  counter++;
+ }
+
+ async Task AktionMitFehler()
+ {
+  await Task.Delay(500);
+  throw new ApplicationException("Etwas ist falsch gelaufen!");
+ }
+}
+
+<br />
+<h3>Expander</h3>
 
 @code
 {
@@ -12,11 +54,12 @@
  public int ErstesMVPJahr { get; set; } = 2004;
 }
 
+
 <Expander>
- <u>@Name</u> ist seit <u>@(DateTime.Now.Year-ErstesMVPJahr+1) Jahren</u> als Microsoft Most Valuable Professional (MVP) ausgezeichnet.
+ <u>@Name</u> ist seit <u>@(DateTime.Now.Year - ErstesMVPJahr + 1) Jahren</u> als Microsoft Most Valuable Professional (MVP) ausgezeichnet.
 </Expander>
 
-<h1>FlexExpander</h1>
+<h3>FlexExpander</h3>
 
 <FlexExpander>
  <HeadlineCollapsed>
@@ -27,10 +70,9 @@
  </HeadlineExpanded>
  <Content>
   <u>@Name</u> ist seit
-  <u>@(DateTime.Now.Year-ErstesMVPJahr+1) Jahren</u> als Microsoft Most Valuable Professional (MVP) ausgezeichnet.
+  <u>@(DateTime.Now.Year - ErstesMVPJahr + 1) Jahren</u> als Microsoft Most Valuable Professional (MVP) ausgezeichnet.
  </Content>
 </FlexExpander>
-
 
 
 @code
@@ -38,13 +80,13 @@
  List<string> URLs = new List<string>() { "www.IT-Visions.de", "www.dotnet-doktor.de", "www.dotnetframework.de", "www.dotnet7.de", "www.dotnet-lexikon.de" };
 }
 
-<h1>Liste mit Zeichenketten</h1>
+<h3>Liste mit Zeichenketten</h3>
 
 <UnorderedList Daten="@URLs">
  <a href="http://@context">@context</a>
 </UnorderedList>
 
-<h1>Liste mit Zeichenketten (Umbenennen des Kontextes)</h1>
+<h3>Liste mit Zeichenketten (Umbenennen des Kontextes)</h3>
 
 <UnorderedList Daten="@URLs" Context="url">
  <a href="http://@url">@url</a>
@@ -58,30 +100,29 @@
    new Website() { Name=".NET-Lexikon",  URL="www.dotnet-lexikon.de"},
    new Website() { Name=".NET 6.0",  URL="www.dotnet7.de"}
   };
+}
 
-};
 
-
-<h1>Liste mit komplexen Objekten (Renderfragment-Typ "Object")</h1>
+<h3>Liste mit komplexen Objekten (Renderfragment-Typ "Object")</h3>
 
 <UnorderedList Daten="@Websites">
  <a href="http://(@context as Website).URL">@((context as Website).Name)</a>
 </UnorderedList>
 
 
-<h1>Liste mit komplexen Objekten (Renderfragment-Typ "Website")</h1>
+<h3>Liste mit komplexen Objekten (Renderfragment-Typ "Website")</h3>
 
 <UnorderedTypedList Daten="@Websites">
  <a href="http://@context.URL">@context.Name</a>
 </UnorderedTypedList>
 
-<h1>Liste mit komplexen Objekten (generischer Renderfragment-Typ mit expliziter Typangabe)</h1>
+<h3>Liste mit komplexen Objekten (generischer Renderfragment-Typ mit expliziter Typangabe)</h3>
 
 <UnorderedGenericList Daten="@Websites" Typ="Website">
  <a href="http://@context.URL">@context.Name</a>
 </UnorderedGenericList>
 
-<h1>Liste mit komplexen Objekten (generischer Renderfragment-Typ mit Typ-Ableitung)</h1>
+<h3>Liste mit komplexen Objekten (generischer Renderfragment-Typ mit Typ-Ableitung)</h3>
 
 <UnorderedGenericList Daten="@Websites">
  <a href="http://@context.URL">@context.Name</a>

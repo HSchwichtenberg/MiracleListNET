@@ -21,10 +21,10 @@
 
  <!--Versionsinfos-->
  <PropertyGroup>
-  <Version>7.12.5.0</Version>
-  <AssemblyVersion>7.12.5.0</AssemblyVersion>
-  <FileVersion>7.12.5.0</FileVersion>
-  <InformationalVersion>7.12.5.0-05/17/2023 11:49:31</InformationalVersion>
+  <Version>7.17.0.0</Version>
+  <AssemblyVersion>7.17.0.0</AssemblyVersion>
+  <FileVersion>7.17.0.0</FileVersion>
+  <InformationalVersion>7.17.0.0-09/19/2023 20:08:43</InformationalVersion>
  </PropertyGroup>
  <ItemGroup>
    <Content Remove="wwwroot\manifest.json" />
@@ -83,7 +83,7 @@
   
   <!--Zusätzliche Pakete von Anderen-->
   <PackageReference Include="Blazor.Extensions.Logging" Version="2.0.4" />
-  <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
+  <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
   <PackageReference Include="Blazored.Toast" Version="4.1.0" />
   
   <!--!!! Community-Projekt BlazorWasmAntivirusProtection war ein Versuch, läuft aber nicht mit diesem Projekt !!!-->

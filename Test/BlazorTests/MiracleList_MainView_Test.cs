@@ -129,7 +129,6 @@ public class MiracleList_MainView_Test : TestContext
      }
     }
    }
-
   }).Returns(System.Threading.Tasks.Task.CompletedTask);
   #endregion
 

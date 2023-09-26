@@ -89,7 +89,7 @@ public class MiracleListTests : PageTest
 
   // // 1 bis n-1 sind <li> Elemente (Letztes Element ist <input>)
   // Zugriff auf die Children ist leider umständlich in Playwright, siehe auch https://github.com/microsoft/playwright/issues/17703 und https://github.com/microsoft/playwright/issues/4845
-  await PlaywrightUtil.VerifyChilddren(col1List, "li", 1);
+  await PlaywrightUtil.VerifyChildren(col1List, "li", 1);
   Assert.AreEqual("input", await PlaywrightUtil.GetLastChildTag(col1List));
   #endregion
 

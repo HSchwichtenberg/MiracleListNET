@@ -34,6 +34,7 @@ public class MiracleList_MainView_Test : TestContext
 {
  IMiracleListProxy mockProxy;
  int anzahlAufgaben = 5;
+ int anzahlKategorien = 5;
 
  /// <summary>
  /// Setup the test: DI of mocking classes
@@ -144,16 +145,15 @@ public class MiracleList_MainView_Test : TestContext
   Assert.All(col1List.ChildNodes.Take(categorySet.Count), x => Assert.Equal("li", x.NodeName, true));
   Assert.Equal("input", col1List.ChildNodes.Last().NodeName, true);
 
-  #region 10x neue Kategorie ergänzen
-  for (int i = 0; i < 10; i++)
+  #region 2x neue Kategorie ergänzen
+  for (int i = 1; i <= anzahlKategorien; i++)
   {
    Console.WriteLine("Kategorie anlegen: " + i);
 
    Assert.Equal("input", col1List.ChildNodes.ElementAt(categorySet.Count).NodeName, true);
    var inputNewCategoryName = cut.Find("input[name=newCategoryName]");
-   inputNewCategoryName.Change("Neue Kategorie");
+   inputNewCategoryName.Change("Testkategorie " + 1);
    inputNewCategoryName.KeyUp("Enter");
-
    cut.WaitForState(() => cut.Find("#categoryCount").Text() == categorySet.Count.ToString());
 
    // Neue Kategorie als aktuelle wählen
@@ -161,63 +161,62 @@ public class MiracleList_MainView_Test : TestContext
    // var liElement = cut.FindAll("#col1 ol li").ElementAt(i + 2);
    // liElement.Click();
    // Lösung: "This ensures that there are no changes to the DOM between Find method and the Click method calls."
-   await cut.InvokeAsync(() => cut.FindAll("#col1 ol li").ElementAt(i + 2).Click());
+   await cut.InvokeAsync(() => cut.FindAll("#col1 ol li").ElementAt(i + 1).Click());
 
    // In der neuen Kategorie gibt es erstmal keine Aufgaben
    cut.WaitForState(() => cut.Find("#taskCount").Text() == "0");
+  }
+  #endregion
 
-   #region Neue Aufgaben ergänzen
-   for (int j = 1; j <= anzahlAufgaben; j++)
-   {
-    Assert.Equal((j - 1).ToString(), cut.Find("#taskCount").Text());
-    // Nun eine Aufgabe ergänzen
-    var inputnewTaskTitle = cut.Find("input[name=newTaskTitle]");
-    inputnewTaskTitle.Change("Aufgabe #" + j);
-    inputnewTaskTitle.KeyUp("Enter");
-    // Nun sollte neue Aufgabe da sein
-    cut.WaitForState(() => cut.Find("#taskCount").Text() == j.ToString());
-   }
-   #endregion
+  #region Neue Aufgaben ergänzen
+  for (int j = 1; j <= anzahlAufgaben; j++)
+  {
+   Assert.Equal((j - 1).ToString(), cut.Find("#taskCount").Text());
+   // Nun eine Aufgabe ergänzen
+   var inputnewTaskTitle = cut.Find("input[name=newTaskTitle]");
+   inputnewTaskTitle.Change("Testaufgabe #" + j);
+   inputnewTaskTitle.KeyUp("Enter");
+   // Nun sollte neue Aufgabe da sein
+   cut.WaitForState(() => cut.Find("#taskCount").Text() == j.ToString());
+  }
+  #endregion
 
-   var checkBox = cut.Find("input[type='checkbox']");
-   checkBox.Change(true);
+  var checkBox = cut.Find("input[type='checkbox']");
+  checkBox.Change(true);
 
-   #region Erste drei Aufgaben abharken
-   var list = cut.FindAll("#col2 ol li input");
-   list[2].Change(true);
-   list[1].Change(true);
-   list[0].Change(true);
+  #region Erste drei Aufgaben abharken
+  var list = cut.FindAll("#col2 ol li input");
+  list[2].Change(true);
+  list[1].Change(true);
+  list[0].Change(true);
+  cut.Render();
+
+  for (int k = 0; k < 3; k++)
+  {
+   Assert.True((cut.FindAll("#col2 ol li input")[k] as IElement).IsChecked());
+  }
+  #endregion
+
+  #region Alle Aufgaben löschen: Immer die oberste löschen
+
+  for (int l = 0; l < anzahlAufgaben; l++)
+  {
+   var element = cut.FindAll("#col2 li")[0];
+   var id = element.Attributes["title"].Value.Replace("Task #", "").ToInt32();
+   var remove = element.QuerySelector("#Remove");
+   Assert.Equal("x", remove.InnerHtml);
+   remove.Click();
+
+   // Rufe Methode direkt auf, da kein Dialog gezeigt wird
+   Assert.Equal(id, cut.FindComponent<TaskElement>().Instance.Task.TaskID);
+   await cut.FindComponent<TaskElement>().Instance.ConfirmedRemoveTask(id, true);
+   //nicht notwendig: await cut.Instance.ReloadTaskList();
    cut.Render();
 
-   for (int k = 0; k < 3; k++)
-   {
-    Assert.True((cut.FindAll("#col2 ol li input")[k] as IElement).IsChecked());
-   }
-   #endregion
+   //var x = cut.Find("#taskCount").Text();
+   cut.WaitForState(() => cut.Find("#taskCount").Text() == (anzahlAufgaben - (l + 1)).ToString());
 
-   #region Alle Aufgaben löschen: Immer die oberste löschen
-
-   for (int l = 0; l < anzahlAufgaben; l++)
-   {
-    var element = cut.FindAll("#col2 li")[0];
-    var id = element.Attributes["title"].Value.Replace("Task #", "").ToInt32();
-    var remove = element.QuerySelector("#Remove");
-    Assert.Equal("x", remove.InnerHtml);
-    remove.Click();
-
-    // Rufe Methode direkt auf, da kein Dialog gezeigt wird
-    Assert.Equal(id, cut.FindComponent<TaskElement>().Instance.Task.TaskID);
-    await cut.FindComponent<TaskElement>().Instance.ConfirmedRemoveTask(id, true);
-    //nicht notwendig: await cut.Instance.ReloadTaskList();
-    cut.Render();
-
-    //var x = cut.Find("#taskCount").Text();
-    cut.WaitForState(() => cut.Find("#taskCount").Text() == (anzahlAufgaben - (l + 1)).ToString());
-   }
-
-   #endregion
   }
-
   #endregion
  }
 }

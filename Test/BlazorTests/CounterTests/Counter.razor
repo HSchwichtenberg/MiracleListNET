@@ -1,4 +1,8 @@
-﻿<h1>Counter</h1>
+﻿@* Normalerweise liegen die zu testenden Komponenten nicht im gleichen Projekt wie die Tests.
+In diesem einfachen Testfällen liegt beides in einem Projekt, um in Schulungen und Präsentionen Wechsel zu vermeiden, die für die Zuschauer unübersichtlich werden *@
+
+<div>
+<h1>Counter</h1>
 
 <p>
  Current count: 
@@ -6,7 +10,7 @@
  </p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
-
+</div>
 @code {
  int currentCount = 0;
 

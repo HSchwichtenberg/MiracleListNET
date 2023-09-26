@@ -40,7 +40,7 @@ public class MiracleList_MainView_Test : TestContext
  /// </summary>
  public MiracleList_MainView_Test()
  {
-  #region Blazor-Dienste
+  #region DI für Blazor-Dienste
   this.JSInterop.Mode = JSRuntimeMode.Loose; // https://bunit.dev/docs/test-doubles/emulating-ijsruntime.html
   this.Services.AddSingleton<IWebHostEnvironment>(new MockWebHostEnvironment());
   //this.Services.AddSingleton<NavigationManager>(new MockNavigationManager());
@@ -51,7 +51,7 @@ public class MiracleList_MainView_Test : TestContext
   this.Services.AddSingleton<IHostEnvironment>(Mock.Create<IHostEnvironment>());
   #endregion
 
-  #region Dienste für fremde Zusatzkomponenten
+  #region DI für Dienste für fremde Zusatzkomponenten
   this.Services.AddSingleton<IToastService>(Mock.Create<IToastService>());
   this.Services.AddSingleton<IInternalContextMenuHandler>(Mock.Create<IInternalContextMenuHandler>());
   var bcms = new BlazorContextMenuSettings();
@@ -61,20 +61,15 @@ public class MiracleList_MainView_Test : TestContext
   this.Services.AddSingleton<IContextMenuStorage>(Mock.Create<IContextMenuStorage>());
   #endregion
 
-  #region Dienste für eigene Dienste
+  #region DI für Dienste für eigene Dienste
   var appState = Mock.Create<IAppState>();
   appState.HubConnection = null;// SignalR HubConnection ist schlecht zu mocken, siehe https://github.com/dotnet/aspnetcore/issues/8133
   appState.SignalRHubURL = null;
   this.Services.AddSingleton<IAppState>(appState);
-
   this.Services.AddScoped<IMLAuthenticationStateProvider, MockAuthenticationStateProvider>();
-
   this.Services.AddBlazoredLocalStorage(); // ggf. ersetzen durch Mock. Bisher nicht notwendig :-)
   mockProxy = Mock.Create<IMiracleListProxy>();
   this.Services.AddSingleton(mockProxy);
-  //this.Services.AddScoped<IAppState, AppState>();
-
-
   #endregion
 
   // neuer Benutzer mit Standardkategorien
@@ -91,7 +86,7 @@ public class MiracleList_MainView_Test : TestContext
   var taskSet = new List<BO.Task>() { new BO.Task() { Title = "Task1", TaskID = 1 }, new BO.Task() { Title = "Task2", TaskID = 2 }, new BO.Task() { Title = "Task3", TaskID = 3 } };
   #endregion
 
-  #region Einrichten des Mocks für das Backened
+  #region Einrichten der Mocks für das Backened
   mockProxy.Arrange(x => x.CategorySetAsync(Arg.IsAny<string>())).ReturnsAsync(categorySet).MustBeCalled();
   mockProxy.Arrange(x => x.TaskSetAsync(1, Arg.IsAny<string>())).ReturnsAsync(taskSet).MustBeCalled();
   mockProxy.Arrange(x => x.TaskSetAsync(2, Arg.IsAny<string>())).ReturnsAsync(taskSet).MustBeCalled();
@@ -135,8 +130,7 @@ public class MiracleList_MainView_Test : TestContext
   // Komponente rendern
   IRenderedComponent<MLBlazorRCL.MainView.Main> cut = RenderComponent<MLBlazorRCL.MainView.Main>();
 
-  // Stimmt die angezeigte Anzahl der Kategorien und Aufgaben? (basiert auf Fake-Daten)
-
+  // Stimmt die angezeigte Anzahl der Kategorien und Aufgaben? (basiert auf obigen Fake-Daten)
   var t = cut.Find("#categoryCount").Text();
   cut.WaitForState(() => cut.Find("#categoryCount").Text() == "2");
   Assert.Equal("3", cut.Find("#taskCount").Text());
@@ -150,7 +144,7 @@ public class MiracleList_MainView_Test : TestContext
   Assert.All(col1List.ChildNodes.Take(categorySet.Count), x => Assert.Equal("li", x.NodeName, true));
   Assert.Equal("input", col1List.ChildNodes.Last().NodeName, true);
 
-  #region 10x Neue Kategorie ergänzen
+  #region 10x neue Kategorie ergänzen
   for (int i = 0; i < 10; i++)
   {
    Console.WriteLine("Kategorie anlegen: " + i);
@@ -163,16 +157,16 @@ public class MiracleList_MainView_Test : TestContext
    cut.WaitForState(() => cut.Find("#categoryCount").Text() == categorySet.Count.ToString());
 
    // Neue Kategorie als aktuelle wählen
-
    // Das kann Probleme machen:  "Bunit.Rendering.UnknownEventHandlerIdException : There is no event handler with ID '44' associated with the 'onclick' event in the current render tree."
-   //var liElement = cut.FindAll("#col1 ol li").ElementAt(i + 2);
-   //liElement.Click();
+   // var liElement = cut.FindAll("#col1 ol li").ElementAt(i + 2);
+   // liElement.Click();
    // Lösung: "This ensures that there are no changes to the DOM between Find method and the Click method calls."
    await cut.InvokeAsync(() => cut.FindAll("#col1 ol li").ElementAt(i + 2).Click());
 
    // In der neuen Kategorie gibt es erstmal keine Aufgaben
    cut.WaitForState(() => cut.Find("#taskCount").Text() == "0");
 
+   #region Neue Aufgaben ergänzen
    for (int j = 1; j <= anzahlAufgaben; j++)
    {
     Assert.Equal((j - 1).ToString(), cut.Find("#taskCount").Text());
@@ -183,6 +177,7 @@ public class MiracleList_MainView_Test : TestContext
     // Nun sollte neue Aufgabe da sein
     cut.WaitForState(() => cut.Find("#taskCount").Text() == j.ToString());
    }
+   #endregion
 
    var checkBox = cut.Find("input[type='checkbox']");
    checkBox.Change(true);
@@ -220,11 +215,9 @@ public class MiracleList_MainView_Test : TestContext
     cut.WaitForState(() => cut.Find("#taskCount").Text() == (anzahlAufgaben - (l + 1)).ToString());
    }
 
-
    #endregion
   }
 
   #endregion
  }
 }
-

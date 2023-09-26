@@ -10,8 +10,8 @@ namespace ITVisions.Logging;
 /// </summary>
 public sealed class UniversalLoggerProvider : ILoggerProvider
 {
- private readonly IDisposable? _onChangeToken;
- private UniversalLoggerConfiguration _currentConfig;
+ private readonly IDisposable _onChangeToken = null;
+ private UniversalLoggerConfiguration _currentConfig = null;
  private readonly ConcurrentDictionary<string, UniversalLogger> _loggers =
      new(StringComparer.OrdinalIgnoreCase);
 
@@ -34,7 +34,6 @@ public sealed class UniversalLoggerProvider : ILoggerProvider
  }
 }
 
-
 public sealed class UniversalLoggerConfiguration
 {
  public int EventId { get; set; }
@@ -56,7 +55,7 @@ public sealed class UniversalLogger : ILogger
      Func<UniversalLoggerConfiguration> getCurrentConfig, Action<string> logTo) =>
      (_name, _getCurrentConfig, LogTo) = (name, getCurrentConfig, logTo);
 
- public IDisposable? BeginScope<TState>(TState state) where TState : notnull => default!;
+ public IDisposable BeginScope<TState>(TState state) where TState : notnull => default!;
 
  public bool IsEnabled(LogLevel logLevel) =>
      _getCurrentConfig().LogLevelToColorMap.ContainsKey(logLevel);
@@ -65,8 +64,8 @@ public sealed class UniversalLogger : ILogger
      LogLevel logLevel,
      EventId eventId,
      TState state,
-     Exception? exception,
-     Func<TState, Exception?, string> formatter)
+     Exception exception,
+     Func<TState, Exception, string> formatter)
  {
   if (!IsEnabled(logLevel))
   {

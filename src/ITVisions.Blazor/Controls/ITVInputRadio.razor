@@ -1,7 +1,7 @@
 ﻿
 <div class="form-group form-check">
  <InputRadio @ref="radio" class="form-check-input bigCheckbox" Value="@Value" />
- <label @onclick="ChangeRadioState"  class="form-check-label bigCheckboxLabel">@((MarkupString)Label)</label>
+ <label @onclick="ChangeRadioState" class="form-check-label bigCheckboxLabel">@((MarkupString)Label)</label>
 </div>
 
 
@@ -14,6 +14,7 @@
 
  InputRadio<int> radio;
 
+ #pragma warning disable BL0007 // "should be auto property" unterdrücken
  [Parameter]
  public int Value
  {

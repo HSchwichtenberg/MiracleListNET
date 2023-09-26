@@ -42,7 +42,7 @@
 @code
 {
  string serverSoftware = "n/a";
- protected override async System.Threading.Tasks.Task OnInitializedAsync() {
+ protected override void OnInitialized() {
   var serverVars = contextAccessor.HttpContext.Features.Get<Microsoft.AspNetCore.Http.Features.IServerVariablesFeature>();
   serverSoftware = (serverVars == null ? null : serverVars["SERVER_SOFTWARE"]);
  }

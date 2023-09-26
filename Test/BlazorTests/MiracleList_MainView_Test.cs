@@ -22,6 +22,7 @@ using MLBlazorRCL.MainView;
 using Telerik.JustMock;
 using Telerik.JustMock.Helpers;
 using Web;
+using Xunit.Abstractions;
 
 // Testen der BD-Lösung
 //using Pages = BD.Web.Pages;
@@ -32,6 +33,8 @@ namespace MiracleListTests;
 // DEMO: 71. Razor Component Tests mit BUnit
 public class MiracleList_MainView_Test : TestContext
 {
+ private readonly ITestOutputHelper output;
+
  IMiracleListProxy mockProxy;
  int anzahlAufgaben = 5;
  int anzahlKategorien = 5;
@@ -39,8 +42,10 @@ public class MiracleList_MainView_Test : TestContext
  /// <summary>
  /// Setup the test: DI of mocking classes
  /// </summary>
- public MiracleList_MainView_Test()
+ public MiracleList_MainView_Test(ITestOutputHelper output)
  {
+  this.output = output;
+
   #region DI für Blazor-Dienste
   this.JSInterop.Mode = JSRuntimeMode.Loose; // https://bunit.dev/docs/test-doubles/emulating-ijsruntime.html
   this.Services.AddSingleton<IWebHostEnvironment>(new MockWebHostEnvironment());
@@ -148,7 +153,7 @@ public class MiracleList_MainView_Test : TestContext
   #region 2x neue Kategorie ergänzen
   for (int i = 1; i <= anzahlKategorien; i++)
   {
-   Console.WriteLine("Kategorie anlegen: " + i);
+   output.WriteLine("Kategorie anlegen: " + i);
 
    Assert.Equal("input", col1List.ChildNodes.ElementAt(categorySet.Count).NodeName, true);
    var inputNewCategoryName = cut.Find("input[name=newCategoryName]");
@@ -171,6 +176,8 @@ public class MiracleList_MainView_Test : TestContext
   #region Neue Aufgaben ergänzen
   for (int j = 1; j <= anzahlAufgaben; j++)
   {
+   output.WriteLine("Aufgabe anlegen: " + j);
+
    Assert.Equal((j - 1).ToString(), cut.Find("#taskCount").Text());
    // Nun eine Aufgabe ergänzen
    var inputnewTaskTitle = cut.Find("input[name=newTaskTitle]");
@@ -201,6 +208,8 @@ public class MiracleList_MainView_Test : TestContext
 
   for (int l = 0; l < anzahlAufgaben; l++)
   {
+   output.WriteLine("Aufgaben löschen: " + l);
+
    var element = cut.FindAll("#col2 li")[0];
    var id = element.Attributes["title"].Value.Replace("Task #", "").ToInt32();
    var remove = element.QuerySelector("#Remove");
@@ -215,7 +224,6 @@ public class MiracleList_MainView_Test : TestContext
 
    //var x = cut.Find("#taskCount").Text();
    cut.WaitForState(() => cut.Find("#taskCount").Text() == (anzahlAufgaben - (l + 1)).ToString());
-
   }
   #endregion
  }

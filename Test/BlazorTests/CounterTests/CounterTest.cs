@@ -24,9 +24,8 @@ public class CounterTests : TestContext
   // Act
   cut.Find("button").Click();
 
-
   // Assert: Ungünstig und falsch :-(
-  //Assert.Equal("<p>Current count: 1</p>", cut.Find("p").OuterHtml);
+  Assert.Equal("<p>Current count: 1</p>", cut.Find("p").OuterHtml);
 
   // Zur Diagnose: Haltepunkt nach der Zuweisung!
   //var html = cut.Find("div").OuterHtml;
@@ -62,12 +61,12 @@ public class CounterTests : TestContext
   // Wait: Ungünstig, aber richtig
   var html = cut.Find("p").OuterHtml; // zur Diagnose               
   // Achtung: Das ist falsch, da nur einmal ausgewertet
-  //cut.WaitForState(() => html == ("<p>\n Current count: \n 1</p>"));
+  cut.WaitForState(() => html == ("<p>\n Current count: \n 1</p>"));
 
   // Richtig: WaitForState() sorgt für neue Auswertung nach jedem Rendern!
   //cut.WaitForState(() => cut.Find("p").OuterHtml == ("<p>\n Current count: \n 1</p>"));
 
   // Wait: besser und richtig
- cut.WaitForAssertion(() => cut.Find("p").MarkupMatches(@"<p>Current count: 1 </p>"));
+ //cut.WaitForAssertion(() => cut.Find("p").MarkupMatches(@"<p>Current count: 1 </p>"));
  }
 }

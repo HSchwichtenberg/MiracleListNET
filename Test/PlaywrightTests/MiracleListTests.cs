@@ -1,8 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using System.Xml;
-using System.Xml.Linq;
-using ITVisions;
-using ITVisions.Reflection;
 using Microsoft.Playwright;
 using Microsoft.Playwright.MSTest;
 
@@ -152,7 +148,7 @@ public class MiracleListTests : PageTest
 
   await Login();
 
-
+  // Counter vorher merken
   var count = (await Page.Locator("#taskCount").InnerTextAsync()).ToInt32();
 
   // Neue Aufgabe anlegen
@@ -192,7 +188,5 @@ public class MiracleListTests : PageTest
   await Expect(Page.Locator(".list-group-item").Filter(new() { Has = Page.GetByText(aufgabenTitel) }).Locator(".badge")).ToHaveTextAsync("A");
 
   await Page.ScreenshotAsync();
-
-
  }
 }

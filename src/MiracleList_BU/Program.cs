@@ -27,8 +27,8 @@ public class Program
 
   // Add services to the container.
   builder.Services.AddRazorComponents()
-      .AddServerComponents()
-      .AddWebAssemblyComponents();
+      .AddInteractiveServerComponents()
+      .AddInteractiveWebAssemblyComponents();
 
   AddServices(builder);
 
@@ -51,8 +51,8 @@ public class Program
   app.UseStaticFiles();
 
   app.MapRazorComponents<App>()
-    .AddServerRenderMode()
-    .AddWebAssemblyRenderMode()
+    .AddInteractiveServerRenderMode()
+    .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies( // Discover components from additional assemblies for static server rendering
      typeof(MiracleList_BU.Client.Pages.Counter).Assembly,
      typeof(MLBlazorRCL.Login.Login).Assembly,

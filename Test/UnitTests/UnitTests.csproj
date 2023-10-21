@@ -47,7 +47,7 @@
  </ItemGroup>
 
  <ItemGroup>
-  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="8.0.0-rc.1.23421.29" />
+  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="8.0.0-rc.2.23480.2" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-rc.1.23419.6" />
   <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0-rc.1.23419.4" />
   <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0-rc.1.23419.4" />
@@ -64,7 +64,7 @@
   <PackageReference Include="xunit" Version="2.5.1" />
   <PackageReference Include="Xunit.SkippableFact" Version="1.4.13" />
   <PackageReference Include="DeepEqual" Version="4.2.1" />
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.10.0" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.12.1" />
   <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
  </ItemGroup>
 

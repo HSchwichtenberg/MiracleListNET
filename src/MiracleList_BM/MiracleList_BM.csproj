@@ -115,7 +115,7 @@
  <ItemGroup>
   <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
   <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
-  <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0-rc.1.23419.4" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0-rc.2.23479.6" />
  </ItemGroup>
  
  <!--NuGet-Pakete-->
@@ -125,8 +125,8 @@
   <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.0-rc.2.23480.2" />
   <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.0-rc.2.23480.2" />
   <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.0-rc.2.23480.2" />
-  <PackageReference Include="System.Net.Http.Json" Version="8.0.0-rc.1.23419.4" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-rc.1.23419.6" />
+  <PackageReference Include="System.Net.Http.Json" Version="8.0.0-rc.2.23479.6" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-rc.2.23480.1" />
 
   <!--Zusätzliche Pakete von Anderen-->
   <PackageReference Include="Blazor.Extensions.Logging" Version="2.0.*" />

@@ -9,6 +9,9 @@
   <InformationalVersion>8.0.0.0-09/23/2023 19:02:33</InformationalVersion>
   <LangVersion>latest</LangVersion>
   <RootNamespace>Samples</RootNamespace>
+  <!--<TreatWarningsAsErrors>true</TreatWarningsAsErrors>-->
+  <NoWarn>CS1591;HTML0004</NoWarn>
+  <!--<WarningsAsErrors>RZ10012</WarningsAsErrors>-->
  </PropertyGroup>
 
  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

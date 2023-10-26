@@ -1,0 +1,24 @@
+﻿<style>
+ .debug {
+  color: orange;
+  background-color: beige 
+ }
+
+.debug a {
+  color: orange !important;
+  background-color: beige !important;
+  text-decoration-line: underline;
+ }
+</style>
+
+@if (System.Diagnostics.Debugger.IsAttached)
+{
+ <span class="debug">@ChildContent</span>
+}
+
+@code
+{
+ 
+ [Parameter]
+ public RenderFragment ChildContent { get; set; }
+}

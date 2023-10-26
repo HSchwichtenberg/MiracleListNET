@@ -35,6 +35,7 @@
   <PackageOutputPath>H:\DB\NugetHS</PackageOutputPath>
  </PropertyGroup>
 
+
  <!--NuGets-->
  <ItemGroup>
   <PackageReference Include="Blazored.LocalStorage" Version="4.4.*" />

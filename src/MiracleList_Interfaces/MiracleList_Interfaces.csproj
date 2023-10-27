@@ -4,10 +4,10 @@
   <TargetFramework>net7.0</TargetFramework>
   <ImplicitUsings>enable</ImplicitUsings>
   <Nullable>enable</Nullable>
-  <Version>7.17.1.0</Version>
-  <AssemblyVersion>7.17.1.0</AssemblyVersion>
-  <FileVersion>7.17.1.0</FileVersion>
-  <InformationalVersion>7.17.1.0-09/26/2023 11:07:21</InformationalVersion>
+  <Version>7.19.0.0</Version>
+  <AssemblyVersion>7.19.0.0</AssemblyVersion>
+  <FileVersion>7.19.0.0</FileVersion>
+  <InformationalVersion>7.19.0.0-10/27/2023 20:01:03</InformationalVersion>
  </PropertyGroup>
 
  <ItemGroup>

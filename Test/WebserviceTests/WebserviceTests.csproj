@@ -7,7 +7,7 @@
 
   <IsPackable>false</IsPackable>
   <IsTestProject>true</IsTestProject>
- <Version>7.17.1.0</Version><AssemblyVersion>7.17.1.0</AssemblyVersion><FileVersion>7.17.1.0</FileVersion><InformationalVersion>7.17.1.0-09/26/2023 11:07:21</InformationalVersion></PropertyGroup>
+ <Version>7.19.0.0</Version><AssemblyVersion>7.19.0.0</AssemblyVersion><FileVersion>7.19.0.0</FileVersion><InformationalVersion>7.19.0.0-10/27/2023 20:01:04</InformationalVersion></PropertyGroup>
 
  <ItemGroup>
   <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />

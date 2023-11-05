@@ -1,40 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
+
+ <!--Compiler-->
  <PropertyGroup>
-  <TargetFramework>net8.0</TargetFramework>
-  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
-  <Version>8.0.0.0</Version>
-  <AssemblyVersion>8.0.0.0</AssemblyVersion>
-  <FileVersion>8.0.0.0</FileVersion>
-  <InformationalVersion>8.0.0.0-09/23/2023 19:02:33</InformationalVersion>
-  <LangVersion>latest</LangVersion>
   <RootNamespace>Samples</RootNamespace>
+  <NoWarn>1701;1702;1998;HTML00004;CS1591</NoWarn>
   <!--<TreatWarningsAsErrors>true</TreatWarningsAsErrors>-->
-  <NoWarn>CS1591;HTML0004</NoWarn>
   <!--<WarningsAsErrors>RZ10012</WarningsAsErrors>-->
  </PropertyGroup>
 
- <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-  <NoWarn>1701;1702;1998</NoWarn>
- </PropertyGroup>
-
+ <!--Projekte-->
  <ItemGroup>
   <ProjectReference Include="..\ITVisions.Blazor\ITVisions.Blazor.csproj" />
  </ItemGroup>
 
+ <!--NuGet-->
  <ItemGroup>
-  <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
+
   <PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.0-rc.2.23480.2" />
   <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.0-rc.2.23480.2" />
   <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0-rc.2.23480.2" />
   <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0-preview3.23201.1" />
   <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.0-rc.2.23480.2" />
   <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.0-rc.2.23480.2" />
-  <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.3.0-beta">
+  <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.3.*">
     <PrivateAssets>all</PrivateAssets>
     <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
   </PackageReference>
   <PackageReference Include="System.DirectoryServices" Version="8.0.0-rc.2.23479.6" />
+  <PackageReference Include="Blazored.LocalStorage" Version="4.4.*" />
  </ItemGroup>
 
  <ItemGroup>
@@ -65,7 +60,6 @@
    </Content>
  </ItemGroup>
 
- 
  <ItemGroup>
   <EmbeddedResource Update="TippsUndTricks\Mehrsprachigkeit\Localization.en.resx">
    <SubType>Designer</SubType>

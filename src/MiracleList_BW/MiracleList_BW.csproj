@@ -60,13 +60,6 @@
   <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0-rc.2.23480.2" />
   <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0-rc.2.23480.2" PrivateAssets="all" />
 
-  <!--Zusätzliche Pakete von Microsoft-->
-  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.0-rc.2.23480.2" />
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.0-rc.2.23480.2" />
-  <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.0-rc.2.23480.2" />
-  <PackageReference Include="System.Net.Http.Json" Version="8.0.0-rc.2.23479.6" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-rc.2.23480.1" />
-
  </ItemGroup>
 
  <!--Optional: Native dependencies für Samples_BW/NativeCall.razor und Samples_BW/SQLite -> Verlängert die Kompilierung-->

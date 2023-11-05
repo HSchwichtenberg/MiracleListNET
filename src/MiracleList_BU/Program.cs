@@ -1,24 +1,15 @@
 
-using Web.Components;
-using System;
-using System.Globalization;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Blazor.Extensions.Logging;
 using Blazored.LocalStorage;
 using Blazored.Toast;
 using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.JSInterop;
 using MiracleList;
 using MLBlazorRCL.MainView;
-using Web;
+using Web.Components;
 
 namespace Web;
+
 public class Program
 {
  public static void Main(string[] args)
@@ -89,23 +80,19 @@ public class Program
   services.AddAuthorizationCore(); // sonst: System.InvalidOperationException: Cannot provide a value for property 'AuthorizationPolicyProvider' on type 'Microsoft.AspNetCore.Components.Authorization.AuthorizeView'. There is no registered service of type 'Microsoft.AspNetCore.Authorization.IAuthorizationPolicyProvider'
   #endregion
 
-  #region DI Serverkommunikation
-  services.AddSingleton(new HttpClient() { }); /// aus der Projektvorlage von Microsoft! 
-  //TODO: BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
-
+  #region DI für Serverkommunikation
+  services.AddSingleton(new HttpClient() { });
   services.AddScoped<MiracleList.IMiracleListProxy, MiracleList.MiracleListProxy>();
   #endregion
 
   #region DI für Blazor-Zusatzkomponenten
-  // Kontextmenü mit https://github.com/stavroskasidis/BlazorContextMenu
+  // Für Kontextmenü mit https://github.com/stavroskasidis/BlazorContextMenu
   services.AddBlazorContextMenu();
 
-  // Für Toasts-Benachrichtigungen mit Blazored.Toast
+  // Für Toasts-Benachrichtigungen mit Blazored.Toast https://github.com/Blazored/Toast 
   services.AddBlazoredToast();
 
-  // NUGET: Blazored.LocalStorage;
-  // GITHUB:  https://github.com/Blazored/LocalStorage --> 
-  // Startup: using Blazored.LocalStorage / services.AddBlazoredLocalStorage();
+  // Für Blazored.LocalStorage https://github.com/Blazored/LocalStorage 
   services.AddBlazoredLocalStorage();
   #endregion
 
@@ -113,7 +100,6 @@ public class Program
   // Für Session-State-Demo
   services.AddScoped<TypedSessionState>();
   services.AddScoped<GenericSessionState>();
-
   #endregion
 
   #region DI für sonstige Hilfsbibliotheken

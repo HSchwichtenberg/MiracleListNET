@@ -1,37 +1,19 @@
 <!--Projektdatei der MiracleList Blazor Server App-->
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
- <!--Runtime-->
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
+ 
+ <!--Weitere App-Metadaten -->
  <PropertyGroup>
-  <TargetFramework>net8.0</TargetFramework>
- </PropertyGroup>
-
- <!--Namen-->
- <PropertyGroup>
-  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
-  <Authors>Dr. Holger Schwichtenberg</Authors>
-  <Company>www.IT-Visions.de</Company>
-  <Product>MiracleList</Product>
   <Description>Blazor Server (Server Side Blazor) Version of the MiracleList Web Frontend</Description>
-  <RootNamespace>Web</RootNamespace>
  </PropertyGroup>
 
- <!--Versionsinfos-->
+ <!--Compiler + Secrets-->
  <PropertyGroup>
-  <Version>8.0.0.0</Version>
-  <AssemblyVersion>8.0.0.0</AssemblyVersion>
-  <FileVersion>8.0.0.0</FileVersion>
-  <InformationalVersion>8.0.0.0-09/23/2023 19:02:33</InformationalVersion>
+  <RootNamespace>Web</RootNamespace>
   <UserSecretsId>f4ee1587-6574-4ece-b932-69c8c91abe04</UserSecretsId>
- </PropertyGroup>
-
- <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
   <NoWarn>1701;1702;1998</NoWarn>
  </PropertyGroup>
-
- <ItemGroup>
-  <Content Include="Samples_BS\Pages of default Template\NavMenu.razorOLD" />
- </ItemGroup>
 
  <!--Projektreferenzen-->
  <ItemGroup>

@@ -84,6 +84,7 @@ public class Program
 
   #region DI Authentifizierungsdienste
   services.AddOptions(); // notwendig für AuthenticationStateProvider
+  //services.AddCascadingAuthenticationState(); // neu seit Blazor 8.0
   services.AddScoped<IMLAuthenticationStateProvider, MLAuthenticationStateProvider3Tier>();
   services.AddScoped<AuthenticationStateProvider, MLAuthenticationStateProvider3Tier>();
   services.AddAuthentication("ML");

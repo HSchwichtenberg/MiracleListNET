@@ -18,6 +18,7 @@ using MiracleList;
 using MiracleList_Backend.Hubs;
 using MLBlazorRCL.MainView;
 using Web.Data;
+using Web.Pages.CircuitList;
 
 namespace Web;
 
@@ -121,6 +122,8 @@ public class Startup
 
   // für Circuit-Liste
   services.AddScoped<CircuitHandler, ITVisions.Blazor.Services.CircuitListCircuitHandler>();
+  // für Circuit-Überwachung
+  services.AddIdleCircuitHandler();
 
   // Für Session-State-Demo
   services.AddScoped<TypedSessionState>();

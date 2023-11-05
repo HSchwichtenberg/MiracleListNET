@@ -1,5 +1,5 @@
 
-using MiracleList_BU.Components;
+using Web.Components;
 using System;
 using System.Globalization;
 using System.Net.Http;
@@ -16,7 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using MiracleList;
 using MLBlazorRCL.MainView;
-using MiracleList_BU;
+using Web;
 
 namespace Web;
 public class Program
@@ -54,7 +54,7 @@ public class Program
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies( // Discover components from additional assemblies for static server rendering
-     typeof(MiracleList_BU.Client.Pages.Counter).Assembly,
+     typeof(Web.Client.Pages.Counter).Assembly,
      typeof(MLBlazorRCL.Login.Login).Assembly,
      typeof(Samples.SamplesList).Assembly
 

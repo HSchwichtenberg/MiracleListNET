@@ -3,17 +3,16 @@
 <CascadingAuthenticationState>
  <Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="new[] { typeof(Client._Imports).Assembly,      typeof(MLBlazorRCL.Login.Login).Assembly,      typeof(Samples.SamplesList).Assembly }">
 
- <Navigating>
-  <div>
-   <p>Loading the requested page...</p>
-  </div>
- </Navigating>
+  <Navigating>
+   <div>
+    <p>Loading the requested page...</p>
+   </div>
+  </Navigating>
 
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MLBlazorRCL.Layout.MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+  <Found Context="routeData">
+   <RouteView RouteData="@routeData" DefaultLayout="@typeof(MLBlazorRCL.Layout.MainLayout)" />
+   <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+  </Found>
 
-    </Found>
-
-</Router>
+ </Router>
 </CascadingAuthenticationState>

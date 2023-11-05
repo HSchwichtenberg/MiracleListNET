@@ -1,16 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
-    <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
-  <Version>8.0.0.0</Version><AssemblyVersion>8.0.0.0</AssemblyVersion><FileVersion>8.0.0.0</FileVersion><InformationalVersion>8.0.0.0-09/23/2023 19:02:33</InformationalVersion></PropertyGroup>
+ <PropertyGroup>
+  <TargetFramework>net8.0</TargetFramework>
+  <ImplicitUsings>enable</ImplicitUsings>
+  <RootNamespace>Web.Client</RootNamespace>
+  <Nullable>enable</Nullable>
+  <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+  <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+  <Version>8.0.0.0</Version>
+  <AssemblyVersion>8.0.0.0</AssemblyVersion>
+  <FileVersion>8.0.0.0</FileVersion>
+  <InformationalVersion>8.0.0.0-09/23/2023 19:02:33</InformationalVersion>
+ </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0-rc.2.23480.2" />
-  </ItemGroup>
+ <ItemGroup>
+  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0-rc.2.23480.2" />
+ </ItemGroup>
 
  <!--Projektreferenzen-->
  <ItemGroup>

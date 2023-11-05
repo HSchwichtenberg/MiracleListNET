@@ -55,11 +55,11 @@
   <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 
   <!--Zusätzliche Pakete von Anderen-->
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.12.1" />
-  <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
-  <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
-  <PackageReference Include="Blazored.Toast" Version="4.1.0" />
-  <PackageReference Include="UAParser" Version="3.1.47" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.12.*" />
+  <PackageReference Include="ITV.EFCoreUtil" Version="3.1.*" />
+  <PackageReference Include="Blazored.LocalStorage" Version="4.4.*" />
+  <PackageReference Include="Blazored.Toast" Version="4.1.*" />
+  <PackageReference Include="UAParser" Version="3.1.*" />
  </ItemGroup>
 
  <!--COM-Referenzen für Word-Interop-->

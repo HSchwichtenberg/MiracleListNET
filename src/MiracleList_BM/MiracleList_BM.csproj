@@ -121,9 +121,7 @@
   <PackageReference Include="Blazored.LocalStorage" Version="4.4.*" />
   <PackageReference Include="Blazored.Toast" Version="4.1.*" />
 
-
  </ItemGroup>
-
 
  <!--COM-Referenz für Word-Dokumentengenerierung - geht nur auf Windows!!!-->
  <ItemGroup>

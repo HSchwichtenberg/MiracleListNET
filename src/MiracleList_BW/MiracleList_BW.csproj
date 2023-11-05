@@ -1,35 +1,34 @@
 <!--Projektdatei der MiracleList Blazor Webassembly App-->
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
- <!--Runtime-->
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
+
+ <!--Weitere App-Metadaten -->
  <PropertyGroup>
-  <TargetFramework>net8.0</TargetFramework>
+  <Description>Blazor WebAssembly (Client Side Blazor) Version of the MiracleList Web Frontend</Description>
+ </PropertyGroup>
+
+ <!--Compilereinstellungen-->
+ <PropertyGroup>
+  <RootNamespace>Web</RootNamespace>
+  <StartupObject>Web.Program</StartupObject>
+  <UserSecretsId>1a22018c-6aab-42f2-8be5-0a4cedeeb272</UserSecretsId>
+  <NoWarn>1701;1702;1998</NoWarn>
+  <!--für Zeigerprogrammierung erlauben neue JSinterop seit Blazor WebAssembly 7.0-->
+  <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   <!--Optional für AOT-Kompilierung-->
   <!--<RunAOTCompilation>true</RunAOTCompilation>-->
  </PropertyGroup>
 
- <!--Namen-->
+ <!--für PWA-->
+ <ItemGroup>
+  <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+ </ItemGroup>
+ <!--für PWA-->
  <PropertyGroup>
-  <Description>Blazor WebAssembly (Client Side Blazor) Version of the MiracleList Web Frontend</Description>
-  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
-  <Authors>Dr. Holger Schwichtenberg, www.IT-Visions.de</Authors>
-  <Company>www.IT-Visions.de</Company>
-  <Product>MiracleList</Product>
-  <RootNamespace>Web</RootNamespace>
-  <StartupObject>Web.Program</StartupObject>
+  <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
  </PropertyGroup>
 
- <!--Versionsinfos-->
- <PropertyGroup>
-  <Version>8.0.0.0</Version>
-  <AssemblyVersion>8.0.0.0</AssemblyVersion>
-  <FileVersion>8.0.0.0</FileVersion>
-  <InformationalVersion>8.0.0.0-09/23/2023 19:02:33</InformationalVersion>
- </PropertyGroup>
- <ItemGroup>
-   <Content Remove="wwwroot\manifest.json" />
-   <Content Remove="wwwroot\service-worker.js" />
- </ItemGroup>
  <!--<ItemGroup>
    <None Remove="SamplesBW\interop\JSInteropBWOnly.razor.js" />
  </ItemGroup>-->
@@ -39,24 +38,11 @@
   <BlazorWebAssemblyLazyLoad Include="SamplesRCL.dll" />
  </ItemGroup>-->
 
- <!--für Zeigerpororrogrammierung erlauben neue JSinterop ab Blazor WebAssembly 7.0-->
- <PropertyGroup>
-  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
- </PropertyGroup>
- 
  <!--Lokalisierung-->
-<PropertyGroup>
- <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
- <BlazorWebAssemblyI18NAssemblies>all</BlazorWebAssemblyI18NAssemblies>
-</PropertyGroup>
- 
- <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-  <NoWarn>1701;1702;1998</NoWarn>
+ <PropertyGroup>
+  <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+  <BlazorWebAssemblyI18NAssemblies>all</BlazorWebAssemblyI18NAssemblies>
  </PropertyGroup>
- 
- <ItemGroup>
-   <None Include="wwwroot\service-worker.js" />
- </ItemGroup>
 
  <!--Projektreferenzen-->
  <ItemGroup>
@@ -67,7 +53,7 @@
   <ProjectReference Include="..\MLBlazorRCL\MLBlazorRCL.csproj" />
   <ProjectReference Include="..\SamplesRCL\SamplesRCL.csproj" />
  </ItemGroup>
- 
+
  <!--NuGet-Pakete-->
  <ItemGroup>
   <!--Standardreferenzen für BW-->
@@ -80,33 +66,13 @@
   <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.0-rc.2.23480.2" />
   <PackageReference Include="System.Net.Http.Json" Version="8.0.0-rc.2.23479.6" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-rc.2.23480.1" />
-  
-  <!--Zusätzliche Pakete von Anderen-->
-  <PackageReference Include="Blazor.Extensions.Logging" Version="2.0.4" />
-  <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
-  <PackageReference Include="Blazored.Toast" Version="4.1.0" />
-  
-  <!--!!! Community-Projekt BlazorWasmAntivirusProtection war ein Versuch, läuft aber nicht mit diesem Projekt !!!-->
-  <!--<PackageReference Include="BlazorWasmAntivirusProtection" Version="2.2.1" />-->
- </ItemGroup>
 
- <!--PWA-->
- <PropertyGroup>
-  <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
-  <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-  <UserSecretsId>1a22018c-6aab-42f2-8be5-0a4cedeeb272</UserSecretsId>
- </PropertyGroup>
- 
- <ItemGroup>
-  <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
- </ItemGroup>
- 
- <ItemGroup>
-   <Folder Include="Properties\PublishProfiles\" />
-   <Folder Include="Properties\ServiceDependencies\" />
+  <!--Zusätzliche Pakete von Anderen-->
+  <PackageReference Include="Blazor.Extensions.Logging" Version="2.0.*" />
+  <PackageReference Include="Blazored.LocalStorage" Version="4.4.*" />
+  <PackageReference Include="Blazored.Toast" Version="4.1.*" />
  </ItemGroup>
 
  <!--Optional: Native dependencies für Samples_BW/NativeCall.razor und Samples_BW/SQLite -> Verlängert die Kompilierung-->
-
 
 </Project>

@@ -106,23 +106,6 @@
   <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0-rc.2.23479.6" />
  </ItemGroup>
  
- <!--NuGet-Pakete-->
- <ItemGroup>
-
-  <!--Zusätzliche Pakete von Microsoft-->
-  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.0-rc.2.23480.2" />
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.0-rc.2.23480.2" />
-  <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.0-rc.2.23480.2" />
-  <PackageReference Include="System.Net.Http.Json" Version="8.0.0-rc.2.23479.6" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-rc.2.23480.1" />
-
-  <!--Zusätzliche Pakete von Anderen-->
-  <PackageReference Include="Blazor.Extensions.Logging" Version="2.0.*" />
-  <PackageReference Include="Blazored.LocalStorage" Version="4.4.*" />
-  <PackageReference Include="Blazored.Toast" Version="4.1.*" />
-
- </ItemGroup>
-
  <!--COM-Referenz für Word-Dokumentengenerierung - geht nur auf Windows!!!-->
  <ItemGroup>
   <COMReference Include="Microsoft.Office.Interop.Word" Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">

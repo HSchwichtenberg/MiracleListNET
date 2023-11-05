@@ -53,8 +53,8 @@ public class Program
   app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies( // Discover components from additional assemblies for static server rendering
-     typeof(Web.Client.Pages.Counter).Assembly,
+    .AddAdditionalAssemblies(
+     typeof(Web.Client.Routes).Assembly,
      typeof(MLBlazorRCL.Login.Login).Assembly,
      typeof(Samples.SamplesList).Assembly
 
@@ -70,13 +70,11 @@ public class Program
  {
   IServiceCollection services = builder.Services;
 
-  //Console.WriteLine("Liste der vorregistrierten Dienste in Blazor WebAssembly:");
+  //Console.WriteLine("Liste der vorregistrierten Dienste in Blazor United:");
   //foreach (var s in services)
   //{
   // Console.WriteLine(s.ServiceType.FullName + ": " + s.Lifetime);
   //}
-
-
 
   #region DI Konfiguration und Anwendungszustand
   services.AddSingleton<IAppState, AppState>();
@@ -84,11 +82,11 @@ public class Program
 
   #region DI Authentifizierungsdienste
   services.AddOptions(); // notwendig für AuthenticationStateProvider
-  //services.AddCascadingAuthenticationState(); // neu seit Blazor 8.0
+  services.AddCascadingAuthenticationState(); // neu seit Blazor 8.0
   services.AddScoped<IMLAuthenticationStateProvider, MLAuthenticationStateProvider3Tier>();
   services.AddScoped<AuthenticationStateProvider, MLAuthenticationStateProvider3Tier>();
   services.AddAuthentication("ML");
- services.AddAuthorizationCore(); // sonst: System.InvalidOperationException: Cannot provide a value for property 'AuthorizationPolicyProvider' on type 'Microsoft.AspNetCore.Components.Authorization.AuthorizeView'. There is no registered service of type 'Microsoft.AspNetCore.Authorization.IAuthorizationPolicyProvider'
+  services.AddAuthorizationCore(); // sonst: System.InvalidOperationException: Cannot provide a value for property 'AuthorizationPolicyProvider' on type 'Microsoft.AspNetCore.Components.Authorization.AuthorizeView'. There is no registered service of type 'Microsoft.AspNetCore.Authorization.IAuthorizationPolicyProvider'
   #endregion
 
   #region DI Serverkommunikation

@@ -1,8 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Extensions.Hosting
 
 @page "/ClientID2"
+
+<title>Client-ID beantragen</title>
 
 <style>
  .MLcheckbox {
@@ -13,15 +16,28 @@
 </style>
 
 <h2>
-BLAZOR! Beantragung für Client-ID (@env.ApplicationName)
- <environment names="development">***DEV***</environment>
- <environment names="staging">***Staging***</environment>
+ Beantragung für Client-ID (@env.ApplicationName)
+ @if (!env.IsProduction())
+ {
+  <span class="badge badge-warning"> *** @env.EnvironmentName ***</span>
+ }
 </h2>
 
 <div>
- <div Condition="DateTime.Now.Hour >= 12 && DateTime.Now.Hour < 18">Guten Tag,</div>
- <div Condition="DateTime.Now.Hour >= 18 && DateTime.Now.Hour <= 23">Guten Abend,</div>
- <div Condition="DateTime.Now.Hour >= 0 && DateTime.Now.Hour < 12">Guten Morgen,</div>
+
+ @if (DateTime.Now.Hour >= 12 && DateTime.Now.Hour < 18)
+ {
+  <div>Guten Tag,</div>
+ }
+ @if (DateTime.Now.Hour >= 18 && DateTime.Now.Hour <= 23)
+ {
+  <div>Guten Abend,</div>
+ }
+ @if (DateTime.Now.Hour >= 0 && DateTime.Now.Hour < 12)
+ {
+  <div>Guten Morgen,</div>
+ }
+
  <br />
  Sie benötigen eine personalisierte Client-ID, wenn Sie selbst einen Client für das MiracleList-Backend schreiben wollen. Die Client-ID ist bei der Login-Operation zu übergeben. Sie erhalten die Client-ID per E-Mail.
  Bitte beachten Sie, dass eine Client-ID jederzeit widerrufen werden kann, falls Sie diese missbrauchen. Ihre Daten können auch ohne Angaben von Gründen jederzeit gelöscht werden.
@@ -38,16 +54,15 @@ BLAZOR! Beantragung für Client-ID (@env.ApplicationName)
 
  @if (DownloadAnbieten)
  {
-  <form method="post">
-   <input type="submit" class="btn btn-warning" value="Bedingungen herunterladen" asp-page-handler="Download" />
+  <form method="POST" @formname="Download" @onsubmit="Download">
+   <AntiforgeryToken></AntiforgeryToken>
+   <input type="submit" class="btn btn-warning" value="Bedingungen herunterladen" />
   </form>
  }
 </div>
 <br />
 <div>
- <form method="post" @formname="Beantragen" @onsubmit="OnPostBeantragen">
-  <AntiforgeryToken> </AntiforgeryToken>
-  <input name="C_Quelle" type="hidden" value="" class="form-control" />
+ <EditForm EditContext="@editContext" FormName="Beantragen" OnValidSubmit="Beantragen">
 
   <div class="row">
    <div class="col-xs-4">
@@ -56,7 +71,7 @@ BLAZOR! Beantragung für Client-ID (@env.ApplicationName)
     </label>
    </div>
    <div class="col-xs-8">
-    <input type="text" @bind="Name" class="form-control" />
+    <InputText @bind-Value="Name" type="text" class="form-control" />
    </div>
   </div>
 
@@ -67,9 +82,8 @@ BLAZOR! Beantragung für Client-ID (@env.ApplicationName)
     </label>
    </div>
    <div class="col-xs-8">
-    <input @bind="Firma" class="form-control" />
-    @*mit name="C_Firma" funktioniert es nicht!*@
-   </div>
+    <InputText @bind-Value="Firma" class="form-control" />
+    </div>
   </div>
 
   <div class="row">
@@ -77,7 +91,7 @@ BLAZOR! Beantragung für Client-ID (@env.ApplicationName)
     <label> Ihre gültige E-Mail-Adresse: </label>
    </div>
    <div class="col-xs-8">
-    <input type="text" @bind="EMail" class="form-control" />
+    <InputText @bind-Value="EMail" class="form-control" />
    </div>
   </div>
 
@@ -86,13 +100,18 @@ BLAZOR! Beantragung für Client-ID (@env.ApplicationName)
     <label>Art des zu erstellenden Clients:</label>
    </div>
    <div class="col-xs-8">
-    <select asp-items="Model.ClientArten" @bind="ClientArt" class="form-control"></select>
+    <InputSelect @bind-Value="ClientArt" class="form-control">
+     @foreach (var item in ClientArten)
+     {
+      <option value="@item.Value">@item.Text</option>
+     }
+    </InputSelect>
    </div>
   </div>
 
   <div class="row">
    <div class="col-xs-12">
-    <input type="checkbox" class="MLcheckbox" @bind="Einverstanden" />
+    <InputCheckbox class="MLcheckbox" @bind-Value="Einverstanden" />
     <label>
      Mit den o.g. Bedingungen bin ich einverstanden.
     </label>
@@ -100,23 +119,15 @@ BLAZOR! Beantragung für Client-ID (@env.ApplicationName)
   </div>
 
   <br />
-
-  <a class="btn btn-danger" href="./ClientID"> Abbrechen </a>
+  <a class="btn btn-danger" href="./"> Abbrechen </a>
   <input type="submit" class="btn btn-success" value="Client-ID jetzt beantragen" asp-page-handler="Beantragen" />
   <br /><br />
-  @*oder: @Html.ValidationSummary("", new { @class = "text-danger" })*@
-  <div asp-validation-summary="All" class="text-danger"></div>
- </form>
+
+  <DataAnnotationsValidator />
+  <div class="text-danger"><ValidationSummary></ValidationSummary></div>
+ </EditForm>
 
  <hr />
- Seite erstellt mit ASP.NET Core v@(typeof(Microsoft.AspNetCore.WebHost).Assembly.GetName().Version.ToString()) Razor Pages<br /> @Aufrufe<text>.</text> Aufruf dieser Seite.
+ Seite erstellt mit ASP.NET Core v@(typeof(Microsoft.AspNetCore.WebHost).Assembly.GetName().Version.ToString()) Razor Components (Blazor SSR)
 
- @*<h3>Historie</h3>
- @{ int i = DateTime.Now.Year -5;}
- <ul>
- <repeater count="@(DateTime.Now.Year- i)">
- <li><a href="/">@(i++)</a></li>
- </repeater>
- </ul>*@
 </div>
-

@@ -1,33 +1,8 @@
 ﻿@page "/Confirmation2"
-@using ITVisions.AspNetCore
-@using Microsoft.AspNetCore.Http
-@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.AspNetCore.Components.Routing
-@using Microsoft.AspNetCore.Components.Web
-
-@using static MiracleList_Backend.Pages.ClientID
 
 <h2>Beantragung für Client-ID: Bestätigung</h2>
 
 <div>
-
- <p>Danke, <b>@ClientIDModelResult.Name</b><text>.</text> Der Server hat Ihre personalisierte Client-ID gesendet an <b>@ClientIDModelResult.EMail</b>.<br />Bitte beachten Sie, dass eine Client-ID jederzeit widerrufen werden kann, falls Sie diese missbrauchen!</p>
-
+ <p>Danke, <b>@ClientIDModelResult.Name</b><text>.</text> Der Server hat Ihre personalisierte Client-ID für <b>@ClientIDModelResult.ClientArt</b> gesendet an <b>@ClientIDModelResult.EMail</b>.<br />Bitte beachten Sie, dass eine Client-ID jederzeit widerrufen werden kann, falls Sie diese missbrauchen!</p>
  <p>Ihre Client-ID ist: @ClientIDModelResult.ClientID</p>
- </div>
-
-@code {
- public ClientIDModelResult ClientIDModelResult
- {
-  get; set;
- }
-
- [CascadingParameter]
- public HttpContext? HttpContext { get; set; }
-
- protected override void OnInitialized()
- {
-  this.ClientIDModelResult = HttpContext.Session.GetObject<ClientIDModelResult>("ClientIDModelResult");
- }
-
-}
+</div>

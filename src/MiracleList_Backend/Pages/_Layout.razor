@@ -3,7 +3,7 @@
 <html>
 <!-- Layout Page -->
 <head>
- <title>ViewData["Title"]</title>
+ <Microsoft.AspNetCore.Components.Web.HeadOutlet></Microsoft.AspNetCore.Components.Web.HeadOutlet>
  <link rel="icon" type="image/x-icon" href="favicon.ico">
  <style>
   body {
@@ -14,23 +14,18 @@
  <link href="/bootstrap-theme.min.css" rel="stylesheet" />
 </head>
 <body>
-
-<div class="container">
- <div class="row" style="background: white; margin-bottom: 10px">
-
+ <div class="container">
+  <div class="row" style="background: white; margin-bottom: 10px">
    <div class="col-xs-3">
-
-   <a href="/">
-    <img src="/MiracleListLogo.jpg" asp-append-version="true">
-   </a>
-  </div>
+    <a href="/">
+     <img src="/MiracleListLogo.jpg" asp-append-version="true">
+    </a>
+   </div>
    <div class="col-xs-9">
-
     @Body
-
+   </div>
   </div>
  </div>
-</div>
 
- </body>
- </html>
+</body>
+</html>

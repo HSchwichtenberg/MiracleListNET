@@ -1,36 +1,51 @@
 ﻿using System;
-using BO;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using ITVisions;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Http;
 using BL;
+using BO;
+using ITVisions;
 using ITVisions.AspNetCore;
 using ITVisions.Network;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 
 namespace MiracleList_Backend.Pages;
 
-public partial class ClientID
+public partial class ClientID2
 {
-
  public class ClientIDModelResult
  {
   public string Name { get; set; }
   public string EMail { get; set; }
+  public string ClientArt { get; set; }
   public Guid ClientID { get; set; }
   public string ErrorMessage { get; set; }
  }
 
+ #region Formularfelder
+ [SupplyParameterFromForm]
+ [Required]
  public string Name { get; set; }
+ [Required]
+ [SupplyParameterFromForm]
  public string Firma { get; set; }
+ [Required]
+ [EmailAddress]
+ [SupplyParameterFromForm]
  public string EMail { get; set; }
+ [Range(typeof(bool), "true", "true")]
+ [SupplyParameterFromForm]
  public bool Einverstanden { get; set; }
+ [Required]
+ [SupplyParameterFromForm]
  public string ClientArt { get; set; }
+ #endregion
 
+ #region Weitere Daten für UI
  public bool DownloadAnbieten
  {
   get
@@ -40,32 +55,53 @@ public partial class ClientID
    return System.IO.File.Exists(path);
   }
  }
- public int Aufrufe { get; set; }
- public List<SelectListItem> ClientArten { get; set; } = (new List<String>() { "Web-Client", "Desktop-Client", "Mobile Client", "Server-Anwendung" }).Select(s => new SelectListItem { Value = s }).ToList();
 
+ public List<SelectListItem> ClientArten { get; set; } = (new List<String>() { "Web-Client", "Desktop-Client", "Mobile Client", "Server-Anwendung" }).Select(s => new SelectListItem { Value = s, Text = s }).ToList();
+ #endregion
+
+ #region DI
  [Inject]
  private NavigationManager NavigationManager { get; set; }
  [Inject]
  private IWebHostEnvironment env { get; set; } // injected via DI
-
  [CascadingParameter]
  public HttpContext? HttpContext { get; set; }
+ #endregion
+
+ private EditContext editContext { get; set; }
 
  protected override void OnInitialized()
  {
+  editContext = new(this);
   if (!env.IsProduction())
   {
-   this.EMail = "test@IT-Visions.de";
-   this.Name = "Test";
-   this.Firma = "Test";
+   this.EMail = this.EMail.NotNull("test@IT-Visions.de");
+   this.Name = this.Name.NotNull("Max Mustermann");
+   this.Firma = this.Firma.NotNull("Musterfirma AG");
   }
+  this.ClientArt = this.ClientArt.NotNull("Web-Client");
  }
 
- public void OnPostBeantragen()
+ /// <summary>
+ /// POST von Formular 1
+ /// </summary>
+ public void Download()
  {
-  #region Logik
-  // Client via Geschäftslogik registrieren und E-Mail senden
+  NavigationManager.NavigateTo("/Download/Flyer.pdf");
+ }
 
+ /// <summary>
+ /// POST von Formular 2
+ /// </summary>
+ public void Beantragen()
+ {
+  if (this.editContext != null)
+  {
+   var isValid = editContext.Validate();
+   if (!isValid) { return; }
+  }
+
+  #region Client via Geschäftslogik registrieren und E-Mail senden
   string Type = (ClientArt + (HttpContext.Request.Form.ContainsKey("C_Quelle") && !String.IsNullOrEmpty(HttpContext.Request.Form["C_Quelle"].ToString()) ? "/" + HttpContext.Request.Form["C_Quelle"] : "")).Truncate(20);
 
   var c = new Client
@@ -77,7 +113,6 @@ public partial class ClientID
    ClientID = Guid.NewGuid(),
    Type = Type
   };
-  ;
 
   HttpContext.Session.SetObject("Client", c);
 
@@ -89,7 +124,6 @@ public partial class ClientID
 
   c.Memo = s;
   var cm = new ClientManager();
-
   cm.New(c);
 
   var text =
@@ -105,15 +139,11 @@ public partial class ClientID
     );
 
   new LogManager().Log(Event.ClientCreated, Severity.Information, EMail, "CreateClientID", "", null, HttpContext.Connection.RemoteIpAddress.ToString(), text + "\n\n" + s + "E-Mail: " + e1);
-
   #endregion
 
-  var result = new ClientIDModelResult() { Name = this.Name, EMail = this.EMail, ClientID = c.ClientID, ErrorMessage = e1 };
-
+  // Übergabewerte in Session und Folgeseite aufrufen
+  var result = new ClientIDModelResult() { Name = this.Name, EMail = this.EMail, ClientID = c.ClientID, ClientArt = ClientArt, ErrorMessage = e1 };
   HttpContext.Session.SetObject("ClientIDModelResult", result);
-
   NavigationManager.NavigateTo("/Confirmation2");
-
  }
-
 }

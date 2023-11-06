@@ -52,7 +52,7 @@ namespace MiracleList.Pages
    }
   }
   public int Aufrufe { get; set; }
-  public List<SelectListItem> ClientArten { get; set; } = (new List<String>() { "Web-Client", "Desktop-Client", "Mobile Client", "Server-Anwendung" }).Select(s => new SelectListItem { Value = s }).ToList();
+  public List<SelectListItem> ClientArten { get; set; } = (new List<String>() { "Web-Client", "Desktop-Client", "Mobile Client", "Server-Anwendung" }).Select(s => new SelectListItem { Value = s, Text = s }).ToList();
   #endregion
 
   #region Properties für Zwei-Wege-Bindung

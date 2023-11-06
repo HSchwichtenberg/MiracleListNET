@@ -5,6 +5,7 @@
  <!--Compiler-->
  <PropertyGroup>
   <RootNamespace>Samples</RootNamespace>
+  <RazorLangVersion>8.0</RazorLangVersion>
   <NoWarn>1701;1702;1998;HTML00004;CS1591</NoWarn>
   <!--<TreatWarningsAsErrors>true</TreatWarningsAsErrors>-->
   <!--<WarningsAsErrors>RZ10012</WarningsAsErrors>-->

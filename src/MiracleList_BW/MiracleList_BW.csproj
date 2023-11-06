@@ -33,7 +33,7 @@
    <None Remove="SamplesBW\interop\JSInteropBWOnly.razor.js" />
  </ItemGroup>-->
 
- <!--Lazy Loading-->
+ <!--Lazy Loading (mit .dll!)-->
  <!--<ItemGroup>
   <BlazorWebAssemblyLazyLoad Include="SamplesRCL.dll" />
  </ItemGroup>-->

@@ -4,10 +4,15 @@
 @page "/Samples/Routing/{a}/{b:int?}/{c:datetime?}"
 @page "/Samples/RoutingGUID/{g:guid}"
 @page "/RoutingDemo"
+@inject IJSRuntime jsRuntime
+@inject NavigationManager nav
+
 
 @using ITVisions.Blazor
 
 <h3>RoutingDemo</h3>
+<p>@nav.GetType().FullName</p>
+
 
 <style>
  a.active {

@@ -16,10 +16,10 @@
 </style>
 
 <h2>
- Beantragung für Client-ID (@env.ApplicationName)
+ Beantragung für Client-ID für das MiracleList-Backend
  @if (!env.IsProduction())
  {
-  <span class="badge badge-warning"> *** @env.EnvironmentName ***</span>
+  <span class="badge badge-warning"> *** @env.ApplicationName *** @env.EnvironmentName ***</span>
  }
 </h2>
 

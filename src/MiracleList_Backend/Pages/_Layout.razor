@@ -1,0 +1,36 @@
+@inherits LayoutComponentBase
+
+<html>
+<!-- Layout Page -->
+<head>
+ <title>ViewData["Title"]</title>
+ <link rel="icon" type="image/x-icon" href="favicon.ico">
+ <style>
+  body {
+   background: rgba(255, 221, 134, 1) !important;
+  }
+ </style>
+ <link href="/bootstrap.min.css" rel="stylesheet" />
+ <link href="/bootstrap-theme.min.css" rel="stylesheet" />
+</head>
+<body>
+
+<div class="container">
+ <div class="row" style="background: white; margin-bottom: 10px">
+
+   <div class="col-xs-3">
+
+   <a href="/">
+    <img src="/MiracleListLogo.jpg" asp-append-version="true">
+   </a>
+  </div>
+   <div class="col-xs-9">
+
+    @Body
+
+  </div>
+ </div>
+</div>
+
+ </body>
+ </html>

@@ -21,6 +21,7 @@ using Microsoft.OpenApi.Models;
 using MiracleList.CustomAuthenticationService;
 using MiracleList.Util;
 using MiracleList_Backend.Hubs;
+using MiracleList_Backend.Pages;
 using MiracleList_Backend.SwaggerExtensions;
 
 namespace MiracleList;
@@ -173,10 +174,14 @@ public class Startup
   });
   #endregion
 
+  #region Enable Blazor SSR
+  services.AddRazorComponents();
+  #endregion
+
+
   #region Enable CORS 
   services.AddCors();
   #endregion
-
 
   #region Swagger
   services.AddSwaggerGen(options =>
@@ -313,6 +318,10 @@ public class Startup
   });
   #endregion
 
+  #region For Blazor SSR
+  app.UseAntiforgery();
+  #endregion
+
   #region  MVC with Routing
   app.UseEndpoints(endpoints =>
   {
@@ -340,7 +349,13 @@ public class Startup
    // für ASP.NET SignalR
    endpoints.MapHub<MLHub>("/MLHub");
    endpoints.MapHub<MLHubV2>("/MLHubV2");
+
+   #region For Blazor SSR
+   endpoints.MapRazorComponents<App>();
+
+   #endregion
   });
+
   #endregion
  }
 }

@@ -31,13 +31,18 @@ namespace ITVisions.Blazor
   public bool IsWebAssembly => BlazorType is "WebAssembly";
   public bool IsBlazorServer => BlazorType is "Server";
   public bool IsHybrid => BlazorType is "Hybrid";
+  public bool IsSSR => BlazorType is "SSR";
 
+  /// <summary>
+  /// Returns the Blazor type based on the NavigationManager instance name
+  /// </summary>
   public string BlazorType =>
-       _jsRuntime.GetType().FullName switch
+       NavigationManager.GetType().FullName switch
        {
-        "Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime" => "Server",
-        "Microsoft.AspNetCore.Components.WebAssembly.Services.DefaultWebAssemblyJSRuntime" => "WebAssembly",
-        "Microsoft.AspNetCore.Components.WebView.Services.WebViewJSRuntime" => "Hybrid",
+        "Microsoft.AspNetCore.Components.Endpoints.HttpNavigationManager" => "SSR",
+        "Microsoft.AspNetCore.Components.Server.Circuits.RemoteNavigationManager" => "Server",
+        "Microsoft.AspNetCore.Components.WebAssembly.Services.WebAssemblyNavigationManger" => "WebAssembly",
+        "Microsoft.AspNetCore.Components.WebView.Services.WebViewNavigationManager" => "Hybrid",
         _ => "unbekannt"
        };
 

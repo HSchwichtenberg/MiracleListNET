@@ -15,6 +15,12 @@ public class Program
       .AddInteractiveServerComponents()
       .AddInteractiveWebAssemblyComponents();
 
+  System.Diagnostics.Debug.WriteLine("Liste der vorregistrierten Dienste in Blazor United:");
+  foreach (var s in builder.Services)
+  {
+   System.Diagnostics.Debug.WriteLine(s.ServiceType.FullName + ": " + s.Lifetime);
+  }
+
   #region DI
   // Spezielle Dienste nur für Server
   builder.Services.AddSingleton<IAppState, AppState>();

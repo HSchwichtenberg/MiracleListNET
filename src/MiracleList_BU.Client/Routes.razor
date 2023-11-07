@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
- <Router AppAssembly="@typeof(_Imports).Assembly" AdditionalAssemblies="new[] { typeof(Client._Imports).Assembly, typeof(MLBlazorRCL.Login.Login).Assembly, typeof(Samples.SamplesList).Assembly }">
+<Router AppAssembly="@typeof(_Imports).Assembly" AdditionalAssemblies="new[] { typeof(Client._Imports).Assembly, typeof(MLBlazorRCL.Login.Login).Assembly, typeof(Samples.SamplesList).Assembly }">
 
  <Navigating>
   <div>
@@ -7,10 +7,10 @@
   </div>
  </Navigating>
 
-    <Found Context="routeData">
-        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MLBlazorRCL.Layout.MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+ <Found Context="routeData">
+  <RouteView RouteData="@routeData" DefaultLayout="@typeof(MLBlazorRCL.Layout.MainLayout)" />
+  <FocusOnNavigate RouteData="@routeData" Selector="h1" />
 
-    </Found>
+ </Found>
 
 </Router>

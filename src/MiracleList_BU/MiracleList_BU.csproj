@@ -21,11 +21,5 @@
  </ItemGroup>
 
  <!--AppSettings-Datei getrennt halten-->
- <ItemGroup>
-  <Content Update="appsettings.json">
-   <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-   <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-  </Content>
- </ItemGroup>
 
 </Project>

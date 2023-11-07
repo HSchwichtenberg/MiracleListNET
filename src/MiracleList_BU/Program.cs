@@ -1,11 +1,5 @@
-
-using Blazored.LocalStorage;
-using Blazored.Toast;
-using ITVisions.Blazor;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MiracleList;
-using MLBlazorRCL.MainView;
 using Web.Components;
 
 namespace Web;
@@ -22,11 +16,12 @@ public class Program
       .AddInteractiveWebAssemblyComponents();
 
   #region DI
-  // Dienste, die Server und Client gemeinsam nutzen
-  Web.Client.DI.AddServices(builder.Services);
-
   // Spezielle Dienste nur für Server
   builder.Services.AddSingleton<IAppState, AppState>();
+  builder.Services.AddAuthentication("ML");
+
+  // Dienste, die Server und Client gemeinsam nutzen
+  Web.Client.DI.AddServices(builder.Services);
   #endregion
 
   var app = builder.Build();
@@ -59,6 +54,5 @@ public class Program
 
   app.Run();
  }
-
 
 }

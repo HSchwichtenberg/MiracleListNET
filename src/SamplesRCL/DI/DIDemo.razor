@@ -4,7 +4,7 @@
 @using Microsoft.AspNetCore.Http
 @using Microsoft.Extensions.DependencyInjection
 @inject BlazorUtil Util
-@* @inject IHttpContextAccessor HttpContextAccessor *@
+@inject IHttpContextAccessor HttpContextAccessor
 @inject IServiceProvider ServiceProvider
 
 <button @onclick="DI">DI-Demo</button>
@@ -16,7 +16,10 @@
 
  public string Ausgabe { get; set; }
 
+ #region Schnittstelle und Klasse sind NICHT im DI-Container registriert!
  interface IXY { }
+ class CXY : IXY { }
+ #endregion
 
  public void DI()
  {
@@ -54,7 +57,7 @@
 
   try
   {
-   // httpContext = HttpContextAccessor.HttpContext;
+   httpContext = HttpContextAccessor.HttpContext;
   }
   catch (Exception ex)
   {

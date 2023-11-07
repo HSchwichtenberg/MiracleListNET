@@ -1,0 +1,57 @@
+﻿@page "/about"
+@using ITVisions.Blazor
+@using ITVisions.Blazor.Controls
+@using MLBlazorRCL.Texts
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@inject IWebAssemblyHostEnvironment env
+
+@inject MiracleList.IMiracleListProxy proxy
+
+<div class="row">
+
+ <div class="col-xs-6">
+
+  <h2>Technische Daten</h2>
+  @*Dies ist ein Steuerelement aus ITVisions.Blazor*@
+  <SystemInfo Assembly="@System.Reflection.Assembly.GetEntryAssembly()"></SystemInfo>
+  <b>Base Address:</b> @env.BaseAddress
+  <br />
+  <b>Environment:</b> @env.Environment
+  
+  <h2>Backend-Server</h2>
+  @ServerUrl
+  <br />
+  @ServerAppVersion
+  <br />
+  @ServerFramework
+ </div>
+
+ <div class="col-xs-6">
+  <AboutMiracleList />
+ </div>
+
+</div>
+
+@code {
+ public string ServerUrl { get; set; }
+ public string ServerAppVersion { get; set; } = "Server-Version: unknown";
+ public string ServerFramework { get; set; } = "Server-Framework: unknown";
+ /// <summary>
+ /// Lebenszyklusereignis: Komponente wird initialisiert
+ /// </summary>
+ protected override async Task OnInitializedAsync() {
+
+  try {
+   ServerUrl = "URL: " + (!String.IsNullOrEmpty(proxy.BaseUrl) ? proxy.BaseUrl : "not set");
+   var serverData = await proxy.AboutAsync();
+   ServerAppVersion = serverData[6];
+   ServerFramework = serverData[8];
+
+  }
+  catch (Exception) {
+
+  }
+
+
+ }
+}

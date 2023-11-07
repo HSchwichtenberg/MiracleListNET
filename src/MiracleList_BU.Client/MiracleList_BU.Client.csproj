@@ -32,6 +32,9 @@
   <ProjectReference Include="..\SamplesRCL\SamplesRCL.csproj" />
  </ItemGroup>
  <ItemGroup>
+   <Content Update="Components\About.razor">
+     <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+   </Content>
    <Content Update="wwwroot\appsettings.Development.json">
      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>

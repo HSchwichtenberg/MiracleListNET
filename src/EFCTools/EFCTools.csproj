@@ -1,20 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
+ 
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
 
  <PropertyGroup>
   <OutputType>Exe</OutputType>
-  <TargetFramework>net8.0</TargetFramework>
-  <Version>8.0.0.0</Version>
-  <AssemblyVersion>8.0.0.0</AssemblyVersion>
-  <FileVersion>8.0.0.0</FileVersion>
-  <InformationalVersion>8.0.0.0-09/23/2023 19:02:32</InformationalVersion>
-  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
  </PropertyGroup>
-
- <ItemGroup>
-  <None Remove="appsettings.Development.json" />
-  <None Remove="appsettings.json" />
- </ItemGroup>
-
 
  <ItemGroup>
   <PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.1.151.7" />
@@ -44,9 +34,5 @@
   <ProjectReference Include="..\BL\BL.csproj" />
   <ProjectReference Include="..\BO\BO.csproj" />
  </ItemGroup>
-
-
-
-
 
 </Project>

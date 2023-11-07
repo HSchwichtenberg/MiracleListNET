@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
+ <!--Hinweis: Hier werden eigene Werte statt Directory.Build.props verwendet, da diese (auch in anderen Projekten verwendete!) Komponente unabhängig versioniert wird!-->
+ 
  <!--Runtime-->
  <PropertyGroup>
   <TargetFramework>net8.0</TargetFramework>
@@ -17,7 +19,6 @@
   <Version>8.0.0.0</Version>
   <AssemblyVersion>8.0.0.0</AssemblyVersion>
   <FileVersion>8.0.0.0</FileVersion>
-  <InformationalVersion>8.0.0.0-09/23/2023 19:02:32</InformationalVersion>
  </PropertyGroup>
 
  <!--Autor-->
@@ -28,13 +29,12 @@
   <Product>www.IT-Visions-de Blazor Utltities</Product>
   <!--<PackageIcon>ITVisions.jpg</PackageIcon>-->
   <Description>
-   Hilfsklassen für Blazor WebAssembly, Blazor Server und Blazor Desktop inkl. JavaScript-Datei
+   Hilfsklassen für Blazor inkl. JavaScript-Datei
    Startup.cs:  services.AddBlazorUtil(); bzw. AddBlazorUtilForBlazorServer();
-   index.html bzw. _host.cshtml: &lt;script src="/_content/ITVisions.Blazor/BlazorUtil.js"&gt;&lt;/script&gt;
+   index.html bzw. App.razor: &lt;script src="/_content/ITVisions.Blazor/BlazorUtil.js"&gt;&lt;/script&gt;
   </Description>
   <PackageOutputPath>H:\DB\NugetHS</PackageOutputPath>
  </PropertyGroup>
-
 
  <!--NuGets-->
  <ItemGroup>

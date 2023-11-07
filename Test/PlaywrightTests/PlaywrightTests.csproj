@@ -1,16 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
+
  <PropertyGroup>
-  <TargetFramework>net8.0</TargetFramework>
   <ImplicitUsings>enable</ImplicitUsings>
   <Nullable>enable</Nullable>
-
   <IsPackable>false</IsPackable>
   <IsTestProject>true</IsTestProject>
-  <Version>8.0.0.0</Version>
-  <AssemblyVersion>8.0.0.0</AssemblyVersion>
-  <FileVersion>8.0.0.0</FileVersion>
-  <InformationalVersion>8.0.0.0-09/23/2023 19:02:33</InformationalVersion>
  </PropertyGroup>
 
  <ItemGroup>

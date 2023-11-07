@@ -1,12 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
- <PropertyGroup>
-  <NoWarn>$(NoWarn);NU1605</NoWarn>
-  <Version>8.0.0.0</Version>
-  <AssemblyVersion>8.0.0.0</AssemblyVersion>
-  <FileVersion>8.0.0.0</FileVersion>
-  <InformationalVersion>8.0.0.0-09/23/2023 19:02:33</InformationalVersion>
-  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
- </PropertyGroup>
+
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
 
  <PropertyGroup Label="Globals">
   <SccProjectName>SAK</SccProjectName>
@@ -16,12 +10,13 @@
  </PropertyGroup>
 
  <PropertyGroup>
-  <TargetFramework>net8.0</TargetFramework>
+  <NoWarn>$(NoWarn);NU1605</NoWarn>
   <DebugType>Full</DebugType>
   <AssemblyName>UnitTests</AssemblyName>
   <PackageId>UnitTests</PackageId>
   <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
 
+  
   <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
   <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
   <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -72,17 +67,12 @@
   <Reference Include="HibernatingRhinos.Profiler.Appender">
    <HintPath>..\..\Lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
   </Reference>
-
  </ItemGroup>
 
  <ItemGroup>
   <None Update="Properties\launchSettings.json">
    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </None>
- </ItemGroup>
-
- <ItemGroup>
-  <PackageReference Update="Microsoft.NETCore.App" Version="2.0.0" />
  </ItemGroup>
 
 </Project>

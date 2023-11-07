@@ -41,9 +41,9 @@ namespace ITVisions.Blazor
        {
         "Microsoft.AspNetCore.Components.Endpoints.HttpNavigationManager" => "SSR",
         "Microsoft.AspNetCore.Components.Server.Circuits.RemoteNavigationManager" => "Server",
-        "Microsoft.AspNetCore.Components.WebAssembly.Services.WebAssemblyNavigationManger" => "WebAssembly",
+        "Microsoft.AspNetCore.Components.WebAssembly.Services.WebAssemblyNavigationManager" => "WebAssembly",
         "Microsoft.AspNetCore.Components.WebView.Services.WebViewNavigationManager" => "Hybrid",
-        _ => "unbekannt"
+        _ => "unbekannt (" + NavigationManager.GetType().Name + ")"
        };
 
   public string GetBlazorVersionInfo()

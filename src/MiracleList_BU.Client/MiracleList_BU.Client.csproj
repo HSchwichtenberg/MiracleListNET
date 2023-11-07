@@ -31,20 +31,5 @@
   <ProjectReference Include="..\MLBlazorRCL\MLBlazorRCL.csproj" />
   <ProjectReference Include="..\SamplesRCL\SamplesRCL.csproj" />
  </ItemGroup>
- <ItemGroup>
-   <Content Update="Components\About.razor">
-     <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-   </Content>
-   <Content Update="wwwroot\appsettings.Development.json">
-     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-     <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-     <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-   </Content>
-   <Content Update="wwwroot\appsettings.json">
-     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-     <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-     <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-   </Content>
- </ItemGroup>
-
+ 
 </Project>

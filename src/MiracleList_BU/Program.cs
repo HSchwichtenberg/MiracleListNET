@@ -51,7 +51,7 @@ public class Program
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(
-     typeof(Web.Client.Routes).Assembly,
+     typeof(Web.Client.Components.Routes).Assembly,
      typeof(MLBlazorRCL.Login.Login).Assembly,
      typeof(Samples.SamplesList).Assembly
 

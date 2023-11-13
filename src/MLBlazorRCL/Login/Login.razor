@@ -1,27 +1,20 @@
 ﻿@page "/Login"
 @page "/Logout"
 @page "/"
-@inherits LoginModel;
-
+@inherits LoginModel
 
 <div class="panel panel-primary">
  <div class="panel-heading">
-  @{
-   /* DEMO: 29. CSS-Isolation: Nutzung */
-  }
   <h2 class="Headline">Benutzeranmeldung</h2>
  </div>
  <div class="panel-body">
   <p>
-   <a href="/about">MiracleList</a> ist eine praxisnahe Beispielanwendung für eine Single-Page-Webapplication (SPA) zur Aufgabenverwaltung. Diese Variante des Frontends läuft mit Blazor @(Util.BlazorType) auf @System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.  <span class="glyphicon glyphicon-arrow-right"></span> <a href="/About/AboutMiracleList">Andere Varianten</a>
+   <a href="/about">MiracleList</a> ist eine praxisnahe Beispielanwendung für eine Single-Page-Webapplication (SPA) zur Aufgabenverwaltung aus dem <a href="https://www.IT-Visions.de/BlazorBuch">Blazor-Buch von Dr. Holger Schwichtenberg</a>. Diese Variante des Frontends läuft mit Blazor @(Util.BlazorType) auf @System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.  <span class="glyphicon glyphicon-arrow-right"></span> <a href="/About/AboutMiracleList">Weitere Informationen</a>
   </p>
   <p>
    Zur Benutzeranmeldung geben Sie die Kombination aus Ihrer E-Mail-Adresse und einem beliebigen Kennwort ein. Wenn es für diese E-Mail-Adresse noch kein Benutzerkonto gibt, wird automatisch ein neues Benutzerkonto mit einigen Beispielaufgaben angelegt. Merken Sie sich das Kennwort für zukünftige Anmeldungen. Das Kennwort kann nicht geändert werden. Das Benutzeranmeldeverfahren ist bewusst vereinfacht, um die Hürde zum Einstieg in die Anwendung gering zu halten.
   </p>
   <br>
-  @{
-   /* DEMO: 40. Login-Formular */
-  }
   <div class="row">
    <div class="col-xs-12 form-group">
     <label for="name">E-Mail-Adresse:</label>

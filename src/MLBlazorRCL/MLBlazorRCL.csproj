@@ -16,16 +16,16 @@
 
  <ItemGroup>
   <!--Zusätzliche Pakete von Microsoft-->
-  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.0-rc.2.23480.2" />
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.0-rc.2.23480.2" />
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="8.0.0-rc.2.23480.2" />
-  <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.0-rc.2.23480.2" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="8.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.*" />
   <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0-preview3.23201.1" />
-  <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.0-rc.2.23480.2" />
-  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0-rc.2.23479.6" />
-  <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0-rc.2.23479.6" />
-  <PackageReference Include="System.Net.Http.Json" Version="8.0.0-rc.2.23479.6" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-rc.2.23480.1" />
+  <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.*" />
+  <PackageReference Include="System.Net.Http.Json" Version="8.0.*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.*" />
 
   <!--Zusätzliche Pakete von Anderen-->
   <PackageReference Include="Blazor.ContextMenu" Version="1.16.*" />

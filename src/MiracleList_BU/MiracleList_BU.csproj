@@ -20,7 +20,7 @@
  <!--Projekte und NuGet-Pakete-->
  <ItemGroup>
   <ProjectReference Include="..\MiracleList_BU.Client\MiracleList_BU.Client.csproj" />
-  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0-rc.2.23480.2" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.*" />
  </ItemGroup>
 
 </Project>

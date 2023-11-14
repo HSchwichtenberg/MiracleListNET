@@ -27,7 +27,7 @@
 
  <ItemGroup>
   <!--Zusätzliche NuGet-Pakete von Microsoft -->
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="8.0.0-rc.2.23480.2" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="8.0.*" />
 
  </ItemGroup>
 

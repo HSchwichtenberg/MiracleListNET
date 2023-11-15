@@ -10,6 +10,7 @@
   <!-- MAUI: App Identifier -->
   <ApplicationId>de.it-visions.miraclelist_bm</ApplicationId>
   <ApplicationIdGuid>F5414985-6647-4C08-B969-D83A519773BA</ApplicationIdGuid>
+  <Platforms>AnyCPU;x64</Platforms>
  </PropertyGroup>
 
  <!--Compiler -->
@@ -37,7 +38,7 @@
  <!--Weitere MAUI-Einstellungen-->
  <PropertyGroup>
   <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-  <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+  <AppxPackageSigningEnabled>False</AppxPackageSigningEnabled>
   <PackageCertificateThumbprint>D8EA63765716ECA15A50BF9016CA46AEFB0E4CFC</PackageCertificateThumbprint>
   <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
   <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>

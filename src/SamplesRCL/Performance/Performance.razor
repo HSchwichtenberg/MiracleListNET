@@ -276,10 +276,9 @@ Dauer: @((MarkupString)Dauer)
   this.Dauer = "Läuft...";
   await DoEvents();
   var ms = await new Berechnungen().StartJS(JSRuntime, Anzahl);
-  var mb = ITVisions.MathUtil.GetUsedRAM();
-  this.Dauer = $"<li>{ms} ms für {Anzahl:###,###,##0} JS-Berechnungen / {mb}.</li>";
+  // var mb = ITVisions.MathUtil.GetUsedRAM();
+  this.Dauer = $"<li>{ms} ms für {Anzahl:###,###,##0} JS-Berechnungen.</li>";
   Util.Log("Done: " + this.Dauer);
-
  }
 
 }

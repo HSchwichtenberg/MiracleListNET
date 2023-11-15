@@ -24,15 +24,15 @@
   <UserSecretsId>6f1a0d90-5d1c-470b-bb9a-2864e88e326b</UserSecretsId>
  </PropertyGroup>
  <ItemGroup>
-   <Page Remove="Desktop\App.xaml" />
+  <Page Remove="Desktop\App.xaml" />
  </ItemGroup>
  <ItemGroup>
-   <ApplicationDefinition Include="Desktop\App.xaml" />
+  <ApplicationDefinition Include="Desktop\App.xaml" />
  </ItemGroup>
  <ItemGroup>
   <EmbeddedResource Include="Desktop\MiracleList.ico" />
  </ItemGroup>
- 
+
  <!--Projektreferenzen-->
  <ItemGroup>
   <ProjectReference Include="..\MiracleList_Interfaces\MiracleList_Interfaces.csproj" />
@@ -63,21 +63,30 @@
   </COMReference>
  </ItemGroup>
 
+ <!--Verlinkte Datei aus BS-Projekt: MLAuthenticationStateProvider2Tier-->
+ <ItemGroup>
+  <Compile Include="..\MiracleList_BS\Authentication\MLAuthenticationStateProvider2Tier.cs" Link="Web\Authentication\MLAuthenticationStateProvider2Tier.cs" />
+ </ItemGroup>
+ <ItemGroup>
+   <None Include="wwwroot\css\bootstrap\bootstrap.min.css" />
+   <None Include="wwwroot\css\bootstrap\bootstrap.min.css.map" />
+   <None Include="wwwroot\css\open-iconic\FONT-LICENSE" />
+   <None Include="wwwroot\css\open-iconic\font\css\open-iconic-bootstrap.min.css" />
+   <None Include="wwwroot\css\open-iconic\font\fonts\open-iconic.eot" />
+   <None Include="wwwroot\css\open-iconic\font\fonts\open-iconic.otf" />
+   <None Include="wwwroot\css\open-iconic\font\fonts\open-iconic.svg" />
+   <None Include="wwwroot\css\open-iconic\font\fonts\open-iconic.ttf" />
+   <None Include="wwwroot\css\open-iconic\font\fonts\open-iconic.woff" />
+   <None Include="wwwroot\css\open-iconic\ICON-LICENSE" />
+   <None Include="wwwroot\css\open-iconic\README.md" />
+   <None Include="wwwroot\css\site.css" />
+   <None Include="wwwroot\index.html" />
+ </ItemGroup>
+
  <!--Einstellungen für BD -->
  <ItemGroup>
-  <None Include="Web\wwwRoot\**">
+  <None Update="wwwroot\**">
    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </None>
  </ItemGroup>
- <ItemGroup>
-   <Compile Remove="bin2\**" />
-   <Content Remove="bin2\**" />
-   <EmbeddedResource Remove="bin2\**" />
-   <None Remove="bin2\**" />
-   <Page Remove="bin2\**" />
- </ItemGroup>
- <ItemGroup>
-   <Compile Include="..\MiracleList_BS\Authentication\MLAuthenticationStateProvider2Tier.cs" Link="Web\Authentication\MLAuthenticationStateProvider2Tier.cs" />
- </ItemGroup>
-
 </Project>

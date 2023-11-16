@@ -5,33 +5,48 @@
 
 <h1>Vorlagenbasierte Komponentenvorlagen</h1>
 
-<h3>ITVButton (vorlagenbasiert + AdditionalAttributes)</h3>
+<h3>ITVCheckbox</h3>
 
+<ITVCheckbox @bind-Value="Aktiv" @bind-Value:after="Log"></ITVCheckbox>
+
+@code
+{
+ bool Aktiv = true;
+
+ void Log()
+ {
+   Util.Log("Aktiv=" + Aktiv);
+ }
+}
+
+
+<h3>ITVButton (vorlagenbasiert + AdditionalAttributes)</h3>
 <p>
 
 
-<ITVButton onClick="Aktion" AnimationSeconds="1" class="btn btn-success" title="mit Animation">
- <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
-</ITVButton>
+ <ITVButton onClick="Aktion" AnimationSeconds="1" class="btn btn-success" title="mit Animation">
+  <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
+ </ITVButton>
 
-<ITVButton onClick="Aktion" AnimationSeconds="0" class="btn btn-warning" style="color:black" title="ohne Animation">
- <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
-</ITVButton>
+ <ITVButton onClick="Aktion" AnimationSeconds="0" class="btn btn-warning" style="color:black" title="ohne Animation">
+  <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
+ </ITVButton>
 </p>
 
 <p>
-<ITVButton onClick="AktionMitFehler" AnimationSeconds="1" class="btn btn-danger" title="mit Animation und Fehler ohne Fehlerbehandlung">
- <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
-</ITVButton>
+ <ITVButton onClick="AktionMitFehler" AnimationSeconds="1" class="btn btn-danger" title="mit Animation und Fehler ohne Fehlerbehandlung">
+  <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
+ </ITVButton>
 
-<ITVButton onClick="AktionMitFehler" onError='async (ex)=>await Util.Alert("FEHLER: " + ex.Message)' AnimationSeconds="1" class="btn btn-danger" title="mit Animation und Fehler mit Fehlerbehandlung">
- <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
-</ITVButton>
+ <ITVButton onClick="AktionMitFehler" onError='async (ex)=>await Util.Alert("FEHLER: " + ex.Message)' AnimationSeconds="1" class="btn btn-danger" title="mit Animation und Fehler mit Fehlerbehandlung">
+  <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
+ </ITVButton>
 </p>
 
 @code
 {
  int counter = 41;
+
 
  async Task Aktion()
  {

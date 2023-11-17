@@ -7,12 +7,12 @@
 
  <!--App-Version-->
  <PropertyGroup>
-  <Version>8.1.0</Version>
-  <AssemblyVersion>8.1.0</AssemblyVersion>
-  <FileVersion>8.1.0</FileVersion>
-  <InformationalVersion>8.1.0-11/14/2023 23:17:15</InformationalVersion>
+  <Version>8.2.0</Version>
+  <AssemblyVersion>8.2.0</AssemblyVersion>
+  <FileVersion>8.2.0</FileVersion>
+  <InformationalVersion>8.2.0-11/16/2023 13:40:57</InformationalVersion>
   <ApplicationVersion>8</ApplicationVersion>
-  <ApplicationDisplayVersion>8.1.0</ApplicationDisplayVersion>
+  <ApplicationDisplayVersion>8.2.0</ApplicationDisplayVersion>
  </PropertyGroup>
 
  <!--App-Infos-->
@@ -22,7 +22,7 @@
   <Product>Entity Framework Core-Buch https://www.IT-Visions.de/EFCoreBuch</Product>
   <Copyright>(C) Dr. Holger Schwichtenberg (www.IT-Visions.de)</Copyright>
   <PackageProjectUrl>https://www.IT-Visions.de/EFCoreBuch</PackageProjectUrl>
-  <PackageReleaseNotes>Programmcodebeispiele zum Blazor 8.0-Buch von Dr. Holger Schwichtenberg für Buchversion 8.1.0</PackageReleaseNotes>
+  <PackageReleaseNotes>Programmcodebeispiele zum Blazor 8.0-Buch von Dr. Holger Schwichtenberg für Buchversion 8.2.0</PackageReleaseNotes>
  </PropertyGroup>
  
 </Project>

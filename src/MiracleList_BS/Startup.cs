@@ -187,7 +187,11 @@ public class Startup
 
    endpoints.MapFallbackToPage("/_Host");
    // für ASP.NET SignarlR
-   endpoints.MapHub<MLHub>("/MLHub");
+   endpoints.MapHub<MLHub>("/MLHub",
+    signalRConnectionOptions =>
+    {
+     signalRConnectionOptions.AllowStatefulReconnects = true; // seit .NET 8.0
+    });
   });
  }
 }

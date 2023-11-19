@@ -105,7 +105,8 @@ public partial class Main : IAsyncDisposable
    AppState.HubConnection = new HubConnectionBuilder()
        .WithUrl(hubURL)
        .AddMessagePackProtocol()
-       .WithAutomaticReconnect()
+       .WithAutomaticReconnect() // Seit .NET Core 3.1
+       .WithStatefulReconnect() // Seit .NET 8.0
        .ConfigureLogging(logging =>
        {
         logging.AddProvider(new ITVisions.Logging.UniversalLoggerProvider(Util.Warn));

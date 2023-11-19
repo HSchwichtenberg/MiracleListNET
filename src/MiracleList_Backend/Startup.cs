@@ -347,8 +347,18 @@ public class Startup
             defaults: new { controller = "Client", action = "Index" });
 
    // für ASP.NET SignalR
-   endpoints.MapHub<MLHub>("/MLHub");
-   endpoints.MapHub<MLHubV2>("/MLHubV2");
+   endpoints.MapHub<MLHub>("/MLHub",
+    signalRConnectionOptions =>
+    {
+     signalRConnectionOptions.AllowStatefulReconnects = true; // seit .NET 8.0
+    });
+
+   endpoints.MapHub<MLHubV2>("/MLHubV2",
+    signalRConnectionOptions =>
+    {
+     signalRConnectionOptions.AllowStatefulReconnects = true; // seit .NET 8.0
+    }
+    );
 
    #region For Blazor SSR
    endpoints.MapRazorComponents<App>();

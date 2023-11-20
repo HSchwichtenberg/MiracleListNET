@@ -1,0 +1,34 @@
+﻿@using System.Net.Http
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
+
+@*Autorisierung*@
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+
+@*Toasts-Benachrichtigungen mit Blazored.Toast*@
+@using Blazored.Toast
+@using Blazored.Toast.Services
+
+@*Für IT-Visions-Hilfsbibliothek*@
+@using ITVisions
+@using ITVisions.Blazor
+@using ITVisions.Blazor.Controls
+
+@*Für Radzen Components*@
+@using Radzen
+@using Radzen.Blazor
+
+@*Eigene Namensräume*@
+@using Web
+@using Web.Client
+@using Web.Components
+@using Web.Client.Components
+@using MLBlazorRCL
+@using MiracleList
+
+@*DI hier auch möglich*@
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+@inject Microsoft.JSInterop.IJSRuntime jsRuntime

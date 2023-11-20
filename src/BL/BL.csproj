@@ -1,12 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
- <PropertyGroup>
-  <NoWarn>$(NoWarn);NU1605</NoWarn>
-  <Version>7.12.5.0</Version>
-  <AssemblyVersion>7.12.5.0</AssemblyVersion>
-  <FileVersion>7.12.5.0</FileVersion>
-  <InformationalVersion>7.12.5.0-05/17/2023 11:49:30</InformationalVersion>
-  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
- </PropertyGroup>
+
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
+ 
  <PropertyGroup Label="Globals">
   <SccProjectName>SAK</SccProjectName>
   <SccProvider>SAK</SccProvider>
@@ -15,10 +10,9 @@
  </PropertyGroup>
 
  <PropertyGroup>
-  <TargetFramework>net7.0</TargetFramework>
+  <NoWarn>$(NoWarn);NU1605</NoWarn>
   <AssemblyName>BL</AssemblyName>
   <PackageId>BL</PackageId>
-  <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
   <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
   <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
   <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -31,13 +25,14 @@
  </ItemGroup>
 
  <ItemGroup>
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.6.0" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.12.*" />
   <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
-  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="7.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="8.0.*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.*" />
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.*" />
   <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
-  <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="7.21.1" />
+  <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="8.0.0-rc.2.23480.1-01" />
  </ItemGroup>
 
  <ItemGroup>

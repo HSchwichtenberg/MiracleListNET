@@ -113,7 +113,7 @@ public partial class FilesFromFilesystem
     await newFile.WriteAsync(buffer, 0, bytesRead, cancelation.Token);
     progressPercent = (int)((totalRead / currentFile.Size) * 100);
     Info = "Hochladen der Datei <b>" + currentFile.Name + "</b>: " + progressPercent.ToString() + "% / " + sw.ElapsedMilliseconds + "ms";
-    this.StateHasChanged();
+    await InvokeAsync(StateHasChanged);
    }
    sw.Stop();
    Info = "Datei <b>" + currentFile.Name + "</b> hochgeladen in " + sw.ElapsedMilliseconds + "ms!";
@@ -132,7 +132,7 @@ public partial class FilesFromFilesystem
   progressPercent = 0;
   displayProgress = false;
   GetFiles();
-  StateHasChanged();
+  await InvokeAsync(StateHasChanged);
  }
 
 

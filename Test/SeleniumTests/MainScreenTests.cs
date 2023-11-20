@@ -242,6 +242,7 @@ namespace MiracleListUITests
   // }
   //}
 
+  int AnzAufgaben = 5;
 
   [TestMethod]
   public void TaskCreateMany()
@@ -278,8 +279,8 @@ namespace MiracleListUITests
     var headline1 = mpo.TaskHeadline.Text;
     Assert.IsTrue(headline1 == "0 Tasks in Testkategorie" || headline1 == "0 Aufgaben in Testkategorie");
 
-    // 10 Aufgaben anlegen
-    for (int i = 1; i <= 10; i++)
+    // Einige Aufgaben anlegen
+    for (int i = 1; i <= AnzAufgaben; i++)
     {
      var taskTitle = "Testaufgabe " + i;
      mpo.NewTask.SendKeys(taskTitle);

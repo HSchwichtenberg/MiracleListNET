@@ -22,15 +22,15 @@
  List<DateTime> ZeitenList = new List<DateTime>();
  SortedDictionary<int, DateTime> ZeitenDic = new SortedDictionary<int, DateTime>();
 
- void KlickFehler()
+ async Task KlickFehler()
  {
-  Logik();
+  await Logik();
   throw new ApplicationException("Der Klick war ein Fehler!");
  }
 
- void KlickDebugger()
+ async Task KlickDebugger()
  {
-  Logik();
+  await Logik();
   System.Diagnostics.Debugger.Break();
  }
 

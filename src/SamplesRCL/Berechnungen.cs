@@ -1,14 +1,14 @@
-﻿using ITVisions;
-using Microsoft.JSInterop;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using ITVisions;
+using Microsoft.JSInterop;
 
 namespace Samples
 {
-
  /// <summary>
- /// TODO: Mittlerweile auch Verfügbar in ITVAppUtil ITVisions.Maths
+ /// Beispielberechnung für Performance-Tests
+ /// Hinweis: Mittlerweile auch Verfügbar in ITVAppUtil ITVisions.Maths
  /// </summary>
  class Berechnungen
  {
@@ -64,10 +64,11 @@ namespace Samples
   {
    try
    {
+    var skript = await jsRuntime.InvokeAsync<IJSObjectReference>("import", "/_content/SamplesRCL/SamplesTS.js");
+
     Stopwatch sw = new Stopwatch();
     sw.Start();
 
-    var skript = await jsRuntime.InvokeAsync<IJSObjectReference>("import", "/_content/SamplesRCL/SamplesTS.js");
     var r = await skript.InvokeAsync<long>("TSUtil.FibonacciMany", repeat, start, end, false);
 
     sw.Stop();

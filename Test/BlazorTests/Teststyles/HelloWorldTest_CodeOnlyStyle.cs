@@ -4,9 +4,9 @@ using Bunit;
 using static Bunit.ComponentParameterFactory;
 using BlazorTests.Teststyles;
 
-namespace BlazorTests
+namespace BlazorTests.Teststyles
 {
- public class HelloWorldTestCSStyle : TestContext
+ public class HelloWorldTest_CodeOnlyStyle : TestContext
  {
   [Fact]
   public void HelloWorldTest()

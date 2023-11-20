@@ -20,25 +20,30 @@ namespace ITVisions.Blazor
   private IHttpContextAccessor httpContextAccessor { get; set; } = null;
 
   // DI
-  public BlazorUtil(IJSRuntime jsRuntime, NavigationManager NavigationManager, IHttpContextAccessor httpContextAccessor)
+  public BlazorUtil(IJSRuntime jsRuntime, NavigationManager NavigationManager)
   {
    _jsRuntime = jsRuntime;
    this.NavigationManager = NavigationManager;
-   this.httpContextAccessor = httpContextAccessor;
+   //TODO: this.httpContextAccessor = httpContextAccessor;
   }
 
   #region Blazor Type
   public bool IsWebAssembly => BlazorType is "WebAssembly";
   public bool IsBlazorServer => BlazorType is "Server";
   public bool IsHybrid => BlazorType is "Hybrid";
+  public bool IsSSR => BlazorType is "SSR";
 
+  /// <summary>
+  /// Returns the Blazor type based on the NavigationManager instance name
+  /// </summary>
   public string BlazorType =>
-       _jsRuntime.GetType().FullName switch
+       NavigationManager.GetType().FullName switch
        {
-        "Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime" => "Server",
-        "Microsoft.AspNetCore.Components.WebAssembly.Services.DefaultWebAssemblyJSRuntime" => "WebAssembly",
-        "Microsoft.AspNetCore.Components.WebView.Services.WebViewJSRuntime" => "Hybrid",
-        _ => "unbekannt"
+        "Microsoft.AspNetCore.Components.Endpoints.HttpNavigationManager" => "SSR",
+        "Microsoft.AspNetCore.Components.Server.Circuits.RemoteNavigationManager" => "Server",
+        "Microsoft.AspNetCore.Components.WebAssembly.Services.WebAssemblyNavigationManager" => "WebAssembly",
+        "Microsoft.AspNetCore.Components.WebView.Services.WebViewNavigationManager" => "Hybrid",
+        _ => "unbekannt (" + NavigationManager.GetType().Name + ")"
        };
 
   public string GetBlazorVersionInfo()

@@ -80,7 +80,8 @@
 
 @code
 {
- [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
+ // [CascadingParameter] 
+ // private Task<AuthenticationState> authenticationStateTask { get; set; }
 
  protected override async System.Threading.Tasks.Task OnInitializedAsync()
  {
@@ -92,23 +93,23 @@
    var projektname = entryAssemblyName?.Name;
    await Util.SetTitle(projektname + " / v" + entryAssemblyName?.Version?.ToString());
   }
-  catch (Exception ex)
+  catch (Exception)
   {
    // Workaround für Android (dort funktioniert GetEntryAssembly() nicht!)
   }
 
 
   // ermittelte den aktuellen Benutzer
-  var authState = await authenticationStateTask;
-  var user = authState.User;
-  if (user.Identity.IsAuthenticated)
-  {
-   Util.Log($"MainLayout: User {user.Identity.Name} is authenticated!");
-  }
-  else
-  {
-   Util.Log("MainLayout: User is NOT authenticated.");
-  }
+  // var authState = await authenticationStateTask;
+  // var user = authState.User;
+  // if (user.Identity.IsAuthenticated)
+  // {
+  //  Util.Log($"MainLayout: User {user.Identity.Name} is authenticated!");
+  // }
+  // else
+  // {
+  //  Util.Log("MainLayout: User is NOT authenticated.");
+  // }
  }
 
  

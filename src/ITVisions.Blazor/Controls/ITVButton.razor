@@ -1,0 +1,114 @@
+﻿@inject BlazorUtil util
+
+<button disabled="@ShowAnimation" data-toggle="tooltip" data-placement="bottom" @attributes="AdditionalAttributes" @onclick="Run">
+ @if (ShowAnimation)
+ {
+  <text>
+   <img src="/_content/ITVisions.Blazor/img/ITVButtonProgress.gif" width="20" style="margin-right:8px;" />
+  </text>
+ }
+ @ChildContent
+</button>
+
+@code {
+ /// <summary>
+ /// Inhalt der Schaltfläche
+ /// </summary>
+ [Parameter] public RenderFragment ChildContent { get; set; }
+
+ /// <summary>
+ ///  Anzahl der Mindestsekunden für die Deaktivierung und Animation
+ /// </summary>
+ [Parameter] public byte AnimationSeconds { get; set; } = 1;
+
+ /// <summary>
+ /// Weitergabe sonstiger Attribute, z.B. class und style
+ /// </summary>
+ [Parameter(CaptureUnmatchedValues = true)]
+ public IDictionary<string, object> AdditionalAttributes { get; set; }
+
+ /// <summary>
+ /// Aktion bei Klick
+ /// </summary>
+ [Parameter]
+ public EventCallback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> onClick { get; set; }
+
+ /// <summary>
+ /// Aktion bei Fehler
+ /// </summary>
+ [Parameter]
+ public EventCallback<Exception> onError { get; set; }
+
+ bool ShowAnimation = false;
+ bool Working = false;
+ bool MinDone = false;
+ System.Timers.Timer t;
+
+ public async Task UIUpdate()
+ {
+  await this.InvokeAsync(this.StateHasChanged);
+  await Task.Delay(1);
+ }
+
+ public async Task Run()
+ {
+  ShowAnimation = false;
+  MinDone = false;
+  Working = true;
+  await UIUpdate();
+
+  // Animation soll min. x Sekunden laufen
+  if (AnimationSeconds > 0)
+  {
+   ShowAnimation = true;
+   await UIUpdate();
+
+   t = new System.Timers.Timer(new TimeSpan(0, 0, AnimationSeconds));
+   t.AutoReset = false;
+
+   t.Elapsed += async (s, e) =>
+   {
+    MinDone = true;
+    if (!Working)
+    {
+     ShowAnimation = false;
+     await UIUpdate();
+    }
+    t.Close();
+   };
+   t.Start();
+  }
+
+  try
+  {
+   await onClick.InvokeAsync();
+   await UIUpdate();
+  }
+  catch (Exception ex)
+  {
+   ShowAnimation = false;
+   await UIUpdate();
+
+   if (onError.HasDelegate) // Host hat Fehlerbehandlung definiert
+   {
+    await onError.InvokeAsync(ex);
+   }
+   else // Host hat keine Fehlerbehandlung definiert
+   {
+    ShowAnimation = false;
+    await this.InvokeAsync(this.StateHasChanged);
+    util.Error(ex.ToString()); 
+    await util.Alert(ex.GetFullMessage());
+
+   }
+  }
+  Working = false;
+
+  if (MinDone)
+  {
+   ShowAnimation = false;
+  }
+  await UIUpdate();
+ }
+
+}

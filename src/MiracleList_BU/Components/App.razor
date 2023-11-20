@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+ <base href="/" />
+
+ <title>MiracleList_BS / @("v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString())</title>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width" />
+ <base href="/" />
+
+ <!--Bootstrap -->
+ <link rel="stylesheet" href="/_content/ITVisions.Blazor/css/bootstrap/bootstrap.min.css" />
+ <script src="/_content/ITVisions.Blazor/js/jquery.min.js"></script>
+ <script src="/_content/ITVisions.Blazor/js/bootstrap.min.js" defer></script>
+
+ <!-- Bundle aller CSS-Dateien, die Razor Components zugeordnet sind-->
+ <link href="MiracleList_BU.styles.css" rel="stylesheet" />
+
+ <!-- Eigenständige CSS-Dateien und ICO-Dateien aus wwwRoot -->
+ <link rel="icon" type="image/vnd.microsoft.icon" href="/_content/MLBlazorRCL/favicon.ico">
+ <link rel="stylesheet" href="/_content/MLBlazorRCL/styles.css" />
+ <link rel="stylesheet" href="/_content/ITVisions.Blazor/styles.css" />
+
+ <!-- -------- Für Radzen Components -->
+ <link rel="stylesheet" href="_content/Radzen.Blazor/css/default-base.css">
+ <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+
+ <!-- -------- Für BlazorContextMenu https://github.com/stavroskasidis/BlazorContextMenu -->
+ <link rel="stylesheet" href="/_content/Blazor.ContextMenu/blazorContextMenu.min.css" />
+ <script src="/_content/Blazor.ContextMenu/blazorContextMenu.min.js"></script>
+
+ <!-- -------- Für BlazorUtil -->
+ <script src="/_content/ITVisions.Blazor/BlazorUtil.js"></script>
+
+ <!-- -------- Für CHARTIST.JS -->
+ <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+ <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+
+ <HeadOutlet />
+</head>
+
+<body>
+ <div class="container-fluid">
+  <Routes @rendermode="@RenderMode.InteractiveAuto" />
+ </div>
+ <script src="_framework/blazor.web.js"></script>
+
+</body>
+
+</html>

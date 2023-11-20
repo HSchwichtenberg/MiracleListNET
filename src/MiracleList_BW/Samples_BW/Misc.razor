@@ -8,7 +8,25 @@
 <h3>APIs</h3>
 <button @onclick="APITests" class="btn btn-danger">Test forbidden API Calls</button>
 
+<h3>BUG</h3>
 
+<button @onclick="GetOS">Get OS Info</button>
+
+@System.Environment.OSVersion.Platform<br />
+@(System.Environment.OSVersion.Platform == PlatformID.Other ? "Browser" : "kein Browser")
+@OSInfo
+<br />
+
+@code
+{
+ string OSInfo = "";
+ void GetOS()
+ {
+  OSInfo += "OS: " + (System.Environment.OSVersion.Platform == PlatformID.Other ? "Browser" : System.Environment.OSVersion);
+ }
+
+
+}
 
 <h3>Tag Helper</h3>
 not supported :-(

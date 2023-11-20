@@ -98,7 +98,7 @@ public class AppState : IAppState
    var d = new DirectoryInfo(filesPath).GetOrCreateDir();
 
    // Cleanup Dateien älter als 10 Tage, damit der DEMO-Server nicht zugemüllt wird -> Dies ggf. ändern für eigene Zwecke!
-   var removecount = d.RemoveOldFiles(10);
+   var removecount = d.DeleteOldFiles(10);
 
    util.Log("File-Cleanup-OK: " + removecount + " Dateien älter als 10 Tage entfernt aus " + filesPath);
   }

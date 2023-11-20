@@ -15,20 +15,20 @@
  }
 }
 <ul>
-  @for(int i=1; i < 5; i++)
-  {
-    <li @onclick="()=>Klick(i)">@i</li>
-  }
+ @for (int i = 1; i < 5; i++)
+ {
+  <li @onclick="()=>Klick(i)">@i</li>
+ }
 </ul>
 <h1>@Auswahl</h1>
 
-@code{
-  public int Auswahl { get; set; }
+@code {
+ public int Auswahl { get; set; }
 
-  void Klick(int x)
-  {
-    Auswahl = x;
-  }
+ void Klick(int x)
+ {
+  Auswahl = x;
+ }
 
 }
 
@@ -57,7 +57,7 @@
   <ul>
    @foreach (var i in liste)
    {
-       @*<li @onclick="() => KlickB2(i)">@i</li>*@
+    @*<li @onclick="() => KlickB2(i)">@i</li>*@
     <li @onclick="async () => await KlickB2Async(i)">@i</li>
     @*<li @onclick="new Action(() => KlickB2(i))">@i</li>*@
 
@@ -93,7 +93,7 @@
 
  async Task SaveAsync()
  {
-  // TODO: irgendwas :-)
+  // irgendwas machen hier :-)
  }
 }
 
@@ -303,12 +303,40 @@ Zähler 4: @counter4
   while (MausEreignisse.Count > 10) { MausEreignisse.Dequeue(); }
   MausEreignisse.Enqueue($"{MausEreignisseCount:0000} {DateTime.Now.ToLongTimeString()}: {s}");
  }
-
 }
-
 
 <h4>Ausgabe:</h4>
 @((MarkupString)(String.Join("<br>", MausEreignisse)))
+
+@*-----------------------------------------------------------------------------------------*@
+<div class="bg-primary">
+ <h3>
+  Dialogereignisse
+ </h3>
+</div>
+
+<dialog open="true" @onopen="IsOpen" @onclose="IsClosed">
+  <p>Greetings, one and all!</p>
+  <form method="dialog">
+    <button>OK</button>
+  </form>
+</dialog>
+
+
+
+ @code {
+ void IsOpen()
+ {
+  Util.Log("IsOpen");
+ }
+
+ void IsClosed()
+ {
+  Util.Log("IsClosed");
+ }
+
+ }
+
 @*-----------------------------------------------------------------------------------------*@
 <div class="bg-primary">
  <h3>

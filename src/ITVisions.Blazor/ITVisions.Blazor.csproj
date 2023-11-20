@@ -1,8 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
+ <!--Hinweis: Hier werden eigene Werte statt Directory.Build.props verwendet, da diese (auch in anderen Projekten verwendete!) Komponente unabhängig versioniert wird!-->
+ 
  <!--Runtime-->
  <PropertyGroup>
-  <TargetFramework>net7.0</TargetFramework>
+  <TargetFramework>net8.0</TargetFramework>
  </PropertyGroup>
 
  <!--Namen-->
@@ -14,10 +16,9 @@
 
  <!--Versionen-->
  <PropertyGroup>
-  <Version>7.13.1.1</Version>
-  <AssemblyVersion>7.13.1.1</AssemblyVersion>
-  <FileVersion>7.13.1.1</FileVersion>
-  <InformationalVersion>7.13.1.1-06/02/2023</InformationalVersion>
+  <Version>8.0.0.0</Version>
+  <AssemblyVersion>8.0.0.0</AssemblyVersion>
+  <FileVersion>8.0.0.0</FileVersion>
  </PropertyGroup>
 
  <!--Autor-->
@@ -28,25 +29,25 @@
   <Product>www.IT-Visions-de Blazor Utltities</Product>
   <!--<PackageIcon>ITVisions.jpg</PackageIcon>-->
   <Description>
-   Hilfsklassen für Blazor WebAssembly, Blazor Server und Blazor Desktop inkl. JavaScript-Datei
-   Startup.cs:  services.AddScoped&lt;BlazorUtil&gt;();
-   index.html bzw. _host.cshtml: &lt;script src="/_content/ITVisions.Blazor/BlazorUtil.js"&gt;&lt;/script&gt;
+   Hilfsklassen für Blazor inkl. JavaScript-Datei
+   Startup.cs:  services.AddBlazorUtil(); bzw. AddBlazorUtilForBlazorServer();
+   index.html bzw. App.razor: &lt;script src="/_content/ITVisions.Blazor/BlazorUtil.js"&gt;&lt;/script&gt;
   </Description>
   <PackageOutputPath>H:\DB\NugetHS</PackageOutputPath>
  </PropertyGroup>
 
  <!--NuGets-->
  <ItemGroup>
-  <PackageReference Include="Blazored.LocalStorage" Version="4.3.*" />
-  <PackageReference Include="Blazored.SessionStorage" Version="2.3.*" />
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.6.0" />
-  <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.*" />
-  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.*" />
+  <PackageReference Include="Blazored.LocalStorage" Version="4.4.*" />
+  <PackageReference Include="Blazored.SessionStorage" Version="2.4.*" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.12.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.0" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" />
   <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
-  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-  <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="7.0.0" />
-  <PackageReference Include="Microsoft.JSInterop" Version="7.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.*" />
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="8.0.*" />
+  <PackageReference Include="Microsoft.JSInterop" Version="8.0.*" />
   <PackageReference Include="UAParser" Version="3.1.*" />
  </ItemGroup>
 

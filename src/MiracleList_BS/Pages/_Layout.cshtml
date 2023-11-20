@@ -33,7 +33,14 @@
  <link rel="stylesheet" href="/_content/Blazor.ContextMenu/blazorContextMenu.min.css" />
  <script src="/_content/Blazor.ContextMenu/blazorContextMenu.min.js"></script>
 
- <!-- Neu seit Blazor 6.0 -->
+ <!-- -------- Für BlazorUtil -->
+ <script src="/_content/ITVisions.Blazor/BlazorUtil.js"></script>
+
+ <!-- -------- Für CHARTIST.JS -->
+ <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+ <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+
+ <!-- -------- Neu seit Blazor 6.0 -->
  <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
 
@@ -42,11 +49,7 @@
 
  <script autostart="true" src="_framework/blazor.server.js"></script>
  @*JavaScipt aus eigener Hilfsbibliothek*@
- <script src="/_content/ITVisions.Blazor/BlazorUtil.js"></script>
 
- <!--Für CHARTIST.JS -->
- <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
- <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 
  @*Auto Reload, https://github.com/dotnet/aspnetcore/issues/10325*@
  <script>

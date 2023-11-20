@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
  <PropertyGroup>
   <OutputType>WinExe</OutputType>
-  <TargetFramework>net7.0-windows10.0.19041.0</TargetFramework>
+  <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
   <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
   <RootNamespace>MiracleList_WinUI</RootNamespace>
   <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -10,15 +10,15 @@
   <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
   <UseWinUI>true</UseWinUI>
   <EnableMsixTooling>true</EnableMsixTooling>
-  <Version>7.12.5.0</Version>
+  <Version>8.0.0.0</Version>
  </PropertyGroup>
 
  <!--Versionsinfos-->
  <PropertyGroup>
   <Version>7.11.0.0</Version>
-  <AssemblyVersion>7.12.5.0</AssemblyVersion>
-  <FileVersion>7.12.5.0</FileVersion>
-  <InformationalVersion>7.12.5.0-05/17/2023 11:49:31</InformationalVersion>
+  <AssemblyVersion>8.0.0.0</AssemblyVersion>
+  <FileVersion>8.0.0.0</FileVersion>
+  <InformationalVersion>8.0.0.0-09/23/2023 19:02:33</InformationalVersion>
   <ApplicationDisplayVersion>7.11</ApplicationDisplayVersion>
   <ApplicationVersion>7</ApplicationVersion>
  </PropertyGroup>
@@ -62,7 +62,7 @@
   <PackageReference Include="Microsoft.Extensions.Configuration.JSON" Version="7.0.*" />
   <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.*" />
   <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.*" />
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.6.0" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.10.0" />
   <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
  </ItemGroup>
 

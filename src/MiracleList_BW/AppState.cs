@@ -15,6 +15,7 @@ public class AppState : IAppState
  public string Token { get; set; }
  public string Username { get; set; }
  public string BackendURL { get; set; }
+
  public string BackendDisplayName => BackendURL ?? "";
  public string ClientID => this.configuration["Backend:ClientID"];
 

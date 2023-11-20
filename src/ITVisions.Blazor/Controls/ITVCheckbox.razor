@@ -4,13 +4,10 @@
  <label @onclick="ChangeCheckboxState" class="form-check-label bigCheckboxLabel">@((MarkupString)Label)</label>
 </div>
 
-
 @code {
 
- private Boolean value;
-
- [Parameter]
- public string Label { get; set; }
+ #region Unterstützung für @bind-Value
+  private Boolean value;
 
  [Parameter]
  public Boolean Value
@@ -25,9 +22,13 @@
   }
  }
 
- void ChangeCheckboxState() => Value = !Value;
- 
  [Parameter]
  public EventCallback<Boolean> ValueChanged { get; set; }
+ #endregion
+
+ [Parameter]
+ public string Label { get; set; }
+
+ void ChangeCheckboxState() => Value = !Value;
 
 }

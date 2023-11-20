@@ -1,19 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
+ 
  <PropertyGroup>
-  <TargetFramework>net7.0</TargetFramework>
   <ImplicitUsings>enable</ImplicitUsings>
   <Nullable>enable</Nullable>
-  <Version>7.12.5.0</Version>
-  <AssemblyVersion>7.12.5.0</AssemblyVersion>
-  <FileVersion>7.12.5.0</FileVersion>
-  <InformationalVersion>7.12.5.0-05/17/2023 11:49:31</InformationalVersion>
  </PropertyGroup>
 
  <ItemGroup>
   <ProjectReference Include="..\BO\BO.csproj" />
-  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.*" />
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.*" />
  </ItemGroup>
 
 </Project>

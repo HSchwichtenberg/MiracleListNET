@@ -1,25 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
+ 
  <PropertyGroup Label="Globals">
   <SccProjectName>SAK</SccProjectName>
   <SccProvider>SAK</SccProvider>
   <SccAuxPath>SAK</SccAuxPath>
   <SccLocalPath>SAK</SccLocalPath>
-  <Version>7.12.5.0</Version>
-  <AssemblyVersion>7.12.5.0</AssemblyVersion>
-  <FileVersion>7.12.5.0</FileVersion>
-  <InformationalVersion>7.12.5.0-05/17/2023 11:49:30</InformationalVersion>
-  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
  </PropertyGroup>
 
  <PropertyGroup>
-  <TargetFramework>net7.0</TargetFramework>
-
   <EnableDefaultGlobalUsings>false</EnableDefaultGlobalUsings>
   <AssemblyName>DAL</AssemblyName>
   <PackageId>DAL</PackageId>
   <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
-
   <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
   <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
   <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -60,13 +54,13 @@
  </ItemGroup>
 
  <ItemGroup>
-  <PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.1.134.7" />
+  <PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.1.151.7" />
   <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.*" />
-  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.*" />
+  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0-beta.1" />
  </ItemGroup>
 
  <ItemGroup>

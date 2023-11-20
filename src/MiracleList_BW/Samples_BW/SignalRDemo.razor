@@ -40,13 +40,13 @@
       .WithUrl("http://localhost:8889/MLHub")
       .Build();
 
-  _hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+  _hubConnection.On<string, string>("ReceiveMessage", async (user, message) =>
   {
 
    var encodedMsg = $"{user}: {message}";
    Console.WriteLine("On: " + encodedMsg);
    _messages.Add(encodedMsg);
-   StateHasChanged();
+   await InvokeAsync(StateHasChanged);
   });
 
   await _hubConnection.StartAsync();

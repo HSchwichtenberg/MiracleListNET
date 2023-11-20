@@ -1,20 +1,23 @@
 ﻿@*Multi-Routing*@
 @page "/Samples/Routing"
 @*Parameter sind nicht case-senstive*@
-@page "/Samples/Routing/{a}"
-@page "/Samples/Routing/{a}/{b:int}"
-@page "/Samples/Routing/{a}/{b:int}/{c:datetime}"
+@page "/Samples/Routing/{a}/{b:int?}/{c:datetime?}"
 @page "/Samples/RoutingGUID/{g:guid}"
 @page "/RoutingDemo"
+@inject IJSRuntime jsRuntime
+@inject NavigationManager nav
+
 
 @using ITVisions.Blazor
 
 <h3>RoutingDemo</h3>
+<p>@nav.GetType().FullName</p>
+
 
 <style>
  a.active {
-     font-weight: bold;
-     background-color: antiquewhite;
+  font-weight: bold;
+  background-color: antiquewhite;
  }
 </style>
 
@@ -77,11 +80,9 @@
     </div>
    </div>
   </div>
-
-
  </div>
- <div class="col-xs-6">
 
+ <div class="col-xs-6">
   <div class="panel panel-default">
    <div class="panel-heading">Standardlinks</div>
    <div class="panel-body">
@@ -134,7 +135,6 @@
  [Inject]
  public NavigationManager navigationManager { get; set; } = null;
 
-
  [Parameter]
  public string a { get; set; }
  [Parameter]
@@ -150,6 +150,9 @@
 
  protected override void OnInitialized()
  {
+  c = c ?? DateTime.Now;
+
+
   navigationManager.LocationChanged += LocationChanged;
   //var registration = navigationManager.RegisterLocationChangingHandler(async context =>
   //{

@@ -1,26 +1,27 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <PropertyGroup Label="Globals">
-    <SccProjectName>SAK</SccProjectName>
-    <SccProvider>SAK</SccProvider>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
-  <Version>7.12.5.0</Version><AssemblyVersion>7.12.5.0</AssemblyVersion><FileVersion>7.12.5.0</FileVersion><InformationalVersion>7.12.5.0-05/17/2023 11:49:30</InformationalVersion><Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright></PropertyGroup>
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <AssemblyName>ITVTagHelper</AssemblyName>
-    <PackageId>ITVTagHelper</PackageId>
-    <NetStandardImplicitPackageVersion>2.0.3</NetStandardImplicitPackageVersion>
+ 
+ <PropertyGroup Label="Globals">
+  <SccProjectName>SAK</SccProjectName>
+  <SccProvider>SAK</SccProvider>
+  <SccAuxPath>SAK</SccAuxPath>
+  <SccLocalPath>SAK</SccLocalPath>
+ </PropertyGroup>
 
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-  </PropertyGroup>
+ <PropertyGroup>
+  <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+  <AssemblyName>ITVTagHelper</AssemblyName>
+  <PackageId>ITVTagHelper</PackageId>
+  <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+  <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+  <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+ </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
-  </ItemGroup>
+ <ItemGroup>
+  <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="2.2.0" />
+  <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
+ </ItemGroup>
 
 </Project>

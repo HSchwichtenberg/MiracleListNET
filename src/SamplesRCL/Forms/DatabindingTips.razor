@@ -6,27 +6,60 @@
 <PageTitle>Databinding Tipps & Tricks (seit Blazor 7.0)</PageTitle>
 
 <h1>Databinding Tipps & Tricks (seit Blazor 7.0)</h1>
+@* <p>Achtung: Bug in 7.0.0 https://github.com/dotnet/aspnetcore/issues/44957! Läuft erst ab 7.0.1!</p> *@
 
-<p role="status">Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">+@increment</button>
+@* --------------------------------------- *@
+<h3>Formulare mit Standard HTML-Tags</h3>
 <p>
-Getter und Setter trennen (Setter verhindert negative Werte, setzt diese wieder auf 0!):
- !!!!Bug in 7.0.0 https://github.com/dotnet/aspnetcore/issues/44957!!!!
- @*<input type="number" @bind:get="currentCount" @bind:set="SetCurrentCount" />*@
+Normale Datenbindung
+ <input type="number" @bind="currentCount" min="-10" max="40" class="form-control" />
+</p>
+
+<p>
+Getter und Setter trennen (Setter verhindert negative Werte, setzt diese wieder auf 0!
+ <input type="number" @bind:get="currentCount" @bind:set="SetCurrentCount" min="-10" max="40" class="form-control" />
 </p>
 <p>
 Methode nach der Datenbindung mit Ausgabe im Browserfenster und in Console:
- !!!!Bug in 7.0.0 https://github.com/dotnet/aspnetcore/issues/44957!!!!
-@*<input type="number" @bind="currentCount" @bind:after="Log" />*@
+ <input type="number" min="-10" max="40" @bind="currentCount" @bind:after="AfterChangeOfCurrentCount" class="form-control" />
 </p>
-<hr />
-@message
-<hr />
+
+@* --------------------------------------- *@
+<h3>Formulare mit Standard Blazor-Eingabesteuerelementen</h3>
+<p>
+ Normale Datenbindung
+ <InputNumber @bind-Value="currentCount" class="form-control" />
+</p>
+<p>
+Getter und Setter trennen (Setter verhindert negative Werte, setzt diese wieder auf 0!
+ <InputNumber @bind-Value:get="currentCount" @bind-Value:set="SetCurrentCount" class="form-control" />
+</p>
+<p>
+Methode nach der Datenbindung mit Ausgabe im Browserfenster und in Console:
+ <InputNumber min="-10" max="40" @bind-Value="currentCount" @bind-Value:after="AfterChangeOfCurrentCount" class="form-control" />
+</p>
+
+<h3>Ausgabe</h3>
+<p role="status">Current count: @currentCount</p>
+@((MarkupString)logMessage)
 
 @code {
- private int currentCount = 0;
- public string message { get; set; } = "";
+ private int _currentCount = 0;
+ private int currentCount  {
+  get
+  {
+   return _currentCount;
+  }
+  set
+  {
+   // Sie sollten Programmcode im Setter von Properties vermeiden, der den Zustand der Komponente ändert, sondern stattdessen :set oder :after verwenden. Programmcode im Setter erfordert oft den Aufruf this.StateHasChanged(), damit Blazor die Änderung mitbekommt!
+   _currentCount = value;
+   // BlazorUtil.Log("Setter: " + value);
+   logMessage += "<br>Setter currentCount = " + value;
+  }
+ }
+
+ public string logMessage { get; set; } = "";
  public int increment = 1;
 
  protected override void OnInitialized()
@@ -34,13 +67,13 @@ Methode nach der Datenbindung mit Ausgabe im Browserfenster und in Console:
   if (navigationManager.HistoryEntryState != null && navigationManager.HistoryEntryState.Length > 0)
   {
    string data = navigationManager.HistoryEntryState;
-   message = "Übergebene Daten: " + navigationManager.HistoryEntryState;
+   logMessage = "Übergebene Daten: " + navigationManager.HistoryEntryState;
    currentCount = Convert.ToInt32(data.Split(";")[0].Replace("StartValue:", ""));
    increment = Convert.ToInt32(data.Split(";")[1].Replace("Increment:", ""));
   }
   else
   {
-   message = "Übergebene Daten: KEINE";
+   logMessage = "Übergebene Daten: KEINE";
   }
  }
 
@@ -50,11 +83,15 @@ Methode nach der Datenbindung mit Ausgabe im Browserfenster und in Console:
   return currentCount;
  }
 
- // Methode für @bind:set
- public void SetCurrentCount(int v)
+ // Methode für @bind:set / @bind-Value:set
+ public async Task SetCurrentCount(int v)
  {
-  if (v > 0) currentCount = v;
-  else currentCount = 0;
+  if (v < 0)
+  {
+   currentCount = 0;
+   await BlazorUtil.Alert("Werte unter 0 sind nicht erlaubt!");
+  }
+  else { currentCount = v; }
   Log();
  }
 
@@ -63,10 +100,16 @@ Methode nach der Datenbindung mit Ausgabe im Browserfenster und in Console:
   currentCount+=increment;
  }
 
+ // Methode für @bind:after / @bind-Value:after
+ private void AfterChangeOfCurrentCount()
+ {
+  Log();
+ }
+
  private void Log()
  {
   BlazorUtil.Log(currentCount);
-  message = DateTime.Now + ": Wert=" + currentCount;
+  logMessage += "<br>" + DateTime.Now + ": Wert=" + currentCount;
  }
 
 }

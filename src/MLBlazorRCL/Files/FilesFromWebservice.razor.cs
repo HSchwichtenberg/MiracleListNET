@@ -122,7 +122,7 @@ public partial class FilesFromWebservice
    sw.Stop();
    Info = $"Datei <b>{currentFile.Name}</b> hochgeladen in {sw.ElapsedMilliseconds}ms!";
    Util.Log($"File Upload {currentFile.Name}: {sw.ElapsedMilliseconds}ms!");
-   this.StateHasChanged();
+   await InvokeAsync(StateHasChanged);
   }
 
   if (filesToUpload.Count > 1)
@@ -134,7 +134,7 @@ public partial class FilesFromWebservice
   progressPercent = 0;
   displayProgress = false;
   await GetFiles();
-  StateHasChanged();
+  await InvokeAsync(StateHasChanged);
  }
 
  #region Util

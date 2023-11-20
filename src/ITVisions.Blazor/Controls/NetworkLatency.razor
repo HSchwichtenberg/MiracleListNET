@@ -45,7 +45,7 @@ else
   if (firstRender)
   {
    await CalcLatency();
-   this.StateHasChanged();
+   await InvokeAsync(StateHasChanged);
   }
  }
 

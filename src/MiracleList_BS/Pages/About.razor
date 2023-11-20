@@ -1,5 +1,7 @@
 ﻿@page "/about"
 @using ITVisions.Blazor
+@using MLBlazorRCL.Texts
+@using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Hosting.Server.IServer server
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor contextAccessor
@@ -40,9 +42,17 @@
 
 @code
 {
+
  string serverSoftware = "n/a";
  protected override async System.Threading.Tasks.Task OnInitializedAsync() {
+
   var serverVars = contextAccessor.HttpContext.Features.Get<Microsoft.AspNetCore.Http.Features.IServerVariablesFeature>();
   serverSoftware = (serverVars == null ? null : serverVars["SERVER_SOFTWARE"]);
+
+  // das geht seit Blazor 8.0, aber nur bei SSR!
+@*  [CascadingParameter]
+ public HttpContext? HttpContext { get; set; *@
+ // var serverVars = HttpContext.Features.Get<Microsoft.AspNetCore.Http.Features.IServerVariablesFeature>();
+  // serverSoftware = (serverVars == null ? null : serverVars["SERVER_SOFTWARE"]);
  }
 }

@@ -115,6 +115,7 @@ public class UserManager : EntityManagerBase<Context, User>
  {
   try
   {
+   // Abmelden = aktuelles Token löschen
    var ctx = new Context();
    var u = ctx.UserSet.SingleOrDefault(x => x.Token.ToLower() == token.ToLower());
    return Logout(u);
@@ -171,8 +172,7 @@ public class UserManager : EntityManagerBase<Context, User>
 
    // create a new token and store in DB in user record    
    if (String.IsNullOrEmpty(u.Token) || ((Env.Now - u.LastActivity) > TokenValidity)) u.Token = Guid.NewGuid().ToString("D");
-   //else if (!String.IsNullOrEmpty(token)) { u.Token = token; }
-   u.Memo += "Login " + Env.Now + "/" + password + "/" + u.Token + "\n";
+   u.Memo += "Login " + Env.Now + "/" + u.Token + "\n";
    u.LastActivity = DateTime.Now;
    ctx.SaveChanges();
    this.SetTracking();
@@ -321,7 +321,7 @@ Env.Now.AddDays(1), Importance.A, 0.5m, new List<SubTask>() { st1, st2 });
  public TokenValidationResult IsValid()
  {
   if (this.CurrentUser == null) return TokenValidationResult.AccessDenied;
-  return TokenValidationResult.Ok; 
+  return TokenValidationResult.Ok;
  }
 
  public enum TokenValidationResult

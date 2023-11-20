@@ -26,11 +26,11 @@ namespace ITVisions.Blazor.Services
   /// </summary>
   public static ConcurrentBag<CircuitInfo> CircuitSet = new ConcurrentBag<CircuitInfo>();
 
-  public CircuitListCircuitHandler(ILogger<CircuitHandler> logger, IJSRuntime jsRuntime, IHttpContextAccessor ca)
+  public CircuitListCircuitHandler(ILogger<CircuitHandler> logger, IJSRuntime jsRuntime) // TODO: , IHttpContextAccessor ca
   {
    this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
    this.jsRuntime = jsRuntime ?? throw new ArgumentNullException(nameof(jsRuntime));
-   this.ca = ca;
+   //this.ca = ca;
    this.logger.LogInformation($"{nameof(Services.CircuitListCircuitHandler)}.ctor");
   }
 

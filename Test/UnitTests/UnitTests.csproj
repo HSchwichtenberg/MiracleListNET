@@ -1,12 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
- <PropertyGroup>
-  <NoWarn>$(NoWarn);NU1605</NoWarn>
-  <Version>7.12.5.0</Version>
-  <AssemblyVersion>7.12.5.0</AssemblyVersion>
-  <FileVersion>7.12.5.0</FileVersion>
-  <InformationalVersion>7.12.5.0-05/17/2023 11:49:31</InformationalVersion>
-  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
- </PropertyGroup>
+
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
 
  <PropertyGroup Label="Globals">
   <SccProjectName>SAK</SccProjectName>
@@ -16,12 +10,13 @@
  </PropertyGroup>
 
  <PropertyGroup>
-  <TargetFramework>net7.0</TargetFramework>
+  <NoWarn>$(NoWarn);NU1605</NoWarn>
   <DebugType>Full</DebugType>
   <AssemblyName>UnitTests</AssemblyName>
   <PackageId>UnitTests</PackageId>
   <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
 
+  
   <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
   <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
   <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -47,24 +42,24 @@
  </ItemGroup>
 
  <ItemGroup>
-  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="7.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
-  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="8.0.*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-rc.1.23419.6" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0-rc.1.23419.4" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0-rc.1.23419.4" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0-rc.1.23419.4" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0-rc.1.23419.4" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0-rc.1.23419.4" />
+  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0-preview-23424-02" />
   <PackageReference Include="NHibernateProfiler.Appender" Version="6.0.6040" />
   <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
-  <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+  <PackageReference Include="xunit.runner.visualstudio" Version="2.5.2-pre.3">
    <PrivateAssets>all</PrivateAssets>
    <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
   </PackageReference>
-  <PackageReference Include="xunit" Version="2.4.2" />
+  <PackageReference Include="xunit" Version="2.5.1" />
   <PackageReference Include="Xunit.SkippableFact" Version="1.4.13" />
   <PackageReference Include="DeepEqual" Version="4.2.1" />
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.6.0" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.12.*" />
   <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
  </ItemGroup>
 
@@ -72,17 +67,12 @@
   <Reference Include="HibernatingRhinos.Profiler.Appender">
    <HintPath>..\..\Lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
   </Reference>
-
  </ItemGroup>
 
  <ItemGroup>
   <None Update="Properties\launchSettings.json">
    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </None>
- </ItemGroup>
-
- <ItemGroup>
-  <PackageReference Update="Microsoft.NETCore.App" Version="2.0.0" />
  </ItemGroup>
 
 </Project>

@@ -44,6 +44,7 @@ namespace MiracleList_MAUI
             services.AddSingleton<IAppState, AppState>();
             services.AddSingleton<IDialogService, DialogService>();
             services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<IExportService, CsvExportService>();
             services.AddSingleton(new HttpClient());
             services.AddSingleton<IMiracleListProxy, MiracleListProxy>();
 
@@ -62,6 +63,9 @@ namespace MiracleList_MAUI
 
             // View und ViewModel gemeinsam über das Community Toolkit registrieren
             services.AddScoped<LoginPage, LoginPageViewModel>();
+
+            // Extension Method zum Registrieren plattformspezifischer Services
+            services.RegisterPlatformServices(); 
         }
 
         private static void ReadConfig(MauiAppBuilder builder)

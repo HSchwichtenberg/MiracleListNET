@@ -10,11 +10,25 @@
              Title="{Binding Category.Name}">
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="Datei">
-            <MenuFlyoutItem Text="Export"/>
-            <MenuFlyoutItem Text="Beenden"/>
+            <MenuFlyoutItem Text="Export" Command="{Binding ExportTaskListCommand}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Ctrl" Key="E"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem Text="Beenden" Command="{Binding DisplayMenuItemCommand}" CommandParameter="Datei > Beenden">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Alt" Key="X"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
         </MenuBarItem>
         <MenuBarItem Text="Hilfe">
-            <MenuFlyoutItem Text="Info"/>
+            <MenuFlyoutItem Text="Hilfe Anzeigen" Command="{Binding DisplayMenuItemCommand}" CommandParameter="Hilfe > Hilfe Anzeigen">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="None" Key="{OnPlatform WinUI=F1, MacCatalyst=UIKeyInputF1}"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem Text="Info" Command="{Binding DisplayMenuItemCommand}" CommandParameter="Hilfe > Info">
+            </MenuFlyoutItem>
         </MenuBarItem>
     </ContentPage.MenuBarItems>
     <ContentPage.Resources>

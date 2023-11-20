@@ -6,99 +6,112 @@ using System.Collections.ObjectModel;
 
 namespace MiracleList_MAUI.ViewModels
 {
-    [INotifyPropertyChanged]
-    public partial class TasksPageViewModel
-    {
+ [INotifyPropertyChanged]
+ public partial class TasksPageViewModel
+ {
 
-        [ObservableProperty]
-        private int taskCount;
+  [ObservableProperty]
+  private int taskCount;
 
-        [ObservableProperty]
-        [NotifyCanExecuteChangedFor(nameof(CreateNewTaskCommand))]
-        private string newTaskTitle;
+  [ObservableProperty]
+  [NotifyCanExecuteChangedFor(nameof(CreateNewTaskCommand))]
+  private string newTaskTitle;
 
-        [ObservableProperty]
-        private BO.Category category;
-        private readonly IAppState appState;
-        private readonly IMiracleListProxy proxy;
-        private readonly IDialogService dialogService;
-        private readonly INavigationService navigationService;
+  [ObservableProperty]
+  private BO.Category category;
+  private readonly IAppState appState;
+  private readonly IMiracleListProxy proxy;
+  private readonly IDialogService dialogService;
+  private readonly INavigationService navigationService;
+  private readonly IExportService exportService;
 
-        public ObservableCollection<BO.Task> Tasks { get; } = new ObservableCollection<BO.Task>();
+  public ObservableCollection<BO.Task> Tasks { get; } = new ObservableCollection<BO.Task>();
 
-        public TasksPageViewModel(IAppState appState, IMiracleListProxy proxy, IDialogService dialogService, INavigationService navigationService)
-        {
-            this.appState = appState;
-            this.proxy = proxy;
-            this.dialogService = dialogService;
-            this.navigationService = navigationService;
-        }
+  public TasksPageViewModel(IAppState appState, IMiracleListProxy proxy, IDialogService dialogService, INavigationService navigationService, IExportService exportService)
+  {
+   this.appState = appState;
+   this.proxy = proxy;
+   this.dialogService = dialogService;
+   this.navigationService = navigationService;
+   this.exportService = exportService;
+  }
 
-        public async Task InitializeAsync()
-        {
-            Tasks.Clear();
+  public async Task InitializeAsync()
+  {
+   Tasks.Clear();
 
-            var taskSet = await proxy.TaskSetAsync(Category.CategoryID, appState.Token);
+   var taskSet = await proxy.TaskSetAsync(Category.CategoryID, appState.Token);
 
-            foreach (var task in taskSet)
-            {
-                Tasks.Add(task);
-            }
+   foreach (var task in taskSet)
+   {
+    Tasks.Add(task);
+   }
 
-            TaskCount = taskSet.Count;
-        }
+   TaskCount = taskSet.Count;
+  }
 
-        [RelayCommand(CanExecute = nameof(CanCreateNewTask))]
-        private async Task CreateNewTask()
-        {
+  [RelayCommand(CanExecute = nameof(CanCreateNewTask))]
+  private async Task CreateNewTask()
+  {
 
-            var task = new BO.Task
-            {
-                TaskID = 0, // notwendig für Server, da der die ID vergibt
-                Title = NewTaskTitle,
-                CategoryID = Category.CategoryID,
-                Importance = BO.Importance.B,
-                Created = DateTime.Now,
-                Due = null,
-                Order = 0,
-                Note = "",
-                Done = false
-            };
+   var task = new BO.Task
+   {
+    TaskID = 0, // notwendig für Server, da der die ID vergibt
+    Title = NewTaskTitle,
+    CategoryID = Category.CategoryID,
+    Importance = BO.Importance.B,
+    Created = DateTime.Now,
+    Due = null,
+    Order = 0,
+    Note = "",
+    Done = false
+   };
 
-            await proxy.CreateTaskAsync(task, appState.Token);
-            NewTaskTitle = string.Empty;
-            await InitializeAsync();
-        }
+   await proxy.CreateTaskAsync(task, appState.Token);
+   NewTaskTitle = string.Empty;
+   await InitializeAsync();
+  }
 
-        [RelayCommand]
-        private async Task DeleteTask(BO.Task task)
-        {
+  [RelayCommand]
+  private async Task DeleteTask(BO.Task task)
+  {
 
-            var message = $"Löschen der Aufgabe #{task.TaskID}: {task.Title}?";
-            if (await dialogService.DisplayAlert("Aufgabe löschen", message, "Ja", "Nein"))
-            {
-                await proxy.DeleteTaskAsync(task.TaskID, appState.Token);
-                await InitializeAsync();
-            }
-        }
+   var message = $"Löschen der Aufgabe #{task.TaskID}: {task.Title}?";
+   if (await dialogService.DisplayAlert("Aufgabe löschen", message, "Ja", "Nein"))
+   {
+    await proxy.DeleteTaskAsync(task.TaskID, appState.Token);
+    await InitializeAsync();
+   }
+  }
 
 
-        private bool CanCreateNewTask()
-        {
-            return !string.IsNullOrEmpty(NewTaskTitle);
-        }
+  private bool CanCreateNewTask()
+  {
+   return !string.IsNullOrEmpty(NewTaskTitle);
+  }
 
-        [RelayCommand]
-        private async Task NavigateToTask(BO.Task task)
-        {
-            var navigationParameters = new Dictionary<string, object>
+  [RelayCommand]
+  private async Task NavigateToTask(BO.Task task)
+  {
+   var navigationParameters = new Dictionary<string, object>
             {
                 { "Task", task }
             };
 
-            await navigationService.GoToAsync("TaskDetailsPage", navigationParameters);
-        }
+   await navigationService.GoToAsync("TaskDetailsPage", navigationParameters);
+  }
 
+  [RelayCommand]
+  private async Task ExportTaskList()
+  {
+   await this.exportService.ExportTasks(Category, Tasks);
+  }
 
-    }
+  [RelayCommand]
+  private async Task DisplayMenuItem(string menuItem)
+  {
+   await this.dialogService.DisplayAlert("Menüeintrag geklickt", menuItem, "OK");
+  }
+
+ }
 }

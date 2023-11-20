@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- Adaptiert von https://github.com/dotnet/maui/blob/main/src/Controls/samples/Controls.Sample/Pages/PlatformSpecifics/Windows/WindowsDragAndDropCustomization.xaml.cs -->
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MiracleList_MAUI.Views.GeneralSamples.DragDropDemoPage"
+             Title="Drag and Drop Demos">
+    <Grid Margin="20" RowDefinitions="300,*">
+
+        <Border Margin="15" Grid.Row="0">
+            <StackLayout>
+                <Label Text="Einträge per Drag and Drop verschieben" FontSize="Medium" FontAttributes="Bold"/>
+                <CollectionView x:Name="CollectionView1">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource CollectionItemBorder}" >
+                                <Border.GestureRecognizers>
+                                    <DragGestureRecognizer DragStarting="DragGestureRecognizer_DragStarting" />
+                                    <DropGestureRecognizer DragOver="DropGestureRecognizer_DragOver" />
+                                </Border.GestureRecognizers>
+                                <Label Text="{Binding Name}"/>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </Border>
+
+        <TableView Intent="Settings" Grid.Row="1" IsVisible="{OnPlatform Default=False, iOS=True, MacCatalyst=True}">
+            <TableRoot>
+                <TableSection Title="Drag Größe">
+                    <ViewCell>
+                        <Grid ColumnDefinitions="3*,*" VerticalOptions="Center" Margin="10,0,5,0">
+                            <Label Text="Request Full-Sized Drag Previews" VerticalTextAlignment="Center" Grid.Column="0"/>
+                            <Switch HorizontalOptions="End" x:Name="fullSizedSwitch" Toggled="FullSized_Switch_Toggled" Grid.Column="1"/>
+                        </Grid>
+                    </ViewCell>
+                </TableSection>
+
+                <TableSection Title="Einstellungen für den INhalt">
+                    <ViewCell>
+                        <Grid ColumnDefinitions="3*,*" VerticalOptions="Center" Margin="10,0,5,0">
+                            <Label Text="drawn image verwenden" VerticalTextAlignment="Center" Grid.Column="0"/>
+                            <Switch HorizontalOptions="End" x:Name="drawnImageSwitch" Toggled="Drawn_Switch_Toggled" Grid.Column="1"/>
+                        </Grid>
+                    </ViewCell>
+
+                    <ViewCell>
+                        <Grid ColumnDefinitions="3*,*"  VerticalOptions="Center" Margin="10,0,5,0">
+                            <Label Text="dotnet bot image verwenden" VerticalTextAlignment="Center" Grid.Column="0"/>
+                            <Switch HorizontalOptions="End" x:Name="dotnetBotImageSwitch" Toggled="DotnetBot_Switch_Toggled" Grid.Column="1"/>
+                        </Grid>
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="Drop Types">
+                    <ViewCell>
+                        <Grid ColumnDefinitions="3*,*" VerticalOptions="Center" Margin="10,0,5,0">
+                            <Label Text="UIDropProposal - Copy" VerticalTextAlignment="Center" Grid.Column="0"/>
+                            <Switch HorizontalOptions="End" x:Name="copySwitch" IsToggled="True" Toggled="Copy_Switch_Toggled" Grid.Column="1"/>
+                        </Grid>
+                    </ViewCell>
+
+                    <ViewCell>
+                        <Grid ColumnDefinitions="3*,*" VerticalOptions="Center" Margin="10,0,5,0">
+                            <Label Text="UIDropProposal - Move" VerticalTextAlignment="Center" Grid.Column="0"/>
+                            <Switch HorizontalOptions="End" x:Name="moveSwitch" Toggled="Move_Switch_Toggled" Grid.Column="1"/>
+                        </Grid>
+                    </ViewCell>
+
+                    <ViewCell>
+                        <Grid ColumnDefinitions="3*,*" VerticalOptions="Center" Margin="10,0,5,0">
+                            <Label Text="UIDropProposal - Forbidden" VerticalTextAlignment="Center" Grid.Column="0"/>
+                            <Switch HorizontalOptions="End" x:Name="forbiddenSwitch" Toggled="Forbidden_Switch_Toggled" Grid.Column="1"/>
+                        </Grid>
+                    </ViewCell>
+
+                </TableSection>
+            </TableRoot>
+        </TableView>
+        <TableView Intent="Settings" Grid.Row="1" IsVisible="{OnPlatform Default=False, WinUI=True}" >
+            <TableRoot>
+                <TableSection Title="Drag Anpassungen">
+                    <ViewCell>
+                        <Grid ColumnDefinitions="3*,*" VerticalOptions="Center" Margin="10,0,5,0">
+                            <Label Text="Glyph Anzeigen" VerticalTextAlignment="Center" Grid.Column="0"/>
+                            <Switch HorizontalOptions="End" x:Name="ShowGlyphSwitch" IsToggled="True" Grid.Column="1"/>
+                        </Grid>
+                    </ViewCell>
+
+                    <ViewCell>
+                        <Grid ColumnDefinitions="3*,*" VerticalOptions="Center" Margin="10,0,5,0">
+                            <Label Text="Beschriftung" VerticalTextAlignment="Center" Grid.Column="0"/>
+                            <Entry HorizontalOptions="End" WidthRequest="200" Placeholder="Copy" x:Name="CustomCaptionEntry" Grid.Column="1"/>
+                        </Grid>
+                    </ViewCell>
+
+                    <ViewCell>
+                        <Grid ColumnDefinitions="3*,*" VerticalOptions="Center" Margin="10,0,5,0">
+                            <Label Text="Beschriftung anzeigen" VerticalTextAlignment="Center" Grid.Column="0"/>
+                            <Switch HorizontalOptions="End" x:Name="ShowCaptionSwitch" IsToggled="True" Grid.Column="1"/>
+                        </Grid>
+                    </ViewCell>
+
+                    <ViewCell>
+                        <Grid ColumnDefinitions="3*,*" VerticalOptions="Center" Margin="10,0,5,0">
+                            <Label Text="Inhalt anzeigen" VerticalTextAlignment="Center" Grid.Column="0"/>
+                            <Switch HorizontalOptions="End" x:Name="ShowContentSwitch" Grid.Column="1" IsToggled="True"/>
+                        </Grid>
+                    </ViewCell>
+                </TableSection>
+
+            </TableRoot>
+        </TableView>
+    </Grid>
+</ContentPage>

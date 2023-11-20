@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MiracleList_MAUI"
     xmlns:views="clr-namespace:MiracleList_MAUI.Views"
+    xmlns:samples="clr-namespace:MiracleList_MAUI.Views.GeneralSamples"
     xmlns:vm="clr-namespace:MiracleList_MAUI.ViewModels"
     x:DataType="vm:AppShellViewModel"
     Shell.FlyoutBehavior="Flyout">
@@ -26,7 +27,10 @@
         ContentTemplate="{DataTemplate views:AboutPage}"
         Route="AboutPage" />
 
-
+    <ShellContent
+        Title="Allgemeine Beispiele"
+        ContentTemplate="{DataTemplate samples:GeneralSamplesPage}"
+        Route="GeneralSamplesPage" />
 
     <ToolbarItem Text="Logout" Command="{Binding LogoutCommand}"/>
     <ToolbarItem Text="www.MiracleList.net" Command="{Binding NavigateToUrlCommand}" CommandParameter="https://www.it-visions.de/miraclelist"/>

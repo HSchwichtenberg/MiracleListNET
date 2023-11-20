@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MiracleList_MAUI.Views.GeneralSamples.PointerDemosPage"
+             Title="Hover und Click">
+    <VerticalStackLayout Spacing="60" Padding="50">
+        <Rectangle BackgroundColor="{StaticResource Primary}"
+                   
+    WidthRequest="300" 
+    HeightRequest="200"
+    HorizontalOptions="Center"
+    VerticalOptions="Center"
+    ToolTipProperties.Text="Hover und Klick">
+            <Rectangle.GestureRecognizers>
+                <TapGestureRecognizer Buttons="Primary" Tapped="PrimaryTapped" />
+                <TapGestureRecognizer Buttons="Secondary" Tapped="SecondaryTapped" />
+                <PointerGestureRecognizer PointerEntered="OnPointerEntered"
+                        PointerExited="OnPointerExited"
+                        PointerMoved="OnPointerMoved"
+                        PointerPressed="OnPointerPressed"
+                        PointerReleased="OnPointerReleased"/>
+            </Rectangle.GestureRecognizers>
+
+        </Rectangle>
+        <Label x:Name="PositionLabel" Text="Pos:"/>
+    </VerticalStackLayout>
+</ContentPage>

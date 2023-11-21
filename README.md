@@ -73,7 +73,7 @@ Frontend:
 Die Entwicklerdokumentation zu den vier MiracleList-Frontends mit Blazor finden im <a href="https://it-visions.de/blazorbuch">Blazor-Buch von Dr. Holger Schwichtenberg</a>.
 
 <a href="https://it-visions.de/blazorbuch">
-![image](https://github.com/HSchwichtenberg/MiracleListNET/assets/3673169/c8d60d6a-a92b-4469-b2a0-7ab3f8f2effa)
+ <img src="https://github.com/HSchwichtenberg/MiracleListNET/assets/3673169/c8d60d6a-a92b-4469-b2a0-7ab3f8f2effa)" alt="drawing" style="width:300px;"/>
 </a>
 
 <h2>MiracleList-Live-Systeme in der Cloud</h2>

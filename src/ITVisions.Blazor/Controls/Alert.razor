@@ -1,5 +1,5 @@
 ﻿
-<div class="alert @Type alert-dismissible fade show" role="alert">
+<div class="alert @Type.Prefix("alert-") alert-dismissible fade show" role="alert">
   <h4>@Title</h4>
 @Text
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -11,7 +11,7 @@
 @code {
 
  [Parameter]
- public string Type { get; set; } = "alert-warning";
+ public string Type { get; set; } = "alert-primary";
 
  [Parameter]
  public RenderFragment? Title { get; set; }

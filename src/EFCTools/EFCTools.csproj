@@ -9,7 +9,6 @@
  <ItemGroup>
   <PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.1.151.7" />
   <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="8.0.*" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.*" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.*" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.*">
    <PrivateAssets>all</PrivateAssets>

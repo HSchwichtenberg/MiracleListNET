@@ -17,7 +17,7 @@ public class AppState : IAppState
  public string BackendURL { get; set; }
 
  public string BackendDisplayName => BackendURL ?? "";
- public string ClientID => this.configuration["Backend:ClientID"];
+ public string ClientID => this.configuration["Backend:ClientID"] ?? "";
 
  public string SignalRHubURL { get; set; }
  public HubConnection HubConnection { get; set; }

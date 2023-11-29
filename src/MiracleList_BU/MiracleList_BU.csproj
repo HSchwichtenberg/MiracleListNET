@@ -22,5 +22,8 @@
   <ProjectReference Include="..\MiracleList_BU.Client\MiracleList_BU.Client.csproj" />
   <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.*" />
  </ItemGroup>
+ <ItemGroup>
+   <Folder Include="wwwroot\" />
+ </ItemGroup>
 
 </Project>

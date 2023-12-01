@@ -31,8 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{53D1E79B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LIBs", "LIBs", "{75530CE1-DE0B-4FD6-BAF8-8DA4A88C9316}"
 	ProjectSection(SolutionItems) = preProject
-		ProjectPackages\ITV.AppUtil.NETStandard.9.12.3.nupkg = ProjectPackages\ITV.AppUtil.NETStandard.9.12.3.nupkg
-		ProjectPackages\ITV.EFCoreUtil.3.1.0.nupkg = ProjectPackages\ITV.EFCoreUtil.3.1.0.nupkg
+		ProjectPackages\ITV.AppUtil.NETStandard.9.13.2.nupkg = ProjectPackages\ITV.AppUtil.NETStandard.9.13.2.nupkg
+		ProjectPackages\ITV.EFCoreUtil.8.0.0.nupkg = ProjectPackages\ITV.EFCoreUtil.8.0.0.nupkg
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevOps Build", "DevOps Build", "{43F60664-E191-4763-A577-16F239C50740}"

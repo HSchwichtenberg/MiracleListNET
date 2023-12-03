@@ -3,28 +3,10 @@
 @using ITVisions.Blazor
 @inject BlazorUtil Util
 
-@*<h3>Einstellungen</h3>
-
- <br />
- <input type="checkbox" @bind="renderUI" /> ShouldRender? --> ohne dies sieht man gar keine UI-Updates
- <br />
- <input type="checkbox" @bind="UIThreadSync" /> StateHasChanged? --> ohne dies Absturz in Blazor Server ("The current thread is not associated with the Dispatcher.")
- <br />
- <input type="number" @bind="Delay" /> ms Verzögerung nach dem StateHasChanges() --> in Blazor WebAssembly blockiert das UI
-
- @code{
- private string Ausgabe { get; set; } = "";
- private bool renderUI = true;
- private bool UIThreadSync = true;
- private int Delay = 1;
- protected override bool ShouldRender() { return renderUI; }
- }*@
-
-
 <h3>Fortschrittsanzeige</h3>
 Iterationen:
 <input type="number" @bind="anzahl" />
-<button @onclick="StartFortschritt" class="btn btn-success">Starte Vorgang</button>
+<button @onclick="StartFortschritt_SoIstEsRichtig" class="btn btn-success">Starte Vorgang</button>
 <button @onclick="StartFortschritt_SoGehtEsNicht" class="btn btn-warning">Starte Vorgang (so geht es nicht)</button>
 <button @onclick="Abbruch" class="btn btn-danger">Abbruch</button>
 
@@ -39,12 +21,24 @@ Iterationen:
 
  protected override void OnInitialized()
  {
-
   anzahl = Util.IsWebAssembly ? 20000 : 200000; // Da Blazor WebAssembly langsamer ist, hier nicht so viele        Iterationen; -)
  }
 
+ // Das funktioniert NICHT, weil Blazor das Virtual DOM erst mit dem echten DOM synchronisiert, sobald der Main Thread nicht mehr blockiert ist!!!
+ void StartFortschritt_SoGehtEsNicht()
+ {
+  this.Fortschritt = 0;
+  for (int i = 0; i < 20; i++)
+  {
+   // Berechnungen().Start() ist nur ein Beispiel für den Aufruf irgendeiner Methode, die etwas tut, was etwas dauert
+   new Berechnungen().Start(1000000, this.Fortschritt, this.Fortschritt + 5);
+   this.Fortschritt += 5;
+   Util.Log("Fortschritt: " + Fortschritt + "%");
+  }
+ }
+
  // Die richtige Lösung ist, die Berechnung in einen getrennten Thread auszulagern und damit den Hauptthread freizugeben.d.
- async Task StartFortschritt()
+ async Task StartFortschritt_SoIstEsRichtig()
  {
   Util.Log("StartFortschritt");
   this.Fortschritt = 0;
@@ -54,11 +48,10 @@ Iterationen:
    Util.Log("Start Task...");
    for (int i = 0; i < 20; i++)
    {
-    if (cts.IsCancellationRequested) { Util.Log("Task abgebrochen!"); break; }
+    if (cts.IsCancellationRequested) { await this.InvokeAsync(this.StateHasChanged); Util.Log("Task abgebrochen!"); break; }
 
-   // dies ist nur ein Beispiel für den Aufruf irgendeiner Methode, die etwas tut, was etwas dauert
-
-   new Berechnungen().Start(anzahl, this.Fortschritt, this.Fortschritt + 5);
+    // Berechnungen().Start() ist nur ein Beispiel für den Aufruf irgendeiner Methode, die etwas tut, was etwas dauert
+    new Berechnungen().Start(anzahl, this.Fortschritt, this.Fortschritt + 5);
 
     this.Fortschritt += 5;
     Util.Log("Fortschritt: " + Fortschritt + "%");
@@ -67,16 +60,10 @@ Iterationen:
     {
      this.StateHasChanged();
      await Task.Delay(1); // Delay ist für Blazor WebAssembly notwendig
-   }
+    }
     else if (Util.IsBlazorServer || Util.IsHybrid)
     {
-    // So kommen wir in Blazor Server und Blazor Desktop zurück auf den Hauptthread!
-    // in Blazor Server nicht erlaubt! "The current thread is not associated with the Dispatcher. Use InvokeAsync() to switch execution to the Dispatcher when triggering rendering or component state."
-    await this.InvokeAsync(
-         async () =>
-         {
-          this.StateHasChanged();
-         });
+     await this.InvokeAsync(this.StateHasChanged);
     }
     else
     {
@@ -92,18 +79,6 @@ Iterationen:
  {
   if (cts != null) cts.Cancel();
   await Util.Alert("Abgebrochen!");
- }
-
- // Das funktioniert nicht, weil Blazor das Virtual DOM erst mit dem echten DOM synchronisiert, sobald der Main Thread nicht mehr blockiert ist!!!
- void StartFortschritt_SoGehtEsNicht()
- {
-  this.Fortschritt = 0;
-  for (int i = 0; i < 20; i++)
-  {
-   new Berechnungen().Start(1000000, this.Fortschritt, this.Fortschritt + 5);
-   this.Fortschritt += 5;
-   Util.Log("Fortschritt: " + Fortschritt + "%");
-  }
  }
 
  protected async override Task OnAfterRenderAsync(bool firstRender)

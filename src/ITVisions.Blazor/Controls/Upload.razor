@@ -248,7 +248,7 @@
    if (args.UploadedFiles.Count == 1)
     Info = "Datei <b>" + f.Name + "</b> hochgeladen!";
    else
-    Info = args.UploadedFiles.Count + " Dateien hochgeladen!";
+    Info = "<b>" + args.UploadedFiles.Count + " Dateien</b> hochgeladen: " + string.Join(',', args.UploadedFiles.Select(x=>x.Name).ToList());
   }
 
   await NewFilesArrived.InvokeAsync(args);

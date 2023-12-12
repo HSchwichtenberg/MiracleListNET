@@ -266,14 +266,13 @@
    Util.Log("Upload OK: " + f.Name);
    #endregion
 
-   args.UploadedFiles.Add(new FileWithComment() { Name = f.Name, Comment = commentComplete, Size = f.Size });
+   args.UploadedFiles.Add(new FileWithComment() { Name = newName, Comment = commentComplete, Size = f.Size });
 
    if (args.UploadedFiles.Count == 1)
     Info = "Datei <b>" + f.Name + "</b> hochgeladen!";
    else
     Info = args.UploadedFiles.Count + " Dateien hochgeladen!";
   }
-
 
   await NewFilesArrived.InvokeAsync(args);
 

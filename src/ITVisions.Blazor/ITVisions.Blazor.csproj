@@ -20,9 +20,9 @@
 
  <!--Versionen-->
  <PropertyGroup>
-  <Version>8.1.0.0</Version>
-  <AssemblyVersion>8.1.0.0</AssemblyVersion>
-  <FileVersion>8.1.0.0</FileVersion>
+  <Version>8.2.1.0</Version>
+  <AssemblyVersion>8.2.1.0</AssemblyVersion>
+  <FileVersion>8.2.1.0</FileVersion>
  </PropertyGroup>
 
  <!--Autor-->
@@ -77,6 +77,14 @@
   <Resource Include="ITVisions.jpg" />
  </ItemGroup>
  <ItemGroup>
+  <Content Update="wwwroot\css\bootstrap\bootstrap.min.css">
+    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+  </Content>
+  <Content Update="wwwroot\css\bootstrap\bootstrap.min.css.map">
+    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+  </Content>
   <Content Update="wwwroot\www.IT-Visions.de_Logo.png">
    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>

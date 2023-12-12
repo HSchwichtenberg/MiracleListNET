@@ -1,0 +1,310 @@
+﻿@using System.IO;
+@using System.Threading;
+@using ITVisions
+@using Microsoft.AspNetCore.Components.Forms
+@inject BlazorUtil Util
+
+<EditForm Model="model" OnValidSubmit="OnSubmit">
+
+ <h3>
+  @Headline &nbsp;
+  @if (MaxFileSize > 0)
+  {
+   <span class="ZusatzInfoSmall">max @FileUtil.GetMB(MaxFileSize) pro Datei</span>
+  }
+  @if (MaxFileSize > 0 && !String.IsNullOrEmpty(AcceptableFileTypes))
+  {
+   <span class="ZusatzInfoSmall"> | </span>
+  }
+  @if (!String.IsNullOrEmpty(AcceptableFileTypes))
+  {
+   <span class="ZusatzInfoSmall" style='color: @(this.notAllowedFiles>0 ? "red" : "")'>Erlaubte Dateitypen: @AcceptableFileTypes</span>
+  }
+ </h3>
+
+ <div class="custom-file">
+  <InputFile class="custom-file-input" OnChange="OnInputFileChange" multiple accept="@AcceptableFileTypes" /><br />
+  <label class="custom-file-label" for="customFile">@Label</label>
+ </div>
+
+ @{
+  string progressCss = "progress " + (displayProgress ? "" : "d-none");
+  string progressWidthStyle = progressPercent + "%";
+ }
+
+ @if (this.filesToUpload != null && this.filesToUpload.Count > 0)
+ {
+  <ol>
+   @foreach (var f in this.filesToUpload)
+   {
+    var zugross = f.Size > MaxFileSize;
+
+    <li style='color:@(zugross ? "red" : "green")'>Datei @f.Name: @(!zugross ? FileUtil.GetMB(f.Size) : " zu groß! Maximium ist " + FileUtil.GetMB(MaxFileSize)) </li>
+   }
+  </ol>
+
+  @if (this.filesToUpload.All(x => x.Size <= MaxFileSize))
+  {
+   @if (UseComment)
+   {
+    <div class="form-group">
+     Kommentar zu @(this.filesToUpload.Count == 1 ? "dieser Datei" : " diesen " + this.filesToUpload.Count + " Dateien") <span class="ZusatzInfoSmall">optional, max 200 Zeichen</span>
+     <input type="text" @bind="comment" class="form-control" maxlength="200">
+
+    </div>
+   }
+
+   @if (UseSilent)
+   {
+    <div class="form-check" style="margin-bottom:10px">
+     <input type="checkbox" @bind="silent" class="form-check-input bigCheckbox">
+     <label class="form-check-label bigCheckboxLabel">Stiller Upload <span class="ZusatzInfoSmall">keine E-Mail an Teilnehmer*innen, wenn angewählt</span></label>
+    </div>
+   }
+
+   <ITVButton class="btn btn-primary">@(this.filesToUpload.Count == 1 ? "Datei nun hochladen" : this.filesToUpload.Count + " Dateien nun hochladen")</ITVButton>
+  }
+ }
+
+ <div>@((MarkupString)Info)</div>
+ @if (displayProgress)
+ {
+
+  <div class="@progressCss">
+   <div class="progress-bar" role="progressbar" style="width: @progressWidthStyle" area-valuenow="@progressPercent" aria-minvalue="0" aria-maxvalue="100"></div>
+  </div>
+  @*<ITVisions.Blazor.Controls.Loading></ITVisions.Blazor.Controls.Loading>*@
+ }
+
+</EditForm>
+
+
+@code
+{
+
+ [Parameter]
+ public int MaxFileSize { get; set; } = 100 * 1024 * 1024; // 100 MB
+ [Parameter]
+ public string Path { get; set; } = "";
+ [Parameter]
+ public string Username { get; set; } = "";
+ [Parameter]
+ public int CleanupDays { get; set; } = 180;
+ [Parameter]
+ public string CleanupPath { get; set; } = "";
+ [Parameter]
+ public bool UseComment { get; set; } = false;
+ [Parameter]
+ public bool UseSilent { get; set; } = false;
+ [Parameter]
+ public string AcceptableFileTypes { get; set; } = "";
+ [Parameter]
+ public string Headline { get; set; } = "Upload";
+ [Parameter]
+ public string Label { get; set; } = "Bitte Datei(en) per Drag&Drop hier fallen lassen oder mit Dialog wählen";
+
+ public List<string> AcceptableFileTypesList
+ {
+  get
+
+  {
+   if (String.IsNullOrEmpty(AcceptableFileTypes)) return new List<string>();
+   return AcceptableFileTypes.Split(',').ToList().Select(x => x.ToLower().Trim()).ToList();
+  }
+ }
+
+
+ [Parameter]
+ public EventCallback<NewFilesArrivedArgs> NewFilesArrived { get; set; }
+ [Parameter]
+ public EventCallback<string> FilesCleaned { get; set; }
+
+ #region wird nicht verwendet, ist aber notwendig für EditForm
+ public class PageModel { }
+ public PageModel model { get; set; } = new PageModel();
+ #endregion
+
+ List<IBrowserFile> filesToUpload;
+
+ string Info { get; set; } = "";
+ public string comment { get; set; }
+ public bool silent { get; set; }
+
+ bool displayProgress;
+ int progressPercent;
+ int notAllowedFiles = 0;
+
+ CancellationTokenSource cancelation = new CancellationTokenSource();
+
+
+ async Task OnInputFileChange(InputFileChangeEventArgs e)
+ {
+  filesToUpload = new List<IBrowserFile>();
+
+  if (String.IsNullOrEmpty(this.AcceptableFileTypes))
+  {
+   filesToUpload = e.GetMultipleFiles().ToList();
+  }
+  else
+  { // Aussorrten der Dateien nach Typ
+   notAllowedFiles = 0;
+   foreach (var f in e.GetMultipleFiles())
+   {
+    if (this.AcceptableFileTypesList.Contains(System.IO.Path.GetExtension(f.Name).ToLower()))
+    {
+     filesToUpload.Add(f);
+    }
+    else
+    {
+     notAllowedFiles++;
+    }
+   }
+  }
+
+  //fileToUpload = e.File;
+  Info = "";
+ }
+
+ /// <summary>
+ /// ------------------------------------------------------ Dateiupload ------------------------------------------------------
+ /// </summary>
+ /// <returns></returns>
+ async Task OnSubmit()
+ {
+  if (filesToUpload == null) return;
+
+  #region Cleanup
+
+  if (!String.IsNullOrEmpty(CleanupPath))
+  {
+   string FilesPath = System.IO.Path.Combine(Path, "Files");
+   try
+   {
+
+    var d = new System.IO.DirectoryInfo(FilesPath);
+
+    List<System.IO.FileInfo> files1 = d.GetOldFiles(CleanupDays);
+    List<System.IO.FileInfo> files2 = d.GetOldFiles(CleanupDays + 30);
+
+    var count = d.DeleteOldFiles(CleanupDays);
+    if (count > 0)
+    {
+     var body = "Files to be deleted now:<br><ol><li>" + String.Join("<li>", files1.Select(x => x.FullName + " (" + x.LastWriteTime + ")")) + "</ol><hr>";
+     body += "Files within 30 days:<br><ol><li>" + String.Join("<li>", files2.Select(x => x.FullName + " (" + x.LastWriteTime + ")")) + "</ol><hr>";
+     await FilesCleaned.InvokeAsync(body);
+     body = $"File Cleanup in {FilesPath}: Removed old files >{CleanupDays} days removed: {count}<hr>{body}";
+     await FilesCleaned.InvokeAsync(body);
+    }
+   }
+   catch (Exception ex)
+   {
+    await FilesCleaned.InvokeAsync($"File Cleanup in {FilesPath} ERROR: {ex.ToString()}");
+   }
+  }
+  #endregion
+
+
+  // TODO: https://github.com/pranavkm/FileUpload/blob/master/Pages/Index.razor
+  var commentComplete = comment;
+  if (!String.IsNullOrEmpty(commentComplete) && commentComplete.StartsWith("Kundenteam: "))
+  {
+   commentComplete = commentComplete.Replace("Kundenteam: ", "");
+   commentComplete = commentComplete.Add("\n", "Hochgeladen von Kundenteam");
+  }
+  else
+  {
+   if (!String.IsNullOrEmpty(Username)) commentComplete = commentComplete.Add("\n", "Hochgeladen von " + Username);
+  }
+
+  var args = new NewFilesArrivedArgs() { Silent = silent };
+
+  foreach (IBrowserFile f in filesToUpload)
+  {
+
+   Info = "Hochladen der Datei <b>" + f.Name + "</b>...";
+   string newName = f.Name.Replace(" ", "_");
+   string newFilePath = System.IO.Path.Combine(Path, newName);
+   FileUtil.GetOrCreateDir(new System.IO.FileInfo(newFilePath));
+   if (File.Exists(newFilePath)) File.Delete(newFilePath);
+
+   //var stream = file.OpenReadStream();
+   // System.NotSupportedException:
+
+   // Uncaught (in promise) Error: System.IO.IOException: Supplied file with size 544650 bytes exceeds the maximum of 512000 bytes.
+   //var outputStream = File.Create(path);
+   ////stream.Seek(0, SeekOrigin.Begin);
+   //stream.CopyTo(outputStream);
+   //outputStream.Close();
+
+   #region Upload ohne Fortschrittsanzeige
+   //displayProgress = true;
+   // await InvokeAsync(StateHasChanged);
+   //using var stream = f.OpenReadStream(MAXFILESIZE); // 50 MB
+   //var outputStream = File.OpenWrite(newFilePath);
+   ////stream.Seek(0, SeekOrigin.Begin); // Seek: Specified method is not supported. at Microsoft.AspNetCore.Components.Forms.BrowserFileStream.Seek
+   //await stream.CopyToAsync(outputStream); // CopyTo(): Error: System.NotSupportedException: Synchronous reads are not supported.
+   //outputStream.Close();
+   //Info = "Hochladen der Datei <b>" + f.Name + "</b>: " + "beendet!";
+   //displayProgress = false;
+   // await InvokeAsync(StateHasChanged);
+   #endregion
+
+   #region Upload mit Fortschrittsanzeige
+   await UploadFile(f, newFilePath);
+   #endregion
+
+   #region Kommentar speichern
+   if (!string.IsNullOrEmpty(commentComplete))
+   {
+    string commentPath = newFilePath + ".comment";
+    File.WriteAllText(commentPath, commentComplete);
+   }
+   #endregion
+
+   #region Benachrichtigungen über Upload
+
+   Util.Log("Upload OK: " + f.Name);
+   #endregion
+
+   args.UploadedFiles.Add(new FileWithComment() { Name = f.Name, Comment = commentComplete, Size = f.Size });
+
+   if (args.UploadedFiles.Count == 1)
+    Info = "Datei <b>" + f.Name + "</b> hochgeladen!";
+   else
+    Info = args.UploadedFiles.Count + " Dateien hochgeladen!";
+  }
+
+
+  await NewFilesArrived.InvokeAsync(args);
+
+  comment = "";
+  filesToUpload = null;
+  progressPercent = 0;
+  displayProgress = false;
+  await InvokeAsync(StateHasChanged);
+ }
+
+ async Task UploadFile(IBrowserFile f, string newFilePath)
+ {
+  using var newFile = File.OpenWrite(newFilePath);
+  using var newFileStream = f.OpenReadStream(MaxFileSize);
+  var buffer = new byte[10 * 1096];
+  int bytesRead;
+  double totalRead = 0;
+  progressPercent = 0;
+  displayProgress = true;
+
+  while ((bytesRead = await newFileStream.ReadAsync(buffer)) != 0)
+  {
+   totalRead += bytesRead;
+   await newFile.WriteAsync(buffer, 0, bytesRead);
+
+   progressPercent = (int)((totalRead / f.Size) * 100);
+   Info = "Hochladen der Datei <b>" + f.Name + "</b> (" + FileUtil.GetMB(f.Size) + "): " + progressPercent.ToString() + "%";
+   //Util.Log(progressPercent);
+   await InvokeAsync(StateHasChanged);
+  }
+  newFileStream.Close();
+  newFile.Close();
+ }
+}

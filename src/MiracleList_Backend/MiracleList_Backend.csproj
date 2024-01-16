@@ -57,7 +57,7 @@
   <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.13.*" />
   <PackageReference Include="ITV.EFCoreUtil" Version="8.0.*" />
   <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.*" />
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="8.0.0" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="8.0.*" />
   <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.*" />
   <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.*" />

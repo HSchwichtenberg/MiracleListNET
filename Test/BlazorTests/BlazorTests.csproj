@@ -13,7 +13,7 @@
   <PackageReference Include="bunit" Version="1.25.*" />
   <PackageReference Include="JustMock" Version="2023.3.*" />
   <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.*" />
-  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0-preview-23503-02" />
+  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0-release-23619-01" />
   <PackageReference Include="xunit" Version="2.6.*" />
   <PackageReference Include="xunit.runner.visualstudio" Version="2.5.*">
    <PrivateAssets>all</PrivateAssets>

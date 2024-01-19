@@ -176,11 +176,11 @@
 
   if (!String.IsNullOrEmpty(CleanupPath))
   {
-   string FilesPath = System.IO.Path.Combine(Path, "Files");
+
    try
    {
 
-    var d = new System.IO.DirectoryInfo(FilesPath);
+    var d = new System.IO.DirectoryInfo(Path);
 
     List<System.IO.FileInfo> files1 = d.GetOldFiles(CleanupDays);
     List<System.IO.FileInfo> files2 = d.GetOldFiles(CleanupDays + 30);
@@ -191,13 +191,13 @@
      var body = "Files to be deleted now:<br><ol><li>" + String.Join("<li>", files1.Select(x => x.FullName + " (" + x.LastWriteTime + ")")) + "</ol><hr>";
      body += "Files within 30 days:<br><ol><li>" + String.Join("<li>", files2.Select(x => x.FullName + " (" + x.LastWriteTime + ")")) + "</ol><hr>";
      await FilesCleaned.InvokeAsync(body);
-     body = $"File Cleanup in {FilesPath}: Removed old files >{CleanupDays} days removed: {count}<hr>{body}";
+     body = $"File Cleanup in {Path}: Removed old files >{CleanupDays} days removed: {count}<hr>{body}";
      await FilesCleaned.InvokeAsync(body);
     }
    }
    catch (Exception ex)
    {
-    await FilesCleaned.InvokeAsync($"File Cleanup in {FilesPath} ERROR: {ex.ToString()}");
+    await FilesCleaned.InvokeAsync($"File Cleanup in {Path} ERROR: {ex.ToString()}");
    }
   }
   #endregion

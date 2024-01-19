@@ -20,9 +20,9 @@
 
  <!--Versionen-->
  <PropertyGroup>
-  <Version>8.2.1.0</Version>
-  <AssemblyVersion>8.2.1.0</AssemblyVersion>
-  <FileVersion>8.2.1.0</FileVersion>
+  <Version>8.2.2.0</Version>
+  <AssemblyVersion>8.2.2.0</AssemblyVersion>
+  <FileVersion>8.2.2.0</FileVersion>
  </PropertyGroup>
 
  <!--Autor-->
@@ -44,7 +44,7 @@
  <ItemGroup>
   <PackageReference Include="Blazored.LocalStorage" Version="4.4.*" />
   <PackageReference Include="Blazored.SessionStorage" Version="2.4.*" />
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.13.*" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.14.0" />
   <PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.*" />
   <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.*" />
   <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.*" />

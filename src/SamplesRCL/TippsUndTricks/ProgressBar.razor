@@ -38,7 +38,7 @@ Support für Multi-Threading: @MultiThreadingEnabled
 
  protected override void OnInitialized()
  {
-  anzahl = Util.IsWebAssembly ? 20000 : 200000; // Da Blazor WebAssembly langsamer ist, hier nicht so viele        Iterationen; -)
+  anzahl = Util.IsWebAssembly ? 20000 : 200000; // Da Blazor WebAssembly langsamer ist, hier nicht so viele Iterationen; -)
  }
 
  public bool MultiThreadingEnabled
@@ -95,16 +95,17 @@ Support für Multi-Threading: @MultiThreadingEnabled
     string text = "Fortschritt: " + Fortschritt + "%";
     Print(text);
 
+    // UI-Update --> hier Fallunterscheidung zwischen Blazor-Arten
     if (Util.IsWebAssembly)
     {
-     if (MultiThreadingEnabled)
+     if (MultiThreadingEnabled) // bei aktiviertem Multi-Threading!
      {
-      await InvokeAsyncMT(this.StateHasChanged); // bei aktiviertem Multi-Threading!
-     }
-     else
+      await InvokeAsyncMT(this.StateHasChanged); 
+     } 
+     else // bei nicht aktiviertem Multi-Threading!
      {
-      this.StateHasChanged(); // bei nicht aktiviertem Multi-Threading!
-      await Task.Delay(1);  // bei nicht aktiviertem Multi-Threading!
+      this.StateHasChanged(); 
+      await Task.Delay(1);
      }
     }
     else if (Util.IsBlazorServer || Util.IsHybrid)

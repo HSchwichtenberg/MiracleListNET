@@ -88,7 +88,7 @@ Support für Multi-Threading: @MultiThreadingEnabled
    {
     if (cts.IsCancellationRequested) { await this.InvokeAsync(this.StateHasChanged); Util.Log("Task abgebrochen!"); break; }
 
-    // Berechnungen().Start() ist nur ein Beispiel für den Aufruf irgendeiner Methode, die etwas tut, was etwas dauert
+    // Berechnungen().Start() ist nur ein Beispiel für den Aufruf irgendeiner Methode, die etwas tut, was einige Zeit dauert
     new Berechnungen().Start(anzahl, this.Fortschritt, this.Fortschritt + 5);
 
     this.Fortschritt += 5;
@@ -97,7 +97,7 @@ Support für Multi-Threading: @MultiThreadingEnabled
 
     if (Util.IsWebAssembly)
     {
-     if (BWMultiThreadEnabled)
+     if (MultiThreadingEnabled)
      {
       await InvokeAsyncMT(this.StateHasChanged); // bei aktiviertem Multi-Threading!
      }

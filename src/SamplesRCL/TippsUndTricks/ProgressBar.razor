@@ -1,46 +1,84 @@
 ﻿@page "/Samples/ProgressBar"
 @using System.Threading;
 @using ITVisions.Blazor
+@using System.Reflection
+@using System.Runtime.Versioning
 @inject BlazorUtil Util
 
-<h3>Fortschrittsanzeige</h3>
-Iterationen:
-<input type="number" @bind="anzahl" />
-<button @onclick="StartFortschritt_SoIstEsRichtig" class="btn btn-success">Starte Vorgang</button>
-<button @onclick="StartFortschritt_SoGehtEsNicht" class="btn btn-warning">Starte Vorgang (so geht es nicht)</button>
-<button @onclick="Abbruch" class="btn btn-danger">Abbruch</button>
+<h3>Fortschrittsanzeige ohne und mit Multi-Threading</h3>
+UI-Thread-ID: @System.Threading.Thread.CurrentThread.ManagedThreadId
+<br>
+Support für Multi-Threading: @MultiThreadingEnabled
+<hr />
 
-<div style="display: block;background-color:#f1f1f1!important">
- <div style="display: block;background-color:lawngreen;width:@Fortschritt%">Fortschritt:&nbsp;@Fortschritt%</div>
+<div class="row">
+ <div class="col-xs-6">
+  Iterationen:
+  <input type="number" @bind="anzahl" />
+  <button @onclick="StartFortschritt_Richtig" class="btn btn-success">Starte Vorgang (so ist es richtig)</button>
+  <button @onclick="StartFortschritt_Falsch" class="btn btn-warning">Starte Vorgang (so geht es nicht)</button>
+  <button @onclick="Abbrechen" class="btn btn-danger">Abbrechen</button>
+  <div style="margin-top:10px;display: block;background-color:#f1f1f1!important">
+   <div style="display: block;background-color:lawngreen;width:@Fortschritt%">Fortschritt:&nbsp;@Fortschritt%</div>
+  </div>
+ </div>
+ <div class="col-xs-6">
+  <p>
+   @((MarkupString)output)
+  </p>
+ </div>
 </div>
 
 @code {
  private int Fortschritt { get; set; } = 0;
  private CancellationTokenSource cts = new CancellationTokenSource();
  public int anzahl { get; set; }
+ public int Schritte = 20;
+ string output = "";
 
  protected override void OnInitialized()
  {
   anzahl = Util.IsWebAssembly ? 20000 : 200000; // Da Blazor WebAssembly langsamer ist, hier nicht so viele        Iterationen; -)
  }
 
- // Das funktioniert NICHT, weil Blazor das Virtual DOM erst mit dem echten DOM synchronisiert, sobald der Main Thread nicht mehr blockiert ist!!!
- void StartFortschritt_SoGehtEsNicht()
+ public bool MultiThreadingEnabled
  {
+  get
+  {
+   if (!Util.IsWebAssembly) return true;
+   MethodInfo methodInfo = typeof(Thread).GetMethod("Start", 0, Type.EmptyTypes);
+   object[] attributes = methodInfo.GetCustomAttributes(typeof(UnsupportedOSPlatformAttribute), false);
+   return (attributes.Length == 0);
+  }
+ }
+
+ // Ausgabe in der Konsole und im UI
+ public void Print(string s)
+ {
+  output += "<span style='color:gray'>" + DateTime.Now + "</span> <b>Thread: " + System.Threading.Thread.CurrentThread.ManagedThreadId + "</b> " + s + "<br>";
+  Console.WriteLine(s);
+ }
+
+ // Das funktioniert NICHT, weil Blazor das Virtual DOM erst mit dem echten DOM synchronisiert, sobald der Main Thread nicht mehr blockiert ist!!!
+ async Task StartFortschritt_Falsch()
+ {
+  await Util.Alert("Achtung: Hier wird man keinen Fortschritt sehen, weil die Implementierung falsch ist (es fehlt this.StateHasChanged())! Der Browser wird blockieren, bis die Berechnungen fertig sind!");
   this.Fortschritt = 0;
   for (int i = 0; i < 20; i++)
   {
    // Berechnungen().Start() ist nur ein Beispiel für den Aufruf irgendeiner Methode, die etwas tut, was etwas dauert
-   new Berechnungen().Start(1000000, this.Fortschritt, this.Fortschritt + 5);
+   new Berechnungen().Start(anzahl, this.Fortschritt, this.Fortschritt + 5);
    this.Fortschritt += 5;
-   Util.Log("Fortschritt: " + Fortschritt + "%");
+   string text = "Fortschritt: " + Fortschritt + "% in Thread " + System.Threading.Thread.CurrentThread.ManagedThreadId;
+   Print(text);
+   Util.Log(text);
   }
  }
 
- // Die richtige Lösung ist, die Berechnung in einen getrennten Thread auszulagern und damit den Hauptthread freizugeben.d.
- async Task StartFortschritt_SoIstEsRichtig()
+ // Die richtige Lösung ist, die Berechnung in einen getrennten Thread auszulagern und damit den Hauptthread freizugeben.
+ async Task StartFortschritt_Richtig()
  {
-  Util.Log("StartFortschritt");
+  Print("Berechnung beginnt...");
   this.Fortschritt = 0;
   cts = new CancellationTokenSource();
   await Task.Run(async () =>
@@ -54,12 +92,20 @@ Iterationen:
     new Berechnungen().Start(anzahl, this.Fortschritt, this.Fortschritt + 5);
 
     this.Fortschritt += 5;
-    Util.Log("Fortschritt: " + Fortschritt + "%");
+    string text = "Fortschritt: " + Fortschritt + "%";
+    Print(text);
 
     if (Util.IsWebAssembly)
     {
-     this.StateHasChanged();
-     await Task.Delay(1); // Delay ist für Blazor WebAssembly notwendig
+     if (BWMultiThreadEnabled)
+     {
+      await InvokeAsyncMT(this.StateHasChanged); // bei aktiviertem Multi-Threading!
+     }
+     else
+     {
+      this.StateHasChanged(); // bei nicht aktiviertem Multi-Threading!
+      await Task.Delay(1);  // bei nicht aktiviertem Multi-Threading!
+     }
     }
     else if (Util.IsBlazorServer || Util.IsHybrid)
     {
@@ -73,9 +119,10 @@ Iterationen:
   }, cts.Token);
 
   cts = null;
+  Print("Berechnung wird beendet!");
  }
 
- async void Abbruch()
+ async void Abbrechen()
  {
   if (cts != null) cts.Cancel();
   await Util.Alert("Abgebrochen!");
@@ -85,5 +132,24 @@ Iterationen:
  {
   Util.Log("OnAfterRenderAsync(firstRender=" + firstRender + ")");
  }
+}
 
+@code {
+ // Notwendig bei aktiviertem Mult-Threading wegen Unzulänglichkeit in .NET 8: https://github.com/dotnet/runtime/issues/95547
+ SynchronizationContext sctx = SynchronizationContext.Current!;
+ Task InvokeAsyncMT(Action action)
+ {
+  sctx.Post((object state) => action(), null);
+  return Task.CompletedTask;
+ }
+ Task InvokeAsyncMT(Action<object> action)
+ {
+  sctx.Post((object state) => action(state), null);
+  return Task.CompletedTask;
+ }
+ Task InvokeAsyncMT(Func<Task> action)
+ {
+  sctx.Post(async (object state) => await action(), null);
+  return Task.CompletedTask;
+ }
 }

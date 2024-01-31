@@ -71,7 +71,7 @@ namespace ITVisions.Blazor
    // Version of Runtime (.NET Core, Mono, .NET >=5)
    string runtime = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
 
-   return "Blazor " + BlazorType + (!String.IsNullOrEmpty(blazorVersion) ? " v" + blazorVersion : "") + " @ " + runtime;
+   return "Blazor " + BlazorType + (!String.IsNullOrEmpty(blazorVersion) ? " v" + blazorVersion : "") + " / " + runtime;
   }
 
   public string GetASPNETVersion()

@@ -68,7 +68,7 @@
   <EmbeddedResource Include="readme.txt" />
  </ItemGroup>
  <ItemGroup>
-  <None Include="wwwroot\ITVisions.jpg">
+  <None Include="wwwroot\img\ITVisions.jpg">
    <Pack>True</Pack>
    <PackagePath></PackagePath>
   </None>
@@ -85,7 +85,7 @@
     <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
   </Content>
-  <Content Update="wwwroot\www.IT-Visions.de_Logo.png">
+  <Content Update="wwwroot\img\www.IT-Visions.de_Logo.png">
    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
  </ItemGroup>

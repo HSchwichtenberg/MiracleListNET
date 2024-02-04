@@ -1,11 +1,11 @@
 ﻿@page "/Samples/ThemenübergreifendeBeispiele/index"
 @page "/Samples/ThemenübergreifendeBeispiele"
+@inject BlazorUtil Util
 
 <h3>QuadratwurzelRechner</h3>
-
 
 <p>Dies ist ein Beispiel, das aus Svelte nach Blazor portiert wurde. Daher die zum Teil abweichenden Namenskonventionen!</p>
 
 <div>
-<QuadratwurzelRechner x="40"></QuadratwurzelRechner>
+ <QuadratwurzelRechner x="40" newResult='(tupel)=>Util.Log(tupel.x + " ->" + tupel.result)'></QuadratwurzelRechner>
 </div>

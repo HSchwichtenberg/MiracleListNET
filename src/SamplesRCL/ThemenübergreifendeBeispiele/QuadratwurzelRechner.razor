@@ -69,7 +69,7 @@
   Zahl:
   <input type="number" @bind="x" @bind:after="newNumber" />
   Quadratwurzel:
-  <b>@($"{result:#.00}")</b>
+  <b>@($"{result:#0.00}")</b>
   <button @onclick=save title="Merkt das Ergebnis">Merken</button>
   <button @onclick=increment title="Nächster Wert: @(x + 1)"> Nächsten Wert merken </button>
  </div>

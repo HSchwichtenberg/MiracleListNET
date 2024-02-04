@@ -26,13 +26,13 @@
  void newNumber()
  {
   Util.Log("newNumber: " + x);
-  newResult.InvokeAsync(( x: x, result: result ));
+  newResult.InvokeAsync((x: x, result: result));
  }
 
  // Benutzerereignis 2: Merken
  void save()
  {
-  all[x] = Math.Round(result,2);
+  all[x] = Math.Round(result, 2);
  }
 
  // Benutzerereignis 3: Nächsten Wert merken
@@ -54,42 +54,52 @@
 
 <div style="border-style: solid; background-color: lightblue; padding: 10px">
  <div style="float: right">
-
   <a href="https://www.IT-Visions.de" title="Link zu Homepage der Firma www.IT-Visions.de">
    <img align="right" width="200" src="/_content/ITVisions.Blazor/img/www.IT-Visions.de_Logo.png" alt="Logo www.IT-Visions.de" />
   </a>
  </div>
+
+ <!-- Ausgabe von Variablen / Interpolation -->
  <h2>@headline</h2>
- <h4>@((MarkupString) author)</h4>
+ <h4>@((MarkupString)author)</h4>
  <br />
+
+ <!-- Formular -->
  <div>
   Zahl:
-  <input type="number" @bind="x" @bind:after="newNumber"  />
+  <input type="number" @bind="x" @bind:after="newNumber" />
   Quadratwurzel:
   <b>@($"{result:#.00}")</b>
   <button @onclick=save title="Merkt das Ergebnis">Merken</button>
   <button @onclick=increment title="Nächster Wert: @(x + 1)"> Nächsten Wert merken </button>
-  <hr />
+ </div>
+ <hr />
+
+ <!-- Bedingung -->
+ <div>
   @if (all.Count > 0)
   {
    <h3>@all.Count Ergebnis@(all.Count > 1 ? "se" : ""):</h3>
   }
   else
   {
-  <div>Bisher keine Ergebnisse gemerkt!</div>
+   <div>Bisher keine Ergebnisse gemerkt!</div>
   }
+
+  <!-- Schleife  -->
   <ul>
-  @{
+   @{
     uint index = 0;
-  }
-  @foreach (var entry in all)
+   }
+   @foreach (var entry in all)
    {
-    <li class="@(entry.Key % 2 == 0 ? "even" : "odd" )" title=@("Eintrag #" + (index+1))>@entry.Key = @($"{entry.Value:#.00}")</li>
+    <li class="@(entry.Key % 2 == 0 ? "even" : "odd" )" title=@("Eintrag #" + (index+1))>@entry.Key = @($"{entry.Value:#0.00}")</li>
    }
   </ul>
  </div>
 </div>
 
+<!-- Kompomentenbezogenes Styling  -->
 <style>
  img {
   width: 150px;

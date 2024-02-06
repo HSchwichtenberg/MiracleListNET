@@ -12,7 +12,8 @@
  public EventCallback<(double x, double result)> newResult { get; set; }
 
  // Zustand der Komponente
- string author { get; set; } = "(C) <a href='https://www.IT-Visions.de'>Dr. Holger Schwichtenberg</a>";
+ string author { get; set; } = "(C) <a href='https://www.dotnet-doktor.de'>Dr. Holger Schwichtenberg</a>";
+ string href = "https://www.IT-Visions.de";
  const string name = "Quadratwurzelrechner in Blazor";
  string headline = name + " " + typeof(ComponentBase).Assembly.GetName().Version.ToString();
 
@@ -54,7 +55,7 @@
 
 <div style="border-style: solid; background-color: lightblue; padding: 10px">
  <div style="float: right">
-  <a href="https://www.IT-Visions.de" title="Link zu Homepage der Firma www.IT-Visions.de">
+  <a href="@href" title="Link zu Homepage der Firma www.IT-Visions.de">
    <img align="right" width="200" src="/_content/ITVisions.Blazor/img/www.IT-Visions.de_Logo.png" alt="Logo www.IT-Visions.de" />
   </a>
  </div>

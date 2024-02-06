@@ -1,5 +1,5 @@
-﻿@page "/Samples/ThemenübergreifendeBeispiele/index"
-@page "/Samples/ThemenübergreifendeBeispiele"
+﻿@page "/Samples/ThemenübergreifendeBeispiele/QuadratwurzelRechnerImHost"
+
 @inject BlazorUtil Util
 
 <h3>QuadratwurzelRechner</h3>
@@ -9,5 +9,5 @@
 <div>
 
  <!-- Einbettung einer Kompontente in eine andere Komponente -->
- <QuadratwurzelRechner x="40" newResult='(tupel)=>Util.Log(tupel.x + " ->" + tupel.result)'></QuadratwurzelRechner>
+ <QuadratwurzelRechner x="40" newResult='(tupel)=>Util.Log("QuadratwurzelRechner meldet an Host: " + tupel.x + " ->" + tupel.result)'></QuadratwurzelRechner>
 </div>

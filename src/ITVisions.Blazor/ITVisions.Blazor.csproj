@@ -20,14 +20,14 @@
 
  <!--Versionen-->
  <PropertyGroup>
-  <Version>8.2.2.0</Version>
-  <AssemblyVersion>8.2.2.0</AssemblyVersion>
-  <FileVersion>8.2.2.0</FileVersion>
+  <Version>8.2.4.0</Version>
+  <AssemblyVersion>8.2.4.0</AssemblyVersion>
+  <FileVersion>8.2.4.0</FileVersion>
  </PropertyGroup>
 
  <!--Autor-->
  <PropertyGroup>
-  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
+  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2024</Copyright>
   <Authors>Dr. Holger Schwichtenberg</Authors>
   <Company>www.IT-Visions.de</Company>
   <Product>www.IT-Visions-de Blazor Utltities</Product>

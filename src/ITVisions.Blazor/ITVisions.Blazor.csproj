@@ -20,14 +20,14 @@
 
  <!--Versionen-->
  <PropertyGroup>
-  <Version>8.2.2.0</Version>
-  <AssemblyVersion>8.2.2.0</AssemblyVersion>
-  <FileVersion>8.2.2.0</FileVersion>
+  <Version>8.2.4.0</Version>
+  <AssemblyVersion>8.2.4.0</AssemblyVersion>
+  <FileVersion>8.2.4.0</FileVersion>
  </PropertyGroup>
 
  <!--Autor-->
  <PropertyGroup>
-  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
+  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2024</Copyright>
   <Authors>Dr. Holger Schwichtenberg</Authors>
   <Company>www.IT-Visions.de</Company>
   <Product>www.IT-Visions-de Blazor Utltities</Product>
@@ -44,7 +44,7 @@
  <ItemGroup>
   <PackageReference Include="Blazored.LocalStorage" Version="4.4.*" />
   <PackageReference Include="Blazored.SessionStorage" Version="2.4.*" />
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.14.0" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.14.2" />
   <PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.*" />
   <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.*" />
   <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.*" />
@@ -68,7 +68,7 @@
   <EmbeddedResource Include="readme.txt" />
  </ItemGroup>
  <ItemGroup>
-  <None Include="wwwroot\ITVisions.jpg">
+  <None Include="wwwroot\img\ITVisions.jpg">
    <Pack>True</Pack>
    <PackagePath></PackagePath>
   </None>
@@ -85,7 +85,7 @@
     <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
   </Content>
-  <Content Update="wwwroot\www.IT-Visions.de_Logo.png">
+  <Content Update="wwwroot\img\www.IT-Visions.de_Logo.png">
    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
  </ItemGroup>

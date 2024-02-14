@@ -1,6 +1,7 @@
 ﻿@page "/Login"
 @page "/Logout"
 @page "/"
+@using System.Runtime.InteropServices
 @inherits LoginModel
 
 <div class="panel panel-primary">
@@ -50,13 +51,13 @@
  </div>
 </div>
 
-<a href="https://www.IT-Visions.de">
- <img align="right" width="200" src="/_content/MLBlazorRCL/img/www.IT-Visions.de_Logo.jpg" />
+<a href="https://www.IT-Visions.de" title="Link zu Homepage der Firma www.IT-Visions.de">
+ <img align="right" width="200" src="/_content/MLBlazorRCL/img/www.IT-Visions.de_Logo.jpg" alt="Logo www.IT-Visions.de" />
 </a>
 
 <div>
  <text>MiracleList v</text>@System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()
- läuft mit @Util.GetBlazorVersionInfo()
+ läuft mit @Util.GetBlazorVersionInfo() @@ @System.Environment.MachineName / @RuntimeInformation.ProcessArchitecture
 </div>
 
 <a href="/About/AboutMiracleList">Weitere Informationen über MiracleList</a> | <a href="/about">Mehr Systeminformationen</a>

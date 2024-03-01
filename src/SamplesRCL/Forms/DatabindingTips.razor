@@ -24,6 +24,24 @@ Methode nach der Datenbindung mit Ausgabe im Browserfenster und in Console:
  <input type="number" min="-10" max="40" @bind="currentCount" @bind:after="AfterChangeOfCurrentCount" class="form-control" />
 </p>
 
+<p>
+ Weiteres Beispiel für :after
+</p>
+
+<input type="number" @bind="ID" @bind:after="LoadData" />
+<InputNumber @bind-Value="ID" @bind-Value:after="LoadData" />
+@code {
+ private int ID = 0;
+
+ public void LoadData()
+ {
+  // Lade daten für aktuell ausgewählte ID
+  // ...
+  BlazorUtil.Log(ID);
+ }
+}
+
+
 @* --------------------------------------- *@
 <h3>Formulare mit Standard Blazor-Eingabesteuerelementen</h3>
 <p>

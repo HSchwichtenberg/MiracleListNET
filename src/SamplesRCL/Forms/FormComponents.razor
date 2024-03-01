@@ -127,9 +127,11 @@
 
  @* Falsch *@
  <InputTextArea @bind-Value="Nachricht">Dies ist ein Vorgabetext an der falschen Stelle.</InputTextArea>
+ @* Falsch: V muss groß bei bind-Value --> Laufzeitfehler: Microsoft.AspNetCore.Components.Forms.InputTextArea requires a value for the 'ValueExpression' parameter. *@
+ @* <InputTextArea @bind-value="Nachricht">Dies ist ein Vorgabetext an der falschen Stelle.</InputTextArea> *@
  @* Richtig *@
  <InputTextArea @bind-Value="Nachricht"></InputTextArea>
-
+ 
 </EditForm>
 
 @code {

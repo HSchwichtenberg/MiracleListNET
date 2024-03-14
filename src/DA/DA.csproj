@@ -54,13 +54,13 @@
  </ItemGroup>
 
  <ItemGroup>
-  <PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.1.151.7" />
+  <PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.3.10.8" />
   <PackageReference Include="ITV.EFCoreUtil" Version="8.0.*" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.*" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.*" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.*" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.*" />
-  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0-beta.1" />
+  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.1" />
  </ItemGroup>
 
  <ItemGroup>

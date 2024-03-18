@@ -10,7 +10,6 @@
  </PropertyGroup>
 
  <PropertyGroup>
-  <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
   <NoWarn>$(NoWarn);NU1605</NoWarn>
   <DebugType>Full</DebugType>
   <AssemblyName>UnitTests</AssemblyName>

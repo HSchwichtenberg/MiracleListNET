@@ -1,6 +1,6 @@
-﻿using BL;
+﻿using System;
+using BL;
 using BO;
-using System;
 using Xunit;
 
 
@@ -143,7 +143,7 @@ namespace UnitTests
    // Arrange: Neuen User anlegen!
    var env1 = new DummyEnv(DateTime.Now, "", "");
    var um1 = new UserManager(name, kennwort, "", env1);
-   Assert.NotNull(um1.CurrentUser); 
+   Assert.NotNull(um1.CurrentUser);
    string token = um1.CurrentUser.Token;
    Assert.True(Guid.TryParse(token, out _));
 
@@ -160,9 +160,9 @@ namespace UnitTests
   }
 
   [Theory]
-  [InlineData("test3")]
-  [InlineData("test2")]
-  [InlineData("test1")]
+  [InlineData("testuser3")]
+  [InlineData("testuser2")]
+  [InlineData("testuser1")]
   public void ExtistingUserTest(string name)
   {
    var um = new UserManager(name, true);

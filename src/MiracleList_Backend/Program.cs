@@ -39,6 +39,7 @@ public class Program
     .AddJsonFile("appsettings.json")
     .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
     .AddCommandLine(args)
+    .AddEnvironmentVariables()
     .Build();
 
   // set a hostURL to use if there is no hosturl in the config
@@ -51,6 +52,7 @@ public class Program
   MailUtil.SMTPServer = configuration["EMail:SMTPServer"];
   MailUtil.SMTPSender = configuration["EMail:SMTPSender"];
   MailUtil.SMTPPassword = configuration["EMail:SMTPPassword"];
+  MailUtil.SMTPSSL = configuration["EMail:Secure"] == "true";
 
   var builder = WebHost.CreateDefaultBuilder(args)
    .UseUrls(hostUrl)
@@ -59,9 +61,7 @@ public class Program
    .CaptureStartupErrors(true)
     .ConfigureLogging((hostingContext, logging) =>
     {
-
      // https://docs.microsoft.com/en-us/aspnet/core/signalr/diagnostics?view=aspnetcore-3.1
-
      logging.AddFilter("Microsoft.AspNetCore.SignalR", LogLevel.Debug);
      logging.AddFilter("Microsoft.AspNetCore.Http.Connections", LogLevel.Debug);
 

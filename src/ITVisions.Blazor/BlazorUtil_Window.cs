@@ -17,7 +17,7 @@ namespace ITVisions.Blazor
   public async Task SetTitle(string text)
   {
    if (_jsRuntime == null) return;
-   Log("SetTitle " + text);
+   //Log("SetTitle " + text);
    await _jsRuntime.InvokeVoidAsync("SetTitle", text);
   }
 

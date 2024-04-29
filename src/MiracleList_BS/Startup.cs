@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -107,18 +108,18 @@ public class Startup
   // GITHUB:  https://github.com/Blazored/LocalStorage --> 
   services.AddBlazoredLocalStorage();
 
-  // Alternativ möglich (einige API-Änderungen!)
-  // NUGET: Blazor.Extensions.Storage
-  // GITHUB: https://github.com/BlazorExtensions/Storage
-  #endregion
 
-  #region Di für SignalR Server ("Hub") für MiracleList Notifications
-  services.AddSignalR().AddMessagePackProtocol();
-  #endregion
+		// Alternativ möglich (einige API-Änderungen!)
+		// NUGET: Blazor.Extensions.Storage
+		// GITHUB: https://github.com/BlazorExtensions/Storage
+		#endregion
+		#region DI für SignalR Server ("Hub") für MiracleList Notifications
+  services.AddSignalR().AddMessagePackProtocol().AddHubOptions<MLHub>(o => o.StatefulReconnectBufferSize = 120000); //100.000 ist der Defaultwert!
+		#endregion
 
-  #region DI für Beispiele außerhalb der MiracleList
-  // Standardbeispiel von Microsoft
-  services.AddSingleton<WeatherForecastService>();
+		#region DI für Beispiele außerhalb der MiracleList
+		// Standardbeispiel von Microsoft
+		services.AddSingleton<WeatherForecastService>();
 
   // für Circuit-Liste
   services.AddScoped<CircuitHandler, ITVisions.Blazor.Services.CircuitListCircuitHandler>();
@@ -186,7 +187,7 @@ public class Startup
    });
 
    endpoints.MapFallbackToPage("/_Host");
-   // für ASP.NET SignarlR
+   // für ASP.NET SignalR
    endpoints.MapHub<MLHub>("/MLHub",
     signalRConnectionOptions =>
     {

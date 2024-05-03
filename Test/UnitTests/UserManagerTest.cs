@@ -163,7 +163,7 @@ namespace UnitTests
   [InlineData("testuser3")]
   [InlineData("testuser2")]
   [InlineData("testuser1")]
-  public void ExtistingUserTest(string name)
+  public void ExistingUserTest(string name)
   {
    var um = new UserManager(name, true);
    var cm = new CategoryManager(um.CurrentUser.UserID);

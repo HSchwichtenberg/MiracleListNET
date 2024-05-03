@@ -48,10 +48,6 @@
   <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
  </PropertyGroup>
 
- <!--Lazy Loading (mit .dll!)-->
- <!--<ItemGroup>
-  <BlazorWebAssemblyLazyLoad Include="SamplesRCL.dll" />
- </ItemGroup>-->
 
  <!--Lokalisierung-->
  <PropertyGroup>
@@ -69,12 +65,18 @@
   <ProjectReference Include="..\SamplesRCL\SamplesRCL.csproj" />
  </ItemGroup>
 
+ <!--Lazy Loading (mit .wasm!)-->
+ <!--<ItemGroup>
+  <BlazorWebAssemblyLazyLoad Include="SamplesRCL.wasm" />
+ </ItemGroup>-->
+
  <!--NuGet-Pakete-->
  <ItemGroup>
   <!--Standardreferenzen für BW-->
   <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.*" />
   <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.*" PrivateAssets="all" />
  </ItemGroup>
+
 
  <!--Optional: Native dependencies für Samples_BW/NativeCall.razor und Samples_BW/SQLite -> Verlängert die Kompilierung-->
 

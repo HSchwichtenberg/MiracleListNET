@@ -119,7 +119,7 @@
  public void ShowAbout()
  {
   // Navigiere zu /About und zurück zur Startseite, wenn auf das Logo geklickt wird
-  if (NavigationManager.Uri.ToLower().Contains("/about")) NavigationManager.NavigateTo("/");
+  if (NavigationManager.Uri.Contains("/about", StringComparison.OrdinalIgnoreCase)) NavigationManager.NavigateTo("/");
   else NavigationManager.NavigateTo("About");
  }
 }

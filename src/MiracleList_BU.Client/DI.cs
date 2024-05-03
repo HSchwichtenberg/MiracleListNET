@@ -23,7 +23,7 @@ public class DI
   #endregion
 
   #region DI für Serverkommunikation
-  services.AddSingleton(new HttpClient() { });
+  services.AddSingleton(new HttpClient());
   services.AddScoped<MiracleList.IMiracleListProxy, MiracleList.MiracleListProxy>();
   #endregion
 

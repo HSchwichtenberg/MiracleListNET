@@ -26,7 +26,6 @@ public class Program
   }
 
   #region DI
-
   // Spezielle Dienste nur für Server
   builder.Services.AddSingleton<IAppState, AppState>();
   builder.Services.AddAuthentication("ML");

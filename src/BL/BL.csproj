@@ -25,14 +25,14 @@
  </ItemGroup>
 
  <ItemGroup>
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.16.2" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.18.1" />
   <PackageReference Include="ITV.EFCoreUtil" Version="8.0.*" />
   <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="8.0.*" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.*" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.*" />
   <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.*" />
   <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
-  <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="8.102.2" />
+  <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="8.*" />
  </ItemGroup>
 
  <ItemGroup>

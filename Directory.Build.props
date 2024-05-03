@@ -20,9 +20,9 @@
  <PropertyGroup>
   <Authors>Dr. Holger Schwichtenberg (www.IT-Visions.de)</Authors>
   <Company>www.IT-Visions.de</Company>
-  <Product>Entity Framework Core-Buch https://www.IT-Visions.de/EFCoreBuch</Product>
+  <Product>MiracleList</Product>
   <Copyright>(C) Dr. Holger Schwichtenberg (www.IT-Visions.de)</Copyright>
-  <PackageProjectUrl>https://www.IT-Visions.de/EFCoreBuch</PackageProjectUrl>
+  <PackageProjectUrl>https://www.miraclelist.net</PackageProjectUrl>
   <PackageReleaseNotes>Programmcodebeispiele zum Blazor 8.0-Buch von Dr. Holger Schwichtenberg für Buchversion 8.9.0</PackageReleaseNotes>
  </PropertyGroup>
  

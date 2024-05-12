@@ -57,7 +57,7 @@
   <PackageReference Include="xunit" Version="2.6.*" />
   <PackageReference Include="Xunit.SkippableFact" Version="1.4.*" />
   <PackageReference Include="DeepEqual" Version="4.2.*" />
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.13.*" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.*" />
   <PackageReference Include="ITV.EFCoreUtil" Version="8.0.*" />
  </ItemGroup>
 

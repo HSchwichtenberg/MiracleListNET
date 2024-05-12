@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.AspNetCore.Components.WebAssembly.Services;
 using MiracleList;
 using Web.Components;
 
@@ -15,6 +16,9 @@ public class Program
       .AddInteractiveServerComponents()
       .AddInteractiveWebAssemblyComponents();
 
+  // für Lazy Loading
+  builder.Services.AddScoped<LazyAssemblyLoader>();
+
   System.Diagnostics.Debug.WriteLine("Liste der vorregistrierten Dienste in Blazor United:");
   foreach (var s in builder.Services)
   {
@@ -22,7 +26,6 @@ public class Program
   }
 
   #region DI
-
   // Spezielle Dienste nur für Server
   builder.Services.AddSingleton<IAppState, AppState>();
   builder.Services.AddAuthentication("ML");
@@ -56,7 +59,6 @@ public class Program
      typeof(Web.Client.Components.Routes).Assembly,
      typeof(MLBlazorRCL.Login.Login).Assembly,
      typeof(Samples.SamplesList).Assembly
-
      );
 
   app.Run();

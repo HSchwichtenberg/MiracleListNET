@@ -67,9 +67,9 @@
   // Aber es gibt in /Samples_BW und /Samples_BS in den Hauptprojekten!
   if (args.Path.Contains("Samples/", System.StringComparison.CurrentCultureIgnoreCase) || args.Path.Contains("SamplesList", System.StringComparison.CurrentCultureIgnoreCase))
   {
-   // Console.WriteLine("Lazy Loading SamplesRCL.dll...");
-   // var a = await LazyAssemblyLoader.LoadAssembliesAsync(new string[] { "SamplesRCL.dll" });
-   // lazyLoadedAssemblies.AddRange(a);
+   Console.WriteLine("Lazy Loading SamplesRCL.dll...");
+   var a = await LazyAssemblyLoader.LoadAssembliesAsync(new string[] { "SamplesRCL.dll" });
+   lazyLoadedAssemblies.AddRange(a);
   }
  }
 }

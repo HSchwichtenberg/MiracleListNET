@@ -80,21 +80,24 @@
 
 @code
 {
- // [CascadingParameter] 
- // private Task<AuthenticationState> authenticationStateTask { get; set; }
+  // [CascadingParameter] 
+  // private Task<AuthenticationState> authenticationStateTask { get; set; }
 
  protected override async System.Threading.Tasks.Task OnInitializedAsync()
  {
   // Setzt den Seitentitel für Browser-Registerkarte auf Projektnmame und Versionsnummer
 
+  string title = "";
   try
   {
    var entryAssemblyName = System.Reflection.Assembly.GetEntryAssembly()?.GetName();
    var projektname = entryAssemblyName?.Name;
-   await Util.SetTitle(projektname + " / v" + entryAssemblyName?.Version?.ToString());
+   title = projektname + " / v" + entryAssemblyName?.Version?.ToString();
+   await Util.SetTitle(title);
   }
-  catch (Exception)
+  catch (Exception ex)
   {
+   Util.Log("Kann Browsertitel " + title + " nicht setzen: " + ex.Message);
    // Workaround für Android (dort funktioniert GetEntryAssembly() nicht!)
   }
 
@@ -116,7 +119,7 @@
  public void ShowAbout()
  {
   // Navigiere zu /About und zurück zur Startseite, wenn auf das Logo geklickt wird
-  if (NavigationManager.Uri.ToLower().Contains("/about")) NavigationManager.NavigateTo("/");
+  if (NavigationManager.Uri.Contains("/about", StringComparison.OrdinalIgnoreCase)) NavigationManager.NavigateTo("/");
   else NavigationManager.NavigateTo("About");
  }
 }

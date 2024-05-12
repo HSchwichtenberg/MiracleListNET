@@ -5,7 +5,8 @@
 <p>
  Diese Razor Component <b>@this.GetType().FullName</b> kommt aus der DLL: <b><text>@System.Reflection.Assembly.GetExecutingAssembly().GetName().Name</text>.dll</b>!
 </p>
-@*<CounterPanel StartValue="10" ValueHasChanged="NewValueArrived" />*@
+
+<h4>Einbettung einer Komponente - verschiedene Datentypen</h4>
 
 <CounterPanel ValueClass="@ValueClass" 
               ValueStruct="@ValueStruct" 

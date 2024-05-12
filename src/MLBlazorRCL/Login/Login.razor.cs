@@ -48,7 +48,7 @@ public class LoginModel : ComponentBase
 
   Util.Log(nameof(LoginModel) + "." + (nameof(OnInitializedAsync)) + ": " + this.NavigationManager.Uri);
   #region Umleitung als Reaktion auf die URL /logout
-  if (this.NavigationManager.Uri.ToLower().Contains("/logout"))
+  if (this.NavigationManager.Uri.Contains("/logout", StringComparison.OrdinalIgnoreCase))
   {
    await ((IMLAuthenticationStateProvider)mLAuthenticationStateProvider).Logout();
   }
@@ -65,7 +65,7 @@ public class LoginModel : ComponentBase
   #endregion
 
   #region Vorgaben im Login-Formular
-  bool includeLocalHost = this.NavigationManager.Uri.ToLower().Contains("localhost");
+  bool includeLocalHost = this.NavigationManager.Uri.Contains("localhost", StringComparison.OrdinalIgnoreCase);
   BackendList = AppState.GetBackendSet(includeLocalHost);
 
   // Wenn es eine Backendliste gibt und noch kein Backend im Local Storage war oder das Backend aus dem Local Storage nicht existiert in der Liste: nimm das erste in der Liste

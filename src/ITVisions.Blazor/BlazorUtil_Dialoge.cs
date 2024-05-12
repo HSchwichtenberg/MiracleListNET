@@ -37,6 +37,21 @@ namespace ITVisions.Blazor
     (!string.IsNullOrEmpty(text2) ? "\n"  + text2 : ""));
   }
 
+  /// <summary>
+  /// Zeige einen Browser-Dialog "prompt"
+  /// </summary>
+  /// <param name="text1">Zeile 1</param>
+  /// <param name="text2">Zeile 2</param>
+  /// <returns></returns>
+  public async ValueTask<string> Prompt(string text1, string text2 = "")
+  {
+   // DEMO: 10. JS-Interop einfach (CS)
+   if (_jsRuntime == null) return "";
+   Log("Confirm");
+   return await _jsRuntime.InvokeAsync<string>("prompt", text1 +
+    (!string.IsNullOrEmpty(text2) ? "\n" + text2 : ""));
+  }
+
   public async ValueTask ConfirmDialog(string text, int id, object objReferenceForCallback, Func<int, bool, Task> Callback)
   {
    // DEMO: 11. JS-Interop komplex mit JS Isolation und Callback (CS)

@@ -16,7 +16,7 @@ public class ClientController : Controller
 
  public IActionResult Index()
  {
-  if (HttpContext.Request.Path.ToString().ToLower().Contains("ix")) ViewBag.Quelle = "iX";
+  if (HttpContext.Request.Path.ToString().Contains("ix", StringComparison.OrdinalIgnoreCase)) ViewBag.Quelle = "iX";
   return View();
  }
 

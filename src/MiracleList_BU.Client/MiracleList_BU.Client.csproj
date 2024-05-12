@@ -38,5 +38,10 @@
  <ItemGroup>
    <Folder Include="Authentication\" />
  </ItemGroup>
+
+ <!--Lazy Loading-->
+ <!--<ItemGroup>
+  <BlazorWebAssemblyLazyLoad Include="SamplesRCL.wasm" />
+ </ItemGroup>-->
  
 </Project>

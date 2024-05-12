@@ -67,7 +67,7 @@ namespace MiracleListUITests
     WebDriverWait wait3 = new WebDriverWait(b, TimeSpan.FromSeconds(Util.GetTimeoutSec()));
     wait3.Until(d => mpo.TaskHeadline != null && mpo.TaskHeadline.Text == "1 Tasks in Testkategorie" || mpo.TaskHeadline.Text == "1 Aufgaben in Testkategorie"); // Chrome ist seit v74 zu schnell!
 
-    ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot_TaskCreateTestPO.png", ScreenshotImageFormat.Png);
+    ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot_TaskCreateTestPO.png");
 
     var headline2 = mpo.TaskHeadline.Text;
 
@@ -132,7 +132,7 @@ namespace MiracleListUITests
     WebDriverWait wait3 = new WebDriverWait(b, TimeSpan.FromSeconds(Util.GetTimeoutSec()));
     wait3.Until(d => mpo.TaskHeadline.Text == "1 Tasks in Testkategorie" || mpo.TaskHeadline.Text == "1 Aufgaben in Testkategorie");
 
-    ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot4.png", ScreenshotImageFormat.Png);
+    ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot4.png");
     //  ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot3.png", ScreenshotImageFormat.Png);
     var headline2 = mpo.TaskHeadline.Text;
 
@@ -289,7 +289,7 @@ namespace MiracleListUITests
      WebDriverWait wait3 = new WebDriverWait(b, TimeSpan.FromSeconds(Util.GetTimeoutSec()));
      wait3.Until(d => mpo.TaskHeadline != null && (mpo.TaskHeadline.Text == i + " Tasks in Testkategorie" || mpo.TaskHeadline.Text == i + " Aufgaben in Testkategorie"));
 
-     ((ITakesScreenshot)b).GetScreenshot().SaveAsFile($@"Screenshot_Task#{i}.png", ScreenshotImageFormat.Png);
+     ((ITakesScreenshot)b).GetScreenshot().SaveAsFile($@"Screenshot_Task#{i}.png");
      //  ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot3.png", ScreenshotImageFormat.Png);
      var headline2 = mpo.TaskHeadline.Text;
 

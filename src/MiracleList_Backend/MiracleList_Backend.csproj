@@ -61,11 +61,7 @@
 
  <ItemGroup>
   <!--<PackageReference Include="EntityFrameworkProfiler" Version="5.0.5032" />-->
-<<<<<<< HEAD
   <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.*" />
-=======
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.18.1" />
->>>>>>> 474ddbb4cb08e6358db2faf29ba69844b023f335
   <PackageReference Include="ITV.EFCoreUtil" Version="8.0.*" />
   <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
   <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="8.0.*" />

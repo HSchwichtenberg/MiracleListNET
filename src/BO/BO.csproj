@@ -11,13 +11,8 @@
  </PropertyGroup>
 
  <ItemGroup>
-<<<<<<< HEAD
   <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.*" />
-  <PackageReference Include="FluentValidation" Version="11.8.0" />
-=======
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.18.1" />
   <PackageReference Include="FluentValidation" Version="11.*" />
->>>>>>> 474ddbb4cb08e6358db2faf29ba69844b023f335
   <PackageReference Include="Newtonsoft.Json" Version="13.0.*" />
   <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
  </ItemGroup>

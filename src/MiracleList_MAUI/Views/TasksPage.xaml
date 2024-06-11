@@ -1,89 +1,127 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:converters="clr-namespace:MiracleList_MAUI.Converters"
-             xmlns:vm="clr-namespace:MiracleList_MAUI.ViewModels"
-             xmlns:bo="clr-namespace:BO;assembly=BO"
-             x:DataType="vm:TasksPageViewModel"
-             x:Name="page"
-             x:Class="MiracleList_MAUI.Views.TasksPage"
-             Title="{Binding Category.Name}">
+<ContentPage
+    x:Class="MiracleList_MAUI.Views.TasksPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:bo="clr-namespace:BO;assembly=BO"
+    xmlns:converters="clr-namespace:MiracleList_MAUI.Converters"
+    xmlns:vm="clr-namespace:MiracleList_MAUI.ViewModels"
+    x:Name="page"
+    Title="{Binding Category.Name}"
+    x:DataType="vm:TasksPageViewModel">
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="Datei">
-            <MenuFlyoutItem Text="Export" Command="{Binding ExportTaskListCommand}">
+            <MenuFlyoutItem Command="{Binding ExportTaskListCommand}" Text="Export">
                 <MenuFlyoutItem.KeyboardAccelerators>
-                    <KeyboardAccelerator Modifiers="Ctrl" Key="E"/>
+                    <KeyboardAccelerator Key="E" Modifiers="Ctrl" />
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
-            <MenuFlyoutItem Text="Beenden" Command="{Binding DisplayMenuItemCommand}" CommandParameter="Datei > Beenden">
+            <MenuFlyoutItem
+                Command="{Binding DisplayMenuItemCommand}"
+                CommandParameter="Datei &gt; Beenden"
+                Text="Beenden">
                 <MenuFlyoutItem.KeyboardAccelerators>
-                    <KeyboardAccelerator Modifiers="Alt" Key="X"/>
+                    <KeyboardAccelerator Key="X" Modifiers="Alt" />
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
         </MenuBarItem>
         <MenuBarItem Text="Hilfe">
-            <MenuFlyoutItem Text="Hilfe Anzeigen" Command="{Binding DisplayMenuItemCommand}" CommandParameter="Hilfe > Hilfe Anzeigen">
+            <MenuFlyoutItem
+                Command="{Binding DisplayMenuItemCommand}"
+                CommandParameter="Hilfe &gt; Hilfe Anzeigen"
+                Text="Hilfe Anzeigen">
                 <MenuFlyoutItem.KeyboardAccelerators>
-                    <KeyboardAccelerator Modifiers="None" Key="{OnPlatform WinUI=F1, MacCatalyst=UIKeyInputF1}"/>
+                    <KeyboardAccelerator Key="{OnPlatform WinUI=F1, MacCatalyst=UIKeyInputF1}" Modifiers="None" />
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
-            <MenuFlyoutItem Text="Info" Command="{Binding DisplayMenuItemCommand}" CommandParameter="Hilfe > Info">
-            </MenuFlyoutItem>
+            <MenuFlyoutItem
+                Command="{Binding DisplayMenuItemCommand}"
+                CommandParameter="Hilfe &gt; Info"
+                Text="Info" />
         </MenuBarItem>
     </ContentPage.MenuBarItems>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding ExportTaskListCommand}" Text="Export" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:TaskStatusConverter x:Key="TaskStatusConverter"/>
-            <converters:RelativeDateConverter x:Key="RelativeDateConverter"/>
+            <converters:TaskStatusConverter x:Key="TaskStatusConverter" />
+            <converters:RelativeDateConverter x:Key="RelativeDateConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <VerticalStackLayout>
         <Label Style="{StaticResource TitleStyle}">
             <Label.FormattedText>
                 <FormattedString>
-                    <Span Text="{Binding TaskCount}"/>
-                    <Span Text=" Aufgaben in "/>
-                    <Span Text="{Binding Category.Name}" FontAttributes="Italic"/>
+                    <Span Text="{Binding TaskCount}" />
+                    <Span Text=" Aufgaben in " />
+                    <Span FontAttributes="Italic" Text="{Binding Category.Name}" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>
-        <Entry Text="{Binding NewTaskTitle}" ReturnCommand="{Binding CreateNewTaskCommand}" Placeholder="Neue Aufgabe ..."/>
+        <Button
+            Command="{Binding ExportTaskListCommand}"
+            IsVisible="{x:OnIdiom Default=true,
+                                  Desktop=false}"
+            Text="Aufgaben exportieren" />
+        <Entry
+            Placeholder="Neue Aufgabe ..."
+            ReturnCommand="{Binding CreateNewTaskCommand}"
+            Text="{Binding NewTaskTitle}" />
         <CollectionView ItemsSource="{Binding Tasks}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="bo:Task">
                     <Border Style="{StaticResource CollectionItemBorder}">
-                        <Grid ColumnDefinitions="auto,*,auto,auto" RowDefinitions="auto,auto" ColumnSpacing="6" RowSpacing="6">
+                        <Grid
+                            ColumnDefinitions="auto,*,auto,auto"
+                            ColumnSpacing="6"
+                            RowDefinitions="auto,auto"
+                            RowSpacing="6">
                             <FlyoutBase.ContextFlyout>
                                 <MenuFlyout>
-                                    <MenuFlyoutItem Text="Aufgabe öffnen" 
-                                                    Command="{Binding Source={x:Reference page}, Path=BindingContext.NavigateToTaskCommand}"
-                                                      CommandParameter="{Binding .}"/>
+                                    <MenuFlyoutItem
+                                        Command="{Binding Source={x:Reference page}, Path=BindingContext.NavigateToTaskCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Text="Aufgabe öffnen" />
                                 </MenuFlyout>
                             </FlyoutBase.ContextFlyout>
                             <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksPageViewModel}}, Path=NavigateToTaskCommand}"
-                                                      CommandParameter="{Binding .}"/>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksPageViewModel}}, Path=NavigateToTaskCommand}" CommandParameter="{Binding .}" />
                             </Grid.GestureRecognizers>
-                            <Label Text="{Binding Title}" FontAttributes="Bold" LineBreakMode="WordWrap"/>
-                            <Border Grid.Column="2" Style="{StaticResource BadgeBorder}"  >
-                                <Label Text="{Binding Importance}" Style="{StaticResource BadgeLabel}"/>
+                            <Label
+                                FontAttributes="Bold"
+                                LineBreakMode="WordWrap"
+                                Text="{Binding Title}" />
+                            <Border Grid.Column="2" Style="{StaticResource BadgeBorder}">
+                                <Label Style="{StaticResource BadgeLabel}" Text="{Binding Importance}" />
                             </Border>
-                            <Label Grid.Column="3" Text="X"
-                                   ToolTipProperties.Text="{Binding Title, StringFormat='Aufgabe: {0} löschen'}">
+                            <Label
+                                Grid.Column="3"
+                                Text="X"
+                                ToolTipProperties.Text="{Binding Title, StringFormat='Aufgabe: {0} löschen'}">
                                 <Label.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksPageViewModel}}, Path=DeleteTaskCommand}"
-                                                      CommandParameter="{Binding .}"/>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksPageViewModel}}, Path=DeleteTaskCommand}" CommandParameter="{Binding .}" />
                                 </Label.GestureRecognizers>
                             </Label>
-                            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Text="Fällig">
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="4"
+                                Text="Fällig">
                                 <Label.Triggers>
-                                    <DataTrigger TargetType="Label" Binding="{Binding Due, Converter={StaticResource TaskStatusConverter}}" Value="overdue">
-                                        <Setter Property="TextColor" Value="Red"/>
-                                        <Setter Property="Text" Value="{Binding Due, Converter={StaticResource RelativeDateConverter}, StringFormat='Fällig seit {0:d}'}"/>
+                                    <DataTrigger
+                                        Binding="{Binding Due, Converter={StaticResource TaskStatusConverter}}"
+                                        TargetType="Label"
+                                        Value="overdue">
+                                        <Setter Property="TextColor" Value="Red" />
+                                        <Setter Property="Text" Value="{Binding Due, Converter={StaticResource RelativeDateConverter}, StringFormat='Fällig seit {0:d}'}" />
                                     </DataTrigger>
-                                    <DataTrigger TargetType="Label" Binding="{Binding Due, Converter={StaticResource TaskStatusConverter}}" Value="open">
-                                        <Setter Property="TextColor" Value="DarkGreen"/>
-                                        <Setter Property="Text" Value="{Binding Due, StringFormat='Fällig am {0:d}'}"/>
+                                    <DataTrigger
+                                        Binding="{Binding Due, Converter={StaticResource TaskStatusConverter}}"
+                                        TargetType="Label"
+                                        Value="open">
+                                        <Setter Property="TextColor" Value="DarkGreen" />
+                                        <Setter Property="Text" Value="{Binding Due, StringFormat='Fällig am {0:d}'}" />
                                     </DataTrigger>
                                 </Label.Triggers>
                             </Label>

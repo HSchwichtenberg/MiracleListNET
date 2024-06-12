@@ -41,7 +41,8 @@
         </MenuBarItem>
     </ContentPage.MenuBarItems>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding ExportTaskListCommand}" Text="Export" />
+        <ToolbarItem Command="{Binding ExportTaskListCommand}" 
+                     Text="{OnIdiom Default='Export', Desktop=''}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <ResourceDictionary>

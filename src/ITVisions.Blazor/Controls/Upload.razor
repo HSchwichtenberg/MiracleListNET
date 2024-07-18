@@ -123,7 +123,7 @@
  public PageModel model { get; set; } = new PageModel();
  #endregion
 
- List<IBrowserFile> filesToUpload;
+ List<IBrowserFile> filesToUpload = new List<IBrowserFile>();
 
  string Info { get; set; } = "";
  public string comment { get; set; }

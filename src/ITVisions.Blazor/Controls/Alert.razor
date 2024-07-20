@@ -1,14 +1,29 @@
 ﻿
 <div class="alert @Type.Prefix("alert-") alert-dismissible fade show" role="alert">
   <h4>@Title</h4>
-@Text
+
+@if (ChildContent != null)
+{
+   @ChildContent
+}
+else
+{
+  @Text
+}
+
+@if (AllowClose)
+{
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
+}
 </div
 
 
 @code {
+
+ [Parameter]
+ public bool AllowClose { get; set; } = true;
 
  [Parameter]
  public string Type { get; set; } = "alert-primary";
@@ -18,5 +33,8 @@
 
  [Parameter]
  public RenderFragment? Text { get; set; }
+
+  [Parameter]
+ public RenderFragment? ChildContent { get; set; }
 
 }

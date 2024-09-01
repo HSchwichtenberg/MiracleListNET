@@ -1,17 +1,19 @@
 ﻿
-<div class="card h-100">
+<div class='card @((Fill? "h-100" : ""))'>
  <div class="card-header" @onclick="()=>OnHeaderClick.InvokeAsync()">
   @Header
  </div>
  <div class="card-body">
   <h5 class="card-title">@Title</h5>
   <p class="card-text">@Text</p>
-
  </div>
 </div>
 
 
 @code {
+ [Parameter]
+ public bool Fill { get; set; } = false;
+
  [Parameter]
  public EventCallback OnHeaderClick { get; set; }
 

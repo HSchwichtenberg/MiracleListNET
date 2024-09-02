@@ -172,13 +172,10 @@
   if (filesToUpload == null) return;
 
   #region Cleanup
-
   if (!String.IsNullOrEmpty(CleanupPath))
   {
-
    try
    {
-
     var d = new System.IO.DirectoryInfo(Path);
 
     List<System.IO.FileInfo> files1 = d.GetOldFiles(CleanupDays);

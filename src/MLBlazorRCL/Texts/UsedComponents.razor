@@ -1,8 +1,10 @@
-﻿<h2>Verwendete Softwarekomponenten im Client</h2>
+﻿<h2>Verwendete Softwarekomponenten</h2>
 
 
 @code
 {
+ [Parameter]
+ public SortedDictionary<string, System.Type> Components { get; set; }
 
  SortedDictionary<string, System.Type> components = new SortedDictionary<string, System.Type>
   {
@@ -15,10 +17,20 @@
   { "Blazored Toast", typeof(Blazored.Toast.ServiceCollectionExtensions) },
   { "Radzen Blazor", typeof(Radzen.Blazor.RadzenComponents) },
   { "UAParser", typeof(UAParser.Parser) },
-  { "Entity Framework Core", Type.GetType("Microsoft.EntityFrameworkCore.DbContext") }
   };
 
-}
+ protected override void OnInitialized()
+ {
+  // Füge Components hinzu, die nicht bereits in der Liste sind
+  foreach (var c in Components)
+  {
+   if (!components.ContainsKey(c.Key))
+   {
+    components.Add(c.Key, c.Value);
+   }
 
+  }
+ }
+}
 
 @((MarkupString)ITVisions.EnvInfo.GetComponentVersionHTML(components))

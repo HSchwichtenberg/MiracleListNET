@@ -1,5 +1,5 @@
 ﻿
-<div class='card @((Fill? "h-100" : ""))'>
+<div class='card @((Fill? "h-100" : ""))' @attributes="AdditionalAttributes">
  <div class="card-header" @onclick="()=>OnHeaderClick.InvokeAsync()">
   @Header
  </div>
@@ -25,5 +25,11 @@
 
  [Parameter]
  public RenderFragment? Text { get; set; }
+
+ /// <summary>
+ /// Weitergabe sonstiger Attribute, z.B. class und style
+ /// </summary>
+ [Parameter(CaptureUnmatchedValues = true)]
+ public IDictionary<string, object> AdditionalAttributes { get; set; }
 
 }

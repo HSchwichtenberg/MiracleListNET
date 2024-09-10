@@ -3,6 +3,7 @@
 
 @code
 {
+
  SortedDictionary<string, System.Type> components = new SortedDictionary<string, System.Type>
   {
   { "Blazor", typeof(Microsoft.AspNetCore.Components.ComponentBase) },
@@ -13,13 +14,11 @@
   { "Blazored SessionStorage", typeof(Blazored.SessionStorage.ServiceCollectionExtensions) },
   { "Blazored Toast", typeof(Blazored.Toast.ServiceCollectionExtensions) },
   { "Radzen Blazor", typeof(Radzen.Blazor.RadzenComponents) },
-  { "UAParser", typeof(UAParser.Parser) }
+  { "UAParser", typeof(UAParser.Parser) },
+  { "Entity Framework Core", Type.GetType("Microsoft.EntityFrameworkCore.DbContext") }
   };
+
 }
 
-  @foreach (var c in components)
-{
- <text>
-  <b>@c.Key:</b>&nbsp;@c.Value.Assembly.GetName().Version.ToString() <br />
- </text>
-}
+
+@((MarkupString)ITVisions.EnvInfo.GetComponentVersionHTML(components))

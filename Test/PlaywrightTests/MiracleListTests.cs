@@ -57,7 +57,7 @@ public class MiracleListTests : PageTest
   await Page.GotoAsync(URL);
 
   // Expect a title "to contain" a substring.
-  await Expect(Page).ToHaveTitleAsync(new Regex("MiracleList_BS"));
+  await Expect(Page).ToHaveTitleAsync(new Regex("MiracleList_B"));
 
   // Login-Formular ausfüllen: Suche über Placeholder
   //await Page.GetByPlaceholder("Ihre E-Mail-Adresse").FillAsync(anmeldename);

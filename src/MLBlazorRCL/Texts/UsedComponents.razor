@@ -1,0 +1,25 @@
+﻿<h2>Verwendete Softwarekomponenten im Client</h2>
+
+
+@code
+{
+ SortedDictionary<string, System.Type> components = new SortedDictionary<string, System.Type>
+  {
+  { "Blazor", typeof(Microsoft.AspNetCore.Components.ComponentBase) },
+  { "ASP.NET Core SignalR Client", typeof(Microsoft.AspNetCore.SignalR.Client.HubConnection) },
+  { "www.IT-Visions.de Blazor Util", typeof(ITVisions.Blazor.BlazorUtil) },
+  { "www.IT-Visions.de App Util", typeof(ITVisions.EnvInfo) },
+  { "Blazored LocalStorage", typeof(Blazored.LocalStorage.ServiceCollectionExtensions) },
+  { "Blazored SessionStorage", typeof(Blazored.SessionStorage.ServiceCollectionExtensions) },
+  { "Blazored Toast", typeof(Blazored.Toast.ServiceCollectionExtensions) },
+  { "Radzen Blazor", typeof(Radzen.Blazor.RadzenComponents) },
+  { "UAParser", typeof(UAParser.Parser) }
+  };
+}
+
+  @foreach (var c in components)
+{
+ <text>
+  <b>@c.Key:</b>&nbsp;@c.Value.Assembly.GetName().Version.ToString() <br />
+ </text>
+}

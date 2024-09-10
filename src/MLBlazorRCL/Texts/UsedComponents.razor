@@ -4,7 +4,7 @@
 @code
 {
  [Parameter]
- public SortedDictionary<string, System.Type> Components { get; set; }
+ public SortedDictionary<string, System.Type> Components { get; set; } = new();
 
  SortedDictionary<string, System.Type> components = new SortedDictionary<string, System.Type>
   {
@@ -21,16 +21,18 @@
 
  protected override void OnInitialized()
  {
-  // Füge Components hinzu, die nicht bereits in der Liste sind
-  foreach (var c in Components)
-  {
-   if (!components.ContainsKey(c.Key))
-   {
-    components.Add(c.Key, c.Value);
-   }
-
-  }
+    if (Components != null) {
+      // Füge Components hinzu, die nicht bereits in der Liste sind
+      foreach (var c in Components)
+      {
+       if (!components.ContainsKey(c.Key))
+       {
+        components.Add(c.Key, c.Value);
+       }
+      }
+    }
  }
+
 }
 
 @((MarkupString)ITVisions.EnvInfo.GetComponentVersionHTML(components))

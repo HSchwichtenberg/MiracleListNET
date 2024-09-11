@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ITVisions;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
@@ -30,9 +31,9 @@ public class AppState : IAppState
 
  // Diese Daten werden aus /wwwroot/appsettings.json gelesen
  // Bitte ändern Sie die Daten dort, siehe auch readme.md
- public string StagingURL;
- public string LiveURL;
- public string DebugURL;
+ public string StagingURL = "";
+ public string LiveURL = "";
+ public string DebugURL = "";
 
  public AppState(IConfiguration configuration, IWebHostEnvironment host)
  {
@@ -48,9 +49,9 @@ public class AppState : IAppState
   }
 
   // Direkter Zugriff auf diese drei Einträge
-  this.StagingURL = this.configuration["Backend:StagingURL"];
-  this.LiveURL = this.configuration["Backend:LiveURL"];
-  this.DebugURL = this.configuration["Backend:DebugURL"];
+  this.StagingURL = this.configuration["Backend:StagingURL"].NotNull();
+  this.LiveURL = this.configuration["Backend:LiveURL"].NotNull();
+  this.DebugURL = this.configuration["Backend:DebugURL"].NotNull();
 
   Console.WriteLine($"AppState.ctor: {this.LiveURL}/{this.StagingURL}/{this.DebugURL} ");
 

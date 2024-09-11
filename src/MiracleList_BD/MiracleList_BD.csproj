@@ -10,7 +10,7 @@
 
  <!--Runtime + Compiler-->
  <PropertyGroup>
-  <TargetFramework>net8.0-windows</TargetFramework>
+  <TargetFramework>net9.0-windows</TargetFramework>
   <OutputType>WinExe</OutputType>
   <UseWPF>true</UseWPF>
   <IsShippingPackage>false</IsShippingPackage>

@@ -1,0 +1,93 @@
+﻿@page "/Samples/CounterPersistentComponentState"
+@using Microsoft.Extensions.Logging
+@inject ITVisions.Blazor.BlazorUtil BlazorUtil
+@inject ILogger<CounterPersistentComponentState> Logger
+@inject PersistentComponentState ComponentState
+
+<PageTitle>Counter mit PersistentComponentState</PageTitle>
+
+<h1>Counter mit PersistentComponentState</h1>
+<p>Render-Modus: @BlazorUtil.BlazorType</p> @* .NET 9.0: this.RendererInfo.Name *@
+<p role="status">Zähler: @data.Counter</p>
+<p>Zuletzt geändert am: @data.LastChange</p>
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+ class CounterData
+ {
+  public DateTime? LastChange { get; set; } = null;
+  public int Counter { get; set; } = 0;
+ }
+
+ private CounterData data = new();
+ private PersistingComponentStateSubscription persistingSubscription;
+
+ protected override void OnInitialized()
+ {
+  persistingSubscription =
+    ComponentState.RegisterOnPersisting(PersistState);
+
+  if (ComponentState.TryTakeFromJson<CounterData>("CounterData", out var restoredCount))
+  {
+   data = restoredCount!;
+   Print("OnInitialized | Wiederhergestellt");
+  }
+  else
+  {
+   data = LoadFromDB();
+   Print("OnInitialized | Initialisiert");
+  }
+ }
+
+ protected override void OnParametersSet()
+ {
+  Print("OnParametersSet");
+ }
+
+ protected override void OnAfterRender(bool firstRender)
+ {
+  Print("OnAfterRender" + (firstRender ? ":first" : ""));
+ }
+
+ private Task PersistState()
+ {
+  Print("PersistState");
+  ComponentState.PersistAsJson("Counter", data);
+
+  #region Testdaten, um zu zeigen, wie der Persistent Component State anwächst
+  // erzeuge eine Zeichenkette mit 100.000 Zeichen
+  // var random = new Random();
+  // var randomString = new string(Enumerable.Repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", 100000)
+  //     .Select(s => s[random.Next(s.Length)]).ToArray());
+  // ComponentState.PersistAsJson("RandomString", randomString);
+
+  // // Nun noch 100.000 Werte speichern
+  // for (int i = 0; i < 100000; i++)
+  // {
+  //  ComponentState.PersistAsJson("Value#" + i, currentCount);
+  // }
+  #endregion
+  return Task.CompletedTask;
+ }
+
+ private void IncrementCount()
+ {
+  Print("IncrementCount");
+  data.Counter++;
+ }
+
+ private CounterData LoadFromDB()
+ {
+  Print("LoadFromDB");
+  // nur zur Demonstration statt echtem DB-Zugriff
+  return new CounterData() { Counter = 42, LastChange = DateTime.Now.AddHours(-1) };
+ }
+
+ private void Print(string s)
+ {
+  // .NET 9.0: this.RendererInfo.Name
+  var o = ($"---> CounterPersistentComponentState: {DateTime.Now.ToString("HH:mm:ss.fff")} | {BlazorUtil.BlazorType} | currentCount={data?.Counter} | {s}");
+  System.Diagnostics.Trace.WriteLine(o);
+  Console.WriteLine(o);
+ }
+}

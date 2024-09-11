@@ -10,13 +10,12 @@
   private Boolean value;
 
  [Parameter]
- public Boolean Value
+ public Boolean Value // TODO: Umbauen mit bind:after
  {
   get => value;
   set
   {
    if (this.value == value) return;
-
    this.value = value;
    ValueChanged.InvokeAsync(value);
   }

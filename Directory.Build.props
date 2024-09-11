@@ -26,4 +26,9 @@
   <PackageReleaseNotes>Programmcodebeispiele zum Blazor 9.0-Buch von Dr. Holger Schwichtenberg für Buchversion 9.0.0</PackageReleaseNotes>
  </PropertyGroup>
  
+ <!--Nur kritische NuGet-Sicherheits-Warnungen-->
+ <PropertyGroup>
+  <NuGetAuditLevel>critical</NuGetAuditLevel>
+ </PropertyGroup>
+ 
 </Project>

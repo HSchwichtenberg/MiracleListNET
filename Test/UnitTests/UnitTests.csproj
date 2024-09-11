@@ -40,13 +40,13 @@
  </ItemGroup>
 
  <ItemGroup>
-  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="8.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.0-*" />
   <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
   <PackageReference Include="NHibernateProfiler.Appender" Version="6.0.*" />
   <PackageReference Include="System.Data.SqlClient" Version="4.8.*" />
@@ -58,7 +58,7 @@
   <PackageReference Include="Xunit.SkippableFact" Version="1.*" />
   <PackageReference Include="DeepEqual" Version="5.*" />
   <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.18.1" />
-  <PackageReference Include="ITV.EFCoreUtil" Version="8.0.*" />
+  <PackageReference Include="ITV.EFCoreUtil" Version="8.*" />
  </ItemGroup>
 
  <ItemGroup>

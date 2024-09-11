@@ -21,12 +21,12 @@
  <ItemGroup>
   <PackageReference Include="DotNetSeleniumExtras.PageObjects" Version="3.11.*" />
   <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0-*" />
   <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
-  <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.*" />
+  <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.0-*" />
   <PackageReference Include="MSTest.TestAdapter" Version="3.*" />
   <PackageReference Include="MSTest.TestFramework" Version="3.*" />
   <PackageReference Include="Selenium.Firefox.WebDriver" Version="0.27.*" />

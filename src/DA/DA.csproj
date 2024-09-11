@@ -55,18 +55,18 @@
 
  <!--EF Core-->
  <ItemGroup>
-  <PackageReference Include="ITV.EFCoreUtil" Version="8.0.*" />
+  <PackageReference Include="ITV.EFCoreUtil" Version="8.*" />
   <PackageReference Include="EntityFrameworkProfiler" Version="6.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0-*" />
  </ItemGroup>
 
  <!--DB-Treiber-->
  <ItemGroup>
-  <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0-*" />
   <PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.3.*" />
-  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.*" />
+  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-*" />
  </ItemGroup>
 
  <ItemGroup>

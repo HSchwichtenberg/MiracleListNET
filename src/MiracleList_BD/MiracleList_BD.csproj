@@ -46,8 +46,8 @@
  <!--Nuget-Pakete-->
  <ItemGroup>
   <!--Standardreferenzen für BD-->
-  <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="8.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.0-*" />
  </ItemGroup>
 
  <!--COM-Referenzen für Word-Interop-->

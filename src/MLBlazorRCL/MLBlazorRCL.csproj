@@ -16,18 +16,18 @@
 
  <ItemGroup>
   <!--Zusätzliche Pakete von Microsoft-->
-  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.*" />
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.*" />
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="8.0.*" />
-  <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.0-*" />
   <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
-  <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.*" />
-  <PackageReference Include="System.Net.Http.Json" Version="8.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0-*" />
+  <PackageReference Include="System.Net.Http.Json" Version="9.0.0-*" />
   
   <!--Verträgt sich nicht mit aktiviertem Multi-Threading in BW :-(-->
-  <!--<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.*" />-->
+  <!--<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0-*" />-->
 
   <!--Zusätzliche Pakete von Anderen-->
   <PackageReference Include="Blazor.ContextMenu" Version="2.*" />

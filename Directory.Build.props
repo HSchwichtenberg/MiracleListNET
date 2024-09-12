@@ -28,7 +28,7 @@
 
  <!--Aktuell keine NuGet-Sicherheits-Warnungen-->
  <PropertyGroup>
-  <NuGetAudit>false</NuGetAuditMode>
+  <NuGetAudit>false</NuGetAudit>
   <!--<NuGetAuditLevel>critical</NuGetAuditLevel>-->
   <!--Nur kritische NuGet-Sicherheits-Warnungen-->
  </PropertyGroup>

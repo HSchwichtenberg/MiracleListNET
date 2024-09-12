@@ -59,7 +59,6 @@
   <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.*" />
   <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.*" />
   <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.*" />
-  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.*" />
   <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="8.*" />
   <PackageReference Include="Microsoft.JSInterop" Version="8.*" />
   <PackageReference Include="UAParser" Version="3.1.*" />

@@ -6,3 +6,16 @@
  background-color: #12B4FF;
  border: 0
 }
+
+.bigCheckbox {
+ /*-moz-transform: scale(2);*/
+ width: 25px;
+ height: 25px;
+ padding: 10px;
+ display: inline;
+}
+
+.bigCheckboxLabel {
+ margin-left: 15px;
+ margin-top: 5px;
+}

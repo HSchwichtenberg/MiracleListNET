@@ -1,5 +1,4 @@
-﻿
-<div class="form-group form-check">
+﻿<div class="form-check">
  <InputRadio class="form-check-input bigCheckbox" @bind-Value="@Value" @bind-Value:after="()=>ValueChanged.InvokeAsync(Value)"/>
  <label @onclick="ChangeRadioState"  class="form-check-label bigCheckboxLabel">@((MarkupString)Label)</label>
 </div>

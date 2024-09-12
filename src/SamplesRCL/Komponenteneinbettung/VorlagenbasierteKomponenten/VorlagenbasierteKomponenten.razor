@@ -5,22 +5,20 @@
 
 <h1>Vorlagenbasierte Komponentenvorlagen</h1>
 
-<h3>ITVCheckbox/ITVInputRadio</h3>
-
-<ITVCheckbox @bind-Value="Aktiv" @bind-Value:after="Log"></ITVCheckbox>
+<h3>ITVCheckbox</h3>
+<ITVCheckbox @bind-Value="Aktiv" Label="Aktiv? Ja oder Nein?" @bind-Value:after="Log"></ITVCheckbox>
 <br />
 Wert: @Aktiv
-<br />
 
+<h3>ITVInputRadio</h3>
 <InputRadioGroup @bind-Value="Zahl">
  <ITVInputRadio Value="1" Label="Eins" ValueChanged="Log"></ITVInputRadio>
  <ITVInputRadio Value="2" Label="Zwei" ValueChanged="Log"></ITVInputRadio>
  <ITVInputRadio Value="3" Label="Drei" ValueChanged="Log"></ITVInputRadio>
 </InputRadioGroup>
-
 <br />
 Wert: @Zahl
-<br />
+
 @code
 {
  enum Zahlen { Null, Eins, Zwei, Drei}

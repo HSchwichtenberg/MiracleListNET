@@ -20,8 +20,9 @@
 
  private bool? _Value;
 
+ #pragma warning disable BL0007 // Umbauen mit bind:after hier nicht so einfach möglich
  [Parameter]
- public bool? Value // TODO: Umbauen mit bind:after
+ public bool? Value 
  {
   get => _Value;
   set
@@ -69,7 +70,7 @@
  [JSInvokable]
  public void SetValue(bool? value)
  {
-  util.Log("TriState.SetValue:" + ID + "=" + value);
+  @* util.Log("TriState.SetValue:" + ID + "=" + value); *@
   this.Value = value;
  }
 }

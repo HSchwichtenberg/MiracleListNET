@@ -1,31 +1,18 @@
 ﻿
 <div class="form-group form-check">
- <InputRadio @ref="radio" class="form-check-input bigCheckbox" Value="@Value" />
+ <InputRadio class="form-check-input bigCheckbox" @bind-Value="@Value" @bind-Value:after="()=>ValueChanged.InvokeAsync(Value)"/>
  <label @onclick="ChangeRadioState"  class="form-check-label bigCheckboxLabel">@((MarkupString)Label)</label>
 </div>
 
 
 @code {
 
- private int _value;
-
  [Parameter]
  public string Label { get; set; }
 
- InputRadio<int> radio;
 
  [Parameter]
- public int Value // TODO: Umbauen mit bind:after
- {
-  get => _value;
-  set
-  {
-   if (_value == value) return;
-
-   _value = value;
-   ValueChanged.InvokeAsync(value);
-  }
- }
+ public int Value { get; set; }
 
  void ChangeRadioState()
  {

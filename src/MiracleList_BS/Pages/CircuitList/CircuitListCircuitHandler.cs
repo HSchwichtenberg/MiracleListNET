@@ -39,14 +39,12 @@ namespace ITVisions.Blazor.Services
    logger.LogInformation($"{nameof(CircuitListCircuitHandler)}.{nameof(OnCircuitOpenedAsync)}: {circuit.Id}");
 
    var myC = new CircuitInfo(circuit);
+   myC.ClientIP = "n/a";
    try
    {
-    myC.ClientIP = ca.HttpContext.Connection.RemoteIpAddress.ToString();
+    myC.ClientIP = ca.HttpContext?.Connection?.RemoteIpAddress?.ToString();
    }
-   catch (Exception)
-   {
-    myC.ClientIP = "n/a";
-   }
+   catch (Exception)   {  }
 
    try
    {

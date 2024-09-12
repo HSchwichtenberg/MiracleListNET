@@ -14,7 +14,7 @@ public partial class FileParameter
  {
  }
 
- public FileParameter(System.IO.Stream data, string fileName, string contentType)
+ public FileParameter(System.IO.Stream data, string fileName, string? contentType)
  {
   Data = data;
   FileName = fileName;
@@ -25,5 +25,5 @@ public partial class FileParameter
 
  public string FileName { get; private set; }
 
- public string ContentType { get; private set; }
+ public string? ContentType { get; private set; }
 }

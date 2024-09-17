@@ -9,7 +9,7 @@
   <div class="HeadInfo">
    <h4 class="HeadInfo" id="LoggedInUser">Benutzer: <b>@context.User.Identity.Name</b> <a href="/logout">Logout</a></h4>
    <h4 class="HeadInfo">Angemeldet seit: <b>@GetLogInDateTime().Result</b> Screen: <b><span class="screenInfo">@screenInfo</span></b> </h4>
-   <h4 class="HeadInfo">Frontend: Blazor @(Util.BlazorType) auf @System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription</h4>
+   <h4 class="HeadInfo">Frontend: <span title="Interacive: @this.RendererInfo.IsInteractive AssignedRenderMode: @this.AssignedRenderMode.GetType().Name"> Blazor @this.RendererInfo.Name</span> auf @System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription</h4>
    <h4 class="HeadInfo"><ConnectionState /></h4>
   </div>
  </Authorized>

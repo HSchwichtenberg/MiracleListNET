@@ -10,7 +10,7 @@
  </div>
  <div class="panel-body">
   <p>
-   <a href="/about">MiracleList</a> ist eine praxisnahe Beispielanwendung für eine Single-Page-Webapplication (SPA) zur Aufgabenverwaltung aus dem <a href="https://www.IT-Visions.de/BlazorBuch" target="_blank">Blazor-Buch von Dr. Holger Schwichtenberg</a>. Diese Variante des Frontends läuft mit Blazor @this.RendererInfo.Name auf @System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription. <span class="glyphicon glyphicon-arrow-right"></span> <a href="/About/AboutMiracleList">Weitere Informationen</a>
+   <a href="/about">MiracleList</a> ist eine praxisnahe Beispielanwendung für eine Single-Page-Webapplication (SPA) zur Aufgabenverwaltung aus dem <a href="https://www.IT-Visions.de/BlazorBuch" target="_blank">Blazor-Buch von Dr. Holger Schwichtenberg</a>. Diese Variante des Frontends läuft mit <span title="Interacive: @this.RendererInfo.IsInteractive AssignedRenderMode: @this.AssignedRenderMode.GetType().Name"> Blazor @this.RendererInfo.Name</span> auf @System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription. <span class="glyphicon glyphicon-arrow-right"></span> <a href="/About/AboutMiracleList">Weitere Informationen</a>
   </p>
   <p>
    Zur Benutzeranmeldung geben Sie die Kombination aus Ihrer E-Mail-Adresse und einem beliebigen Kennwort ein. Wenn es für diese E-Mail-Adresse noch kein Benutzerkonto gibt, wird automatisch ein neues Benutzerkonto mit einigen Beispielaufgaben angelegt. Merken Sie sich das Kennwort für zukünftige Anmeldungen. Das Kennwort kann nicht geändert werden. Das Benutzeranmeldeverfahren ist bewusst vereinfacht, um die Hürde zum Einstieg in die Anwendung gering zu halten.
@@ -57,7 +57,7 @@
 
 <div>
  <text>MiracleList v</text>@System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()
- läuft mit Blazor @this.RendererInfo.Name @@ @System.Environment.MachineName / @RuntimeInformation.ProcessArchitecture
+ läuft mit <span title="Interacive: @this.RendererInfo.IsInteractive AssignedRenderMode: @this.AssignedRenderMode.GetType().Name"> Blazor @this.RendererInfo.Name</span> @@ @System.Environment.MachineName / @RuntimeInformation.ProcessArchitecture
 </div>
 
 <a href="/About/AboutMiracleList">Weitere Informationen über MiracleList</a> | <a href="/about">Mehr Systeminformationen</a>

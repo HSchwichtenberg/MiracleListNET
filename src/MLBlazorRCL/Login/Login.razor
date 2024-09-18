@@ -19,14 +19,14 @@
   <div class="row">
    <div class="col-xs-12 form-group">
     <label for="name">E-Mail-Adresse:</label>
-    <input name="username" @bind="this.Username" id="username" type="text" placeholder="Ihre E-Mail-Adresse" required class="form-control">
+    <input name="username" @bind="this.Username" id="username" type="text" placeholder="Ihre E-Mail-Adresse" required class="form-control" disabled="@(!this.RendererInfo.IsInteractive)">
    </div>
   </div>
 
   <div class="row">
    <div class="col-xs-12 form-group">
     <label for="password">Kennwort</label>
-    <input name="password" @bind="this.Password" id="password" placeholder="Ihr Kennwort" required type="password" class="form-control">
+    <input name="password" @bind="this.Password" id="password" placeholder="Ihr Kennwort" required type="password" class="form-control" disabled="@(!this.RendererInfo.IsInteractive)">
    </div>
   </div>
 
@@ -45,7 +45,7 @@
    </div>
   </div>
 
-  <button @onclick="Login" class="btn btn-primary" type="submit" id="login" name="login">Anmelden</button>
+  <button @onclick="Login" class="btn @(this.RendererInfo.IsInteractive ? "btn-primary" : "btn-danger")" disabled="@(!this.RendererInfo.IsInteractive)" type="submit" id="login" name="login">Anmelden</button>
 
   <span id="errorMsg" class="text-danger">@LoginStatus</span>
  </div>

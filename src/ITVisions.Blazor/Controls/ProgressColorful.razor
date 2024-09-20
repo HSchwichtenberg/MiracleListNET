@@ -85,13 +85,12 @@
   </div>
  </div>
 </div>
-<div style="text-align:center">@Text</div>
+<div style="text-align:center">@ChildContent</div>
 
 @code
 {
-
  [Parameter]
- public RenderFragment Text { get; set; }
+ public RenderFragment ChildContent { get; set; }
 
  [Parameter]
  public string Tooltip { get; set; } = "In Arbeit... Bitte haben Sie einen Moment Geduld";

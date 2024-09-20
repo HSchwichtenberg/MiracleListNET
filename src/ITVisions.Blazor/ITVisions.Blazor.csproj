@@ -20,10 +20,10 @@
 
  <!--Versionen-->
  <PropertyGroup>
-  <Version>8.5.0.4</Version>
-  <AssemblyVersion>8.5.0.4</AssemblyVersion>
-  <FileVersion>8.5.0.4</FileVersion>
-  <InformationalVersion>8.5.0.4</InformationalVersion>
+  <Version>8.5.0.7</Version>
+  <AssemblyVersion>8.5.0.7</AssemblyVersion>
+  <FileVersion>8.5.0.7</FileVersion>
+  <InformationalVersion>8.5.0.7</InformationalVersion>
  </PropertyGroup>
 
  <!--Autor-->
@@ -74,12 +74,6 @@
   <Content Include="readme.md" />
  </ItemGroup>
  <ItemGroup>
-  <None Include="wwwroot\img\ITVisions.jpg">
-   <Pack>True</Pack>
-   <PackagePath></PackagePath>
-  </None>
- </ItemGroup>
- <ItemGroup>
   <Resource Include="ITVisions.jpg" />
  </ItemGroup>
  <ItemGroup>
@@ -90,6 +84,10 @@
   <Content Update="wwwroot\css\bootstrap\bootstrap.min.css.map">
     <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+  </Content>
+  <Content Update="wwwroot\img\ITVisions.jpg">
+    <Pack>True</Pack>
+    <PackagePath></PackagePath>
   </Content>
   <Content Update="wwwroot\img\www.IT-Visions.de_Logo.png">
    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

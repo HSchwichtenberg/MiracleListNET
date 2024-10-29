@@ -7,7 +7,7 @@
 <EditForm Model="model" OnValidSubmit="OnSubmit">
 
  <h3>
-  @Headline &nbsp;
+  <span style="margin-right:10px">@Headline</span>
   @if (MaxFileSize > 0)
   {
    <span class="NoteSmall">max @FileUtil.GetMB(MaxFileSize) pro Datei</span>

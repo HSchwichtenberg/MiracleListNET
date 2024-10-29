@@ -48,7 +48,7 @@
    @if (UseComment)
    {
     <div class="form-group">
-     Kommentar zu @(this.filesToUpload.Count == 1 ? "dieser Datei" : " diesen " + this.filesToUpload.Count + " Dateien") <span class="ZusatzInfoSmall">optional, max 200 Zeichen</span>
+     Kommentar zu @(this.filesToUpload.Count == 1 ? "dieser Datei" : " diesen " + this.filesToUpload.Count + " Dateien") <span class="ZusatzInfoSmall">optional, max @MaxCommentLength Zeichen</span>
      <textarea @bind="comment" class="form-control" maxlength="@MaxCommentLength" rows="@(MaxCommentLength<200 ? 1 : 2)"></textarea>
 
     </div>
@@ -78,12 +78,18 @@
 
 </EditForm>
 
-
 @code
 {
-
+ /// <summary>
+ /// Standard 100 MB
+ /// </summary>
  [Parameter]
  public int MaxFileSize { get; set; } = 100 * 1024 * 1024; // 100 MB
+ /// <summary>
+ /// Standard 200 Zeichen
+ /// </summary>
+ [Parameter]
+ public int MaxCommentLength { get; set; } = 200; // 200 Zeichen
  [Parameter]
  public string Path { get; set; } = "";
  [Parameter]
@@ -106,7 +112,6 @@
  public List<string> AcceptableFileTypesList
  {
   get
-
   {
    if (String.IsNullOrEmpty(AcceptableFileTypes)) return new List<string>();
    return AcceptableFileTypes.Split(',').ToList().Select(x => x.ToLower().Trim()).ToList();
@@ -166,7 +171,6 @@
  /// <summary>
  /// ------------------------------------------------------ Dateiupload ------------------------------------------------------
  /// </summary>
- /// <returns></returns>
  async Task OnSubmit()
  {
   if (filesToUpload == null) return;
@@ -198,7 +202,6 @@
   }
   #endregion
 
-
   // TODO: https://github.com/pranavkm/FileUpload/blob/master/Pages/Index.razor
   var commentComplete = comment;
   if (!String.IsNullOrEmpty(commentComplete) && commentComplete.StartsWith("Kundenteam: "))
@@ -215,7 +218,6 @@
 
   foreach (IBrowserFile f in filesToUpload)
   {
-
    Info = "Hochladen der Datei <b>" + f.Name + "</b>...";
    string newName = f.Name.Replace(" ", "_");
    string newFilePath = System.IO.Path.Combine(Path, newName);
@@ -235,7 +237,6 @@
    #endregion
 
    #region Benachrichtigungen über Upload
-
    Util.Log("Upload OK: " + f.Name);
    #endregion
 
@@ -244,7 +245,7 @@
    if (args.UploadedFiles.Count == 1)
     Info = "Datei <b>" + f.Name + "</b> hochgeladen!";
    else
-    Info = "<b>" + args.UploadedFiles.Count + " Dateien</b> hochgeladen: " + string.Join(',', args.UploadedFiles.Select(x=>x.Name).ToList());
+    Info = "<b>" + args.UploadedFiles.Count + " Dateien</b> hochgeladen: " + string.Join(',', args.UploadedFiles.Select(x => x.Name).ToList());
   }
 
   await NewFilesArrived.InvokeAsync(args);

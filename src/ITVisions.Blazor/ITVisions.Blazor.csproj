@@ -20,10 +20,10 @@
 
  <!--Versionen-->
  <PropertyGroup>
-  <Version>8.5.0.10</Version>
-  <AssemblyVersion>8.5.0.10</AssemblyVersion>
-  <FileVersion>8.5.0.10</FileVersion>
-  <InformationalVersion>8.5.0.10</InformationalVersion>
+  <Version>8.5.2.1</Version>
+  <AssemblyVersion>8.5.2.1</AssemblyVersion>
+  <FileVersion>8.5.2.1</FileVersion>
+  <InformationalVersion>8.5.2.1</InformationalVersion>
  </PropertyGroup>
 
  <!--Autor-->

@@ -36,6 +36,9 @@
   <PackageReference Include="Blazored.Toast" Version="4.*" />
   <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
   <PackageReference Include="Radzen.Blazor" Version="5.1.10" />
+
+  <!--Fix Pakethölle-->
+  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0-*" />
  </ItemGroup>
 
  <ItemGroup>

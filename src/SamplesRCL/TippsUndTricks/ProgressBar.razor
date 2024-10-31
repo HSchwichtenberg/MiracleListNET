@@ -5,7 +5,7 @@
 @using System.Runtime.Versioning
 @inject BlazorUtil Util
 
-<h3>Fortschrittsanzeige ohne und mit Multi-Threading</h3>
+<h3>Fortschrittsanzeige ohne und mit Multi-Threading (in Blazor WebAssembly seit Version 8 möglich)</h3>
 UI-Thread-ID: @System.Threading.Thread.CurrentThread.ManagedThreadId
 <br>
 Support für Multi-Threading: @MultiThreadingEnabled
@@ -100,7 +100,7 @@ Support für Multi-Threading: @MultiThreadingEnabled
     {
      if (MultiThreadingEnabled) // bei aktiviertem Multi-Threading!
      {
-      await InvokeAsyncMT(this.StateHasChanged); 
+      await InvokeAsync(this.StateHasChanged); 
      } 
      else // bei nicht aktiviertem Multi-Threading!
      {
@@ -136,21 +136,5 @@ Support für Multi-Threading: @MultiThreadingEnabled
 }
 
 @code {
- // Notwendig bei aktiviertem Mult-Threading wegen Unzulänglichkeit in .NET 8: https://github.com/dotnet/runtime/issues/95547
- SynchronizationContext sctx = SynchronizationContext.Current!;
- Task InvokeAsyncMT(Action action)
- {
-  sctx.Post((object state) => action(), null);
-  return Task.CompletedTask;
- }
- Task InvokeAsyncMT(Action<object> action)
- {
-  sctx.Post((object state) => action(state), null);
-  return Task.CompletedTask;
- }
- Task InvokeAsyncMT(Func<Task> action)
- {
-  sctx.Post(async (object state) => await action(), null);
-  return Task.CompletedTask;
- }
+
 }

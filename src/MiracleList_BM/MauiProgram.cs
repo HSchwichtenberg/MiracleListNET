@@ -2,7 +2,9 @@
 using Blazored.LocalStorage;
 using Blazored.Toast;
 using ITVisions.Blazor;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using MiracleList;
@@ -59,6 +61,11 @@ public static class MauiProgram
   services.AddBlazoredLocalStorage();
   services.AddBlazorContextMenu();
   services.AddBlazorUtil();
+
+  // Die folgenden beiden DI-Statements sind nur notwendig, weil gemeinsame (!) Razor-Komponenten den PersistentComponentState nutzen,
+  // der in Blazor-Hybrid normalerweise gar nicht gebraucht wird
+  services.AddSingleton<ComponentStatePersistenceManager>();
+  services.AddSingleton<PersistentComponentState>(sp => sp.GetRequiredService<ComponentStatePersistenceManager>().State);
   #endregion
 
   #region DI für Beispiele außerhalb der MiracleList

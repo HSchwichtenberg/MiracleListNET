@@ -57,10 +57,11 @@ public partial class ServerState(PersistentComponentState ComponentState)
 
  private Task PersistState()
  {
-  Print("PersistState");
-
-  ComponentState.PersistAsJson(nameof(BackendStatusList), BackendStatusList);
-
+  if (this.RendererInfo.Name != "WebView")
+  {
+   Print("PersistState");
+   ComponentState.PersistAsJson(nameof(BackendStatusList), BackendStatusList);
+  }
   return Task.CompletedTask;
  }
 

@@ -7,11 +7,12 @@ using BL;
 using Blazored.LocalStorage; // NuGet Blazor.Extensions.Storage
 using Blazored.Toast;
 using ITVisions.Blazor;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Infrastructure;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebView;
 using Microsoft.AspNetCore.Components.WebView.Wpf;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Web.WebView2.Core;
@@ -69,6 +70,11 @@ public partial class MainWindow : Window
   services.AddBlazoredToast();
   services.AddSingleton<IAppState, AppState>();
   services.AddScoped<IMiracleListProxy, MiracleListNoProxy>();
+
+  // Die folgenden beiden DI-Statements sind nur notwendig, weil gemeinsame (!) Razor-Komponenten den PersistentComponentState nutzen,
+  // der in Blazor-Hybrid normalerweise gar nicht gebraucht wird
+  services.AddSingleton<ComponentStatePersistenceManager>();
+  services.AddSingleton<PersistentComponentState>(sp => sp.GetRequiredService<ComponentStatePersistenceManager>().State);
   #endregion
 
   #region DI für Beispiele außerhalb der MiracleList

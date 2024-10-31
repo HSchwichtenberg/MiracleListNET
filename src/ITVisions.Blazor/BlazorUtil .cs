@@ -1,11 +1,11 @@
 ﻿#pragma warning disable 1998
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Http;
-using Microsoft.JSInterop;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http;
+using Microsoft.JSInterop;
 
 namespace ITVisions.Blazor
 {
@@ -36,6 +36,7 @@ namespace ITVisions.Blazor
   /// <summary>
   /// Returns the Blazor type based on the NavigationManager instance name
   /// </summary>
+  [Obsolete("Ab .NET 9.0 in der Razor Component ggf. this.RenderInfo.Name abfragen!")]
   public string BlazorType =>
        NavigationManager.GetType().FullName switch
        {

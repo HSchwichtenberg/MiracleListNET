@@ -7,7 +7,7 @@
 <PageTitle>Counter mit PersistentComponentState</PageTitle>
 
 <h1>Counter mit PersistentComponentState</h1>
-<p>Render-Modus: @BlazorUtil.BlazorType</p> @* .NET 9.0: this.RendererInfo.Name *@
+<p>Render-Modus: @this.RendererInfo.Name</p>
 <p role="status">Zähler: @data.Counter</p>
 <p>Zuletzt geändert am: @data.LastChange</p>
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
@@ -86,7 +86,7 @@
  private void Print(string s)
  {
   // .NET 9.0: this.RendererInfo.Name
-  var o = ($"---> CounterPersistentComponentState: {DateTime.Now.ToString("HH:mm:ss.fff")} | {BlazorUtil.BlazorType} | currentCount={data?.Counter} | {s}");
+  var o = ($"---> CounterPersistentComponentState: {DateTime.Now.ToString("HH:mm:ss.fff")} | {this.RendererInfo.Name} | currentCount={data?.Counter} | {s}");
   System.Diagnostics.Trace.WriteLine(o);
   Console.WriteLine(o);
  }

@@ -38,7 +38,8 @@
   <PackageReference Include="Radzen.Blazor" Version="5.1.10" />
 
   <!--Fix Pakethölle-->
-  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0-*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.*" />
  </ItemGroup>
 
  <ItemGroup>

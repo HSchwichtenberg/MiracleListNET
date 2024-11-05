@@ -11,9 +11,9 @@
   <Version>9.0.0</Version>
   <AssemblyVersion>9.0.0</AssemblyVersion>
   <FileVersion>9.0.0</FileVersion>
-  <InformationalVersion>9.0</InformationalVersion>
+  <InformationalVersion>9.0.0-11/01/2024 09:56:48</InformationalVersion>
   <ApplicationVersion>9</ApplicationVersion>
-  <ApplicationDisplayVersion>9.0</ApplicationDisplayVersion>
+  <ApplicationDisplayVersion>9.0.0</ApplicationDisplayVersion>
  </PropertyGroup>
 
  <!--App-Infos-->
@@ -23,7 +23,7 @@
   <Product>MiracleList</Product>
   <Copyright>(C) Dr. Holger Schwichtenberg (www.IT-Visions.de)</Copyright>
   <PackageProjectUrl>https://www.miraclelist.net</PackageProjectUrl>
-  <PackageReleaseNotes>Programmcodebeispiele zum Blazor 9.0-Buch von Dr. Holger Schwichtenberg für Buchversion 9.0.0</PackageReleaseNotes>
+  <PackageReleaseNotes>Programmcodebeispiele zum Blazor 8.0-Buch von Dr. Holger Schwichtenberg für Buchversion 9.0.0</PackageReleaseNotes>
  </PropertyGroup>
 
  <!--Aktuell keine NuGet-Sicherheits-Warnungen-->

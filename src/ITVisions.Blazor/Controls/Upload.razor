@@ -229,7 +229,7 @@
    #endregion
 
    #region Kommentar speichern
-   if (!string.IsNullOrEmpty(commentComplete))
+   if (UseComment && !string.IsNullOrEmpty(commentComplete))
    {
     string commentPath = newFilePath + ".comment";
     File.WriteAllText(commentPath, commentComplete);

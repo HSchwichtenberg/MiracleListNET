@@ -36,7 +36,7 @@ namespace ITVisions.Blazor
   /// <summary>
   /// Returns the Blazor type based on the NavigationManager instance name
   /// </summary>
-  [Obsolete("Ab .NET 9.0 in der Razor Component ggf. this.RenderInfo.Name abfragen!")]
+  [Obsolete("Ab .NET 9.0 in der Razor Component ggf. this.RendererInfo.Name abfragen!")]
   public string BlazorType =>
        NavigationManager.GetType().FullName switch
        {

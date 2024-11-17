@@ -269,3 +269,5 @@ __pycache__/
 /ConsoleApp1/ConsoleApp1.csproj
 /ConsoleApp1/Program.cs
 /src/MiracleList_BW/Properties/PublishProfiles/MiracleListBW8 - Web Deploy.pubxml
+/src/SamplesRCL/wwwroot/SamplesTS.js
+/src/SamplesRCL/wwwroot/SamplesTS.js.map

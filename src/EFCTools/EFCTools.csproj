@@ -7,18 +7,21 @@
  </PropertyGroup>
 
  <ItemGroup>
-  <PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.1.151.7" />
-  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="8.0.*" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.*">
+  <PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.3.10.8" />
+  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0-*">
    <PrivateAssets>all</PrivateAssets>
    <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
   </PackageReference>
-  <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.*" />
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.12.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0-*" />
+<<<<<<< HEAD
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.*" />
+=======
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.18.1" />
+>>>>>>> 474ddbb4cb08e6358db2faf29ba69844b023f335
  </ItemGroup>
 
  <ItemGroup>

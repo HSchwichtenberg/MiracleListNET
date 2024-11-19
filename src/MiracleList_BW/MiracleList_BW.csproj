@@ -14,15 +14,30 @@
   <StartupObject>Web.Program</StartupObject>
   <UserSecretsId>1a22018c-6aab-42f2-8be5-0a4cedeeb272</UserSecretsId>
   <NoWarn>1701;1702;1998</NoWarn>
-  <!--für Zeigerprogrammierung erlauben für neue JSinterop seit Blazor WebAssembly 7.0-->
-  <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-  <!--Optional für AOT-Kompilierung-->
-  <RunAOTCompilation>true</RunAOTCompilation>
  </PropertyGroup>
+ 
  <ItemGroup>
    <_WebToolingArtifacts Remove="Properties\PublishProfiles\FolderProfile_AOT.pubxml" />
    <_WebToolingArtifacts Remove="Properties\PublishProfiles\FolderProfile_JITerpreter.pubxml" />
  </ItemGroup>
+
+ <!--Speziell für Blazor WebAssembly-->
+ <PropertyGroup>
+  <!--für Zeigerprogrammierung erlauben für neue JSinterop seit Blazor WebAssembly 7.0-->
+  <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  <!--Optional für AOT-Kompilierung-->
+  <!--<RunAOTCompilation>true</RunAOTCompilation>-->
+ </PropertyGroup>
+
+ <!--Optional Multi-Threading-->
+ <!--<PropertyGroup>
+  <WasmEnableThreads>true</WasmEnableThreads>
+ </PropertyGroup>
+  <ItemGroup>
+  <PackageReference Include="Microsoft.NET.WebAssembly.Threading" Version="9.0.0-*" />
+ </ItemGroup>-->
+
+ <!--Your HTTPS server and/or proxy must be configured to send HTTP headers similar to Cross-Origin-Embedder-Policy:require-corp and Cross-Origin-Opener-Policy:same-origin in order to enable multi-threading support in end-user web browsers for security reasons. (Cross-Origin-Embedder-Policy:require-corp)-->
 
  <!--für PWA-->
  <ItemGroup>
@@ -33,14 +48,6 @@
   <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
  </PropertyGroup>
 
- <!--<ItemGroup>
-   <None Remove="SamplesBW\interop\JSInteropBWOnly.razor.js" />
- </ItemGroup>-->
-
- <!--Lazy Loading (mit .dll!)-->
- <!--<ItemGroup>
-  <BlazorWebAssemblyLazyLoad Include="SamplesRCL.dll" />
- </ItemGroup>-->
 
  <!--Lokalisierung-->
  <PropertyGroup>
@@ -58,13 +65,18 @@
   <ProjectReference Include="..\SamplesRCL\SamplesRCL.csproj" />
  </ItemGroup>
 
+ <!--Lazy Loading (mit .wasm!)-->
+ <!--<ItemGroup>
+  <BlazorWebAssemblyLazyLoad Include="SamplesRCL.wasm" />
+ </ItemGroup>-->
+
  <!--NuGet-Pakete-->
  <ItemGroup>
   <!--Standardreferenzen für BW-->
-  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.*" />
-  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.*" PrivateAssets="all" />
-
+  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0-*" PrivateAssets="all" />
  </ItemGroup>
+
 
  <!--Optional: Native dependencies für Samples_BW/NativeCall.razor und Samples_BW/SQLite -> Verlängert die Kompilierung-->
 

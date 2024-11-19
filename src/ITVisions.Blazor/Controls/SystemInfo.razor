@@ -46,21 +46,16 @@ else
 
  protected override void OnInitialized()
  {
-
   var d1 = new Dictionary<string, string>();
+  // #if NET9_0_OR_GREATER
+  //  d1.Add("Blazor Render Mode", this.RendererInfo.Name + " " + (this.RendererInfo.IsInteractive ? " (interaktiv) " : "(nicht interaktiv"));
+  // #endif
   //d1.Add("Web Framework", Util.GetBlazorVersionInfo());
   //d1.Add("JavaScript Runtime", JSRuntime.GetType().FullName);
   //d1.Add("Browser", Browser);
   //d1.Add("Browser Details", BrowserDetails);
   //d1.Add(" Client IP", Util.GetClientIP());
   EnvInfo = new ITVisions.EnvInfo(callingAssembly: Assembly, moreInfo: d1).GetHTMLString();
-
-  // Workaround für BD
-  if (JS != null)
-  {
-   this.JSRuntime = JS;
-   this.Util = new BlazorUtil(JS, null);
-  }
 
   try
   {

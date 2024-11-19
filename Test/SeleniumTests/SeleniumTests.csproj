@@ -19,20 +19,20 @@
  </ItemGroup>
 
  <ItemGroup>
-  <PackageReference Include="DotNetSeleniumExtras.PageObjects" Version="3.11.0" />
-  <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
-  <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0-rc.1.23419.4" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0-rc.1.23419.4" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0-rc.1.23419.4" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0-rc.1.23419.4" />
-  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0-preview-23424-02" />
-  <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.0-rc.1.23420.5" />
-  <PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
-  <PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
-  <PackageReference Include="Selenium.Firefox.WebDriver" Version="0.27.0" />
-  <PackageReference Include="Selenium.Microsoft.Webdriver2" Version="2.0.10586.1" />
-  <PackageReference Include="Selenium.Support" Version="4.12.4" />
-  <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="117.0.5938.8800" />
+  <PackageReference Include="DotNetSeleniumExtras.PageObjects" Version="3.11.*" />
+  <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+  <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.0-*" />
+  <PackageReference Include="MSTest.TestAdapter" Version="3.*" />
+  <PackageReference Include="MSTest.TestFramework" Version="3.*" />
+  <PackageReference Include="Selenium.Firefox.WebDriver" Version="0.27.*" />
+  <PackageReference Include="Selenium.Microsoft.Webdriver2" Version="2.0.*" />
+  <PackageReference Include="Selenium.Support" Version="4.24.0" />
+  <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="128.0.6613.11900" />
  </ItemGroup>
 
  <ItemGroup>

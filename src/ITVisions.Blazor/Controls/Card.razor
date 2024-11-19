@@ -1,27 +1,35 @@
 ﻿
-<div class="card h-100">
+<div class='card @((Fill? "h-100" : ""))' @attributes="AdditionalAttributes">
  <div class="card-header" @onclick="()=>OnHeaderClick.InvokeAsync()">
   @Header
  </div>
  <div class="card-body">
   <h5 class="card-title">@Title</h5>
   <p class="card-text">@Text</p>
-
  </div>
 </div>
 
 
 @code {
  [Parameter]
+ public bool Fill { get; set; } = false;
+
+ [Parameter]
  public EventCallback OnHeaderClick { get; set; }
 
  [Parameter]
- public RenderFragment? Header { get; set; }
+ public RenderFragment Header { get; set; }
 
  [Parameter]
- public RenderFragment? Title { get; set; }
+ public RenderFragment Title { get; set; }
 
  [Parameter]
- public RenderFragment? Text { get; set; }
+ public RenderFragment Text { get; set; }
+
+ /// <summary>
+ /// Weitergabe sonstiger Attribute, z.B. class und style
+ /// </summary>
+ [Parameter(CaptureUnmatchedValues = true)]
+ public IDictionary<string, object> AdditionalAttributes { get; set; }
 
 }

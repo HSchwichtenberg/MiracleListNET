@@ -23,7 +23,7 @@ public class AppState : IAppState
    if (String.IsNullOrEmpty(BackendURL)) return "";
    var csb = new SqlConnectionStringBuilder(BackendURL);
    var server = csb.DataSource;
-   if (server.ToLower().Contains("windows.net")) server = "AZURE SQL DB";
+   if (server.Contains("windows.net", StringComparison.OrdinalIgnoreCase)) server = "AZURE SQL DB";
    return server;
   }
  }
@@ -59,7 +59,7 @@ public class AppState : IAppState
   {
    Console.WriteLine("Lade connectionString: " + s.Key);
    var server = new Microsoft.Data.SqlClient.SqlConnectionStringBuilder(s.Value).DataSource;
-   if (server.ToLower().Contains("windows.net")) server = "AZURE SQL DB";
+   if (server.Contains("windows.net", StringComparison.OrdinalIgnoreCase)) server = "AZURE SQL DB";
    ConnectionStrings.Add(server, s.Value);
   }
  }

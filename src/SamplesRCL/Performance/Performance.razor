@@ -223,7 +223,7 @@ Dauer: @((MarkupString)Dauer)
   Util.Log("StartCSAll");
   await Task.Run(async () =>
   {
-  DauerAll += "Läuft mit Blazor " + Util.BlazorType + " auf Plattform " + (System.Environment.OSVersion.Platform == PlatformID.Other ? "Browser" : System.Environment.OSVersion.ToString()) + "...<ul>";
+   DauerAll += "Läuft mit Blazor " + this.RendererInfo.Name + " auf Plattform " + (System.Environment.OSVersion.Platform == PlatformID.Other ? "Browser" : System.Environment.OSVersion.ToString()) + "...<ul>";
 
   await DoEvents();
   Anzahl = 1000;

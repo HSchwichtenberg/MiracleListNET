@@ -27,8 +27,16 @@
 
  <ItemGroup>
   <!--Zusätzliche NuGet-Pakete von Microsoft -->
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="8.0.*" />
-
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="9.0.0-*" />
  </ItemGroup>
+
+ <!--Für Hot Reload-->
+ <!--<ItemGroup>
+  <Watch Include="..\SamplesRCL\*.csproj" />
+  <Watch Include="..\SamplesRCL\**.razor" />
+  <Watch Include="..\SamplesRCL\***.cs" />
+  <Watch Remove="..\SamplesRCL\bin*" />
+  <Watch Remove="..\SamplesRCL\obj**" />
+ </ItemGroup>-->
 
 </Project>

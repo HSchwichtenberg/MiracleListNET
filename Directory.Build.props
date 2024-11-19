@@ -2,27 +2,35 @@
 
  <!--Verwendete .NET-Version-->
  <PropertyGroup>
-  <TargetFramework>net8.0</TargetFramework>
+  <TargetFramework>net9.0</TargetFramework>
+  <!--<TargetFrameworks>net8.0;net9.0</TargetFrameworks>-->
  </PropertyGroup>
 
  <!--App-Version-->
  <PropertyGroup>
-  <Version>8.2.0</Version>
-  <AssemblyVersion>8.2.0</AssemblyVersion>
-  <FileVersion>8.2.0</FileVersion>
-  <InformationalVersion>8.2.0-11/16/2023 13:40:57</InformationalVersion>
-  <ApplicationVersion>8</ApplicationVersion>
-  <ApplicationDisplayVersion>8.2.0</ApplicationDisplayVersion>
+  <Version>9.0.0</Version>
+  <AssemblyVersion>9.0.0</AssemblyVersion>
+  <FileVersion>9.0.0</FileVersion>
+  <InformationalVersion>9.0.0-11/01/2024 09:56:48</InformationalVersion>
+  <ApplicationVersion>9</ApplicationVersion>
+  <ApplicationDisplayVersion>9.0.0</ApplicationDisplayVersion>
  </PropertyGroup>
 
  <!--App-Infos-->
  <PropertyGroup>
   <Authors>Dr. Holger Schwichtenberg (www.IT-Visions.de)</Authors>
   <Company>www.IT-Visions.de</Company>
-  <Product>Entity Framework Core-Buch https://www.IT-Visions.de/EFCoreBuch</Product>
+  <Product>MiracleList</Product>
   <Copyright>(C) Dr. Holger Schwichtenberg (www.IT-Visions.de)</Copyright>
-  <PackageProjectUrl>https://www.IT-Visions.de/EFCoreBuch</PackageProjectUrl>
-  <PackageReleaseNotes>Programmcodebeispiele zum Blazor 8.0-Buch von Dr. Holger Schwichtenberg für Buchversion 8.2.0</PackageReleaseNotes>
+  <PackageProjectUrl>https://www.miraclelist.net</PackageProjectUrl>
+  <PackageReleaseNotes>Programmcodebeispiele zum Blazor 8.0-Buch von Dr. Holger Schwichtenberg für Buchversion 9.0.0</PackageReleaseNotes>
+ </PropertyGroup>
+
+ <!--Aktuell keine NuGet-Sicherheits-Warnungen-->
+ <PropertyGroup>
+  <NuGetAudit>false</NuGetAudit>
+  <!--<NuGetAuditLevel>critical</NuGetAuditLevel>-->
+  <!--Nur kritische NuGet-Sicherheits-Warnungen-->
  </PropertyGroup>
  
 </Project>

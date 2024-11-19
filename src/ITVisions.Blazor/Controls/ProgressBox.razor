@@ -1,0 +1,11 @@
+﻿@code {
+ [Parameter]
+ public bool Visible { get; set; } = true;
+ [Parameter]
+ public RenderFragment Childcontent { get; set; }
+}
+
+@if (Visible)
+{
+ <div class='alert alert-secondary'><img src='/_content/ITVisions.Blazor/img/loading.gif' width=50> @Childcontent </div>
+}

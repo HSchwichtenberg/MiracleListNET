@@ -5,7 +5,7 @@
  <!--Compiler-->
  <PropertyGroup>
   <RootNamespace>Samples</RootNamespace>
-  <RazorLangVersion>8.0</RazorLangVersion>
+  <RazorLangVersion>9.0</RazorLangVersion>
   <NoWarn>1701;1702;1998;HTML00004;CS1591</NoWarn>
   <!--<TreatWarningsAsErrors>true</TreatWarningsAsErrors>-->
   <!--<WarningsAsErrors>RZ10012</WarningsAsErrors>-->
@@ -19,18 +19,18 @@
  <!--NuGet-->
  <ItemGroup>
 
-  <PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.*" />
-  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.*" />
-  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.*" />
-  <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0-preview3.23201.1" />
-  <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.*" />
-  <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.2.*">
+  <PackageReference Include="Microsoft.AspNetCore.Components" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+  <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.6.2">
     <PrivateAssets>all</PrivateAssets>
     <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
   </PackageReference>
-  <PackageReference Include="System.DirectoryServices" Version="8.0.*" />
-  <PackageReference Include="Blazored.LocalStorage" Version="4.4.*" />
+  <PackageReference Include="System.DirectoryServices" Version="9.0.0-*" />
+  <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
  </ItemGroup>
 
  <ItemGroup>

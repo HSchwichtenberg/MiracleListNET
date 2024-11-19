@@ -17,7 +17,9 @@
   <b>Base Address:</b> @env.BaseAddress
   <br />
   <b>Environment:</b> @env.Environment
-  
+
+  <UsedComponents></UsedComponents>
+
   <h2>Backend-Server</h2>
   @ServerUrl
   <br />
@@ -39,16 +41,19 @@
  /// <summary>
  /// Lebenszyklusereignis: Komponente wird initialisiert
  /// </summary>
- protected override async Task OnInitializedAsync() {
+ protected override async Task OnInitializedAsync()
+ {
 
-  try {
+  try
+  {
    ServerUrl = "URL: " + (!String.IsNullOrEmpty(proxy.BaseUrl) ? proxy.BaseUrl : "not set");
    var serverData = await proxy.AboutAsync();
    ServerAppVersion = serverData[6];
    ServerFramework = serverData[8];
 
   }
-  catch (Exception) {
+  catch (Exception)
+  {
 
   }
 

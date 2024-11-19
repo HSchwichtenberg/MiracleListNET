@@ -32,4 +32,3 @@ int GetRandomNumberList(int n, int* arr)
  }
  return sum;
 }
-

@@ -3,14 +3,14 @@
 
  <!-- Eigene Einstellungen-->
  <TestRunParameters>
-  <!-- https://miraclelist-bs.azurewebsites.net" oder https://localhost:44387/ -->
-  <Parameter name="URL" value="https://miraclelist-bs.azurewebsites.net" />
+  <!-- https://miraclelist-bs.azurewebsites.net oder https://miraclelist-bw.azurewebsites.net oder https://localhost:44387/ -->
+  <Parameter name="URL" value="https://miraclelist-bw.azurewebsites.net" />
  </TestRunParameters>
 
  <!-- Einstellungen für Playwright-->
  <Playwright>
   <BrowserName>chromium</BrowserName>
-  <!--<ExpectTimeout>2000</ExpectTimeout>-->
+  <ExpectTimeout>10000</ExpectTimeout>
   <LaunchOptions>
    <Headless>false</Headless>
    <!--<Channel>msedge</Channel>-->

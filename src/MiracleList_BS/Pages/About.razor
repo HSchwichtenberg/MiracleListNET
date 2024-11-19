@@ -8,7 +8,6 @@
 
 @*Obsolet: IHostingEnvironment*@
 
-
 <div class="row">
 
  <div class="col-xs-6">
@@ -32,6 +31,14 @@
   <b> WebRootFileProvider:</b> @env.WebRootFileProvider
   <br />
   <b> Environment:</b> @env.EnvironmentName
+
+  <UsedComponents Components='
+                  (new SortedDictionary<string, Type>() {
+                 {"Entity Framework Core",typeof(Microsoft.EntityFrameworkCore.DbContext)},
+                 {"ASP.NET Core SignalR Hub",typeof(Microsoft.AspNetCore.SignalR.Hub)},
+                 {"MessagePack",typeof(MessagePack.MessagePackSerializer)},
+})
+'></UsedComponents>
  </div>
 
  <div class="col-xs-6">
@@ -44,15 +51,16 @@
 {
 
  string serverSoftware = "n/a";
- protected override async System.Threading.Tasks.Task OnInitializedAsync() {
+ protected override async System.Threading.Tasks.Task OnInitializedAsync()
+ {
 
   var serverVars = contextAccessor.HttpContext.Features.Get<Microsoft.AspNetCore.Http.Features.IServerVariablesFeature>();
   serverSoftware = (serverVars == null ? null : serverVars["SERVER_SOFTWARE"]);
 
   // das geht seit Blazor 8.0, aber nur bei SSR!
-@*  [CascadingParameter]
+  @*  [CascadingParameter]
  public HttpContext? HttpContext { get; set; *@
- // var serverVars = HttpContext.Features.Get<Microsoft.AspNetCore.Http.Features.IServerVariablesFeature>();
+  // var serverVars = HttpContext.Features.Get<Microsoft.AspNetCore.Http.Features.IServerVariablesFeature>();
   // serverSoftware = (serverVars == null ? null : serverVars["SERVER_SOFTWARE"]);
  }
 }

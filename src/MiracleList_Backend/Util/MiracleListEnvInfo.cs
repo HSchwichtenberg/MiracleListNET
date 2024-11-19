@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
-
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace MiracleList.Util
 {
@@ -82,8 +80,6 @@ namespace MiracleList.Util
 
    t.Stop();
 
-
-
    var e = new List<string>()
    {
     "DateTime: " + DateTime.Now.ToString(),
@@ -97,9 +93,8 @@ namespace MiracleList.Util
    e.Add("Application Version: " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
    e.Add("Application Informational Version: " + Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion);
 
-    e.Add(".NET Version: " + System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription + " ("+  ITVisions.CLRInfo.GetClrVersion() + ")");
-    e.Add("OS Version: " + System.Environment.OSVersion);
-   
+   e.Add(".NET Version: " + System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription + " (" + ITVisions.CLRInfo.GetClrVersion() + ")");
+   e.Add("OS Version: " + System.Environment.OSVersion);
 
    e.Add("Database Status: " + DbStatus);
    e.Add("Database Name: " + DbName);
@@ -126,22 +121,22 @@ namespace MiracleList.Util
 
    e.Add("ApplicationBasePath=" + AppContext.BaseDirectory);
 
-   if (configuration != null)
-   {
-    //e.Add("Release-Date: " + this.configuration["AppInfo:ReleaseDate"]);
+   //if (configuration != null && hostingEnv.IsDevelopment()) // Konfiguration nur in Development ausgeben!
+   //{
+   // //e.Add("Release-Date: " + this.configuration["AppInfo:ReleaseDate"]);
 
-    foreach (var p in configuration.Providers)
-    {
-     e.Add("Config Source: " + p.ToString());
-    }
-    foreach (var l1 in configuration.GetChildren())
-    {
-     foreach (var l2 in l1.GetChildren())
-     {
-      e.Add(ITVisions.RegEx.RegExUtil.ReplacePasswordInConnectionString(l2.Key + "=" + l2.Value));
-     }
-    }
-   }
+   // foreach (var p in configuration.Providers)
+   // {
+   //  e.Add("Config Source: " + p.ToString());
+   // }
+   // foreach (var l1 in configuration.GetChildren())
+   // {
+   //  foreach (var l2 in l1.GetChildren())
+   //  {
+   //   e.Add(ITVisions.RegEx.RegExUtil.ReplacePasswordInConnectionString(l2.Key + "=" + l2.Value));
+   //  }
+   // }
+   //}
 
    return e;
   }

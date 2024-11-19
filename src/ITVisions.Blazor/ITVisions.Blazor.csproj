@@ -7,8 +7,10 @@
   <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
  </PropertyGroup>
 
+ <!--NuGet-->
  <PropertyGroup>
-  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  <!--<GeneratePackageOnBuild>true</GeneratePackageOnBuild>-->
+  <!--<PackageOutputPath>H:\DB\NugetHS</PackageOutputPath>-->
  </PropertyGroup>
 
  <!--Namen-->
@@ -38,7 +40,7 @@
    Startup.cs:  services.AddBlazorUtil(); bzw. AddBlazorUtilForBlazorServer();
    index.html bzw. App.razor: &lt;script src="/_content/ITVisions.Blazor/BlazorUtil.js"&gt;&lt;/script&gt;
   </Description>
-  <PackageOutputPath>H:\DB\NugetHS</PackageOutputPath>
+ 
  </PropertyGroup>
 
  <!--Package Readme.md File-->
@@ -78,16 +80,16 @@
  </ItemGroup>
  <ItemGroup>
   <Content Update="wwwroot\css\bootstrap\bootstrap.min.css">
-    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+   <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+   <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
   </Content>
   <Content Update="wwwroot\css\bootstrap\bootstrap.min.css.map">
-    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+   <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+   <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
   </Content>
   <Content Update="wwwroot\img\ITVisions.jpg">
-    <Pack>True</Pack>
-    <PackagePath></PackagePath>
+   <Pack>True</Pack>
+   <PackagePath></PackagePath>
   </Content>
   <Content Update="wwwroot\img\www.IT-Visions.de_Logo.png">
    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

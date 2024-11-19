@@ -38,7 +38,7 @@
    Startup.cs:  services.AddBlazorUtil(); bzw. AddBlazorUtilForBlazorServer();
    index.html bzw. App.razor: &lt;script src="/_content/ITVisions.Blazor/BlazorUtil.js"&gt;&lt;/script&gt;
   </Description>
-  <PackageOutputPath>H:\DB\NugetHS</PackageOutputPath>
+  <PackageOutputPath>..\..\ProjectPackages</PackageOutputPath>
  </PropertyGroup>
 
  <!--Package Readme.md File-->

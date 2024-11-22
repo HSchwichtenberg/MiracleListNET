@@ -4,6 +4,7 @@ using DA;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,13 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DA.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20241122104856_V21")]
+    partial class V21
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.4")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -46,7 +49,7 @@ namespace DA.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Category", (string)null);
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("BO.Client", b =>
@@ -82,7 +85,7 @@ namespace DA.Migrations
 
                     b.HasKey("ClientID");
 
-                    b.ToTable("Client", (string)null);
+                    b.ToTable("Client");
                 });
 
             modelBuilder.Entity("BO.Log", b =>
@@ -126,7 +129,7 @@ namespace DA.Migrations
 
                     b.HasKey("LogID");
 
-                    b.ToTable("Log", (string)null);
+                    b.ToTable("Log");
                 });
 
             modelBuilder.Entity("BO.SubTask", b =>
@@ -154,7 +157,7 @@ namespace DA.Migrations
 
                     b.HasIndex("TaskID");
 
-                    b.ToTable("SubTask", (string)null);
+                    b.ToTable("SubTask");
                 });
 
             modelBuilder.Entity("BO.Task", b =>
@@ -213,7 +216,7 @@ namespace DA.Migrations
 
                     b.HasIndex("Title", "Due");
 
-                    b.ToTable("Task", (string)null);
+                    b.ToTable("Task");
                 });
 
             modelBuilder.Entity("BO.User", b =>
@@ -228,6 +231,9 @@ namespace DA.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("Deactivated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("LastActivity")
@@ -260,7 +266,7 @@ namespace DA.Migrations
 
                     b.HasIndex("ClientID");
 
-                    b.ToTable("User", (string)null);
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("BO.Category", b =>

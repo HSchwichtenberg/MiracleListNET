@@ -154,7 +154,7 @@ public class UserManager : EntityManagerBase<Context, User>
  {
   this.StartTracking();
 
-  var u = ctx.UserSet.SingleOrDefault(x => x.UserName.ToLower() == name.ToLower());
+  var u = ctx.UserSet.SingleOrDefault(x => x.UserName.ToLower() == name.ToLower() && x.Deactivated == null);
 
   if (u != null) // username found!
   {
@@ -188,7 +188,7 @@ public class UserManager : EntityManagerBase<Context, User>
    u.PasswordHash = hashObj.HashedText;
    u.Salt = hashObj.Salt;
    u.Created = Env.Now;
-
+  
    Guid clientIDGUID;
    if (Guid.TryParse(clientID, out clientIDGUID))
    {

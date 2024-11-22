@@ -56,7 +56,7 @@ public class ClientController : Controller
   c.Company = firma;
   c.EMail = email;
   c.Created = DateTime.Now;
-  c.ClientID = Guid.NewGuid();
+  c.ClientID = Guid.CreateVersion7();
   c.Type = HttpContext.Request.Form["C_Quelle"]; ;
 
   string s = this.Request.HttpContext.Connection.RemoteIpAddress + "\n";

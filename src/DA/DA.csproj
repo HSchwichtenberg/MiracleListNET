@@ -46,6 +46,8 @@
   <Compile Include="Migrations\20181013180448_v9.Designer.cs" />
   <Compile Include="Migrations\20230323081055_v20.cs" />
   <Compile Include="Migrations\20230323081055_v20.Designer.cs" />
+  <Compile Include="Migrations\20241122104856_V21.cs" />
+  <Compile Include="Migrations\20241122104856_V21.Designer.cs" />
   <Compile Include="Migrations\ContextModelSnapshot.cs" />
  </ItemGroup>
 

@@ -26,7 +26,7 @@
   <!--für Zeigerprogrammierung erlauben für neue JSinterop seit Blazor WebAssembly 7.0-->
   <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   <!--Optional für AOT-Kompilierung-->
-  <!--<RunAOTCompilation>true</RunAOTCompilation>-->
+  <RunAOTCompilation>true</RunAOTCompilation>
  </PropertyGroup>
 
  <!--Optional Multi-Threading-->
@@ -34,7 +34,7 @@
   <WasmEnableThreads>true</WasmEnableThreads>
  </PropertyGroup>
   <ItemGroup>
-  <PackageReference Include="Microsoft.NET.WebAssembly.Threading" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.NET.WebAssembly.Threading" Version="9.0.*" />
  </ItemGroup>-->
 
  <!--Your HTTPS server and/or proxy must be configured to send HTTP headers similar to Cross-Origin-Embedder-Policy:require-corp and Cross-Origin-Opener-Policy:same-origin in order to enable multi-threading support in end-user web browsers for security reasons. (Cross-Origin-Embedder-Policy:require-corp)-->
@@ -73,8 +73,8 @@
  <!--NuGet-Pakete-->
  <ItemGroup>
   <!--Standardreferenzen für BW-->
-  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0-*" />
-  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0-*" PrivateAssets="all" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.*" PrivateAssets="all" />
  </ItemGroup>
 
 

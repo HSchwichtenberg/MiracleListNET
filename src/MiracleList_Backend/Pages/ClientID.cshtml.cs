@@ -211,8 +211,7 @@ namespace MiracleList.Pages
     $"Client-ID: {c.ClientID}\n\n" +
     "Sie benötigen eine personalisierte Client-ID, wenn Sie selbst einen Beispiel-Client für das MiracleList-Backend schreiben wollen. Die Client-ID ist als Parameter bei der Login-Operation zu übergeben.\n\nDr. Holger Schwichtenberg, www.IT-Visions.de";
 
-   var e1 = new MailUtil().SendMail(config["EMail:SMTPSender"], EMail, "Client-ID für MiracleList-Backend", text
-     );
+   var e1 = new MailUtil().SendMail(config["EMail:SMTPSender"], EMail, "Client-ID für MiracleList-Backend", text, false, config["EMail:SMTPCC"], config["EMail:SMTPBCC"]);
 
    new LogManager().Log(Event.ClientCreated, Severity.Information, EMail, "CreateClientID", "", null, this.Request.HttpContext.Connection.RemoteIpAddress.ToString(), text + "\n\n" + s + "E-Mail: " + e1);
 

@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SelectListItem = Microsoft.AspNetCore.Mvc.Rendering.SelectListItem;
 
@@ -93,9 +94,12 @@ namespace MiracleList.Pages
   //}
 
   private IWebHostEnvironment env; // injected via DI
-  public ClientIDModel(IWebHostEnvironment env)
+  private readonly IConfiguration config; // injected via DI
+
+  public ClientIDModel(IWebHostEnvironment env, IConfiguration config)
   {
    this.env = env;
+   this.config = config;
   }
 
   public void OnGet()
@@ -207,7 +211,7 @@ namespace MiracleList.Pages
     $"Client-ID: {c.ClientID}\n\n" +
     "Sie benötigen eine personalisierte Client-ID, wenn Sie selbst einen Beispiel-Client für das MiracleList-Backend schreiben wollen. Die Client-ID ist als Parameter bei der Login-Operation zu übergeben.\n\nDr. Holger Schwichtenberg, www.IT-Visions.de";
 
-   var e1 = new MailUtil().SendMail("do-not-reply@mail.miraclelist.net", EMail, "Client-ID für MiracleList-Backend", text
+   var e1 = new MailUtil().SendMail(config["EMail:SMTPSender"], EMail, "Client-ID für MiracleList-Backend", text
      );
 
    new LogManager().Log(Event.ClientCreated, Severity.Information, EMail, "CreateClientID", "", null, this.Request.HttpContext.Connection.RemoteIpAddress.ToString(), text + "\n\n" + s + "E-Mail: " + e1);

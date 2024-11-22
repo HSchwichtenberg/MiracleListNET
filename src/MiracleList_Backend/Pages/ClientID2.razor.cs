@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 namespace MiracleList_Backend.Pages;
@@ -64,6 +65,8 @@ public partial class ClientID2
  private NavigationManager NavigationManager { get; set; }
  [Inject]
  private IWebHostEnvironment env { get; set; } // injected via DI
+ [Inject]
+ private IConfiguration config { get; set; } // injected via DI
  [CascadingParameter]
  public HttpContext HttpContext { get; set; }
  #endregion
@@ -135,7 +138,7 @@ public partial class ClientID2
    $"Client-ID: {c.ClientID}\n\n" +
    "Sie benötigen eine personalisierte Client-ID, wenn Sie selbst einen Beispiel-Client für das MiracleList-Backend schreiben wollen. Die Client-ID ist als Parameter bei der Login-Operation zu übergeben.\n\nDr. Holger Schwichtenberg, www.IT-Visions.de";
 
-  var e1 = new MailUtil().SendMail("do-not-reply@mail.miraclelist.net", EMail, "Client-ID für MiracleList-Backend", text
+  var e1 = new MailUtil().SendMail(config["EMail:SMTPSender"], EMail, "Client-ID für MiracleList-Backend", text
     );
 
   new LogManager().Log(Event.ClientCreated, Severity.Information, EMail, "CreateClientID", "", null, HttpContext.Connection.RemoteIpAddress.ToString(), text + "\n\n" + s + "E-Mail: " + e1);

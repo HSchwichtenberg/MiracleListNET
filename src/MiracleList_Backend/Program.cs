@@ -50,16 +50,22 @@ public class Program
 
   // Set Mailconfig
   MailUtil.SMTPServer = configuration["EMail:SMTPServer"];
-  MailUtil.SMTPSender = configuration["EMail:SMTPSender"];
+  MailUtil.SMTPSender = configuration["EMail:SMTPUser"];
   MailUtil.SMTPPassword = configuration["EMail:SMTPPassword"];
-  MailUtil.SMTPSSL = configuration["EMail:Secure"] == "true";
+  MailUtil.SMTPSSL = configuration["EMail:SMTPSecure"] == "true";
 
   var builder = WebHost.CreateDefaultBuilder(args)
    .UseUrls(hostUrl)
    .UseSetting("detailedErrors", "true")
    .UseStartup<Startup>()
    .CaptureStartupErrors(true)
-    .ConfigureLogging((hostingContext, logging) =>
+   .ConfigureAppConfiguration((hostingContext, config) =>
+   {
+
+    // Die eigene Konfiguration hinzufügen
+    config.AddConfiguration(configuration);
+   })
+   .ConfigureLogging((hostingContext, logging) =>
     {
      // https://docs.microsoft.com/en-us/aspnet/core/signalr/diagnostics?view=aspnetcore-3.1
      logging.AddFilter("Microsoft.AspNetCore.SignalR", LogLevel.Debug);
@@ -82,6 +88,7 @@ public class Program
     }
    }
   }
+
 
   builder.Run();
  }

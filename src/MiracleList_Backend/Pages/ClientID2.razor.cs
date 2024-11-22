@@ -130,13 +130,13 @@ public partial class ClientID2
   cm.New(c);
 
   var text =
-   $"Sie erhalten nachstehend Ihre personalisierte Client-ID für das für die Nutzung der WebAPIs auf dem MiracleList-Backend (https://miraclelistbackend.azurewebsites.net).\n\nBitte beachten Sie die Regeln: https://miraclelistbackend.azurewebsites.net/client\n\nBitte beachten Sie, dass eine Client-ID jederzeit widerrufen werden kann, wenn den Zugang missbrauchen!" +
+   $"Sie erhalten nachstehend Ihre personalisierte Client-ID für die Nutzung der WebAPIs auf dem MiracleList-Backend (https://miraclelistbackend.azurewebsites.net).\n\nBitte beachten Sie die Regeln: https://miraclelistbackend.azurewebsites.net/client\n\nBitte beachten Sie, dass eine Client-ID jederzeit widerrufen werden kann, wenn den Zugang missbrauchen!\n\n" +
    $"Name: {c.Name}\n" +
    $"Firma: {c.Company}\n" +
    $"E-Mail: {c.EMail}\n" +
    (!String.IsNullOrEmpty(c.Type) ? $"Typ: {c.Type}\n" : "") +
    $"Client-ID: {c.ClientID}\n\n" +
-   "Sie benötigen eine personalisierte Client-ID, wenn Sie selbst einen Beispiel-Client für das MiracleList-Backend schreiben wollen. Die Client-ID ist als Parameter bei der Login-Operation zu übergeben.\n\nDr. Holger Schwichtenberg, www.IT-Visions.de";
+   "Sie benötigen diese personalisierte Client-ID, wenn Sie selbst einen Beispiel-Client für das MiracleList-Backend schreiben wollen. Die Client-ID ist als Parameter bei der Login-Operation zu übergeben.\n\nDr. Holger Schwichtenberg, www.IT-Visions.de";
 
   var e1 = new MailUtil().SendMail(config["EMail:SMTPSender"], EMail, "Ihre Client-ID für MiracleList-Backend", text, false, config["EMail:SMTPCC"], config["EMail:SMTPBCC"]);
 

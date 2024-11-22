@@ -40,16 +40,16 @@
  </ItemGroup>
 
  <ItemGroup>
-  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="9.0.0-*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0-*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0-*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="9.0.0-*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.0-*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0-*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="9.0.*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="9.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.*" />
   <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
   <PackageReference Include="NHibernateProfiler.Appender" Version="6.0.*" />
-  <PackageReference Include="System.Data.SqlClient" Version="4.8.*" />
+  <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   <PackageReference Include="xunit.runner.visualstudio" Version="2.*">
    <PrivateAssets>all</PrivateAssets>
    <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

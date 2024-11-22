@@ -130,7 +130,7 @@ public partial class ClientID2
   cm.New(c);
 
   var text =
-   $"Sie erhalten nachstehend Ihre personalisierte Client-ID. Bitte beachten Sie, dass eine Client-ID jederzeit widerrufen werden kann, wenn Sie diese missbrauchen! Bitte beachten Sie die Regeln: https://miraclelistbackend.azurewebsites.net/client\n\n" +
+   $"Sie erhalten nachstehend Ihre personalisierte Client-ID für das für die Nutzung der WebAPIs auf dem MiracleList-Backend (https://miraclelistbackend.azurewebsites.net).\n\nBitte beachten Sie die Regeln: https://miraclelistbackend.azurewebsites.net/client\n\nBitte beachten Sie, dass eine Client-ID jederzeit widerrufen werden kann, wenn den Zugang missbrauchen!" +
    $"Name: {c.Name}\n" +
    $"Firma: {c.Company}\n" +
    $"E-Mail: {c.EMail}\n" +
@@ -138,7 +138,7 @@ public partial class ClientID2
    $"Client-ID: {c.ClientID}\n\n" +
    "Sie benötigen eine personalisierte Client-ID, wenn Sie selbst einen Beispiel-Client für das MiracleList-Backend schreiben wollen. Die Client-ID ist als Parameter bei der Login-Operation zu übergeben.\n\nDr. Holger Schwichtenberg, www.IT-Visions.de";
 
-  var e1 = new MailUtil().SendMail(config["EMail:SMTPSender"], EMail, "Client-ID für MiracleList-Backend", text, false, config["EMail:SMTPCC"], config["EMail:SMTPBCC"]);
+  var e1 = new MailUtil().SendMail(config["EMail:SMTPSender"], EMail, "Ihre Client-ID für MiracleList-Backend", text, false, config["EMail:SMTPCC"], config["EMail:SMTPBCC"]);
 
   new LogManager().Log(Event.ClientCreated, Severity.Information, EMail, "CreateClientID", "", null, HttpContext.Connection.RemoteIpAddress.ToString(), text + "\n\n" + s + "E-Mail: " + e1);
   #endregion

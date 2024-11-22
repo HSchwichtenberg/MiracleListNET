@@ -109,17 +109,17 @@ public class Startup
   services.AddBlazoredLocalStorage();
 
 
-		// Alternativ möglich (einige API-Änderungen!)
-		// NUGET: Blazor.Extensions.Storage
-		// GITHUB: https://github.com/BlazorExtensions/Storage
-		#endregion
-		#region DI für SignalR Server ("Hub") für MiracleList Notifications
+  // Alternativ möglich (einige API-Änderungen!)
+  // NUGET: Blazor.Extensions.Storage
+  // GITHUB: https://github.com/BlazorExtensions/Storage
+  #endregion
+  #region DI für SignalR Server ("Hub") für MiracleList Notifications
   services.AddSignalR().AddMessagePackProtocol().AddHubOptions<MLHub>(o => o.StatefulReconnectBufferSize = 120000); //100.000 ist der Defaultwert!
-		#endregion
+  #endregion
 
-		#region DI für Beispiele außerhalb der MiracleList
-		// Standardbeispiel von Microsoft
-		services.AddSingleton<WeatherForecastService>();
+  #region DI für Beispiele außerhalb der MiracleList
+  // Standardbeispiel von Microsoft
+  services.AddSingleton<WeatherForecastService>();
 
   // für Circuit-Liste
   services.AddScoped<CircuitHandler, ITVisions.Blazor.Services.CircuitListCircuitHandler>();
@@ -160,39 +160,37 @@ public class Startup
   else
   {
    app.UseExceptionHandler("/Home/Error");
-   // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-   app.UseHsts();
-  }
 
-  app.UseHttpsRedirection();
-  app.UseStaticFiles();
+   app.UseHttpsRedirection();
+   app.UseStaticFiles(); // TODO: MapStaticAssets und @Asset[] einführen. Dafür muss aber die Startup-Klasse komplett umgebaut werden auf WebApplication.CreateBuilder, der WebApplicationBuilder liefert
 
-  #region Mehrsprachigkeit
-  var supportedCultures = new[] { "en-US", "fr-FR", "de-DE" };
-  var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
-      .AddSupportedCultures(supportedCultures)
-      .AddSupportedUICultures(supportedCultures);
-  app.UseRequestLocalization(localizationOptions);
-  #endregion
+   #region Mehrsprachigkeit
+   var supportedCultures = new[] { "en-US", "fr-FR", "de-DE" };
+   var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
+       .AddSupportedCultures(supportedCultures)
+       .AddSupportedUICultures(supportedCultures);
+   app.UseRequestLocalization(localizationOptions);
+   #endregion
 
-  app.UseRouting();
+   app.UseRouting();
 
-  app.UseEndpoints(endpoints =>
-  {
-   endpoints.MapControllers(); // für CulstureController, siehe https://docs.microsoft.com/de-de/aspnet/core/blazor/globalization-localization
-
-   endpoints.MapBlazorHub(opts =>
+   app.UseEndpoints(endpoints =>
    {
-    opts.WebSockets.CloseTimeout = new TimeSpan(1, 0, 0); // default: 5 sek
-   });
+    endpoints.MapControllers(); // für CulstureController, siehe https://docs.microsoft.com/de-de/aspnet/core/blazor/globalization-localization
 
-   endpoints.MapFallbackToPage("/_Host");
-   // für ASP.NET SignalR
-   endpoints.MapHub<MLHub>("/MLHub",
-    signalRConnectionOptions =>
+    endpoints.MapBlazorHub(opts =>
     {
-     signalRConnectionOptions.AllowStatefulReconnects = true; // seit .NET 8.0
+     opts.WebSockets.CloseTimeout = new TimeSpan(1, 0, 0); // default: 5 sek
     });
-  });
+
+    endpoints.MapFallbackToPage("/_Host");
+    // für ASP.NET SignalR
+    endpoints.MapHub<MLHub>("/MLHub",
+     signalRConnectionOptions =>
+     {
+      signalRConnectionOptions.AllowStatefulReconnects = true; // seit .NET 8.0
+     });
+   });
+  }
  }
 }

@@ -100,7 +100,7 @@
   <ProjectReference Include="..\SamplesRCL\SamplesRCL.csproj" />
  </ItemGroup>
 
- <!--Neue NuGet-Pakete für MAUI, die ab .NET 8.0 explicit sein müssen-->
+ <!--Neue NuGet-Pakete für MAUI, die seit .NET 8.0 explicit sein müssen-->
  <ItemGroup>
   <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
   <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />

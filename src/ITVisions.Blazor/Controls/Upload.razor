@@ -149,11 +149,11 @@
    filesToUpload = e.GetMultipleFiles().ToList();
   }
   else
-  { // Aussorrten der Dateien nach Typ
+  { // Aussortieren der Dateien nach Typ
    notAllowedFiles = 0;
    foreach (var f in e.GetMultipleFiles())
    {
-    if (this.AcceptableFileTypesList.Contains(System.IO.Path.GetExtension(f.Name).ToLower()))
+    if (this.AcceptableFileTypesList.Contains(System.IO.Path.GetExtension(f.Name).ToLower()) && !filesToUpload.Contains(f))
     {
      filesToUpload.Add(f);
     }
@@ -259,25 +259,34 @@
 
  async Task UploadFile(IBrowserFile f, string newFilePath)
  {
-  using var newFile = File.OpenWrite(newFilePath);
-  using var newFileStream = f.OpenReadStream(MaxFileSize);
-  var buffer = new byte[10 * 1096];
-  int bytesRead;
-  double totalRead = 0;
-  progressPercent = 0;
-  displayProgress = true;
 
-  while ((bytesRead = await newFileStream.ReadAsync(buffer)) != 0)
+  try
   {
-   totalRead += bytesRead;
-   await newFile.WriteAsync(buffer, 0, bytesRead);
+   using var newFile = File.OpenWrite(newFilePath);
+   using var newFileStream = f.OpenReadStream(MaxFileSize);
+   var buffer = new byte[10 * 1096];
+   int bytesRead;
+   double totalRead = 0;
+   progressPercent = 0;
+   displayProgress = true;
 
-   progressPercent = (int)((totalRead / f.Size) * 100);
-   Info = "Hochladen der Datei <b>" + f.Name + "</b> (" + FileUtil.GetMB(f.Size) + "): " + progressPercent.ToString() + "%";
-   //Util.Log(progressPercent);
-   await InvokeAsync(StateHasChanged);
+   while ((bytesRead = await newFileStream.ReadAsync(buffer)) != 0)
+   {
+    totalRead += bytesRead;
+    await newFile.WriteAsync(buffer, 0, bytesRead);
+
+    progressPercent = (int)((totalRead / f.Size) * 100);
+    Info = "Hochladen der Datei <b>" + f.Name + "</b> (" + FileUtil.GetMB(f.Size) + "): " + progressPercent.ToString() + "%";
+    //Util.Log(progressPercent);
+    await InvokeAsync(StateHasChanged);
+   }
+   newFileStream.Close();
+   newFile.Close();
   }
-  newFileStream.Close();
-  newFile.Close();
+  catch (Exception ex)
+  {
+   Util.Alert("Fehler beim Upload:\n" + ex.Message);
+  }
+
  }
 }

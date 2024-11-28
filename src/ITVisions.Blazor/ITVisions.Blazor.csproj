@@ -16,10 +16,10 @@
 
  <!--Versionen-->
  <PropertyGroup>
-  <Version>8.5.3.0</Version>
-  <AssemblyVersion>8.5.3.0</AssemblyVersion>
-  <FileVersion>8.5.3.0</FileVersion>
-  <InformationalVersion>8.5.3.0</InformationalVersion>
+  <Version>9.3.0.2</Version>
+  <AssemblyVersion>9.3.0.2</AssemblyVersion>
+  <FileVersion>9.3.0.2</FileVersion>
+  <InformationalVersion>9.3.0.2</InformationalVersion>
  </PropertyGroup>
 
  <!--Autor-->
@@ -34,7 +34,12 @@
    Startup.cs:  services.AddBlazorUtil(); bzw. AddBlazorUtilForBlazorServer();
    index.html bzw. App.razor: &lt;script src="/_content/ITVisions.Blazor/BlazorUtil.js"&gt;&lt;/script&gt;
   </Description>
- 
+ </PropertyGroup>
+
+ <!---Package -->
+ <PropertyGroup Condition="'$(USERNAME)' == 'HS'">
+  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  <PackageOutputPath>H:\DB\NugetHS</PackageOutputPath>
  </PropertyGroup>
 
  <!--Package Readme.md File-->

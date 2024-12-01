@@ -1,31 +1,21 @@
-﻿#if WINDOWS
-using Microsoft.UI;
-using Microsoft.UI.Windowing;
-using Windows.Graphics;
-#endif
-
-using MiracleList;
+﻿using MiracleList;
 
 namespace BM;
 
 public partial class App : Application {
- public App(IAppState appstate, HybridSharedState hybridSharedState) {
+ 
+ public App(IAppState appstate, HybridSharedState hybridSharedState) 
+ {
   InitializeComponent();
+  Appstate = appstate;
+  HybridSharedState = hybridSharedState;
+ }
 
-  Microsoft.Maui.Handlers.WindowHandler.Mapper.AppendToMapping(nameof(IWindow), (handler, view) => {
+ public IAppState Appstate { get; }
+ public HybridSharedState HybridSharedState { get; }
 
-   // https://stackoverflow.com/questions/72399551/maui-net-set-window-size
-#if WINDOWS
-   var mauiWindow = handler.VirtualView;
-   var nativeWindow = handler.PlatformView;
-   nativeWindow.Activate();
-   IntPtr windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(nativeWindow);
-   WindowId windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(windowHandle);
-   AppWindow appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
-   appWindow.Resize(new SizeInt32(3000, 2000));
-#endif
-  });
-
-  MainPage = new MainPage(appstate, hybridSharedState);
+ protected override Window CreateWindow(IActivationState? activationState)
+ {
+  return new Window(new MainPage(Appstate, HybridSharedState));
  }
 }

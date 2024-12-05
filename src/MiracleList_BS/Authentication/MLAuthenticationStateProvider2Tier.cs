@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BL;
@@ -7,7 +6,9 @@ using DA;
 using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
+using Microsoft.JSInterop;
 using MiracleList;
 
 namespace Web;
@@ -23,19 +24,23 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
  private Blazored.LocalStorage.ILocalStorageService localStorage { get; set; }
  private IAppState AppState { get; set; } = null; // App State
  private NavigationManager NavigationManager { get; set; } = null; // App State
+ public IHttpContextAccessor HttpContextAccessor { get; }
+ public IJSRuntime JSRuntime { get; }
  private BO.User currentUser { get; set; }
 
  // Name of local Storage Key
- const string LocalStorageKey = "MLToken";
+ const string TokenStorageKey = "MLToken";
  const string BackendStorageKey = "Backend";
 
- public MLAuthenticationStateProvider2Tier(BlazorUtil blazorUtil, Blazored.LocalStorage.ILocalStorageService localStorage, IAppState appState, NavigationManager navigationManager)
+ public MLAuthenticationStateProvider2Tier(BlazorUtil blazorUtil, Blazored.LocalStorage.ILocalStorageService localStorage, IAppState appState, NavigationManager navigationManager, IHttpContextAccessor HttpContextAccessor, IJSRuntime jSRuntime)
  {
   // DI
   this.blazorUtil = blazorUtil;
   this.localStorage = localStorage;
   this.AppState = appState;
   this.NavigationManager = navigationManager;
+  this.HttpContextAccessor = HttpContextAccessor;
+  JSRuntime = jSRuntime;
  }
 
  public async Task SetCurrentBackend(string backendkey)
@@ -72,7 +77,27 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
    {
     um.InitDefaultTasks();
     // Store user token in local Storage
-    await localStorage.SetItemAsync(LocalStorageKey, currentUser.Token);
+
+    try
+    {
+     await localStorage.SetItemAsync(TokenStorageKey, currentUser.Token);
+
+    }
+    catch (Exception)
+    {
+
+    }
+    try
+    {
+     await JSRuntime.InvokeVoidAsync("setCookie", TokenStorageKey, currentUser.Token, 7);
+     //CookieOptions options = new CookieOptions();
+     //options.Expires = DateTime.Now.AddDays(1);
+     //HttpContextAccessor.HttpContext.Response.Cookies.Append(TokenStorageKey, currentUser.Token, options);
+    }
+    catch (Exception)
+    {
+    }
+
     return new LoginInfo() { Username = this.currentUser.UserName };
    }
    return new LoginInfo() { Message = "not ok!" };
@@ -86,16 +111,17 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
  /// <summary>
  /// Logout to be called by Razor Component Login.razor in case of logout!
  /// </summary>
- public virtual Task Logout()
+ public virtual async Task Logout()
  {
-  if (currentUser == null) return Task.FromResult(0);
+  if (currentUser == null) return;
   blazorUtil.Log("Logout");
   UserManager.Logout(currentUser);
   SetCurrentUser(null);
   // Remove user token from local Storage
-  localStorage.RemoveItemAsync(LocalStorageKey);
+  await localStorage.RemoveItemAsync(TokenStorageKey);
+  await JSRuntime.InvokeVoidAsync("setCookie", TokenStorageKey, "", 7);
   Notify();
-  return Task.FromResult(0);
+  return;
  }
 
  /// <summary>
@@ -152,12 +178,20 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
    // no token in RAM! Is there a token in local Storage?
    blazorUtil.Log("Reading local storage..");
    await SetCurrentBackend(await localStorage.GetItemAsync<string>(BackendStorageKey));
-   string token = await localStorage.GetItemAsync<string>(LocalStorageKey);
+   string token = await localStorage.GetItemAsync<string>(TokenStorageKey);
    if (!String.IsNullOrEmpty(token)) { SetCurrentUser(new UserManager(token).CurrentUser); Notify(); return true; }
-   else { await localStorage.RemoveItemAsync(LocalStorageKey); } // Token löschen, wenn ungültig!
+   else { 
+    await localStorage.RemoveItemAsync(TokenStorageKey);
+    await JSRuntime.InvokeVoidAsync("setCookie", TokenStorageKey, "", 7);
+   } // Token löschen, wenn ungültig!
   }
   catch (Exception)
   {
+
+   string token = HttpContextAccessor.HttpContext.Request.Cookies[TokenStorageKey];
+   if (!String.IsNullOrEmpty(token)) { SetCurrentUser(new UserManager(token).CurrentUser); Notify(); return true; }
+
+
    blazorUtil.Log(nameof(GetAuthenticationStateAsync) + ": cannot access local storage!");
    return false;
   }

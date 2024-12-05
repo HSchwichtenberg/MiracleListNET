@@ -49,13 +49,22 @@
  <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 
  <ImportMap />
- <HeadOutlet @rendermode="InteractiveServer" />
+ <HeadOutlet @rendermode="new InteractiveServerRenderMode(prerender: false)" />
 </head>
 
 <body>
- <Routes @rendermode="InteractiveServer" />
+ <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
 
  <script src="_framework/blazor.web.js"></script>
+
+ <script>
+  window.setCookie = (name, value, days) => {
+      const d = new Date();
+      d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));  // Cookie expiry
+      let expires = "expires=" + d.toUTCString();
+      document.cookie = name + "=" + value + ";" + expires + ";path=/";
+  };
+ </script>
 
 </body>
 </html>

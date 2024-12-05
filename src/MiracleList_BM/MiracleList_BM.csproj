@@ -75,7 +75,7 @@
  </ItemGroup>
 
  <ItemGroup>
-   <Compile Include="..\MiracleList_BW\Authentication\MLAuthenticationStateProvider3Tier.cs" Link="Web\Authentication\MLAuthenticationStateProvider3Tier.cs" />
+  <Compile Include="..\MiracleList_BW\Authentication\MLAuthenticationStateProvider3Tier.cs" Link="Web\Authentication\MLAuthenticationStateProvider3Tier.cs" />
  </ItemGroup>
 
  <ItemGroup>
@@ -105,8 +105,9 @@
   <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.*" />
   <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.*" />
   <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="9.0.*" />
  </ItemGroup>
- 
+
  <!--COM-Referenz für Word-Dokumentengenerierung - geht nur auf Windows!!!-->
  <ItemGroup>
   <COMReference Include="Microsoft.Office.Interop.Word" Condition="'$(TargetFramework)' == 'net9.0-windows10.0.19041.0'">
@@ -119,5 +120,6 @@
    <EmbedInteropTypes>true</EmbedInteropTypes>
   </COMReference>
  </ItemGroup>
+
 
 </Project>

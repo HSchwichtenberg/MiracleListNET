@@ -1,8 +1,5 @@
 using System;
 using System.Reflection;
-using System.Security.Claims;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using BL;
 using Blazored.LocalStorage;
 using Blazored.Toast;
@@ -16,11 +13,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using MiracleList;
 using MiracleList_Backend.Hubs;
 using MLBlazorRCL.MainView;
+using Web.Authentication;
 using Web.Data;
 using Web.Pages.CircuitList;
 
@@ -204,39 +200,5 @@ public class Program
   // Datei-UploadChangeEventArgs bei TaskEdit.razor
   AdditionalComponents.TaskEditAdditionalComponent = typeof(MLBlazorRCL.Files.FilesFromFilesystem);
   #endregion
- }
-}
-
-public class MLAuthSchemeOptions : AuthenticationSchemeOptions
-{
-}
-
-public class MLAuthSchemeHandler : AuthenticationHandler<MLAuthSchemeOptions>
-{
- public MLAuthSchemeHandler(
-     IOptionsMonitor<MLAuthSchemeOptions> options,
-     ILoggerFactory logger,
-     UrlEncoder encoder, IMLAuthenticationStateProvider ml) : base(options, logger, encoder)
- {
-  this.AuthenticationStateProvider = ml;
- }
-
- public IMLAuthenticationStateProvider AuthenticationStateProvider { get; }
-
- protected async override Task<AuthenticateResult> HandleAuthenticateAsync()
- {
-  // Read the token from request headers/cookies
-  // Check that it's a valid session, depending on your implementation
-
-  AuthenticationState state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-  if (state.User.Identity.IsAuthenticated) return AuthenticateResult.Fail("Authentication failed");
-  // If the session is valid, return success:
-  var claims = new[] { new Claim(ClaimTypes.Name, "Test") };
-  var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, "Tokens"));
-  var ticket = new AuthenticationTicket(principal, this.Scheme.Name);
-  return AuthenticateResult.Success(ticket);
-
-  // If the token is missing or the session is invalid, return failure:
-  // return AuthenticateResult.Fail("Authentication failed");
  }
 }

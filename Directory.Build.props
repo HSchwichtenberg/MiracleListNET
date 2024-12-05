@@ -8,12 +8,12 @@
 
  <!--App-Version-->
  <PropertyGroup>
-  <Version>9.3.0</Version>
-  <AssemblyVersion>9.3.0</AssemblyVersion>
-  <FileVersion>9.3.0</FileVersion>
-  <InformationalVersion>9.3.0-11/22/2024 08:29:14</InformationalVersion>
+  <Version>9.3.1</Version>
+  <AssemblyVersion>9.3.1</AssemblyVersion>
+  <FileVersion>9.3.1</FileVersion>
+  <InformationalVersion>9.3.1 5.12.2024</InformationalVersion>
   <ApplicationVersion>9</ApplicationVersion>
-  <ApplicationDisplayVersion>9.3.0</ApplicationDisplayVersion>
+  <ApplicationDisplayVersion>9.3.1</ApplicationDisplayVersion>
  </PropertyGroup>
 
  <!--App-Infos-->

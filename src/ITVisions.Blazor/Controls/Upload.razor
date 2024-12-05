@@ -194,6 +194,8 @@
      body = $"File Cleanup in {Path}: Removed old files >{CleanupDays} days removed: {count}<hr>{body}";
      await FilesCleaned.InvokeAsync(body);
     }
+
+    d.DeleteEmptyDirectories(tolerant:true);
    }
    catch (Exception ex)
    {

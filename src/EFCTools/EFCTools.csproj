@@ -8,7 +8,7 @@
  </PropertyGroup>
 
  <ItemGroup>
-  <PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.3.10.8" />
+  <PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.3.*" />
   <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="9.0.*" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.*" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.*">
@@ -16,10 +16,10 @@
    <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
   </PackageReference>
   <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.0-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.*" />
   <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.*" />
   <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.*" />
 
  </ItemGroup>
 

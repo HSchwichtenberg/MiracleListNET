@@ -31,8 +31,8 @@
   <PackageReference Include="MSTest.TestFramework" Version="3.*" />
   <PackageReference Include="Selenium.Firefox.WebDriver" Version="0.27.*" />
   <PackageReference Include="Selenium.Microsoft.Webdriver2" Version="2.0.*" />
-  <PackageReference Include="Selenium.Support" Version="4.24.0" />
-  <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="128.0.6613.11900" />
+  <PackageReference Include="Selenium.Support" Version="4.27.0" />
+  <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="131.0.6778.8700" />
   <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
  </ItemGroup>
 

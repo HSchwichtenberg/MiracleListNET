@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager NavigationManager
+
+@using System.Reflection
+@using Microsoft.AspNetCore.Components.Routing
+
+<Router AppAssembly="@typeof(_Imports).Assembly" AdditionalAssemblies="new[] { typeof(MLBlazorRCL.Login.Login).Assembly, typeof(Samples.SamplesList).Assembly }">
+
+ <Navigating>
+  <div>
+   <p>Loading the requested page...</p>
+  </div>
+ </Navigating>
+
+ <Found Context="routeData">
+  <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MLBlazorRCL.Layout.MainLayout)">
+
+   <Authorizing>
+    <div class="spinner">
+     <div class="rect1"></div>
+     <div class="rect2"></div>
+     <div class="rect3"></div>
+     <div class="rect4"></div>
+     <div class="rect5"></div>
+    </div>
+    <h2 style="text-align:center">Authorizing...</h2>
+   </Authorizing>
+
+   <NotAuthorized>
+@*     @{
+     NavigationManager.NavigateTo("/");
+    } *@
+    @* <p>NO!</p> *@
+    @*oder: Sie sind nicht angemeldet und können den Inhalt dieser Seite daher nicht sehen. Bitte melden Sie sich an in der <a href="/Login">Anmeldemaske</a>*@
+   </NotAuthorized>
+
+  </AuthorizeRouteView>
+  <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+
+ </Found>
+
+ <NotFound>
+  <PageTitle>Not found</PageTitle>
+  <h1>Sorry, Page not found :-(</h1>
+ </NotFound>
+
+ </Router>

@@ -34,7 +34,6 @@ namespace MiracleList.Util
    this.context = httpContextAccessor?.HttpContext;
   }
 
-
   public List<string> GetAll()
   {
 

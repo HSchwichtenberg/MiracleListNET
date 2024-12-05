@@ -11,7 +11,6 @@ namespace MiracleList_Backend.Hubs
 
  /// <summary>
  /// DEMO: 60. SignalR-Hub (im Backend)
- /// TODO: Umstellen auf Strongly Typed Hub Strongly --> https://docs.microsoft.com/en-us/aspnet/core/signalr/hubs?view=aspnetcore-5.0
  /// </summary>
  public class MLHub : Hub<IMLHub>
  {

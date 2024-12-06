@@ -44,12 +44,14 @@
 
  <ImportMap />
 
- <HeadOutlet />
+ <HeadOutlet @rendermode="@RenderMode.InteractiveAuto"/>
+ @* oder ohne Pre-Rendering:<HeadOutlet @rendermode="new InteractiveServerRenderMode(prerender: false)" /> *@
 </head>
 
 <body>
  <div class="container-fluid">
   <Routes @rendermode="@RenderMode.InteractiveAuto" />
+  @* oder ohne Pre-Rendering:  <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" /> *@
  </div>
 
   <!-- -------- Allgemeine JS-Lib von Microsoft für Blazor -->

@@ -24,7 +24,6 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
  private Blazored.LocalStorage.ILocalStorageService localStorage { get; set; }
  private IAppState AppState { get; set; } = null; // App State
  private NavigationManager NavigationManager { get; set; } = null; // App State
- public IHttpContextAccessor HttpContextAccessor { get; }
  public IJSRuntime JSRuntime { get; }
  private BO.User currentUser { get; set; }
 
@@ -32,14 +31,13 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
  const string TokenStorageKey = "MLToken";
  const string BackendStorageKey = "Backend";
 
- public MLAuthenticationStateProvider2Tier(BlazorUtil blazorUtil, Blazored.LocalStorage.ILocalStorageService localStorage, IAppState appState, NavigationManager navigationManager, IHttpContextAccessor HttpContextAccessor, IJSRuntime jSRuntime)
+ public MLAuthenticationStateProvider2Tier(BlazorUtil blazorUtil, Blazored.LocalStorage.ILocalStorageService localStorage, IAppState appState, NavigationManager navigationManager, IJSRuntime jSRuntime)
  {
   // DI
   this.blazorUtil = blazorUtil;
   this.localStorage = localStorage;
   this.AppState = appState;
   this.NavigationManager = navigationManager;
-  this.HttpContextAccessor = HttpContextAccessor;
   JSRuntime = jSRuntime;
  }
 
@@ -189,11 +187,6 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
   }
   catch (Exception)
   {
-
-   string token = HttpContextAccessor.HttpContext.Request.Cookies[TokenStorageKey];
-   if (!String.IsNullOrEmpty(token)) { SetCurrentUser(new UserManager(token).CurrentUser); Notify(); return true; }
-
-
    blazorUtil.Log(nameof(GetAuthenticationStateAsync) + ": cannot access local storage!");
    return false;
   }

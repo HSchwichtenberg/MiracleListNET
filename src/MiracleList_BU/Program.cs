@@ -12,7 +12,8 @@ public class Program
   var builder = WebApplication.CreateBuilder(args);
 
   // Add services to the container.
-  builder.Services.AddRazorComponents()
+  builder.Services
+      .AddRazorComponents()
       .AddInteractiveServerComponents()
       .AddInteractiveWebAssemblyComponents();
 
@@ -53,13 +54,13 @@ public class Program
   app.UseStaticFiles();
 
   app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode()
-    .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(
-     typeof(Web.Client.Components.Routes).Assembly,
-     typeof(MLBlazorRCL.Login.Login).Assembly,
-     typeof(Samples.SamplesList).Assembly
-     );
+     .AddInteractiveServerRenderMode()
+     .AddInteractiveWebAssemblyRenderMode()
+     .AddAdditionalAssemblies( // Suche nach Routen in diesen Assemblies:
+      typeof(Web.Client.Components.Routes).Assembly,
+      typeof(MLBlazorRCL.Login.Login).Assembly,
+      typeof(Samples.SamplesList).Assembly
+      );
 
   app.Run();
  }

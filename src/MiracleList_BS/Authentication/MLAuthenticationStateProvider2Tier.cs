@@ -79,20 +79,14 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
     try
     {
      await localStorage.SetItemAsync(TokenStorageKey, currentUser.Token);
-
     }
     catch (Exception)
     {
-
     }
 
     try
     {
      await blazorUtil.SetCookieDetails(TokenStorageKey, currentUser.Token, 7);
-
-     //CookieOptions options = new CookieOptions();
-     //options.Expires = DateTime.Now.AddDays(1);
-     //HttpContextAccessor.HttpContext.Response.Cookies.Append(TokenStorageKey, currentUser.Token, options);
     }
     catch (Exception)
     {

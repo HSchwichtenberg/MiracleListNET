@@ -26,7 +26,7 @@ public class MockAuthenticationStateProvider : Web.MLAuthenticationStateProvider
  // Name of local Storage Key
  const string LocalStorageKey = "MLToken";
 
- public MockAuthenticationStateProvider(BlazorUtil blazorUtil, Blazored.LocalStorage.ILocalStorageService localStorage, AppState settings, NavigationManager navigationManager) : base(blazorUtil, localStorage, settings, navigationManager) {
+ public MockAuthenticationStateProvider(BlazorUtil blazorUtil, Blazored.LocalStorage.ILocalStorageService localStorage, AppState settings, NavigationManager navigationManager, IJSRuntime js) : base(blazorUtil, localStorage, settings, navigationManager, js) {
   // DI
   this.blazorUtil = blazorUtil;
   this.localStorage = localStorage;

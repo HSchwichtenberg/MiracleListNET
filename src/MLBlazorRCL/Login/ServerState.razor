@@ -1,12 +1,10 @@
-﻿
-
-@using MiracleList;
- <div>
-  Server-Status: @foreach (var be in BackendStatusList)
-  {
-   <span class="badge" style="
+﻿@using MiracleList;
+<div>
+ Server-Status: @foreach (var be in BackendStatusList)
+ {
+  <span class="badge" style="
   margin-bottom: 3px;
   margin-right: 3px;
   background-color: @(be.State == BackendStateStatus.Checking ? "gray" : (be.State == BackendStateStatus.OK ? "green" : "red"))" title="@(be.State == BackendStateStatus.Checking ? "Checking Connection..." : be.StateDetails)"> @be.Display.TrimEnd('/')</span>
-  }
- </div>
+ }
+</div>

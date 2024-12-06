@@ -3,6 +3,7 @@
 @page "/app"
 @page "/task/{TaskID:int}"
 @attribute [Authorize] 
+
 @using ITVisions.TextGenerator;
 @using ITVisions.Blazor
 @using ITVisions.Blazor.Controls
@@ -95,7 +96,7 @@
        <TaskElement Task="t" @key="t"
                     Active="(t.TaskID == this.task?.TaskID)"
                     TaskChecked="async ()=>await this.SendTaskListUpdate()"
-                    TaskRemoved="async ()=> { await this.SendTaskListUpdate(); await ReloadTaskList(); } "
+                    TaskRemoved="async ()=> { await this.SendTaskListUpdate(); await ReloadTaskList(); }"
                     TaskClicked="(t)=>ShowTaskDetail(t)"
                     TaskDragged="(t)=>DragTask(null,t)">
        </TaskElement>
@@ -123,7 +124,6 @@
       }
      </div>
     }
-
    }
   </div>
  }

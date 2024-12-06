@@ -73,8 +73,6 @@ public class MiracleList_MainView_Test : TestContext
   mockProxy = Mock.Create<IMiracleListProxy>();
   this.Services.AddSingleton(mockProxy);
   //this.Services.AddScoped<IAppState, AppState>();
-
-
   #endregion
 
   // neuer Benutzer mit Standardkategorien

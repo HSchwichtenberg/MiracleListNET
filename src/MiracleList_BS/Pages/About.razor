@@ -36,9 +36,7 @@
                   (new SortedDictionary<string, Type>() {
                  {"Entity Framework Core",typeof(Microsoft.EntityFrameworkCore.DbContext)},
                  {"ASP.NET Core SignalR Hub",typeof(Microsoft.AspNetCore.SignalR.Hub)},
-                 {"MessagePack",typeof(MessagePack.MessagePackSerializer)},
-})
-'></UsedComponents>
+                 {"MessagePack",typeof(MessagePack.MessagePackSerializer)}})'></UsedComponents>
  </div>
 
  <div class="col-xs-6">
@@ -53,6 +51,8 @@
  string serverSoftware = "n/a";
  protected override async System.Threading.Tasks.Task OnInitializedAsync()
  {
+  // Diese Ausgabe geht in die Webserver-Konsole und soll zur Demo zeigen, dass die Instanzen dieser Razor Component in verschiedenen Threads läuft
+  CUI.Cyan(nameof(About) + ".razor in Thread " + System.Threading.Thread.CurrentThread.ManagedThreadId);
 
   var serverVars = contextAccessor.HttpContext.Features.Get<Microsoft.AspNetCore.Http.Features.IServerVariablesFeature>();
   serverSoftware = (serverVars == null ? null : serverVars["SERVER_SOFTWARE"]);

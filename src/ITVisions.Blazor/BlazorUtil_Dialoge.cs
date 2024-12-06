@@ -20,6 +20,7 @@ namespace ITVisions.Blazor
   {
    if (_jsRuntime == null) return;
    await _jsRuntime.InvokeVoidAsync("ShowAlert", text.Trim());
+   //oder einfach: await _jsRuntime.InvokeVoidAsync("alert", text.Trim());
   }
 
   /// <summary>

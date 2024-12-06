@@ -57,6 +57,5 @@ namespace ITVisions.Blazor
    return await _jsRuntime.InvokeAsync<bool>("setCookie", cookie);
   }
 
-
  }
 }

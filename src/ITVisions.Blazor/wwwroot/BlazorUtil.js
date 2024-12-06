@@ -55,8 +55,6 @@ window.Util = {
 
 }
 
-
-
 var screenInfoClassName = "screenInfo";
 
 window.initUpdateScreenSize = (screenInfoClassName) => {

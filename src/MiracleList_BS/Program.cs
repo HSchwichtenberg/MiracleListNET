@@ -16,7 +16,6 @@ using Microsoft.Extensions.Hosting;
 using MiracleList;
 using MiracleList_Backend.Hubs;
 using MLBlazorRCL.MainView;
-using Web.Authentication;
 using Web.Data;
 using Web.Pages.CircuitList;
 
@@ -114,7 +113,7 @@ public class Program
   #endregion
 
   app.MapStaticAssets(); // war vor .NET 9.0: UseStaticFiles()
-  app.MapRazorComponents<Pages.App>()
+  app.MapRazorComponents<Web.App>()
       .AddInteractiveServerRenderMode()
       .AddAdditionalAssemblies(
      typeof(MLBlazorRCL.Login.Login).Assembly,
@@ -122,7 +121,6 @@ public class Program
      );
 
   app.MapControllers(); // für CultureController, siehe https://docs.microsoft.com/de-de/aspnet/core/blazor/globalization-localization
-
 
   app.Run();
  }

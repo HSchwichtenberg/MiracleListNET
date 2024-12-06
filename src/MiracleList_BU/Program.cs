@@ -2,7 +2,6 @@ using System.Net;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Components.WebAssembly.Services;
 using MiracleList;
-using Web.Components;
 
 namespace Web;
 

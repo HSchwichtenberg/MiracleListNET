@@ -37,7 +37,6 @@ public class AppState : IAppState
 
  public AppState(IConfiguration configuration, IWebHostEnvironment host)
  {
-
   this.configuration = configuration;
   this.host = host;
 
@@ -54,7 +53,6 @@ public class AppState : IAppState
   this.DebugURL = this.configuration["Backend:DebugURL"].NotNull();
 
   Console.WriteLine($"AppState.ctor: {this.LiveURL}/{this.StagingURL}/{this.DebugURL} ");
-
  }
 
  public SortedDictionary<string, string> GetBackendSet(bool includeLocalhost = false)

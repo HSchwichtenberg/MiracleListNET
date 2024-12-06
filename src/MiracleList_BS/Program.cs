@@ -1,11 +1,11 @@
 using System;
+using System.Net;
 using System.Reflection;
 using BL;
 using Blazored.LocalStorage;
 using Blazored.Toast;
 using ITVisions;
 using ITVisions.Blazor;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.Circuits;
@@ -36,7 +36,7 @@ public class Program
 
   // Add services to the container.
   builder.Services.AddRazorComponents()
-      .AddInteractiveServerComponents();
+      .AddInteractiveServerComponents(opt => { CUI.Yellow(opt.ToNameValueString()); });
 
   ConfigureServices(builder.Services);
 
@@ -87,18 +87,30 @@ public class Program
   app.UseRequestLocalization(localizationOptions);
   #endregion
 
-  #region Authentifizierung
+  #region Bei Static SSR: Umleiten von 401-Fehler auf die /Login-Seite
+  app.UseStatusCodePages(async context =>
+  {
+   var request = context.HttpContext.Request;
+   var response = context.HttpContext.Response;
+   if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
+   {
+    response.Redirect("/Login");  //redirect to the login page.
+   }
+  });
+  #endregion
+
+  #region Authentifizierung und Autorisierung nutzen
   app.UseAuthentication();
   app.UseAuthorization();
   #endregion
 
-  // für ASP.NET SignalR
+  #region für ASP.NET SignalR
   app.MapHub<MLHub>("/MLHub",
     signalRConnectionOptions =>
     {
      signalRConnectionOptions.AllowStatefulReconnects = true; // seit .NET 8.0
     });
-
+  #endregion
 
   app.MapStaticAssets();
   app.MapRazorComponents<Pages.App>()
@@ -106,13 +118,7 @@ public class Program
       .AddAdditionalAssemblies(
      typeof(MLBlazorRCL.Login.Login).Assembly,
      typeof(Samples.SamplesList).Assembly
-     ); 
-
-  // TODO: Wie geht das in .NET 8.0/9.0?
-  //app.MapBlazorHub(opts =>
-  //{
-  // opts.WebSockets.CloseTimeout = new TimeSpan(1, 0, 0); // default: 5 sek
-  //});
+     );
 
   app.MapControllers(); // für CultureController, siehe https://docs.microsoft.com/de-de/aspnet/core/blazor/globalization-localization
 
@@ -122,11 +128,13 @@ public class Program
 
  public static void ConfigureServices(IServiceCollection services)
  {
+  #region Demo-Ausgabe
   //System.Diagnostics.Debug.WriteLine("Liste der vorregistrierten Dienste in Blazor Server:");
   //foreach (var s in services)
   //{
   // System.Diagnostics.Debug.WriteLine(s.ServiceType.FullName + ": " + s.Lifetime);
   //}
+  #endregion
 
   #region DI Mehrsprachigkeit
   services.AddLocalization();
@@ -136,7 +144,6 @@ public class Program
   services.AddScoped<IAppState, AppState>();
   #endregion
 
-  // TODO Problem: https://github.com/dotnet/aspnetcore/issues/56820
   #region DI Authentifizierungsdienste
   services.AddScoped<IMLAuthenticationStateProvider, MLAuthenticationStateProvider2Tier>();
   services.AddScoped<AuthenticationStateProvider, MLAuthenticationStateProvider2Tier>();

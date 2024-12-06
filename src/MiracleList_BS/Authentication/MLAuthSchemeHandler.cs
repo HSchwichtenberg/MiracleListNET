@@ -27,7 +27,9 @@ public class MLAuthSchemeHandler : AuthenticationHandler<MLAuthSchemeOptions>
  protected async override Task<AuthenticateResult> HandleAuthenticateAsync()
  {
   string token = HttpContextAccessor.HttpContext.Request.Cookies[TokenStorageKey];
-  if (string.IsNullOrEmpty(token)) { return AuthenticateResult.NoResult(); }
+  if (string.IsNullOrEmpty(token)) { 
+   return AuthenticateResult.NoResult(); 
+  }
 
   var claims = new[] { new Claim(ClaimTypes.Name, token) };
   var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, "ML"));

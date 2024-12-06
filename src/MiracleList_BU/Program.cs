@@ -74,7 +74,7 @@ public class Program
 
   app.UseHttpsRedirection();
   app.UseAntiforgery();
-  app.UseStaticFiles();
+  app.MapStaticAssets(); // war vor .NET 9.0: UseStaticFiles()
 
   app.MapRazorComponents<App>()
      .AddInteractiveServerRenderMode()

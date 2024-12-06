@@ -113,7 +113,7 @@ public class Program
     });
   #endregion
 
-  app.MapStaticAssets();
+  app.MapStaticAssets(); // war vor .NET 9.0: UseStaticFiles()
   app.MapRazorComponents<Pages.App>()
       .AddInteractiveServerRenderMode()
       .AddAdditionalAssemblies(

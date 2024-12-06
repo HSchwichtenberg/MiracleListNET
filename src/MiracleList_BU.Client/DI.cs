@@ -19,7 +19,8 @@ public class DI
   services.AddCascadingAuthenticationState(); // neu seit Blazor 8.0
   services.AddScoped<IMLAuthenticationStateProvider, MLAuthenticationStateProvider3Tier>();
   services.AddScoped<AuthenticationStateProvider, MLAuthenticationStateProvider3Tier>();
-  services.AddAuthorizationCore(); // sonst: System.InvalidOperationException: Cannot provide a value for property 'AuthorizationPolicyProvider' on type 'Microsoft.AspNetCore.Components.Authorization.AuthorizeView'. There is no registered service of type 'Microsoft.AspNetCore.Authorization.IAuthorizationPolicyProvider'
+  services.AddAuthorizationCore();
+  services.AddCascadingAuthenticationState();
   #endregion
 
   #region DI für Serverkommunikation

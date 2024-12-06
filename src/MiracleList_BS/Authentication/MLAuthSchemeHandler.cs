@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MiracleList;
 
-namespace Web.Authentication;
+namespace Web;
 
 public class MLAuthSchemeHandler : AuthenticationHandler<MLAuthSchemeOptions>
 {
@@ -27,8 +27,9 @@ public class MLAuthSchemeHandler : AuthenticationHandler<MLAuthSchemeOptions>
  protected async override Task<AuthenticateResult> HandleAuthenticateAsync()
  {
   string token = HttpContextAccessor.HttpContext.Request.Cookies[TokenStorageKey];
-  if (string.IsNullOrEmpty(token)) { 
-   return AuthenticateResult.NoResult(); 
+  if (string.IsNullOrEmpty(token))
+  {
+   return AuthenticateResult.Fail("No Access");
   }
 
   var claims = new[] { new Claim(ClaimTypes.Name, token) };

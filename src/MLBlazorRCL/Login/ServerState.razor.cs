@@ -10,6 +10,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MLBlazorRCL.Login;
 
+/// <summary>
+/// Diese Komponente merkt sich den Zustand der Backend-System beim Pre-Rendering und fragt beim Hauptrendern nicht erneut ab!
+/// </summary>
 public partial class ServerState(PersistentComponentState ComponentState)
 {
  [Inject] public BlazorUtil Util { get; set; } = null;
@@ -20,25 +23,17 @@ public partial class ServerState(PersistentComponentState ComponentState)
 
  public List<BackendState> BackendStatusList = new();
 
- private void Print(string s)
- {
-  var o = ($"----> {DateTime.Now} | {this.RendererInfo.Name} | {s} | BackendStatusList={BackendStatusList.AsDump(ObjektTrenner: " / ")} ");
-  System.Diagnostics.Trace.WriteLine(o);
-  Console.WriteLine(o);
- }
-
  private PersistingComponentStateSubscription persistingSubscription;
 
  protected override async Task OnInitializedAsync()
  {
-  persistingSubscription =
-    ComponentState.RegisterOnPersisting(PersistState);
+  persistingSubscription = ComponentState.RegisterOnPersisting(PersistState);
 
   Print("ServerState.OnInitializedAsync.Start");
 
   if (!ComponentState.TryTakeFromJson<List<BackendState>>(
         nameof(BackendStatusList), out var restoredCount))
-  {
+  { // Zustände liegen noch nicht vor
    foreach (var item in AppSettings.GetBackendSet())
    {
     var be = new BackendState() { Display = item.Key, Address = item.Value, State = BackendStateStatus.Checking };
@@ -47,7 +42,7 @@ public partial class ServerState(PersistentComponentState ComponentState)
    Print("OnInitialized | Initialisiert");
   }
   else
-  {
+  { // Zustände liegen bereits vor
    BackendStatusList = restoredCount!;
    Print("OnInitialized | Wiederhergestellt");
   }
@@ -55,20 +50,11 @@ public partial class ServerState(PersistentComponentState ComponentState)
   Print("ServerState.OnInitializedAsync.End");
  }
 
- private Task PersistState()
- {
-  if (this.RendererInfo.Name != "WebView")
-  {
-   Print("PersistState");
-   ComponentState.PersistAsJson(nameof(BackendStatusList), BackendStatusList);
-  }
-  return Task.CompletedTask;
- }
-
  protected override async Task OnAfterRenderAsync(bool firstRender)
  {
   if (firstRender)
   {
+   // Asynchrones Abfragen der Zustände
    foreach (var system in BackendStatusList)
    {
     _ = Task.Run(
@@ -83,5 +69,25 @@ public partial class ServerState(PersistentComponentState ComponentState)
      ); // end Task
    } // next foreach
   }
+ }
+
+ /// <summary>
+ /// Merken der Zustände beim Pre-Rendering
+ /// </summary>
+ private Task PersistState()
+ {
+  if (this.RendererInfo.Name != "WebView")
+  {
+   Print("PersistState");
+   ComponentState.PersistAsJson(nameof(BackendStatusList), BackendStatusList);
+  }
+  return Task.CompletedTask;
+ }
+
+ private void Print(string s)
+ {
+  var o = ($"----> {DateTime.Now} | {this.RendererInfo.Name} | {s} | BackendStatusList={BackendStatusList.AsDump(ObjektTrenner: " / ")} ");
+  System.Diagnostics.Trace.WriteLine(o);
+  Console.WriteLine(o);
  }
 }

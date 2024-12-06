@@ -87,9 +87,11 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
     {
 
     }
+
     try
     {
-     await JSRuntime.InvokeVoidAsync("setCookie", TokenStorageKey, currentUser.Token, 7);
+     await blazorUtil.SetCookieDetails(TokenStorageKey, currentUser.Token, 7);
+
      //CookieOptions options = new CookieOptions();
      //options.Expires = DateTime.Now.AddDays(1);
      //HttpContextAccessor.HttpContext.Response.Cookies.Append(TokenStorageKey, currentUser.Token, options);
@@ -119,7 +121,7 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
   SetCurrentUser(null);
   // Remove user token from local Storage
   await localStorage.RemoveItemAsync(TokenStorageKey);
-  await JSRuntime.InvokeVoidAsync("setCookie", TokenStorageKey, "", 7);
+  await blazorUtil.RemoveCookie(TokenStorageKey);
   Notify();
   return;
  }
@@ -182,7 +184,7 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
    if (!String.IsNullOrEmpty(token)) { SetCurrentUser(new UserManager(token).CurrentUser); Notify(); return true; }
    else { 
     await localStorage.RemoveItemAsync(TokenStorageKey);
-    await JSRuntime.InvokeVoidAsync("setCookie", TokenStorageKey, "", 7);
+    await blazorUtil.RemoveCookie(TokenStorageKey);
    } // Token löschen, wenn ungültig!
   }
   catch (Exception)

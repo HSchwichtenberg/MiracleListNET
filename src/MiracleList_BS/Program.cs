@@ -148,7 +148,7 @@ public class Program
   #region DI Authentifizierungsdienste
   services.AddScoped<IMLAuthenticationStateProvider, MLAuthenticationStateProvider2Tier>();
   services.AddScoped<AuthenticationStateProvider, MLAuthenticationStateProvider2Tier>();
-  services.AddAuthentication().AddScheme<MLAuthSchemeOptions, MLAuthSchemeHandler>("ML", opts => { }); // notwendig, damit bei Static SSR Pre-Rendering Zugriffe auf Unterseiten zum Fehler 401 führen, der dann auf /login umgeleitet wird
+  services.AddAuthentication().AddScheme<MLAuthSchemeOptions, MLAuthSchemeHandler>("ML", opts => { }); // notwendig, damit bei Static SSR Prerendering Zugriffe auf Unterseiten zum Fehler 401 führen, der dann auf /login umgeleitet wird
   services.AddAuthorizationCore();
   services.AddCascadingAuthenticationState();
   #endregion

@@ -11,7 +11,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace MLBlazorRCL.Login;
 
 /// <summary>
-/// Diese Komponente merkt sich den Zustand der Backend-System beim Pre-Rendering und fragt beim Hauptrendern nicht erneut ab!
+/// Diese Komponente merkt sich den Zustand der Backend-System beim Prerendering und fragt beim Hauptrendern nicht erneut ab!
 /// </summary>
 public partial class ServerState(PersistentComponentState ComponentState)
 {
@@ -72,7 +72,7 @@ public partial class ServerState(PersistentComponentState ComponentState)
  }
 
  /// <summary>
- /// Merken der Zustände beim Pre-Rendering
+ /// Merken der Zustände beim Prerendering
  /// </summary>
  private Task PersistState()
  {

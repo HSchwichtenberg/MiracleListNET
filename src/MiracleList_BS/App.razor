@@ -33,12 +33,12 @@
  <link rel="stylesheet" href="@Assets["/_content/ITVisions.Blazor/css/itvstyles.css"]" />
 
  <!-- -------- Für Radzen Components -->
- <link rel="stylesheet" href="@Assets["_content/Radzen.Blazor/css/default-base.css"]">
- <script src="@Assets["_content/Radzen.Blazor/Radzen.Blazor.js"]"></script>
+ <link rel="stylesheet" href="@Assets["/_content/Radzen.Blazor/css/default-base.css"]">
+ <script src="@Assets["/_content/Radzen.Blazor/Radzen.Blazor.js"]"></script>
 
  <!-- -------- Für BlazorContextMenu https://github.com/stavroskasidis/BlazorContextMenu -->
  <link rel="stylesheet" href="@Assets["/_content/Blazor.ContextMenu/blazorContextMenu.min.css"]" />
- <script src="@Assets["/_content/Blazor.ContextMenu/blazorContextMenu.min.js"]" ></script>
+ <script src="@Assets["/_content/Blazor.ContextMenu/blazorContextMenu.min.js"]"></script>
 
  <!-- -------- Für BlazorUtil -->
  <script src="@Assets["/_content/ITVisions.Blazor/BlazorUtil.js"]"></script>
@@ -48,13 +48,15 @@
  <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 
  <ImportMap />
- <HeadOutlet @rendermode="new InteractiveServerRenderMode(prerender: false)" />
+ <HeadOutlet @rendermode="InteractiveServer" />
+ @* oder ohne Pre-Rendering:<HeadOutlet @rendermode="new InteractiveServerRenderMode(prerender: false)" /> *@
 </head>
 
 <body>
- <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
+ <Routes @rendermode="InteractiveServer" />
+ @* oder ohne Pre-Rendering:  <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" /> *@
 
+ <!-- -------- Allgemeine JS-Lib von Microsoft für Blazor -->
  <script src="_framework/blazor.web.js"></script>
-
 </body>
 </html>

@@ -1,22 +1,23 @@
-﻿
+﻿@using ITVisions
+
 <div class="alert @Type.Prefix("alert-") alert-dismissible fade show" role="alert">
-  <h4>@Title</h4>
+ <h4>@Title</h4>
 
-@if (ChildContent != null)
-{
-   @ChildContent
-}
-else
-{
+ @if (ChildContent != null)
+ {
+  @ChildContent
+ }
+ else
+ {
   @Text
-}
+ }
 
-@if (AllowClose)
-{
+ @if (AllowClose)
+ {
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
+   <span aria-hidden="true">&times;</span>
   </button>
-}
+ }
 </div>
 
 
@@ -32,9 +33,9 @@ else
  public RenderFragment Title { get; set; }
 
  [Parameter]
- public RenderFragment? Title { get; set; }
+ public RenderFragment Text { get; set; }
 
  [Parameter]
- public RenderFragment? Text { get; set; }
+ public RenderFragment ChildContent { get; set; }
 
 }

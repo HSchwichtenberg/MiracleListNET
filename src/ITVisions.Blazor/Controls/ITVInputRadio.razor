@@ -1,6 +1,5 @@
-﻿
-<div class="form-group form-check">
- <InputRadio @ref="radio" class="form-check-input bigCheckbox" Value="@Value" />
+﻿﻿<div class="form-check">
+ <InputRadio class="form-check-input bigCheckbox" @bind-Value="@Value" @bind-Value:after="()=>ValueChanged.InvokeAsync(Value)"/>
  <label @onclick="ChangeRadioState"  class="form-check-label bigCheckboxLabel">@((MarkupString)Label)</label>
 </div>
 
@@ -11,7 +10,6 @@
  public string Label { get; set; }
 
 
- #pragma warning disable BL0007 // "should be auto property" unterdrücken
  [Parameter]
  public int Value { get; set; }
 

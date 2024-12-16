@@ -3,6 +3,7 @@
 @page "/app"
 @page "/task/{TaskID:int}"
 @attribute [Authorize]
+
 @using ITVisions.TextGenerator;
 @using ITVisions.Blazor
 @using ITVisions.Blazor.Controls
@@ -17,9 +18,9 @@
  {
   <div id="col1" class="MLPanel col-sm-4 col-md-3 col-lg-2 @(this.task!=null ? "hidden-sm hidden-xs": ""  ) @(this.category!=null ? "hidden-xs": ""  )">
    <!-- ---------- Überschrift Spalte 1-->
-   <div style="margin-top:5px;margin-bottom:7px" class="form-inline">
-    <span class="columnHeadline"><span id="categoryCount">@(categorySet.Count())</span> <span>Kategorien</span></span>
-   </div>
+
+   <div class="columnHeadline"><span id="categoryCount">@(categorySet.Count())</span> <span>Kategorien</span></div>
+
    <!-- ---------- neue Kategorie eingeben-->
    <input name="newCategoryName" type="text" class="form-control blue" @bind="newCategoryName" @onkeyup="(e) => NewCategory_Keyup(e)" placeholder="Neue Kategorie..." />
    <!-- ---------- Kategorieliste ausgeben-->
@@ -28,7 +29,7 @@
     @foreach (BO.Category c in categorySet)
     {
      <li @key="c" class="list-group-item" title="Task Category #@c.CategoryID" style="Background-color:@(this.category != null && c.CategoryID == this.category.CategoryID ? "#E0EEFA" : "white")"
-     @onclick="() => ShowTaskSet(c)"
+         @onclick="() => ShowTaskSet(c)"
          ondragover="event.preventDefault();" @ondrop="(e) => DropTaskToCategory(e, c)">
       @c.Name
       <span id="Remove" style="float:right;" class="close" title="Remove Category #@c.CategoryID" @onclick="() => RemoveCategory(c)">x</span>
@@ -48,11 +49,10 @@
 
    @if (this.searchResultSet == null)
    {
-
     <!-- ---------- Überschrift Spalte 2-->
-    <div style="margin-top:5px;margin-bottom:5px;" class="form-inline">
+    <div class="form-inline">
 
-     <span id="TaskHeadline" class="columnHeadline">
+     <div id="TaskHeadline" class="columnHeadline">
       <span id="taskCount">
        @(
            taskSet == null ? 0 : taskSet.Count()
@@ -64,24 +64,23 @@
        <span class="glyphicon glyphicon-arrow-left"></span>
       </button>
 
-     </span>
+      <!-- ---------- Filter-->
+      @*ACHTUNG: VS-Bug in älteren VS-Versionen. Wird dort als fehlerhaft angezeigt, kompiliert und läuft aber! https://github.com/dotnet/razor/issues/8315*@
+      <select @bind="taskFilter" @bind:after="()=>ShowTaskSet(this.category)" style="margin-left:15px;height:25px;width:170px;display:inline-block" class="form-control input-sm blue">
+       <option value="0">Alle Aufgaben</option>
+       <option value="1">Nur offene Aufgaben</option>
+       <option value="2">Nur erledigte Aufgaben</option>
+      </select>
 
-     <!-- ---------- Filter-->
-     @*ACHTUNG: VS-Bug in älteren VS-Versionen. Wird dort als fehlerhaft angezeigt, kompiliert und läuft aber! https://github.com/dotnet/razor/issues/8315*@
-     <select @bind="taskFilter" @bind:after="()=>ShowTaskSet(this.category)" style="margin-left:15px;height:25px;width:170px;display:inline-block" class="form-control input-sm blue">
-      <option value="0">Alle Aufgaben</option>
-      <option value="1">Nur offene Aufgaben</option>
-      <option value="2">Nur erledigte Aufgaben</option>
-     </select>
+      <!-- ---------- Schaltlächen -->
+      <a href="/TaskGrid/@this.category?.CategoryID"><span id="DataGrid" title="Tabellenansicht" style="margin-left:20px" class="glyphicon glyphicon-align-justify"></span></a>
 
-     <!-- ---------- Schaltlächen -->
-     <a href="/TaskGrid/@this.category?.CategoryID"><span id="DataGrid" title="Tabellenansicht" style="margin-left:20px" class="glyphicon glyphicon-align-justify"></span></a>
-
-     @*Optionale Export-Befehle, die nur einige Blazor-Arten realisieren können*@
-     @if (AdditionalComponents.TaskExportAdditionalComponent != null)
-     {
-      <span style="margin-left:10px">  <DynamicComponent Type="@AdditionalComponents.TaskExportAdditionalComponent" Parameters="@(new Dictionary<string, object>() { {"category", this.category }, { "taskSet", this.taskSet} })"></DynamicComponent></span>
-     }
+      @*Optionale Export-Befehle, die nur einige Blazor-Arten realisieren können*@
+      @if (AdditionalComponents.TaskExportAdditionalComponent != null)
+      {
+       <span style="margin-left:10px">  <DynamicComponent Type="@AdditionalComponents.TaskExportAdditionalComponent" Parameters="@(new Dictionary<string, object>() { {"category", this.category }, { "taskSet", this.taskSet} })"></DynamicComponent></span>
+      }
+     </div>
     </div>
 
     <!-- ---------- neue Aufgaben eingeben-->
@@ -90,28 +89,26 @@
     @if (taskSet != null)
     {
      <ol id="TaskSet" class="list-group scroll">
-
       @foreach (BO.Task t in taskSet)
       {
        <TaskElement Task="t" @key="t"
                     Active="(t.TaskID == this.task?.TaskID)"
                     TaskChecked="async ()=>await this.SendTaskListUpdate()"
-                    TaskRemoved="ReloadTaskList"
+                    TaskRemoved="async ()=> { await this.SendTaskListUpdate(); await ReloadTaskList(); }"
                     TaskClicked="(t)=>ShowTaskDetail(t)"
                     TaskDragged="(t)=>DragTask(null,t)">
        </TaskElement>
       }
      </ol>
     }
-
    }
    else
    {
     @*Suchergebnisse anzeigen*@
-    <h4 style="margin-top:9px;margin-bottom:6px">@TextGen.SingularPlural(searchResultSet.Sum(x=>x.TaskSet.Count), "Suchergebnis","Suchergebnisse") in @searchResultSet.Count Kategorien</h4>
+    <h4 style="margin-top:9px;margin-bottom:6px">@TextGen.SingularPlural(searchResultSet.Sum(x => x.TaskSet.Count), "Suchergebnis", "Suchergebnisse") in @searchResultSet.Count Kategorien</h4>
     @foreach (BO.Category c in searchResultSet)
     {
-     <h5 class="blue">@TextGen.SingularPlural(@c.TaskSet.Count, "Aufgabe","Aufgaben") gefunden in Kategorie <b>@c.Name</b></h5>
+     <h5 class="blue">@TextGen.SingularPlural(@c.TaskSet.Count, "Aufgabe", "Aufgaben") gefunden in Kategorie <b>@c.Name</b></h5>
      <div style="margin-bottom:5px;">
       @foreach (BO.Task t in c.TaskSet)
       {
@@ -125,7 +122,6 @@
       }
      </div>
     }
-
    }
   </div>
  }

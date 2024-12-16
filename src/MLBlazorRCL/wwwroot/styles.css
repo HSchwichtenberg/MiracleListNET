@@ -36,6 +36,9 @@ h4, h5 {
 
 .columnHeadline {
  font-size: 18px;
+ margin-left: 4px;
+ margin-top: 5px;
+ margin-bottom: 7px
 }
 
 .MLselected {

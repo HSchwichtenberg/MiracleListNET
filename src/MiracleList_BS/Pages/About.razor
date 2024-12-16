@@ -1,12 +1,12 @@
 ﻿@page "/about"
 @using ITVisions.Blazor
 @using MLBlazorRCL.Texts
+@using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Hosting.Server.IServer server
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor contextAccessor
 
 @*Obsolet: IHostingEnvironment*@
-
 
 <div class="row">
 
@@ -15,6 +15,7 @@
   <h2>Technische Daten</h2>
   @*Dies ist ein Steuerelement aus ITVisions.Blazor*@
   <SystemInfo></SystemInfo>
+  @* Oder kurz: <SystemInfo/> *@
 
   <b> WebServer-Typ:</b> @server.ToString()
   <br>
@@ -31,6 +32,12 @@
   <b> WebRootFileProvider:</b> @env.WebRootFileProvider
   <br />
   <b> Environment:</b> @env.EnvironmentName
+
+  <UsedComponents Components='
+                  (new SortedDictionary<string, Type>() {
+                 {"Entity Framework Core",typeof(Microsoft.EntityFrameworkCore.DbContext)},
+                 {"ASP.NET Core SignalR Hub",typeof(Microsoft.AspNetCore.SignalR.Hub)},
+                 {"MessagePack",typeof(MessagePack.MessagePackSerializer)}})'></UsedComponents>
  </div>
 
  <div class="col-xs-6">
@@ -41,9 +48,16 @@
 
 @code
 {
+
  string serverSoftware = "n/a";
- protected override void OnInitialized() {
+ protected override async System.Threading.Tasks.Task OnInitializedAsync() {
   var serverVars = contextAccessor.HttpContext.Features.Get<Microsoft.AspNetCore.Http.Features.IServerVariablesFeature>();
   serverSoftware = (serverVars == null ? null : serverVars["SERVER_SOFTWARE"]);
+
+  // das geht seit Blazor 8.0, aber nur bei SSR!
+  @*  [CascadingParameter]
+ public HttpContext? HttpContext { get; set; *@
+  // var serverVars = HttpContext.Features.Get<Microsoft.AspNetCore.Http.Features.IServerVariablesFeature>();
+  // serverSoftware = (serverVars == null ? null : serverVars["SERVER_SOFTWARE"]);
  }
 }

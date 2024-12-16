@@ -18,8 +18,8 @@ namespace Web.Samples_BS.HelloWorldBeispiele {
   public NavigationManager NavigationManager { get; set; } = null;
 
   // Achtung: Dies nur für BS! Kein HttpContext in BW!
-  [Inject]
-  IHttpContextAccessor HttpContextAccessor { get; set; } = null;
+  //[Inject]
+  //IHttpContextAccessor HttpContextAccessor { get; set; } = null;
 
   [Parameter]
   public decimal X { get; set; } = 1.23m;

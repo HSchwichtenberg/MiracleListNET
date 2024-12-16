@@ -1,25 +1,37 @@
 ﻿@page "/Samples/DynamicDLLLoading"
 @inject HttpClient HttpClient
 @inject IJSRuntime JSRuntime
-<h3>LazyLoading</h3>
+@inject NavigationManager NavigationManager
 
-<button @onclick="Load">Load</button>
+<h3>Dynamic Assembly Loading / Eigene Lazy Loading von .WASM-Dateien in Blazor WebAssemly</h3>
+
+<button @onclick="Load" class="btn btn-default">Load @url</button>
 <hr />
 @Ausgabe
 @code {
 
+ string url = "/_framework/ITVisions.Blazor.wasm";
  string Ausgabe;
 
  async Task Load()
  {
-  var bytes = await HttpClient.GetByteArrayAsync("https://localhost:44340/_framework/_bin/ITVisions.Blazor.dll");
-  var assembly = System.Reflection.Assembly.Load(bytes);
-  var t = assembly.GetType("ITVisions.Blazor.BlazorUtil");
-  object classInstance = Activator.CreateInstance(t, JSRuntime, null, null);
-  var m = t.GetMethod("GetBlazorVersionInfo");
-  var r = m.Invoke(classInstance, null);
 
-  Console.WriteLine(Ausgabe);
-  Ausgabe = $"ITVisions.Blazor.BlazorUtil.GetBlazorVersionInfo(): " + r.ToString();
+  try
+  {
+   var bytes = await HttpClient.GetByteArrayAsync(url);
+   var assembly = System.Reflection.Assembly.Load(bytes);
+   var t = assembly.GetType("ITVisions.Blazor.BlazorUtil");
+   object classInstance = Activator.CreateInstance(t, JSRuntime, NavigationManager);
+   var m = t.GetMethod("GetBlazorVersionInfo");
+   var r = m.Invoke(classInstance, null);
+
+   Console.WriteLine(Ausgabe);
+   Ausgabe = $"Methode ITVisions.Blazor.BlazorUtil.GetBlazorVersionInfo() liefert: " + r.ToString();
+  }
+  catch (Exception ex)
+  {
+   Ausgabe = ex.ToString();
+  }
+
  }
 }

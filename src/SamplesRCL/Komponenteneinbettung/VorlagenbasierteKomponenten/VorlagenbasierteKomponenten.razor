@@ -5,8 +5,35 @@
 
 <h1>Vorlagenbasierte Komponenten</h1>
 
-<h3>ITVButton (vorlagenbasiert + AdditionalAttributes)</h3>
+<h3>ITVCheckbox</h3>
+<ITVCheckbox @bind-Value="Aktiv" Label="Aktiv? Ja oder Nein?" @bind-Value:after="Log"></ITVCheckbox>
+<br />
+Wert: @Aktiv
 
+<h3>ITVInputRadio</h3>
+<InputRadioGroup @bind-Value="Zahl">
+ <ITVInputRadio Value="1" Label="Eins" ValueChanged="Log"></ITVInputRadio>
+ <ITVInputRadio Value="2" Label="Zwei" ValueChanged="Log"></ITVInputRadio>
+ <ITVInputRadio Value="3" Label="Drei" ValueChanged="Log"></ITVInputRadio>
+</InputRadioGroup>
+<br />
+Wert: @Zahl
+
+@code
+{
+ enum Zahlen { Null, Eins, Zwei, Drei}
+
+ bool Aktiv = true;
+ int Zahl = 1;
+
+ void Log()
+ {
+   Util.Log("Aktiv=" + Aktiv + " Zahl=" + Zahl);
+ }
+}
+
+
+<h3>ITVButton (vorlagenbasiert + AdditionalAttributes)</h3>
 <p>
 
  Animationsmindestdauer:
@@ -16,6 +43,12 @@
  <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
 </ITVButton>
 
+<ITVButton onClick="Aktion" AnimationSeconds="0" class="btn btn-warning" style="color:black" title="ohne Animation">
+ <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
+</ITVButton>
+</p>
+
+<p>
 <ITVButton onClick="AktionMitFehler" AnimationSeconds="@animationsDauer" class="btn btn-danger" title="mit Animation und Fehler ohne Fehlerbehandlung">
  <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
 </ITVButton>
@@ -32,6 +65,7 @@
 
  async Task Aktion()
  {
+  counter++;
   counter++;
  }
 

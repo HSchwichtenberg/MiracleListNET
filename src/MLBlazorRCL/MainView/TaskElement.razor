@@ -6,7 +6,6 @@
 @inject IMiracleListProxy Proxy
 @inject BlazorUtil Util
 
-
 <ContextMenuTrigger MenuId="@("TaskContextMenu" + Task.CategoryID.ToString() + "_" + Task.TaskID.ToString())" Data="Task">
 
  <li class="list-group-item" @onclick="() => SetTaskActive(Task)" style="Background-color: @(Active ? "#E0EEFA" : "white")" title="Task #@Task.TaskID" draggable="true" @ondragstart="(e) => DragTask(e, Task)">
@@ -16,7 +15,7 @@
    <span class="badge badge-important" style="margin-right:10px" title="Wichtigkeit: @Task.Importance">@Task.Importance</span>
   </span>
 
-  <input type="checkbox" name="@("done" + Task.TaskID)" id="@("done" + Task.TaskID)" checked="@Task.Done" class=" MLcheckbox" @onclick:stopPropagation="true" @onchange=@(async(eventArgs) => { Task.Done = (bool)eventArgs.Value; await ChangeTaskDone(Task); }) />
+  <input type="checkbox" name="@("done" + Task.TaskID)" id="@("done" + Task.TaskID)" checked="@Task.Done" class="MLcheckbox" @onclick:stopPropagation="true" @onchange=@(async(eventArgs) => { Task.Done = (bool)eventArgs.Value; await ChangeTaskDone(Task); }) />
 
   <b>@Task.Title</b>
   <br>

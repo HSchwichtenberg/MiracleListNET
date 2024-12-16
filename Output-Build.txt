@@ -1,0 +1,60 @@
+﻿Rebuild started at 08:45...
+Restored H:\git\ML\MiracleListNET\src\SamplesRCL\SamplesRCL.csproj (in 357 ms).
+Restored H:\git\ML\MiracleListNET\Test\SeleniumTests\SeleniumTests.csproj (in 365 ms).
+Restored H:\git\ML\MiracleListNET\src\ITVRazorPagesRCL\ITVRazorPagesClassLibrary.csproj (in 0,7 ms).
+Restored H:\git\ML\MiracleListNET\src\ITVTagHelper\ITVTagHelper.csproj (in 370 ms).
+Restored H:\git\ML\MiracleListNET\src\ITVisions.Blazor\ITVisions.Blazor.csproj (in 375 ms).
+Restored H:\git\ML\MiracleListNET\src\BO\BO.csproj (in 622 ms).
+1>------ Rebuild All started: Project: ITVisions.Blazor, Configuration: Debug Any CPU ------
+2>------ Rebuild All started: Project: BO, Configuration: Debug Any CPU ------
+Restored H:\git\ML\MiracleListNET\src\MiracleList_Interfaces\MiracleList_Interfaces.csproj (in 623 ms).
+Restored H:\git\ML\MiracleListNET\Test\PlaywrightTests\PlaywrightTests.csproj (in 630 ms).
+Restored H:\git\ML\MiracleListNET\Test\WebserviceTests\WebserviceTests.csproj (in 640 ms).
+Restored H:\git\ML\MiracleListNET\src\DA\DA.csproj (in 653 ms).
+Restored H:\git\ML\MiracleListNET\src\MiracleList_BU\MiracleList_BU.csproj (in 666 ms).
+Restored H:\git\ML\MiracleListNET\src\BL\BL.csproj (in 681 ms).
+Restored H:\git\ML\MiracleListNET\src\MLBlazorRCL\MLBlazorRCL.csproj (in 724 ms).
+Restored H:\git\ML\MiracleListNET\src\MiracleList_BD\MiracleList_BD.csproj (in 754 ms).
+Restored H:\git\ML\MiracleListNET\src\EFCTools\EFCTools.csproj (in 772 ms).
+Restored H:\git\ML\MiracleListNET\Test\BlazorTests\BlazorTests.csproj (in 789 ms).
+Restored H:\git\ML\MiracleListNET\src\MiracleList_BU.Client\MiracleList_BU.Client.csproj (in 816 ms).
+Restored H:\git\ML\MiracleListNET\test\UnitTests\UnitTests.csproj (in 821 ms).
+Restored H:\git\ML\MiracleListNET\src\MiracleList_BS\MiracleList_BS.csproj (in 831 ms).
+Restored H:\git\ML\MiracleListNET\src\MiracleList_Backend\MiracleList_Backend.csproj (in 861 ms).
+Restored H:\git\ML\MiracleListNET\src\MiracleList_BW\MiracleList_BW.csproj (in 885 ms).
+Restored H:\git\ML\MiracleListNET\src\MiracleListAPI_Proxy\MiracleListAPI_Proxy.csproj (in 526 ms).
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\BrowserConsoleLogger\UniversalLogger.cs(13,30,13,31): warning CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\BrowserConsoleLogger\UniversalLogger.cs(59,20,59,21): warning CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\BrowserConsoleLogger\UniversalLogger.cs(68,15,68,16): warning CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\BrowserConsoleLogger\UniversalLogger.cs(69,28,69,29): warning CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\Controls\Card.razor(19,23,19,24): warning CS8669: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context. Auto-generated code requires an explicit '#nullable' directive in source.
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\Controls\Card.razor(22,23,22,24): warning CS8669: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context. Auto-generated code requires an explicit '#nullable' directive in source.
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\Controls\Card.razor(25,23,25,24): warning CS8669: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context. Auto-generated code requires an explicit '#nullable' directive in source.
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\Controls\Alert.razor(17,23,17,24): warning CS8669: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context. Auto-generated code requires an explicit '#nullable' directive in source.
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\Controls\Card3.razor(20,23,20,24): warning CS8669: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context. Auto-generated code requires an explicit '#nullable' directive in source.
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\Controls\Alert.razor(20,23,20,24): warning CS8669: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context. Auto-generated code requires an explicit '#nullable' directive in source.
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\Controls\Card3.razor(23,23,23,24): warning CS8669: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context. Auto-generated code requires an explicit '#nullable' directive in source.
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\Controls\ITVCard.razor(20,23,20,24): warning CS8669: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context. Auto-generated code requires an explicit '#nullable' directive in source.
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\Controls\Card3.razor(26,23,26,24): warning CS8669: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context. Auto-generated code requires an explicit '#nullable' directive in source.
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\Controls\Upload.razor(139,13,139,30): warning CS1998: This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\BrowserConsoleLogger\UniversalLogger.cs(14,39,14,53): warning CS0649: Field 'UniversalLoggerProvider._currentConfig' is never assigned to, and will always have its default value null
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\BrowserConsoleLogger\UniversalLogger.cs(13,32,13,46): warning CS0649: Field 'UniversalLoggerProvider._onChangeToken' is never assigned to, and will always have its default value null
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\Controls\ITVInputRadio.razor(18,13,18,18): warning BL0007: Component parameter 'ITVisions.Blazor.Controls.ITVInputRadio.Value' should be auto property
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\Controls\Switch.razor(24,15,24,20): warning BL0007: Component parameter 'ITVisions.Blazor.Controls.Switch.Value' should be auto property
+1>H:\git\ML\MiracleListNET\src\ITVisions.Blazor\Controls\ITVCheckbox.razor(13,17,13,22): warning BL0007: Component parameter 'ITVisions.Blazor.Controls.ITVCheckbox.Value' should be auto property
+2>BO -> H:\git\ML\MiracleListNET\src\BO\bin\Debug\net8.0\BO.dll
+3>------ Rebuild All started: Project: MiracleList_Interfaces, Configuration: Debug Any CPU ------
+1>ITVisions.Blazor -> H:\git\ML\MiracleListNET\src\ITVisions.Blazor\bin\Debug\net8.0\ITVisions.Blazor.dll
+1>The package ITVisions.Blazor.8.2.2 is missing a readme. Go to https://aka.ms/nuget/authoring-best-practices/readme to learn why package readmes are important.
+1>Successfully created package 'H:\DB\NugetHS\ITVisions.Blazor.8.2.2.nupkg'.
+1>Done building project "ITVisions.Blazor.csproj".
+3>H:\git\ML\MiracleListNET\src\MiracleList_Interfaces\FileParameter.cs(8,19,8,23): warning CS8625: Cannot convert null literal to non-nullable reference type.
+3>H:\git\ML\MiracleListNET\src\MiracleList_Interfaces\FileParameter.cs(8,25,8,29): warning CS8625: Cannot convert null literal to non-nullable reference type.
+3>H:\git\ML\MiracleListNET\src\MiracleList_Interfaces\FileParameter.cs(13,29,13,33): warning CS8625: Cannot convert null literal to non-nullable reference type.
+3>H:\git\ML\MiracleListNET\src\MiracleList_Interfaces\IAppState.cs(35,57,35,61): warning CS8603: Possible null reference return.
+3>MiracleList_Interfaces -> H:\git\ML\MiracleListNET\src\MiracleList_Interfaces\bin\Debug\net8.0\MiracleList_Interfaces.dll
+3>Done building project "MiracleList_Interfaces.csproj".
+4>------ Rebuild All started: Project: SamplesRCL, Configuration: Debug Any CPU ------
+5>------ Rebuild All started: Project: MiracleListAPI_Proxy, Configuration: Debug Any CPU ------
+5>MiracleListAPI_Proxy -> H:\git\ML\MiracleListNET\src\MiracleListAPI_Proxy\bin\Debug\net8.0\MiracleListAPI_Proxy.dll
+6>------ Rebuild All started: Project: MLBlazorRCL, Configuration: Debug Any CPU ------

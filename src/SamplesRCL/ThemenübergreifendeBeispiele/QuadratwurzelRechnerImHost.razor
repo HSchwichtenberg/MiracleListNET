@@ -1,0 +1,13 @@
+﻿@page "/Samples/ThemenübergreifendeBeispiele/QuadratwurzelRechnerImHost"
+
+@inject BlazorUtil Util
+
+<h3>QuadratwurzelRechner</h3>
+
+<p>Dies ist ein Beispiel, das aus Svelte nach Blazor portiert wurde. Daher die zum Teil abweichenden Namenskonventionen!</p>
+
+<div>
+
+ <!-- Einbettung einer Kompontente in eine andere Komponente -->
+ <QuadratwurzelRechner x="40" newResult='(tupel)=>Util.Log("QuadratwurzelRechner meldet an Host: " + tupel.x + " ->" + tupel.result)'></QuadratwurzelRechner>
+</div>

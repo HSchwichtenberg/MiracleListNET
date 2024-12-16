@@ -20,7 +20,7 @@ namespace Web.Samples_BS.Systeminformationen
   public IJSRuntime JSRuntime { get; set; } = null;
   [Inject]
   public NavigationManager NavigationManager { get; set; } = null;
-  [Inject]
+  //[Inject]
   IHttpContextAccessor HttpContextAccessor { get; set; } = null;
 
   public string Ausgabe1 { get; set; }

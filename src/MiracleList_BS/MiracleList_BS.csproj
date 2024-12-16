@@ -1,37 +1,19 @@
 <!--Projektdatei der MiracleList Blazor Server App-->
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
- <!--Runtime-->
- <PropertyGroup>
-  <TargetFramework>net7.0</TargetFramework>
- </PropertyGroup>
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
 
- <!--Namen-->
+ <!--Weitere App-Metadaten -->
  <PropertyGroup>
-  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
-  <Authors>Dr. Holger Schwichtenberg</Authors>
-  <Company>www.IT-Visions.de</Company>
-  <Product>MiracleList</Product>
   <Description>Blazor Server (Server Side Blazor) Version of the MiracleList Web Frontend</Description>
-  <RootNamespace>Web</RootNamespace>
  </PropertyGroup>
 
- <!--Versionsinfos-->
+ <!--Compiler + Secrets-->
  <PropertyGroup>
-  <Version>7.19.0.0</Version>
-  <AssemblyVersion>7.19.0.0</AssemblyVersion>
-  <FileVersion>7.19.0.0</FileVersion>
-  <InformationalVersion>7.19.0.0-10/27/2023 20:01:02</InformationalVersion>
+  <RootNamespace>Web</RootNamespace>
+  <NoWarn>1701;1702;1998</NoWarn>
   <UserSecretsId>f4ee1587-6574-4ece-b932-69c8c91abe04</UserSecretsId>
  </PropertyGroup>
-
- <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-  <NoWarn>1701;1702;1998</NoWarn>
- </PropertyGroup>
-
- <ItemGroup>
-  <Content Include="Samples_BS\Pages of default Template\NavMenu.razorOLD" />
- </ItemGroup>
 
  <!--Projektreferenzen-->
  <ItemGroup>
@@ -42,25 +24,20 @@
   <ProjectReference Include="..\MLBlazorRCL\MLBlazorRCL.csproj" />
   <ProjectReference Include="..\SamplesRCL\SamplesRCL.csproj" />
  </ItemGroup>
- 
+
  <ItemGroup>
   <!--Zusätzliche NuGet-Pakete von Microsoft -->
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.*" />
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="7.0.*" />
-  <!--Zusätzliche NuGetPakete von Anderen-->
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.10.0" />
-  <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
-  <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
-  <PackageReference Include="Blazored.Toast" Version="4.1.0" />
-  <PackageReference Include="UAParser" Version="3.1.47" />
-  <PackageReference Include="Radzen.Blazor" Version="4.11.0" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="9.0.*" />
+  <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
  </ItemGroup>
- 
- <ItemGroup>
-   <Folder Include="Properties\PublishProfiles\" />
-   <Folder Include="Properties\ServiceDependencies\" />
-   <Folder Include="wwwroot\Files\" />
- </ItemGroup>
+
+ <!--Für Hot Reload-->
+ <!--<ItemGroup>
+  <Watch Include="..\SamplesRCL\*.csproj" />
+  <Watch Include="..\SamplesRCL\**.razor" />
+  <Watch Include="..\SamplesRCL\***.cs" />
+  <Watch Remove="..\SamplesRCL\bin*" />
+  <Watch Remove="..\SamplesRCL\obj**" />
+ </ItemGroup>-->
 
 </Project>

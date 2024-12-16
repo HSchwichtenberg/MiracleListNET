@@ -1,35 +1,30 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
+
  <PropertyGroup Label="Globals">
   <SccProjectName>SAK</SccProjectName>
   <SccProvider>SAK</SccProvider>
   <SccAuxPath>SAK</SccAuxPath>
   <SccLocalPath>SAK</SccLocalPath>
-  <InformationalVersion>7.19.0.0-10/27/2023 20:00:58</InformationalVersion>
  </PropertyGroup>
 
  <PropertyGroup>
-  <TargetFramework>net7.0</TargetFramework>
   <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-
   <AssemblyName>Miraclelist_WebAPI</AssemblyName>
   <OutputType>Exe</OutputType>
   <PackageId>Miraclelist</PackageId>
-
   <CodeAnalysisRuleSet>..\..\rules.ruleset</CodeAnalysisRuleSet>
   <Description>Backend for MiracleList (Sample Application)</Description>
-
-  <Authors>Dr. Holger Schwichtenberg</Authors>
-
-  <Version>7.19.0.0</Version>
-  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
-  <AssemblyVersion>7.19.0.0</AssemblyVersion>
-  <FileVersion>7.19.0.0</FileVersion>
-  <Company>www.IT-Visions.de</Company>
-  <PackageReleaseNotes>
-
-  </PackageReleaseNotes>
   <UserSecretsId>17877888-c559-4d28-bbed-c3436690aec2</UserSecretsId>
+ </PropertyGroup>
+
+ <PropertyGroup Condition=" '$(Configuration)' == '' Or '$(Configuration)' == 'Debug'">
+  <EnvironmentName>Development</EnvironmentName>
+ </PropertyGroup>
+
+ <PropertyGroup Condition=" '$(Configuration)' != '' AND '$(Configuration)' != 'Debug' ">
+  <EnvironmentName>Production</EnvironmentName>
  </PropertyGroup>
 
  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -66,14 +61,15 @@
 
  <ItemGroup>
   <!--<PackageReference Include="EntityFrameworkProfiler" Version="5.0.5032" />-->
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.10.0" />
-  <PackageReference Include="ITV.EFCoreUtil" Version="3.1.0" />
-  <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
-  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-  <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-  <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.*" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.*" />
+  <PackageReference Include="ITV.EFCoreUtil" Version="8.*" />
+  <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="9.0.*" />
+  <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.*" />
+  <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+  <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.*" />
+  <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
  </ItemGroup>
 
  <ItemGroup>
@@ -81,7 +77,7 @@
  </ItemGroup>
 
  <ItemGroup>
- 
+
  </ItemGroup>
 
  <ItemGroup>
@@ -95,7 +91,5 @@
    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
  </ItemGroup>
-
-
 
 </Project>

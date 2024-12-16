@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AngleSharpWrappers;
 using BlazorTests.Mocks;
 using ITVisions;
 using ITVisions.Blazor;
@@ -19,7 +18,7 @@ public class ITVButtonTest : TestContext
  public ITVButtonTest()
  {
 
-  Services.AddSingleton<BlazorUtil>(new BlazorUtil(this.JSInterop.JSRuntime, new MockNavigationManager(), null));
+  Services.AddSingleton<BlazorUtil>(new BlazorUtil(this.JSInterop.JSRuntime, new MockNavigationManager()));
  }
  [Fact]
  public void EmptyButton()

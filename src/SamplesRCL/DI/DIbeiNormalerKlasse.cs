@@ -14,7 +14,6 @@ namespace Samples.DI
   private Blazored.LocalStorage.ILocalStorageService localStorage { get; set; }
   private NavigationManager navigationManager { get; set; }
 
-
   // Name of local Storage Key
   const string LocalStorageKey = "MLToken";
 

@@ -146,7 +146,7 @@ Dauer: @Duration
 
   void PrintProgress()
   {
-   Util.Log($"{sb.Length} characters / {sw.ElapsedMilliseconds:###,###,##0} ms / {i:###,###,##0} iterations / { ITVisions.MathUtil.GetUsedRAM()} used");
+   Util.Log($"{sb.Length} characters / {sw.ElapsedMilliseconds:###,###,##0} ms / {i:###,###,##0} iterations / {ITVisions.MathUtil.GetUsedRAM()} used");
   }
 
   try
@@ -176,25 +176,28 @@ Dauer: @Duration
 
 <hr />
 <h2>Fibonacci-Berechnungen</h2>
-
  Anzahl Durchläufe:
 <input @bind="Anzahl" />
 <button @onclick="StartCS">Start (C#)</button>
 <button @onclick="StartJS">Start (JS)</button>
 <br />
-Dauer: @Dauer
+Dauer: @((MarkupString)Dauer)
 <br />
 
-<button @onclick="StartCSAll">Start (C#) 1.000 bis 1.000.000</button>
-<button @onclick="StartJSAll">Start (JS) 1.000 bis 1.000.000</button>
+
+<hr />
+<h2>Fibonacci-Berechnungen (Messreihe)</h2>
+
+<button @onclick="StartCSAll">Start (C#)</button>
+<button @onclick="StartJSAll">Start (JS)</button>
 <br />
 @((MarkupString)DauerAll)
 
 @code {
 
- string Dauer = "";
- string DauerAll = "";
- int Anzahl = 10000;
+ string Dauer { get; set; } = "";
+ string DauerAll { get; set; } = "";
+ int Anzahl { get; set; } = 10000;
 
  public async Task DoEvents()
  {
@@ -217,61 +220,65 @@ Dauer: @Dauer
 
  public async Task StartCSAll()
  {
+  Util.Log("StartCSAll");
   await Task.Run(async () =>
   {
-   DauerAll += "Läuft...<br>";
+   DauerAll += "Läuft mit Blazor " + this.RendererInfo.Name + " auf Plattform " + (System.Environment.OSVersion.Platform == PlatformID.Other ? "Browser" : System.Environment.OSVersion.ToString()) + "...<ul>";
+
+  await DoEvents();
+  Anzahl = 1000;
+  for (int i = 1; i < 6; i++)
+  {
+   Util.Log(Anzahl * 10);
+   await StartCS();
+   DauerAll += Dauer;
+   Util.Log(Anzahl * 10 + "=" + Dauer);
+   Anzahl = Anzahl * 10;
    await DoEvents();
-   Anzahl = 1000;
-   for (int i = 1; i < 6; i++)
-   {
-    await StartCS();
-    DauerAll += Dauer + "<br>";
-    Anzahl = Anzahl * 10;
-    await DoEvents();
-   }
-   DauerAll += "Beendet!<br>";
+  }
+  DauerAll += "</ul>Beendet!<br>";
   });
  }
 
-  public async Task StartJSAll()
+ public async Task StartJSAll()
  {
+  Util.Log("StartJSAll");
   await Task.Run(async () =>
   {
-   DauerAll += "Läuft...<br>";
+   DauerAll += "Läuft mit JavaScript im Browser...<ul>";
    await DoEvents();
    Anzahl = 1000;
    for (int i = 1; i < 6; i++)
    {
     await StartJS();
-    DauerAll += Dauer + "<br>";
+    DauerAll += Dauer;
     Anzahl = Anzahl * 10;
     await DoEvents();
    }
-   DauerAll += "Beendet!<br>";
+   DauerAll += "</ul>Beendet!<br>";
   });
  }
 
  public async Task StartCS()
  {
-  Util.Log("Start... Anzahl C#-Berechnungen=" + Anzahl);
+  Util.Log("Start... Anzahl C#-Berechnungen=" + Anzahl + "<ul>");
   this.Dauer = "Läuft...";
   await DoEvents();
   var ms = new Berechnungen().Start(Anzahl);
   //var mb = ITVisions.MathUtil.GetUsedRAM();
-  this.Dauer = $"{ms} ms für {Anzahl:###,###,##0} C#-Berechnungen";
+  this.Dauer = $"<li>{ms} ms für {Anzahl:###,###,##0} C#-Berechnungen</li>";
   Util.Log("Done: " + this.Dauer);
  }
 
  public async Task StartJS()
  {
-  Util.Log("Start... Anzahl JS-Berechnungen=" + Anzahl);
+  Util.Log("Start... Anzahl JS-Berechnungen=" + Anzahl + "<ul>");
   this.Dauer = "Läuft...";
   await DoEvents();
   var ms = await new Berechnungen().StartJS(JSRuntime, Anzahl);
-  var mb = ITVisions.MathUtil.GetUsedRAM();
-  this.Dauer = $"{ms} ms für {Anzahl:###,###,##0} JS-Berechnungen / {mb}.";
+  // var mb = ITVisions.MathUtil.GetUsedRAM();
+  this.Dauer = $"<li>{ms} ms für {Anzahl:###,###,##0} JS-Berechnungen.</li>";
   Util.Log("Done: " + this.Dauer);
-
  }
 
 }

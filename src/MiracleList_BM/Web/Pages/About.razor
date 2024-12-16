@@ -13,6 +13,14 @@
   @*Dies ist ein Steuerelement aus RCL ITVisions.Blazor*@
   <SystemInfo Assembly="@typeof(Web.App).Assembly"></SystemInfo>
   <b>Managed Thread ID: </b>@System.Threading.Thread.CurrentThread.ManagedThreadId
+
+  <UsedComponents Components='
+                  (new SortedDictionary<string, Type>() {
+                 {"BlazorWebView",typeof(Microsoft.AspNetCore.Components.WebView.Maui.BlazorWebView)},
+                 {"MessagePack",typeof(MessagePack.MessagePackSerializer)},
+})
+'></UsedComponents>
+
   <h2>Backend-Server</h2>
   @ServerUrl
   <br />
@@ -33,6 +41,7 @@
 
 
 @code {
+
  public string ServerUrl { get; set; }
  public string ServerAppVersion { get; set; } = "Server-Version: unknown";
  public string ServerFramework { get; set; } = "Server-Framework: unknown";

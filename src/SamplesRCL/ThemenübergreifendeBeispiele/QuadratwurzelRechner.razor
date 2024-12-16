@@ -1,0 +1,163 @@
+﻿@page "/Samples/ThemenübergreifendeBeispiele/QuadratwurzelRechner"
+@page "/Samples/QuadratwurzelRechner"
+@inject BlazorUtil Util
+
+@code {
+
+ // Komponenten-Parameter via [Parameter]
+ [Parameter]
+ public double x { get; set; } = 0;
+
+ [Parameter]
+ public EventCallback<(double x, double result)> newResult { get; set; }
+
+ // Zustand der Komponente
+ string author { get; set; } = "(C) <a href='https://www.dotnet-doktor.de'>Dr. Holger Schwichtenberg</a>";
+ string href = "https://www.IT-Visions.de";
+ const string name = "Quadratwurzelrechner in Blazor";
+ string headline = name + " " + typeof(ComponentBase).Assembly.GetName().Version.ToString();
+
+ // Berechnete Werte
+ double result => Math.Sqrt(x);
+
+ // Menge, die an Oberflächen gebunden wird
+ System.Collections.Generic.Dictionary<double, double> all = new();
+
+ // Benutzerereignis 1: Eingabezahl hat sich geändert -> Komponentenereignis auslösen
+ void newNumber()
+ {
+  Util.Log("newNumber: " + x);
+  newResult.InvokeAsync((x: x, result: result));
+ }
+
+ // Benutzerereignis 2: Merken
+ void save()
+ {
+  all[x] = Math.Round(result, 2);
+ }
+
+ // Benutzerereignis 3: Nächsten Wert merken
+ void increment()
+ {
+  x++;
+  newNumber();
+  save();
+ }
+
+ // Lebenszyklusereignis
+ protected override void OnInitialized()
+ {
+  Util.Log(name + ": OnInitialized!");
+  author += " " + DateTime.Now.Year;
+ }
+
+}
+
+<div style="border-style: solid; background-color: lightblue; padding: 10px">
+ <div style="float: right">
+  <a href="@href" title="Link zu Homepage der Firma www.IT-Visions.de">
+   <img align="right" width="200" src="/_content/ITVisions.Blazor/img/www.IT-Visions.de_Logo.png" alt="Logo www.IT-Visions.de" />
+  </a>
+ </div>
+
+ <!-- Ausgabe von Variablen / Interpolation -->
+ <h2>@headline</h2>
+ <h4>@((MarkupString)author)</h4>
+ <br />
+
+ <!-- Formular -->
+ <div>
+  Zahl:
+  <input type="number" @bind="x" @bind:after="newNumber" />
+  Quadratwurzel:
+  <b>@($"{result:#0.00}")</b>
+  <button @onclick=save title="Merkt das Ergebnis">Merken</button>
+  <button @onclick=increment title="Nächster Wert: @(x + 1)"> Nächsten Wert merken </button>
+ </div>
+ <hr />
+
+ <!-- Bedingung -->
+ <div>
+  @if (all.Count > 0)
+  {
+   <h3>@all.Count Ergebnis@(all.Count > 1 ? "se" : ""):</h3>
+  }
+  else
+  {
+   <div>Bisher keine Ergebnisse gemerkt!</div>
+  }
+
+  <!-- Schleife  -->
+  <ul>
+   @{
+    uint index = 0;
+   }
+   @foreach (var entry in all)
+   {
+    <li class="@(entry.Key % 2 == 0 ? "even" : "odd" )" title=@("Eintrag #" + (index+1))>@entry.Key = @($"{entry.Value:#0.00}")</li>
+   }
+  </ul>
+ </div>
+</div>
+
+<!-- Kompomentenbezogenes Styling  -->
+<style>
+ img {
+  width: 150px;
+  margin-bottom: 20px;
+  display: block;
+ }
+
+ li {
+  margin: 2px;
+ }
+
+  li::marker {
+   color: red;
+  }
+
+ .even {
+  color: green;
+ }
+
+ .odd {
+  color: blue;
+ }
+
+ input {
+  font-weight: 500;
+  font-size: 1em;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 5px;
+  text-align: center;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  width: 100px;
+  height: 30px;
+ }
+
+ button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.25s;
+ }
+
+  button:hover {
+   border-color: #646cff;
+  }
+
+  button:focus,
+  button:focus-visible {
+   outline: 4px auto -webkit-focus-ring-color;
+  }
+</style>

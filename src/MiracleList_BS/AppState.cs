@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using BL;
-using BO;
 using ITVisions;
 using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
@@ -10,8 +8,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using MiracleList;
 
 namespace Web;
@@ -36,7 +32,7 @@ public class AppState : IAppState
    if (String.IsNullOrEmpty(BackendURL)) return "";
    var csb = new SqlConnectionStringBuilder(BackendURL);
    var server = csb.DataSource;
-   if (server.ToLower().Contains("windows.net")) server = "AZURE SQL DB";
+   if (server.Contains("windows.net", StringComparison.OrdinalIgnoreCase)) server = "AZURE SQL DB";
    return server;
   }
  }
@@ -74,7 +70,15 @@ public class AppState : IAppState
   this.util = util;
   this.configuration = configuration;
 
-  signalRHubURL = this.NavigationManager.ToAbsoluteUri("/MLHub").ToString();
+  try
+  {
+   signalRHubURL = this.NavigationManager?.ToAbsoluteUri("/MLHub")?.ToString();
+
+  }
+  catch (Exception)
+  {
+
+  }
 
   try
   {
@@ -84,13 +88,14 @@ public class AppState : IAppState
    {
     Console.WriteLine("Lade connectionString: " + s.Key);
     var server = new Microsoft.Data.SqlClient.SqlConnectionStringBuilder(s.Value).DataSource;
-    if (server.ToLower().Contains("windows.net")) server = "AZURE SQL DB";
+    if (server.Contains("windows.net", StringComparison.OrdinalIgnoreCase)) server = "AZURE SQL DB";
     ConnectionStrings.Add(server, s.Value);
    }
   }
   catch (Exception)
   {
   }
+
 
   var filesPath = Path.Combine(host.WebRootPath, "Files");
   try

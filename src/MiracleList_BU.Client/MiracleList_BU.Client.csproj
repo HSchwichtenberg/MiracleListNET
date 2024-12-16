@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
+
+ <!--Weitere App-Metadaten -->
+ <PropertyGroup>
+  <Description>Blazor Web App (Blazor United) Version of the MiracleList Web Frontend</Description>
+ </PropertyGroup>
+ 
+ <!--Compilereinstellungen-->
+ <PropertyGroup>
+  <ImplicitUsings>enable</ImplicitUsings>
+  <RootNamespace>Web.Client</RootNamespace>
+  <Nullable>enable</Nullable>
+  <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+  <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+ </PropertyGroup>
+ <ItemGroup>
+   <Compile Include="..\MiracleList_BW\Authentication\MLAuthenticationStateProvider3Tier.cs" Link="Authentication\MLAuthenticationStateProvider3Tier.cs" />
+ </ItemGroup>
+
+ <!--NuGet-Pakete-->
+ <ItemGroup>
+  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.*" />
+
+ </ItemGroup>
+
+ <!--Projektreferenzen-->
+ <ItemGroup>
+  <ProjectReference Include="..\MiracleList_Interfaces\MiracleList_Interfaces.csproj" />
+  <ProjectReference Include="..\BO\BO.csproj" />
+  <ProjectReference Include="..\ITVisions.Blazor\ITVisions.Blazor.csproj" />
+  <ProjectReference Include="..\MiracleListAPI_Proxy\MiracleListAPI_Proxy.csproj" />
+  <ProjectReference Include="..\MLBlazorRCL\MLBlazorRCL.csproj" />
+  <ProjectReference Include="..\SamplesRCL\SamplesRCL.csproj" />
+ </ItemGroup>
+ <ItemGroup>
+   <Folder Include="Authentication\" />
+ </ItemGroup>
+
+ <!--Lazy Loading-->
+ <!--<ItemGroup>
+  <BlazorWebAssemblyLazyLoad Include="SamplesRCL.wasm" />
+ </ItemGroup>-->
+ 
+</Project>

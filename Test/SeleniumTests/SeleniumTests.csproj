@@ -1,50 +1,51 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <IsPackable>false</IsPackable>
-    <Version>7.19.0.0</Version>
-    <AssemblyVersion>7.19.0.0</AssemblyVersion>
-    <FileVersion>7.19.0.0</FileVersion>
-  <InformationalVersion>7.19.0.0-10/27/2023 20:01:04</InformationalVersion></PropertyGroup>
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
 
-  <ItemGroup>
-    <None Remove="appsettings.json" />
-  </ItemGroup>
+ <PropertyGroup>
+  <TargetFramework>net8.0</TargetFramework>
+  <IsPackable>false</IsPackable>
+  <IsTestProject>true</IsTestProject>
+ </PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+ <ItemGroup>
+  <None Remove="appsettings.json" />
+ </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="DotNetSeleniumExtras.PageObjects" Version="3.11.0" />
-    <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.*" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="7.0.*" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.*" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.*" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.*" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
-    <PackageReference Include="Selenium.Firefox.WebDriver" Version="0.27.0" />
-    <PackageReference Include="Selenium.Microsoft.Webdriver2" Version="2.0.10586.1" />
-    <PackageReference Include="Selenium.Support" Version="4.9.1" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="113.0.5672.6300" />
-  </ItemGroup>
+ <ItemGroup>
+  <Content Include="appsettings.json">
+   <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
+ </ItemGroup>
 
-  <ItemGroup>
-    <None Update="MicrosoftWebDriver.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="VideoRecording.runsettings">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Webdriver\MicrosoftWebDriver.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+ <ItemGroup>
+  <PackageReference Include="DotNetSeleniumExtras.PageObjects" Version="3.11.*" />
+  <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="9.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.*" />
+  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+  <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.*" />
+  <PackageReference Include="MSTest.TestAdapter" Version="3.*" />
+  <PackageReference Include="MSTest.TestFramework" Version="3.*" />
+  <PackageReference Include="Selenium.Firefox.WebDriver" Version="0.27.*" />
+  <PackageReference Include="Selenium.Microsoft.Webdriver2" Version="2.0.*" />
+  <PackageReference Include="Selenium.Support" Version="4.27.0" />
+  <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="131.0.6778.10800" />
+  <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+ </ItemGroup>
+
+ <ItemGroup>
+  <None Update="MicrosoftWebDriver.exe">
+   <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+  <None Update="VideoRecording.runsettings">
+   <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+  <None Update="Webdriver\MicrosoftWebDriver.exe">
+   <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+ </ItemGroup>
 
 </Project>

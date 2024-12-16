@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace ITVisions.Blazor
 {
 
- 
  /// <summary>
  /// Hilfsklasse für Blazor WebAssembly und Blazor Server
  /// </summary>
@@ -18,7 +17,7 @@ namespace ITVisions.Blazor
   public async Task SetTitle(string text)
   {
    if (_jsRuntime == null) return;
-   Log("SetTitle " + text);
+   //Log("SetTitle " + text);
    await _jsRuntime.InvokeVoidAsync("SetTitle", text);
   }
 

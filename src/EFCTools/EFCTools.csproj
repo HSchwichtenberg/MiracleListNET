@@ -1,47 +1,41 @@
 <Project Sdk="Microsoft.NET.Sdk">
+ 
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
-  <Version>7.19.0.0</Version><AssemblyVersion>7.19.0.0</AssemblyVersion><FileVersion>7.19.0.0</FileVersion><InformationalVersion>7.19.0.0-10/27/2023 20:00:58</InformationalVersion><Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright></PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="appsettings.Development.json" />
-    <None Remove="appsettings.json" />
-  </ItemGroup>
-
+ <PropertyGroup>
+  <OutputType>Exe</OutputType>
+  <UserSecretsId>d55ee155-d9fb-45e8-ba22-1d187e149ed6</UserSecretsId>
+ </PropertyGroup>
 
  <ItemGroup>
-  <PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.1.134.7" />
-  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="7.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.*">
+  <PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.3.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="9.0.*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.*">
    <PrivateAssets>all</PrivateAssets>
    <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
   </PackageReference>
-  <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.*" />
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.10.0" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.*" />
+  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.*" />
+
  </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="appsettings.Development.json">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
+ <ItemGroup>
+  <Content Include="appsettings.Development.json">
+   <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+  </Content>
+  <Content Include="appsettings.json">
+   <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+   <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+  </Content>
+ </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BL\BL.csproj" />
-    <ProjectReference Include="..\BO\BO.csproj" />
-  </ItemGroup>
-
-
-
-
+ <ItemGroup>
+  <ProjectReference Include="..\BL\BL.csproj" />
+  <ProjectReference Include="..\BO\BO.csproj" />
+ </ItemGroup>
 
 </Project>

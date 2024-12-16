@@ -1,13 +1,31 @@
-﻿@page "/Samples/Komponentenhost_Zahl"
+﻿@page "/Samples/Komponentenhost_ValueType"
 @using ITVisions.Blazor
 @inject BlazorUtil Util
 <h3>Komponentenhost</h3>
 
-<CounterPanel StartValue="@Startwert" ValueHasChanged="NewValueArrived"  />
-
 <p>
  Diese Razor Component <b>@this.GetType().FullName</b> kommt aus der DLL: <b><text>@System.Reflection.Assembly.GetExecutingAssembly().GetName().Name</text>.dll</b>!
 </p>
+
+<h4>Einbettung einer Komponente mit Attribut="Wert"</h4>
+
+@code {
+ int startwert = 40;
+}
+
+<CounterPanel StartValue="42" ValueHasChanged="NewValueArrived" />
+<CounterPanel StartValue="@Startwert" ValueHasChanged="NewValueArrived" />
+<CounterPanel StartValue=@(startwert+2) ValueHasChanged="NewValueArrived" />
+
+<h4>Einbettung einer Komponente / Kurzform mit Attribut=@@(Wert)</h4>
+
+<CounterPanel StartValue=@(42) ValueHasChanged=@NewValueArrived />
+<CounterPanel StartValue=@startwert ValueHasChanged="NewValueArrived" />
+<CounterPanel StartValue="@(startwert+2)" ValueHasChanged="NewValueArrived" />
+
+<h4>Einbettung einer Komponente / gemischte Sytax</h4>
+
+<CounterPanel StartValue="@startwert" ValueHasChanged=@NewValueArrived />
 
 <p>
  Die eingebettete Komponente liefert den Wert: @Counter

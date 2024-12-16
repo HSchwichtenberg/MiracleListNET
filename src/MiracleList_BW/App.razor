@@ -4,7 +4,6 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Services
 
 @inject NavigationManager NavigationManager
-
 @inject LazyAssemblyLoader LazyAssemblyLoader
 
 <CascadingAuthenticationState>
@@ -57,18 +56,22 @@
 </CascadingAuthenticationState>
 
 @code {
- private List<Assembly> lazyLoadedAssemblies = new() { typeof(MLBlazorRCL.MainView.Main).Assembly };
+ // Samples.SamplesList nurDafuerDaWeilBlazorWebAssemblyIrgendeineDirekteNutzungBraucht = new();
+
+ private List<Assembly> lazyLoadedAssemblies = new() { 
+  typeof(MLBlazorRCL.MainView.Main).Assembly
+  , typeof(Samples.SamplesList).Assembly };
 
  private async Task OnNavigateAsync(NavigationContext args)
  {
   Console.WriteLine("OnNavigateAsync: " + args.Path);
   // Alle Pfade /Samples/ liegen in MLBlazorRCL.dl
   // Aber es gibt in /Samples_BW und /Samples_BS in den Hauptprojekten!
-  if (args.Path.Contains("Samples/", System.StringComparison.CurrentCultureIgnoreCase) || args.Path.Contains("SamplesList", System.StringComparison.CurrentCultureIgnoreCase))
-  {
-   Console.WriteLine("Lazy Loading SamplesRCL.dll...");
-   var a = await LazyAssemblyLoader.LoadAssembliesAsync(new string[] { "SamplesRCL.dll" });
-   lazyLoadedAssemblies.AddRange(a);
-  }
+  // if (args.Path.Contains("Samples/", System.StringComparison.CurrentCultureIgnoreCase) || args.Path.Contains("SamplesList", System.StringComparison.CurrentCultureIgnoreCase))
+  // {
+  //  Console.WriteLine("Lazy Loading SamplesRCL.dll...");
+  //  var a = await LazyAssemblyLoader.LoadAssembliesAsync(new string[] { "SamplesRCL.dll" });
+  //  lazyLoadedAssemblies.AddRange(a);
+  // }
  }
 }

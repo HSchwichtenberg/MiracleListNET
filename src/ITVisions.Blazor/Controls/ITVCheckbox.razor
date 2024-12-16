@@ -1,34 +1,22 @@
-﻿
-<div class="form-group form-check">
- <InputCheckbox class="form-check-input bigCheckbox" @bind-Value="Value" />
+﻿<div class="form-check">
+ <InputCheckbox class="form-check-input bigCheckbox" @bind-Value="Value" @bind-Value:after="()=>ValueChanged.InvokeAsync(Value)" />
  <label @onclick="ChangeCheckboxState" class="form-check-label bigCheckboxLabel">@((MarkupString)Label)</label>
 </div>
 
-
 @code {
 
- private Boolean value;
+ #region Unterstützung für @bind-Value
+ [Parameter]
+ public Boolean Value { get; set; }
 
  [Parameter]
- public string Label { get; set; }
+ public EventCallback<Boolean> ValueChanged { get; set; }
+ #endregion
 
 #pragma warning disable BL0007 // "should be auto property" unterdrücken
  [Parameter]
- public Boolean Value
- {
-  get => value;
-  set
-  {
-   if (this.value == value) return;
-
-   this.value = value;
-   ValueChanged.InvokeAsync(value);
-  }
- }
+ public string Label { get; set; }
 
  void ChangeCheckboxState() => Value = !Value;
- 
- [Parameter]
- public EventCallback<Boolean> ValueChanged { get; set; }
 
 }

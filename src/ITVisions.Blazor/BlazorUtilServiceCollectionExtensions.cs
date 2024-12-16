@@ -16,7 +16,7 @@ public static class BlazorUtilServiceCollectionExtensions
 
  public static IServiceCollection AddBlazorUtil(this IServiceCollection services)
  {
-  services.AddScoped<IHttpContextAccessor, HttpContextAccessorDummy>();
+  //TODO: services.AddScoped<IHttpContextAccessor, HttpContextAccessorDummy>();
   services.AddBlazorUtilForBlazorServer();
   return services;
  }

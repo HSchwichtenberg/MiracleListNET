@@ -2,14 +2,12 @@
 using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Blazor.Extensions.Logging;
 using Blazored.LocalStorage;
 using Blazored.Toast;
 using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using MiracleList;
@@ -29,6 +27,10 @@ public class Program
   Console.WriteLine("Blazor WebAssembly Main()");
   Console.WriteLine(System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription);
   Console.WriteLine("App-Version: " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
+
+#if FEATURE_WASM_THREADS
+Console.WriteLine("WASM Multi-Threading ist aktiv!");
+#endif
 
   var builder = WebAssemblyHostBuilder.CreateDefault(args);
   builder.RootComponents.Add<App>("#app");

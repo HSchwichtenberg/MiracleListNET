@@ -1,0 +1,46 @@
+﻿@inject NavigationManager NavigationManager
+
+<Router AppAssembly="@typeof(_Imports).Assembly" AdditionalAssemblies="new[] { typeof(MLBlazorRCL.Login.Login).Assembly, typeof(Samples.SamplesList).Assembly }">
+
+ <Navigating>
+  <div class="spinner">
+     <div class="rect1"></div>
+     <div class="rect2"></div>
+     <div class="rect3"></div>
+     <div class="rect4"></div>
+     <div class="rect5"></div>
+    </div>
+  <h2 style="text-align:center">Loading...</h2>
+ </Navigating>
+
+ <Found Context="routeData">
+  <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MLBlazorRCL.Layout.MainLayout)">
+
+   <Authorizing>
+    <div class="spinner">
+     <div class="rect1"></div>
+     <div class="rect2"></div>
+     <div class="rect3"></div>
+     <div class="rect4"></div>
+     <div class="rect5"></div>
+    </div>
+    <h2 style="text-align:center">Authorizing...</h2>
+   </Authorizing>
+
+   <NotAuthorized>
+    @{
+    NavigationManager.NavigateTo("/");
+    }
+   </NotAuthorized>
+
+  </AuthorizeRouteView>
+  <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+
+ </Found>
+
+ <NotFound>
+  <PageTitle>Not found</PageTitle>
+  <h1>Sorry, Page not found :-(</h1>
+ </NotFound>
+
+</Router>

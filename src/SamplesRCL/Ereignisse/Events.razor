@@ -14,29 +14,71 @@
   liste = Enumerable.Range(start, 10);
  }
 }
-<ul>
-  @for(int i=1; i < 5; i++)
-  {
-    <li @onclick="()=>Klick(i)">@i</li>
-  }
-</ul>
-<h1>@Auswahl</h1>
-
-@code{
-  public int Auswahl { get; set; }
-
-  void Klick(int x)
-  {
-    Auswahl = x;
-  }
-
-}
-
-<hr />
 
 <div class="bg-primary">
  <h3>
   Ereignisbehandlung / Basiswissen
+ </h3>
+</div>
+
+X:
+<input id="X" type="number" @bind="X" />
+Y:
+<input id="Y" type="number" @bind="Y" />
+
+<button @onclick="Add">Add x + y</button>
+<button @onclick="AddAsync">AddAsync x + y</button>
+<button @onclick="()=>Add()">Add x + y</button>
+<button @onclick="()=>AddAsync()">AddAsync x + y</button>
+<button onclick="AddJS()">Add per JavaScript</button>
+
+@* Nicht möglich, das Ereignis per JS und ebenso per C# zu behandeln! <button onclick="AddJS()" @onclick="Add" >Add per JavaScript und C#</button> *@
+
+
+Sum: <span id="Sum">@Sum</span>
+
+@code
+{
+ public decimal X { get; set; } = 1.23m;
+ public decimal Y { get; set; } = 2.34m;
+
+ public decimal Sum = 0;
+
+
+ public void Add()
+ {
+  Sum = X + Y;
+  Util.Log($"Add(): x={X} y={Y} sum={Sum}");
+  X = Sum;
+ }
+
+ public async Task AddAsync()
+ {
+  Sum = X + Y;
+  Util.Log($"AddAsync(): x={X} y={Y} sum={Sum}");
+  X = Sum;
+  await Util.Alert("Neuer Wert:" + Sum);
+ }
+}
+
+<script>
+
+// Das ist keine gute Idee, mit JS auf die gleichen UI-Elemente zuzugreifen, die auch von C# verwendet werden!!!
+function AddJS()
+{
+  var x = document.getElementById("X").value;
+  var y = document.getElementById("Y").value;
+  sum = parseFloat(x) + parseFloat(y);
+  document.getElementById("Sum").innerHTML = sum;
+  document.getElementById("X").value = sum;
+  console.log(`AddJS(): x=${x} y=${y} sum=${sum} !`);
+ }
+</script>
+
+
+<div class="bg-primary">
+ <h3>
+  Ereignisbehandlung im Schleifen
  </h3>
 </div>
 <div class="alert alert-warning"> @Ausgabe</div>
@@ -57,7 +99,7 @@
   <ul>
    @foreach (var i in liste)
    {
-       @*<li @onclick="() => KlickB2(i)">@i</li>*@
+    @*<li @onclick="() => KlickB2(i)">@i</li>*@
     <li @onclick="async () => await KlickB2Async(i)">@i</li>
     @*<li @onclick="new Action(() => KlickB2(i))">@i</li>*@
 
@@ -93,7 +135,7 @@
 
  async Task SaveAsync()
  {
-  // TODO: irgendwas :-)
+  // irgendwas machen hier :-)
  }
 }
 
@@ -105,7 +147,6 @@
  int start2 = 10;
  IEnumerable<int> liste2 = Enumerable.Range(start2, 10);
 }
-
 
 <div class="bg-primary">
  <h3>
@@ -303,12 +344,40 @@ Zähler 4: @counter4
   while (MausEreignisse.Count > 10) { MausEreignisse.Dequeue(); }
   MausEreignisse.Enqueue($"{MausEreignisseCount:0000} {DateTime.Now.ToLongTimeString()}: {s}");
  }
-
 }
-
 
 <h4>Ausgabe:</h4>
 @((MarkupString)(String.Join("<br>", MausEreignisse)))
+
+@*-----------------------------------------------------------------------------------------*@
+<div class="bg-primary">
+ <h3>
+  Dialogereignisse
+ </h3>
+</div>
+
+@* <dialog open="true" @onopen="IsOpen" @onclose="IsClosed">
+  <p>Greetings, one and all!</p>
+  <form method="dialog">
+    <button>OK</button>
+  </form>
+</dialog>
+ *@
+
+
+ @code {
+ void IsOpen()
+ {
+  Util.Log("IsOpen");
+ }
+
+ void IsClosed()
+ {
+  Util.Log("IsClosed");
+ }
+
+ }
+
 @*-----------------------------------------------------------------------------------------*@
 <div class="bg-primary">
  <h3>

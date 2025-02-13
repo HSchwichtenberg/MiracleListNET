@@ -57,7 +57,7 @@
   <PackageReference Include="Blazored.SessionStorage" Version="2.4.*" />
   <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.*" />
   <PackageReference Include="UAParser" Version="3.1.*" />
-  <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
  </ItemGroup>
 
  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">

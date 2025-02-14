@@ -20,7 +20,7 @@
   <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.*" />
   <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="9.0.*" />
   <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.*" />
-  <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+  <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.*" />
   <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.*" />
   <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.*" />
   <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.*" />
@@ -35,7 +35,7 @@
   <PackageReference Include="Blazored.LocalStorage" Version="4.*" />
   <PackageReference Include="Blazored.Toast" Version="4.*" />
   <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
-  <PackageReference Include="Radzen.Blazor" Version="6.0.1" />
+  <PackageReference Include="Radzen.Blazor" Version="6.0.*" />
 
   <!--Fix Pakethölle-->
   <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.*" />

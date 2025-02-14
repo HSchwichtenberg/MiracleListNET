@@ -33,4 +33,9 @@
   <!--Nur kritische NuGet-Sicherheits-Warnungen-->
  </PropertyGroup>
  
+ <!--Für neuen Roslyn C# Tokenizer in Blazor-->
+ <PropertyGroup>
+  <Features>use-roslyn-tokenizer;$(Features)</Features>
+ </PropertyGroup>
+ 
 </Project>

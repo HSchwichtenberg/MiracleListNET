@@ -13,15 +13,15 @@ namespace Web;
 /// </summary>
 public class AppState : IAppState
 {
- public string Token { get; set; }
- public string Username { get; set; }
- public string BackendURL { get; set; }
+ public string? Token { get; set; }
+ public string? Username { get; set; }
+ public string? BackendURL { get; set; }
 
  public string BackendDisplayName => BackendURL ?? "";
  public string ClientID => this.configuration["Backend:ClientID"] ?? "";
 
- public string SignalRHubURL { get; set; }
- public HubConnection HubConnection { get; set; }
+ public string? SignalRHubURL { get; set; }
+ public HubConnection? HubConnection { get; set; }
 
  public string CurrentUserDirectoryAbsolutePath { get; }
  public string CurrentUserDirectoryRelativePath { get; }

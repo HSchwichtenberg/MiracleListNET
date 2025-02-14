@@ -1,5 +1,4 @@
-﻿using System.Net.NetworkInformation;
-using Microsoft.AspNetCore.SignalR.Client;
+﻿using Microsoft.AspNetCore.SignalR.Client;
 
 namespace MiracleList;
 
@@ -32,11 +31,11 @@ public interface IAppState
  string? GetBackendByKey(string key)
  {
   var backend = GetBackendSet().Where(x => x.Key == key);
-  if (backend == null || backend.Count() == 0) { return null; };
+  if (backend == null || backend.Count() == 0) { return null; }
+  ;
   return backend.ElementAt(0).Value;
  }
 
  public HubConnection? HubConnection { get; set; }
-
 
 }

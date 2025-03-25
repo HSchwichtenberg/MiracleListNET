@@ -124,10 +124,57 @@ window.requestPermission = (head, text) => {
 };
 // Desktop Notification zeigen
 window.showNotification = (head, text) => {
- console.log("showNotification", head, text);
+ console.log("showNotificationSW", head, text);
  var img = '/_content/ITVisions.Blazor/ITVisions.jpg';
- var notification = new Notification(head, { body: text, icon: img });
+/* var notification = new Notification(head, { body: text, icon: img });*/
+
+ navigator.serviceWorker.register(pathToServiceWorkerScript)
+  .then(function (registration) {
+   registration.showNotification(title, options);
+  });
+
  return true;
+};
+
+window.notificationHelper = {
+ requestPermission: async function () {
+  if (!('Notification' in window)) {
+   console.warn("Benachrichtigungen werden nicht unterstützt.");
+   return false;
+  }
+
+  let permission = await Notification.requestPermission();
+  return permission === 'granted';
+ },
+
+ registerServiceWorker: async function () {
+  if ('serviceWorker' in navigator) {
+   try {
+    let registration = await navigator.serviceWorker.register('/sw.js');
+    console.log("Service Worker registriert:", registration);
+    return registration;
+   } catch (error) {
+    console.error("Service Worker Registrierung fehlgeschlagen:", error);
+   }
+  }
+ },
+
+ showNotification: async function (title, options) {
+  if (!('serviceWorker' in navigator)) return;
+
+  let permission = await Notification.requestPermission();
+  if (permission !== 'granted') {
+   console.warn("Benachrichtigungen nicht erlaubt.");
+   return;
+  }
+
+  let registration = await navigator.serviceWorker.getRegistration();
+  if (registration) {
+   registration.showNotification(title, options);
+  } else {
+   console.warn("Kein Service Worker registriert.");
+  }
+ }
 };
 
 // #end region

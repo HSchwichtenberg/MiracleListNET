@@ -16,18 +16,18 @@
 
  <!--Versionen-->
  <PropertyGroup>
-  <Version>9.3.0.2</Version>
-  <AssemblyVersion>9.3.0.2</AssemblyVersion>
-  <FileVersion>9.3.0.2</FileVersion>
-  <InformationalVersion>9.3.0.2</InformationalVersion>
+  <Version>9.3.0.8</Version>
+  <AssemblyVersion>9.3.0.8</AssemblyVersion>
+  <FileVersion>9.3.0.8</FileVersion>
+  <InformationalVersion>9.3.0.8</InformationalVersion>
  </PropertyGroup>
 
  <!--Autor-->
  <PropertyGroup>
-  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2024</Copyright>
+  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2025</Copyright>
   <Authors>Dr. Holger Schwichtenberg</Authors>
   <Company>www.IT-Visions.de</Company>
-  <Product>www.IT-Visions-de Blazor Utltities</Product>
+  <Product>www.IT-Visions-de Blazor Utilities</Product>
   <!--<PackageIcon>ITVisions.jpg</PackageIcon>-->
   <Description>
    Hilfsklassen für Blazor inkl. JavaScript-Datei

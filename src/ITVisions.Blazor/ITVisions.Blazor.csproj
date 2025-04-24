@@ -16,10 +16,10 @@
 
  <!--Versionen-->
  <PropertyGroup>
-  <Version>9.3.0.8</Version>
-  <AssemblyVersion>9.3.0.8</AssemblyVersion>
-  <FileVersion>9.3.0.8</FileVersion>
-  <InformationalVersion>9.3.0.8</InformationalVersion>
+  <Version>9.6.0.0</Version>
+  <AssemblyVersion>9.6.0.0</AssemblyVersion>
+  <FileVersion>9.6.0.0</FileVersion>
+  <InformationalVersion>9.6.0.0</InformationalVersion>
  </PropertyGroup>
 
  <!--Autor-->
@@ -66,6 +66,7 @@
   <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.*" />
   <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.*" />
   <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="9.*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.*" />
   <PackageReference Include="Microsoft.JSInterop" Version="9.*" />
  </ItemGroup>
  
@@ -75,6 +76,7 @@
   <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.*" />
   <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.*" />
   <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="8.*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.*" />
   <PackageReference Include="Microsoft.JSInterop" Version="8.*" />
  </ItemGroup>
 

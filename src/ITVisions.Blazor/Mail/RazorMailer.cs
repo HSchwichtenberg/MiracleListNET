@@ -23,7 +23,7 @@ public class RazorMailer
   IServiceCollection services = new ServiceCollection();
   services.AddLogging((loggingBuilder) => loggingBuilder
         .SetMinimumLevel(LogLevel.Trace)
-        .AddConsole()
+        //.AddConsole()
         );
 
   services.AddScoped<BlazorUtil>(); // nur nötig, weil einige Komponenten auch im UI verwendet werden

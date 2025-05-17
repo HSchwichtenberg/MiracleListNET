@@ -64,7 +64,7 @@
 
    if (this.filesToUpload != null && this.filesToUpload.Count > 0)
    {
-    <ITVButton class="btn btn-primary">@(TextGenerator.TextGen.SingularPlural(this.filesToUpload.Count, "Datei", this.filesToUpload.Count + " Dateien nun hochladen"))</ITVButton >
+    <ITVButton class="btn btn-primary">@(TextGenerator.TextGen.SingularPlural(this.filesToUpload.Count, "Datei", this.filesToUpload.Count + " Dateien") + " nun hochladen")</ITVButton >
    }
   }
  }

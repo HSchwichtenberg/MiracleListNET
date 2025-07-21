@@ -1,5 +1,5 @@
 ﻿Hilfskomponenten und Hilfsfunktionen für Blazor
-(C) Dr. Holger Schwichtenberg, www.IT-Visions.de, 2001-2024
+(C) Dr. Holger Schwichtenberg, www.IT-Visions.de, 2001-2025
 
 # Hinweis
 

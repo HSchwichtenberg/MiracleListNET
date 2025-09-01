@@ -178,7 +178,6 @@ public class Startup
   services.AddRazorComponents();
   #endregion
 
-
   #region Enable CORS 
   services.AddCors();
   #endregion

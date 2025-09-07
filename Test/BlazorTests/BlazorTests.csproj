@@ -11,12 +11,12 @@
  <ItemGroup>
   <PackageReference Include="Blazored.LocalStorage" Version="4.*" />
   <PackageReference Include="bunit" Version="1.*" />
-  <PackageReference Include="JustMock" Version="2025.1.211.365" />
+  <PackageReference Include="JustMock" Version="2025.*" />
   <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.*" />
-  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
   <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   <PackageReference Include="xunit" Version="2.*" />
-  <PackageReference Include="xunit.runner.visualstudio" Version="3.0.2">
+  <PackageReference Include="xunit.runner.visualstudio" Version="3.*">
    <PrivateAssets>all</PrivateAssets>
    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
   </PackageReference>

@@ -148,7 +148,6 @@ public class Startup
   #endregion
 
   #region DI
-
   services.AddScoped(typeof(MiracleListEnvInfo));
   #endregion
 

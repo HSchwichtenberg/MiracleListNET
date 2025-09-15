@@ -3,11 +3,14 @@ using DeepEqual.Syntax;
 using Microsoft.VisualStudio.TestPlatform.Utilities;
 using MiracleList;
 
-namespace WebserviceTests;
+namespace WebserviceTests.Integration.WebAPI.Proxy;
 
-public class WebAPITests
+/// <summary>
+/// Testet das WebAPI-Backend über die generierten Proxy-Klasse
+/// </summary>
+public class MiracleListProxyTest
 {
- public WebAPITests()
+ public MiracleListProxyTest()
  {
   Proxy = new MiracleListProxy(new HttpClient());
   Proxy.BackendUrl = "http://miraclelistbackend.azurewebsites.net"; // "http://localhost:8889/";
@@ -43,7 +46,6 @@ public class WebAPITests
   Assert.Equal(12, categorySet.Select(c => c.TaskSet.Count).Sum());
 
  }
-
 
  [Fact]
  public async Task ChangeTask()

@@ -4,7 +4,7 @@ using MiracleList;
 using MiracleList_Backend.Hubs;
 using Xunit.Abstractions;
 
-namespace WebserviceTests;
+namespace WebserviceTests.Integration.SignalR;
 
 public class SignalRTests
 {

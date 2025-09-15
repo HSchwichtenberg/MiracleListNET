@@ -11,9 +11,11 @@
 
  <ItemGroup>
   <ProjectReference Include="..\..\src\MiracleListAPI_Proxy\MiracleListAPI_Proxy.csproj" />
+  <ProjectReference Include="..\..\src\MiracleList_Backend\MiracleList_Backend.csproj" />
  </ItemGroup>
  
  <ItemGroup>
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
   <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
   <PackageReference Include="xunit" Version="2.*" />
   <PackageReference Include="DeepEqual" Version="5.*" />
@@ -28,6 +30,7 @@
   </PackageReference>
   <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.*" />
   <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="9.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.*" />
  </ItemGroup>
 
 </Project>

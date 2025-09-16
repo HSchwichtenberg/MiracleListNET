@@ -3,7 +3,6 @@ using BL;
 using BO;
 using Xunit;
 
-
 // XUNIT: https://xunit.github.io/docs/getting-started-dotnet-core.html
 
 namespace UnitTests
@@ -74,7 +73,6 @@ namespace UnitTests
    Assert.True(cset.Count == 4);
    Assert.All<Category>(cset, x => Assert.Equal(x.UserID, um.CurrentUser.UserID));
   }
-
 
   // DEMO: 70. Unit Tests mit XUnit
   /// <summary>

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using BL;
+﻿using BL;
 using BO;
 using Xunit;
 

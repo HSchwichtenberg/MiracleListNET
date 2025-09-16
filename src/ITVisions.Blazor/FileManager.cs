@@ -12,7 +12,7 @@ public class FileManager
 
  public int GetFileCount(string path, Guid guid)
  {
-  var files = new FileManager().GetFiles(path, guid);
+  var files = GetFiles(path, guid);
   if (files == null) return 0;
   return files.Where(f => !f.Name.EndsWith(".comment")).ToList().Count;
  }

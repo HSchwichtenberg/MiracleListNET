@@ -80,8 +80,6 @@
   <PackageReference Include="Microsoft.JSInterop" Version="8.*" />
  </ItemGroup>
 
-
-
  <!--Dateien-->
  <ItemGroup>
   <None Remove="ITVisions.jpg" />

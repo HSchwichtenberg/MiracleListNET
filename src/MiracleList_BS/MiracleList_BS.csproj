@@ -27,7 +27,7 @@
 
  <ItemGroup>
   <!--Zusätzliche NuGet-Pakete von Microsoft -->
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="9.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="10.0.*-*" />
   <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
  </ItemGroup>
 

@@ -80,9 +80,7 @@ namespace UnitTests
   public void CreateTaskDueInDaysTest()
   {
    Skip.If(Util.IsInMemory, "Only runs as integration test as the InMem-DB does not support Computed Columns!");
-
    BO.Task t = CreateTaskDueIn3Days();
-
    Assert.Equal(3, t.DueInDays);// Computed Column Test: not supported in InMem-DB
   }
 
@@ -91,9 +89,7 @@ namespace UnitTests
   public void DefaultTitleTest()
   {
    Skip.If(Util.IsInMemory, "Only runs as integration test as the InMem-DB does not support Default Values!");
-
    BO.Task t = CreateTaskDueIn3Days();
-
    Assert.Equal(BO.Task.DefaultTitle, t.Title); // Default Value Test: not supported in InMem-DB
   }
 

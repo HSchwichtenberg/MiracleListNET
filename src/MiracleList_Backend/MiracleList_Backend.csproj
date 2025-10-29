@@ -63,13 +63,13 @@
   <!--<PackageReference Include="EntityFrameworkProfiler" Version="5.0.5032" />-->
   <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.*" />
   <PackageReference Include="ITV.EFCoreUtil" Version="8.*" />
-  <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
+  <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.*" />
   <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="9.0.*" />
-  <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.*" />
-  <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
-  <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.*" />
+  <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.*" />
+  <PackageReference Include="Swashbuckle.AspNetCore" Version="8.*" />
+  <PackageReference Include="System.ComponentModel.Annotations" Version="5.*" />
   <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.*" />
-  <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+  <PackageReference Include="System.Data.SqlClient" Version="4.*" />
  </ItemGroup>
 
  <ItemGroup>

@@ -26,7 +26,7 @@
   <!--für Zeigerprogrammierung erlauben für neue JSinterop seit Blazor WebAssembly 7.0-->
   <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   <!--Optional für AOT-Kompilierung-->
-  <RunAOTCompilation>true</RunAOTCompilation>
+  <!--<RunAOTCompilation>true</RunAOTCompilation>-->
  </PropertyGroup>
 
  <!--Optional Multi-Threading-->

@@ -38,8 +38,18 @@
    @foreach (var f in this.filesToUpload)
    {
     var zugross = f.Size > MaxFileSize;
+    bool Updated = false;
+    string newName = f.Name.Replace(" ", "_");
+    string newFilePath = System.IO.Path.Combine(Path, newName);
+    FileUtil.GetOrCreateDir(new System.IO.FileInfo(newFilePath));
+    if (File.Exists(newFilePath)) { Updated = true; }
 
-    <li style='color:@(zugross ? "red" : "green")'>Datei @f.Name: @(!zugross ? FileUtil.GetMB(f.Size) : " zu groß! Maximium ist " + FileUtil.GetMB(MaxFileSize)) </li>
+    @if (!displayProgress)
+    {
+     <li style='color:@(zugross ? "red" : "black")'>
+      Datei @f.Name (@FileUtil.GetMB(f.Size)) @((MarkupString)(!zugross ? $" ist bereit zum Hochladen. <span class='badge badge-{(Updated ? "info" : "success")}'>{(Updated ? "Aktualisiert" : "Neu")}</span>" : "zu groß!Maximium ist " + FileUtil.GetMB(MaxFileSize) + "."))
+    </li>
+    }
    }
   </ol>
 
@@ -50,7 +60,6 @@
     <div class="form-group">
      Kommentar zu @(this.filesToUpload.Count == 1 ? "dieser Datei" : " diesen " + this.filesToUpload.Count + " Dateien") <span class="ZusatzInfoSmall">optional, max @MaxCommentLength Zeichen</span>
      <textarea @bind="comment" class="form-control" maxlength="@MaxCommentLength" rows="@(MaxCommentLength<200 ? 1 : 2)"></textarea>
-
     </div>
    }
 
@@ -62,7 +71,10 @@
     </div>
    }
 
-   <ITVButton class="btn btn-primary">@(this.filesToUpload.Count == 1 ? "Datei nun hochladen" : this.filesToUpload.Count + " Dateien nun hochladen")</ITVButton>
+   if (this.filesToUpload != null && this.filesToUpload.Count > 0)
+   {
+    <ITVButton class="btn btn-primary">@(TextGenerator.TextGen.SingularPlural(this.filesToUpload.Count, "Datei", this.filesToUpload.Count + " Dateien") + " nun hochladen")</ITVButton >
+   }
   }
  }
 
@@ -220,11 +232,12 @@
 
   foreach (IBrowserFile f in filesToUpload)
   {
+   bool Updated = false;
    Info = "Hochladen der Datei <b>" + f.Name + "</b>...";
    string newName = f.Name.Replace(" ", "_");
    string newFilePath = System.IO.Path.Combine(Path, newName);
    FileUtil.GetOrCreateDir(new System.IO.FileInfo(newFilePath));
-   if (File.Exists(newFilePath)) File.Delete(newFilePath);
+   if (File.Exists(newFilePath)) { File.Delete(newFilePath); Updated = true; }
 
    #region Upload mit Fortschrittsanzeige
    await UploadFile(f, newFilePath);
@@ -242,7 +255,7 @@
    Util.Log("Upload OK: " + f.Name);
    #endregion
 
-   args.UploadedFiles.Add(new FileWithComment() { Name = newName, Comment = commentComplete, Size = f.Size });
+   args.UploadedFiles.Add(new FileWithComment() { Name = newName, Comment = commentComplete, Size = f.Size, Updated = Updated });
 
    if (args.UploadedFiles.Count == 1)
     Info = "Datei <b>" + f.Name + "</b> hochgeladen!";

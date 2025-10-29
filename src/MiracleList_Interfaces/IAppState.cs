@@ -1,5 +1,4 @@
-﻿using System.Net.NetworkInformation;
-using Microsoft.AspNetCore.SignalR.Client;
+﻿using Microsoft.AspNetCore.SignalR.Client;
 
 namespace MiracleList;
 
@@ -8,13 +7,13 @@ namespace MiracleList;
 /// </summary>
 public interface IAppState
 {
- string BackendURL { get; set; }
- string BackendDisplayName { get; }
- string SignalRHubURL { get; set; }
+ string? BackendURL { get; set; }
+ string? BackendDisplayName { get; }
+ string? SignalRHubURL { get; set; }
 
- string ClientID { get; }
- string Username { get; set; }
- string Token { get; set; }
+ string? ClientID { get; }
+ string? Username { get; set; }
+ string? Token { get; set; }
 
  /// <summary>Wird in ML_BS und ML_BD gebraucht für Datei-Upload</summary>
  string CurrentUserDirectoryAbsolutePath { get; }
@@ -29,14 +28,14 @@ public interface IAppState
 
  SortedDictionary<string, string> GetBackendSet(bool includeLocalhost = false);
 
- string GetBackendByKey(string key)
+ string? GetBackendByKey(string key)
  {
   var backend = GetBackendSet().Where(x => x.Key == key);
-  if (backend == null || backend.Count() == 0) { return null; };
+  if (backend == null || backend.Count() == 0) { return null; }
+  ;
   return backend.ElementAt(0).Value;
  }
 
  public HubConnection? HubConnection { get; set; }
-
 
 }

@@ -2,7 +2,6 @@
 
  <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
 
- 
  <PropertyGroup Label="Globals">
   <SccProjectName>SAK</SccProjectName>
   <SccProvider>SAK</SccProvider>
@@ -20,8 +19,8 @@
  </PropertyGroup>
 
  <ItemGroup>
-  <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="2.2.0" />
-  <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
+  <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="2.3.0" />
+  <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.3.0" />
  </ItemGroup>
 
 </Project>

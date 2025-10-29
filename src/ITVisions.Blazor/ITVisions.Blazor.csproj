@@ -4,7 +4,7 @@
 
  <!--Runtime-->
  <PropertyGroup>
-  <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+  <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
  </PropertyGroup>
 
  <!--Namen-->
@@ -16,18 +16,18 @@
 
  <!--Versionen-->
  <PropertyGroup>
-  <Version>9.3.0.2</Version>
-  <AssemblyVersion>9.3.0.2</AssemblyVersion>
-  <FileVersion>9.3.0.2</FileVersion>
-  <InformationalVersion>9.3.0.2</InformationalVersion>
+  <Version>9.7.6.0</Version>
+  <AssemblyVersion>9.7.6.0</AssemblyVersion>
+  <FileVersion>9.7.6.0</FileVersion>
+  <InformationalVersion>9.7.6.0</InformationalVersion>
  </PropertyGroup>
 
  <!--Autor-->
  <PropertyGroup>
-  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2024</Copyright>
+  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2025</Copyright>
   <Authors>Dr. Holger Schwichtenberg</Authors>
   <Company>www.IT-Visions.de</Company>
-  <Product>www.IT-Visions-de Blazor Utltities</Product>
+  <Product>www.IT-Visions-de Blazor Utilities</Product>
   <!--<PackageIcon>ITVisions.jpg</PackageIcon>-->
   <Description>
    Hilfsklassen für Blazor inkl. JavaScript-Datei
@@ -42,6 +42,11 @@
   <PackageOutputPath>H:\DB\NugetHS</PackageOutputPath>
  </PropertyGroup>
 
+	<!--Weil in VK.Web MapStaticAssets nicht funktioniert wegen dem PDFViewer dort :-( -->
+	<PropertyGroup>
+		<StaticWebAssetFingerprintingEnabled>false</StaticWebAssetFingerprintingEnabled>
+	</PropertyGroup>
+
  <!--Package Readme.md File-->
  <PropertyGroup>
   <PackageReadmeFile>readme.md</PackageReadmeFile>
@@ -50,15 +55,24 @@
   <None Include="readme.md" Pack="true" PackagePath="\" />
  </ItemGroup>
 
-
  <!--NuGets-->
  <ItemGroup>
   <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
   <PackageReference Include="Blazored.SessionStorage" Version="2.4.*" />
   <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.*" />
   <PackageReference Include="UAParser" Version="3.1.*" />
-  <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
  </ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="10.*-*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.*-*" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.*-*" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.*-*" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="10.*-*" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.*-*" />
+		<PackageReference Include="Microsoft.JSInterop" Version="10.*-*" />
+	</ItemGroup>
 
  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
   <PackageReference Include="Microsoft.AspNetCore.Components" Version="9.*" />
@@ -66,6 +80,7 @@
   <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.*" />
   <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.*" />
   <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="9.*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.*" />
   <PackageReference Include="Microsoft.JSInterop" Version="9.*" />
  </ItemGroup>
  
@@ -75,10 +90,9 @@
   <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.*" />
   <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.*" />
   <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="8.*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.*" />
   <PackageReference Include="Microsoft.JSInterop" Version="8.*" />
  </ItemGroup>
-
-
 
  <!--Dateien-->
  <ItemGroup>

@@ -148,7 +148,6 @@ public class Startup
   #endregion
 
   #region DI
-
   services.AddScoped(typeof(MiracleListEnvInfo));
   #endregion
 
@@ -177,7 +176,6 @@ public class Startup
   #region Enable Blazor SSR
   services.AddRazorComponents();
   #endregion
-
 
   #region Enable CORS 
   services.AddCors();

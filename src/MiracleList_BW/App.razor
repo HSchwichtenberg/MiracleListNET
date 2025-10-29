@@ -9,7 +9,8 @@
 <CascadingAuthenticationState>
  <Router AppAssembly="typeof(Program).Assembly"
          AdditionalAssemblies="lazyLoadedAssemblies"
-         OnNavigateAsync="@OnNavigateAsync">
+         OnNavigateAsync="@OnNavigateAsync"
+         NotFoundPage="typeof(MLBlazorRCL.NotFound)">
   <Navigating>
    <div>
     <div class="spinner">
@@ -47,10 +48,10 @@
    </AuthorizeRouteView>
   </Found>
 
-  <NotFound>
+ @* Vor .NET 10.0:  <NotFound>
    <PageTitle>Not found</PageTitle>
    <h1>Sorry, Page not found :-(</h1>
-  </NotFound>
+  </NotFound> *@
 
  </Router>
 </CascadingAuthenticationState>

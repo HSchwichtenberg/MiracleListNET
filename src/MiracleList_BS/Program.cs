@@ -77,8 +77,9 @@ public class Program
 
   app.UseHttpsRedirection();
 
-  app.UseAntiforgery();
+   app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true); // ab .NET 10.0. Muss vor UseAntiforgery(); stehen!
 
+  app.UseAntiforgery();
   #region Mehrsprachigkeit
   var supportedCultures = new[] { "en-US", "fr-FR", "de-DE" };
   var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])

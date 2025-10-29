@@ -1,12 +1,9 @@
-using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
 using MiracleList;
 using MiracleList.Util;
-using Xunit;
 
 namespace WebserviceTests.Integration.WebAPI.Backend
 {
@@ -36,14 +33,12 @@ namespace WebserviceTests.Integration.WebAPI.Backend
   [InlineData("/Index")]
   public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
   {
-
    // Act
    var response = await _client.GetAsync(url);
 
    // Assert
    response.EnsureSuccessStatusCode(); // Status Code 200-299
-   Assert.Equal("text/html; charset=utf-8",
-       response.Content.Headers.ContentType.ToString());
+   Assert.Equal("text/html; charset=utf-8", response.Content.Headers.ContentType.ToString());
   }
 
   [Fact]

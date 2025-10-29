@@ -1,0 +1,50 @@
+﻿@using ITVisions.Blazor
+@inject ITVisions.Blazor.BlazorUtil Util
+
+<script type="module" src="@Assets["ReconnectModal.razor.js"]"></script>
+
+<dialog id="components-reconnect-modal" data-nosnippet>
+ <div class="components-reconnect-container">
+  <div class="components-rejoining-animation" aria-hidden="true">
+   <div></div>
+   <div></div>
+  </div>
+  <p class="components-reconnect-first-attempt-visible">
+   @* Rejoining the server... *@
+   Blazor Server hat derzeit keinen Kontakt zum Webserver. Es wird versucht, die Verbindung wiederherzustellen... 
+  </p>
+  <p class="components-reconnect-repeated-attempt-visible">
+   @* Rejoin failed... trying again in <span id="components-seconds-to-next-attempt"></span> seconds. *@
+
+   Verbindungswiederherstellung: Erneuter Versuch in <span id="components-seconds-to-next-attempt"></span> Sekunden.
+  </p>
+  <p class="components-reconnect-failed-visible">
+   @* Failed to rejoin.<br />Please retry or reload the page. *@
+   Blazor Server den Kontakt zum Webserver nicht wiederherstellen können.
+  </p>
+
+  <button id="components-reconnect-button">
+   Erneut verbinden
+  </button>
+  oder 
+  <button onclick="location.reload();">Neustart</button>
+ </div>
+</dialog>
+
+@code
+{
+ protected override void OnInitialized()
+ {
+  Util.Log("ReconnectModal - OnInitialized");
+ }
+
+ protected override void OnParametersSet()
+ {
+  Util.Log("ReconnectModal - OnParametersSet");
+ }
+
+ protected override void OnAfterRender(bool firstRender)
+ {
+  Util.Log("ReconnectModal - OnAfterRender");
+ }
+}

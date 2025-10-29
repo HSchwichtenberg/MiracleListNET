@@ -35,7 +35,7 @@
   var obj = new Softwarearchitekt { Name = "Dr. Holger Schwichtenberg", Website = new Uri("https://www.dotnet-doktor.de"), Geburtsjahr = 1972 };
 
   Console.WriteLine("Ausgabe mit Console.WriteLine");
-  Util.Log("Info-Ausgabe von Blazor " + Util.BlazorType);
+  Util.Log("Info-Ausgabe von Blazor " + this.RendererInfo.Name);
   Util.Log("Info-Ausgabe mit Objekt", obj);
   Util.Log(obj);
   Util.Warn("Dies ist eine Warnung");

@@ -10,11 +10,14 @@
  </PropertyGroup>
 
  <ItemGroup>
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.*" />
+		<PackageReference Include="ITV.AppUtil.NETStandard" Version="9.*" />
   <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.*" />
   <PackageReference Include="Microsoft.Playwright.MSTest" Version="1.*" />
-  <PackageReference Include="MSTest.TestAdapter" Version="4.*" />
-  <PackageReference Include="MSTest.TestFramework" Version="4.*" />
+
+		<!--TODO: Wenn man hier auf 4.* umstellt, wird TestContext nicht mehr gefunden :-( Dokumentation zu dem Breaking Change nicht spontan auffindbar in Google.
+		Auch hier steht die Lösung nicht: https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-mstest-migration-v3-v4-->
+		<PackageReference Include="MSTest.TestAdapter" Version="3.*" />
+  <PackageReference Include="MSTest.TestFramework" Version="3.*" />
   <PackageReference Include="coverlet.collector" Version="6.0.*">
     <PrivateAssets>all</PrivateAssets>
     <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

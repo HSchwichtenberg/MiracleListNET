@@ -34,7 +34,7 @@
    </Grid.ColumnDefinitions>
 
    <Label x:Name="C_Status" Grid.Column="0" TextColor="white" FontSize="9" Margin="10,5,0,0"></Label>
-   <Button x:Name="C_About" Margin="0,5,10,10" Clicked="About_Clicked"  HorizontalOptions="End" Grid.Column="1" Padding="4" Text="About" ToolTipProperties.Text="Opens a dialog with details about this Hybrid App" FontSize="10"></Button>
+   <Button x:Name="C_About" Margin="0,5,10,10" Clicked="About_Clicked" HorizontalOptions="End" Grid.Column="1" Padding="4" Text="About" ToolTipProperties.Text="Opens a dialog with details about this Hybrid App" FontSize="10"></Button>
   </Grid>
 
  </Grid>

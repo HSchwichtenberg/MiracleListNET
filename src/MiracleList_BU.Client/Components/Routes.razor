@@ -6,64 +6,66 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Services
 @inject LazyAssemblyLoader LazyAssemblyLoader
 
-<Router AppAssembly="@typeof(_Imports).Assembly" AdditionalAssemblies="new[] { typeof(Client._Imports).Assembly, typeof(MLBlazorRCL.Login.Login).Assembly, typeof(Samples.SamplesList).Assembly }">
+<Router AppAssembly="@typeof(_Imports).Assembly"
+								AdditionalAssemblies="new[] { typeof(Client._Imports).Assembly, typeof(MLBlazorRCL.Login.Login).Assembly, typeof(Samples.SamplesList).Assembly }"
+								NotFoundPage="typeof(MLBlazorRCL.NotFound)">
 
- <Navigating>
-  <div class="spinner">
-   <div class="rect1"></div>
-   <div class="rect2"></div>
-   <div class="rect3"></div>
-   <div class="rect4"></div>
-   <div class="rect5"></div>
-  </div>
-  <h2 style="text-align:center">Loading...</h2>
- </Navigating>
+	<Navigating>
+		<div class="spinner">
+			<div class="rect1"></div>
+			<div class="rect2"></div>
+			<div class="rect3"></div>
+			<div class="rect4"></div>
+			<div class="rect5"></div>
+		</div>
+		<h2 style="text-align:center">Loading...</h2>
+	</Navigating>
 
- <Found Context="routeData">
-  <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MLBlazorRCL.Layout.MainLayout)">
+	<Found Context="routeData">
+		<AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MLBlazorRCL.Layout.MainLayout)">
 
-   <Authorizing>
-    <div class="spinner">
-     <div class="rect1"></div>
-     <div class="rect2"></div>
-     <div class="rect3"></div>
-     <div class="rect4"></div>
-     <div class="rect5"></div>
-    </div>
-    <h2 style="text-align:center">Authorizing...</h2>
-   </Authorizing>
+			<Authorizing>
+				<div class="spinner">
+					<div class="rect1"></div>
+					<div class="rect2"></div>
+					<div class="rect3"></div>
+					<div class="rect4"></div>
+					<div class="rect5"></div>
+				</div>
+				<h2 style="text-align:center">Authorizing...</h2>
+			</Authorizing>
 
-   <NotAuthorized>
-    @{
-     NavigationManager.NavigateTo("/");
-    }
-   </NotAuthorized>
+			<NotAuthorized>
+				@{
+					NavigationManager.NavigateTo("/");
+				}
+			</NotAuthorized>
 
-  </AuthorizeRouteView>
-  <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+		</AuthorizeRouteView>
+		<FocusOnNavigate RouteData="@routeData" Selector="h1" />
 
- </Found>
+	</Found>
 
- <NotFound>
-  <PageTitle>Not found</PageTitle>
-  <h1>Sorry, Page not found :-(</h1>
- </NotFound>
+@* Vor .NET 10.0:	<NotFound>
+		<PageTitle>Not found</PageTitle>
+		<h1>Sorry, Page not found :-(</h1>
+	</NotFound> *@
 
 </Router>
 
 @code {
- // --------------- Für Lazy Loading
- private List<Assembly> lazyLoadedAssemblies =
-    new List<Assembly>();
+	// --------------- Für Lazy Loading
+	private List<Assembly> lazyLoadedAssemblies =
+				new List<Assembly>();
 
- private async Task OnNavigateAsync(NavigationContext args)
- {
-  Console.WriteLine("OnNavigateAsync: " + args.Path);
-  if (args.Path.Contains("samples", StringComparison.OrdinalIgnoreCase))
-  {
-   Console.WriteLine("Lazy Loading SamplesRCL.wasm...");
-   var assemblies = await LazyAssemblyLoader.LoadAssembliesAsync(new string[] { "SamplesRCL.wasm" });
-   lazyLoadedAssemblies.AddRange(assemblies);
-  }
- }
+	private async Task OnNavigateAsync(NavigationContext args)
+	{
+		Console.WriteLine("OnNavigateAsync: " + args.Path);
+		if (args.Path.Contains("samples", StringComparison.OrdinalIgnoreCase))
+		{
+			Console.WriteLine("Lazy Loading SamplesRCL.wasm...");
+			var assemblies = await LazyAssemblyLoader.LoadAssembliesAsync(new string[] { "SamplesRCL.wasm" });
+			lazyLoadedAssemblies.AddRange(assemblies);
+		}
+	}
 }

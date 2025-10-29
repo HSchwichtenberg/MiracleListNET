@@ -27,6 +27,8 @@
   <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   <!--Optional für AOT-Kompilierung-->
   <!--<RunAOTCompilation>true</RunAOTCompilation>-->
+
+		<WasmEnableStreamingResponse>false</WasmEnableStreamingResponse> <!--ab .NET 10.0 notwendig, da generierter Proxy noch kein Response Streaming nutzt-->
  </PropertyGroup>
 
  <!--Optional Multi-Threading-->

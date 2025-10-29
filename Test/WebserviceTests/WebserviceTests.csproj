@@ -16,11 +16,11 @@
  
  <ItemGroup>
   <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.*" />
   <PackageReference Include="xunit" Version="2.*" />
   <PackageReference Include="DeepEqual" Version="5.*" />
   <PackageReference Include="Xunit.SkippableFact" Version="1.*" />
-  <PackageReference Include="xunit.runner.visualstudio" Version="3.0.2">
+  <PackageReference Include="xunit.runner.visualstudio" Version="3.*">
    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
    <PrivateAssets>all</PrivateAssets>
   </PackageReference>

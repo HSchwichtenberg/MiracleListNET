@@ -47,7 +47,7 @@
   <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.*-*" />
   <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.*-*" />
   <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
+  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.*" />
   <PackageReference Include="NHibernateProfiler.Appender" Version="6.0.*" />
   <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   <PackageReference Include="xunit.runner.visualstudio" Version="3.*">

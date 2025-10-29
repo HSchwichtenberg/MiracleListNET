@@ -20,7 +20,7 @@
   <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.*-*" />
   <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="10.0.*-*" />
   <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.*" />
+  <PackageReference Include="Microsoft.Data.SqlClient" Version="6.*" />
   <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.*-*" />
   <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.*-*" />
   <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.*-*" />

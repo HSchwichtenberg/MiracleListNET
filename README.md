@@ -120,3 +120,9 @@ Die Entwicklerdokumentation zu den fünf MiracleList-Frontends mit Blazor finden
 
 ## Weitere Informationen
 - Website zum MiracleList-Projekt: [www.miraclelist.de](http://www.miraclelist.de)
+
+# Probleme mit Deployment Blazor WebAssemply in Azure
+Assertion at /__w/1/s/src/runtime/src/mono/mono/metadata/assembly.c:2718, condition `<disabled>' not met
+https://github.com/dotnet/runtime/issues/99030
+https://stackoverflow.com/questions/78975701/assertion-at-w-1-s-src-mono-mono-metadata-assembly-c1673-condition-disabl
+

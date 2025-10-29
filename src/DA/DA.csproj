@@ -68,7 +68,6 @@
   <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.*-*" />
   <PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.*" />
   <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-*" />
-  <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
  </ItemGroup>
 
  <ItemGroup>

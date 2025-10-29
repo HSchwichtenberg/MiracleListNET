@@ -16,6 +16,9 @@ public partial class App : Application {
 
  protected override Window CreateWindow(IActivationState? activationState)
  {
-  return new Window(new MainPage(Appstate, HybridSharedState));
+  var w = new Window(new MainPage(Appstate, HybridSharedState));
+  // Setzt den Fenstertitel (nur auf Desktop-OS)
+  w.Title = "MiracleList Blazor MAUI (BM) v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+  return w;
  }
 }

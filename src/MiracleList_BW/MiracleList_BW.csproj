@@ -23,15 +23,19 @@
 
  <!--Speziell für Blazor WebAssembly-->
  <PropertyGroup>
-		<!--Für Fingerprinting der blazor.webassembly.js-->
+		<!-- Für Fingerprinting der blazor.webassembly.js-->
 		<OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
 		
-  <!--für Zeigerprogrammierung erlauben für neue JSinterop seit Blazor WebAssembly 7.0-->
+  <!-- Für Zeigerprogrammierung erlauben für neue JSinterop seit Blazor WebAssembly 7.0-->
   <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-  <!--Optional für AOT-Kompilierung-->
-  <RunAOTCompilation>true</RunAOTCompilation>
 
-		<WasmEnableStreamingResponse>false</WasmEnableStreamingResponse> <!--ab .NET 10.0 notwendig, da generierter Proxy noch kein Response Streaming nutzt-->
+		<!-- Ab .NET 10.0 notwendig, da generierter Proxy noch kein Response Streaming nutzt-->
+		<WasmEnableStreamingResponse>false</WasmEnableStreamingResponse>
+	
+		<!-- Optional für AOT-Kompilierung-->
+		<RunAOTCompilation>true</RunAOTCompilation>
+		<PublishTrimmed>true</PublishTrimmed>
+		<InvariantGlobalization>true</InvariantGlobalization>
  </PropertyGroup>
 
  <!--Optional Multi-Threading-->

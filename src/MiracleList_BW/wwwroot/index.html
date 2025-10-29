@@ -1,6 +1,8 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+ <title>MiracleList_BW -- lädt...</title>
+
  <meta charset="utf-8" />
  <meta http-equiv="X-UA-Compatible" content="IE=edge">
  <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -8,10 +10,8 @@
  <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp" />
  <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin">
 
-
- <title>MiracleList_BW -- lädt...</title>
  <base href="/" />
-
+ <link rel="preload" id="webassembly" /> <!--Für Fingerprinting ab .NET 10.0-->
  <!-- Bundle aller CSS-Dateien, die Razor Components zugeordnet sind-->
  <link rel="stylesheet" href="MiracleList_BW.styles.css" />
 
@@ -36,6 +36,9 @@
  <!-- Für BlazorContextMenu https://github.com/stavroskasidis/BlazorContextMenu -->
  <link rel="stylesheet" href="/_content/Blazor.ContextMenu/blazorContextMenu.min.css" />
  <script src="/_content/Blazor.ContextMenu/blazorContextMenu.min.js"></script>
+
+ <!--Für Fingerprinting ab .NET 10.0-->
+ <script type="importmap"></script>
 </head>
 
  <body>
@@ -58,7 +61,7 @@
    <a class="dismiss">🗙</a>
   </div>
   <!-- Standard-JS-Lib von Microsoft für Blazor WebAssembly -->
-  <script src="_framework/blazor.webassembly.js" autostart="true"></script>
+  <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
 
   <script>
    //Blazor.start({

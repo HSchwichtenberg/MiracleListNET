@@ -23,6 +23,9 @@
 
  <!--Speziell für Blazor WebAssembly-->
  <PropertyGroup>
+		<!--Für Fingerprinting der blazor.webassembly.js-->
+		<OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+		
   <!--für Zeigerprogrammierung erlauben für neue JSinterop seit Blazor WebAssembly 7.0-->
   <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   <!--Optional für AOT-Kompilierung-->
@@ -49,7 +52,6 @@
  <PropertyGroup>
   <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
  </PropertyGroup>
-
 
  <!--Lokalisierung-->
  <PropertyGroup>
@@ -78,7 +80,6 @@
   <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.*-*" />
   <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.*-*" PrivateAssets="all" />
  </ItemGroup>
-
 
  <!--Optional: Native dependencies für Samples_BW/NativeCall.razor und Samples_BW/SQLite -> Verlängert die Kompilierung-->
 

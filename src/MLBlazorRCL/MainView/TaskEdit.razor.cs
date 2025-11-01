@@ -33,7 +33,6 @@ namespace MLBlazorRCL.MainView
 
   public async Task OnBeforeInternalNavigation(LocationChangingContext context)
   {
-
    var isConfirmed = await Util.Confirm("Möchten Sie die Seite verlassen ohne zu speichern?");
 
    if (!isConfirmed)

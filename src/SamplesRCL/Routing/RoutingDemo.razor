@@ -125,7 +125,9 @@
 <a id="ausgabe"></a>
 @((MarkupString)Ausgabe)
 
-<NavigationLock OnBeforeInternalNavigation="ConfirmNavigation" ConfirmExternalNavigation="!AllowNavigation" />
+<NavigationLock 
+ OnBeforeInternalNavigation="ConfirmNavigation" 
+ ConfirmExternalNavigation="!AllowNavigation" />
 
 @code {
  [Inject]

@@ -19,6 +19,12 @@
   <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
  </PropertyGroup>
 
+	<!--Speziell für Blazor WebAssembly-->
+	<PropertyGroup>
+	<!-- Ab .NET 10.0 notwendig, da generierter Proxy noch kein Response Streaming nutzt-->
+	<WasmEnableStreamingResponse>false</WasmEnableStreamingResponse>
+	</PropertyGroup>
+	
 	<!--Eine Datei, die auch in MiracleList_BW verwendet wird-->
 	<ItemGroup>
    <Compile Include="..\MiracleList_BW\Authentication\MLAuthenticationStateProvider3Tier.cs" Link="Authentication\MLAuthenticationStateProvider3Tier.cs" />

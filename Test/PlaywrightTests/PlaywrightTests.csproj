@@ -10,7 +10,7 @@
  </PropertyGroup>
 
  <ItemGroup>
-		<PackageReference Include="ITV.AppUtil.NETStandard" Version="9.*" />
+		<PackageReference Include="ITVisions.Util" Version="10.*" />
   <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.*" />
   <PackageReference Include="Microsoft.Playwright.MSTest" Version="1.*" />
 

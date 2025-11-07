@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Reflection.Metadata;
+using System.Text.RegularExpressions;
 using Microsoft.Playwright;
 using Microsoft.Playwright.MSTest;
 
@@ -123,10 +124,25 @@ public class MiracleListTests : PageTest
   await list.Nth(1).CheckAsync();
   await list.Nth(0).CheckAsync();
 
-  for (int i = 0; i < 3; i++)
+  await Expect(Page.Locator("#col2 ol li input:checked")).ToHaveCountAsync(3);
+
+  var inputs = await list.ElementHandlesAsync();
+  foreach (IElementHandle input in inputs.Take(3))
   {
-   await Expect(Page.Locator("#col2 ol li input").Nth(i)).ToBeCheckedAsync();
+   bool isChecked = await input.IsCheckedAsync();
+   Assert.IsTrue(isChecked, "Input isChecked " + await input.GetAttributeAsync("ID"));
+
+   // ODER per Expect().ToBeCheckedAsync():
+   // Aber leider kann man bei Excpect kein IElementHandle angeben, daher Umweg über Locator
+   var locator = Page.Locator($"#{(await input.GetAttributeAsync("id"))}");
+   await Assertions.Expect(locator).ToBeCheckedAsync();
   }
+
+  // oder:
+  //for (int i = 0; i < 3; i++)
+  //{
+  // await Expect(Page.Locator("#col2 ol li input").Nth(i)).ToBeCheckedAsync();
+  //}
   await Page.ScreenshotAsync(new() { Path = "NachDemAbharken.png" });
   #endregion
 

@@ -46,7 +46,7 @@ namespace DA.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Category");
+                    b.ToTable("Category", (string)null);
                 });
 
             modelBuilder.Entity("BO.Client", b =>
@@ -82,7 +82,7 @@ namespace DA.Migrations
 
                     b.HasKey("ClientID");
 
-                    b.ToTable("Client");
+                    b.ToTable("Client", (string)null);
                 });
 
             modelBuilder.Entity("BO.Log", b =>
@@ -126,7 +126,7 @@ namespace DA.Migrations
 
                     b.HasKey("LogID");
 
-                    b.ToTable("Log");
+                    b.ToTable("Log", (string)null);
                 });
 
             modelBuilder.Entity("BO.SubTask", b =>
@@ -154,7 +154,7 @@ namespace DA.Migrations
 
                     b.HasIndex("TaskID");
 
-                    b.ToTable("SubTask");
+                    b.ToTable("SubTask", (string)null);
                 });
 
             modelBuilder.Entity("BO.Task", b =>
@@ -213,7 +213,7 @@ namespace DA.Migrations
 
                     b.HasIndex("Title", "Due");
 
-                    b.ToTable("Task");
+                    b.ToTable("Task", (string)null);
                 });
 
             modelBuilder.Entity("BO.User", b =>
@@ -260,7 +260,7 @@ namespace DA.Migrations
 
                     b.HasIndex("ClientID");
 
-                    b.ToTable("User");
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("BO.Category", b =>

@@ -12,8 +12,9 @@ public class PlaywrightUtil
 
  /// <summary>
  /// Prüfe, ob alle Kinder (bis auf die letzten n) ein bestimmtes Tag sind
+ /// Zugriff auf die Children ist leider umständlich in Playwright, siehe auch https://github.com/microsoft/playwright/issues/17703 und https://github.com/microsoft/playwright/issues/4845
  /// </summary>
- public static async Task VerifyChilddren(IElementHandle parent, string expectedTag, int tail = 0)
+ public static async Task VerifyChildren(IElementHandle parent, string expectedTag, int tail = 0)
  {
   Assert.IsTrue(await parent.EvaluateAsync<bool>($$"""
    (x) => {
@@ -31,6 +32,7 @@ public class PlaywrightUtil
 
  /// <summary>
  /// Liefere letztes Kind-Tag
+ /// Zugriff auf die Children ist leider umständlich in Playwright, siehe auch https://github.com/microsoft/playwright/issues/17703 und https://github.com/microsoft/playwright/issues/4845
  /// </summary>
  public static async Task<string> GetLastChildTag(IElementHandle parent)
  {

@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SelectListItem = Microsoft.AspNetCore.Mvc.Rendering.SelectListItem;
 
@@ -52,7 +53,7 @@ namespace MiracleList.Pages
    }
   }
   public int Aufrufe { get; set; }
-  public List<SelectListItem> ClientArten { get; set; } = (new List<String>() { "Web-Client", "Desktop-Client", "Mobile Client", "Server-Anwendung" }).Select(s => new SelectListItem { Value = s }).ToList();
+  public List<SelectListItem> ClientArten { get; set; } = (new List<String>() { "Web-Client", "Desktop-Client", "Mobile Client", "Server-Anwendung" }).Select(s => new SelectListItem { Value = s, Text = s }).ToList();
   #endregion
 
   #region Properties für Zwei-Wege-Bindung
@@ -93,9 +94,12 @@ namespace MiracleList.Pages
   //}
 
   private IWebHostEnvironment env; // injected via DI
-  public ClientIDModel(IWebHostEnvironment env)
+  private readonly IConfiguration config; // injected via DI
+
+  public ClientIDModel(IWebHostEnvironment env, IConfiguration config)
   {
    this.env = env;
+   this.config = config;
   }
 
   public void OnGet()
@@ -194,21 +198,20 @@ namespace MiracleList.Pages
    }
 
    c.Memo = s;
-   var cm = new ClientManager();
 
+   var cm = new ClientManager();
    cm.New(c);
 
    var text =
-    $"Sie erhalten nachstehend Ihre personalisierte Client-ID. Bitte beachten Sie, dass eine Client-ID jederzeit widerrufen werden kann, wenn Sie diese missbrauchen! Bitte beachten Sie die Regeln: https://miraclelistbackend.azurewebsites.net/client\n\n" +
+    $"Sie erhalten nachstehend Ihre personalisierte Client-ID für die Nutzung der WebAPIs auf dem MiracleList-Backend (https://miraclelistbackend.azurewebsites.net).\n\nBitte beachten Sie die Regeln: https://miraclelistbackend.azurewebsites.net/client\n\nBitte beachten Sie, dass eine Client-ID jederzeit widerrufen werden kann, wenn den Zugang missbrauchen!\n\n" +
     $"Name: {c.Name}\n" +
     $"Firma: {c.Company}\n" +
     $"E-Mail: {c.EMail}\n" +
     (!String.IsNullOrEmpty(c.Type) ? $"Typ: {c.Type}\n" : "") +
     $"Client-ID: {c.ClientID}\n\n" +
-    "Sie benötigen eine personalisierte Client-ID, wenn Sie selbst einen Beispiel-Client für das MiracleList-Backend schreiben wollen. Die Client-ID ist als Parameter bei der Login-Operation zu übergeben.\n\nDr. Holger Schwichtenberg, www.IT-Visions.de";
+    "Sie benötigen diese personalisierte Client-ID, wenn Sie selbst einen Beispiel-Client für das MiracleList-Backend schreiben wollen. Die Client-ID ist als Parameter bei der Login-Operation zu übergeben.\n\nDr. Holger Schwichtenberg, www.IT-Visions.de";
 
-   var e1 = new MailUtil().SendMail("do-not-reply@mail.miraclelist.net", EMail, "Client-ID für MiracleList-Backend", text
-     );
+   var e1 = new MailUtil().SendMail(config["EMail:SMTPSender"], EMail, "Ihre Client-ID für MiracleList-Backend", text, false, config["EMail:SMTPCC"], config["EMail:SMTPBCC"]);
 
    new LogManager().Log(Event.ClientCreated, Severity.Information, EMail, "CreateClientID", "", null, this.Request.HttpContext.Connection.RemoteIpAddress.ToString(), text + "\n\n" + s + "E-Mail: " + e1);
 

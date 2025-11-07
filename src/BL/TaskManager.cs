@@ -210,10 +210,9 @@ public class TaskManager : EntityManagerBase<Context, BO.Task>
 
  public List<BO.Task> GetImportantTaskSet()
  {
-  // hier müsste kein SQL sein, das könnte man auch per LINQ regeln,
-  // aber ich will zeigen, dass SQL nicht mit InMem-DB geht ;-)
+  // hier müsste kein SQL sein, das könnte man natürlich auch per LINQ implementieren,
+  // aber ich will zeigen, dass SQL bei Unit Tests nicht mit InMemory-DB geht ;-)
   var r = ctx.TaskSet.FromSqlRaw("Select * from [task] where importance = 1").OrderByDescending(x => x.Created).Take(10).ToList();
-
   return r;
  }
 

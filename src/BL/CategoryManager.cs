@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BO;
 using DA;
 using ITVisions.EFCore;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 namespace BL
 {
@@ -56,7 +56,7 @@ namespace BL
     this.Remove(c.CategoryID);
    }
   }
-  
+
   public void RemoveCategory(int id)
   {
    ValidateCategory(id);
@@ -74,7 +74,6 @@ namespace BL
    if (cat.UserID != this.userID) throw new UnauthorizedAccessException("Category gehört nicht zu diesem User!");
   }
 
-
   /// <summary>
   /// Reorders the task in one category
   /// </summary>
@@ -91,7 +90,7 @@ namespace BL
    {
     // Suche NUR in den Task der Kategorie nach dem umzusortierenden Task
     var t = cat.TaskSet.SingleOrDefault(x => x.TaskID == id);
-    if (t != null) { t.Order = ++pos;  }
+    if (t != null) { t.Order = ++pos; }
    }
    int erfolgreiche = ctx.SaveChanges();
    return erfolgreiche;

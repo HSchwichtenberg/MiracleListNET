@@ -1,8 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
+ <!--Hinweis: Hier werden eigene Werte statt Directory.Build.props verwendet, da diese (auch in anderen Projekten verwendete!) Komponente unabhängig versioniert wird!-->
+
  <!--Runtime-->
  <PropertyGroup>
-  <TargetFramework>net7.0</TargetFramework>
+  <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
  </PropertyGroup>
 
  <!--Namen-->
@@ -14,65 +16,110 @@
 
  <!--Versionen-->
  <PropertyGroup>
-  <Version>7.17.0.0</Version>
-  <AssemblyVersion>7.17.0.0</AssemblyVersion>
-  <FileVersion>7.17.0.0</FileVersion>
-  <InformationalVersion>7.17.0.0-09/19/2023 20:08:42</InformationalVersion>
+  <Version>10.0.0.0</Version>
+  <AssemblyVersion>10.0.0.0</AssemblyVersion>
+  <FileVersion>10.0.0.0</FileVersion>
+  <InformationalVersion>10.0.0.0</InformationalVersion>
  </PropertyGroup>
 
  <!--Autor-->
  <PropertyGroup>
-  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
+  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2025</Copyright>
   <Authors>Dr. Holger Schwichtenberg</Authors>
   <Company>www.IT-Visions.de</Company>
-  <Product>www.IT-Visions-de Blazor Utltities</Product>
+  <Product>www.IT-Visions-de Blazor Utilities</Product>
   <!--<PackageIcon>ITVisions.jpg</PackageIcon>-->
   <Description>
-   Hilfsklassen für Blazor WebAssembly, Blazor Server und Blazor Desktop inkl. JavaScript-Datei
+   Hilfsklassen für Blazor inkl. JavaScript-Datei
    Startup.cs:  services.AddBlazorUtil(); bzw. AddBlazorUtilForBlazorServer();
-   index.html bzw. _host.cshtml: &lt;script src="/_content/ITVisions.Blazor/BlazorUtil.js"&gt;&lt;/script&gt;
+   index.html bzw. App.razor: &lt;script src="/_content/ITVisions.Blazor/BlazorUtil.js"&gt;&lt;/script&gt;
   </Description>
+ </PropertyGroup>
+
+ <!---Package -->
+ <PropertyGroup Condition="'$(USERNAME)' == 'HS'">
+  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   <PackageOutputPath>H:\DB\NugetHS</PackageOutputPath>
  </PropertyGroup>
 
+	<!--Weil in VK.Web MapStaticAssets nicht funktioniert wegen dem PDFViewer dort :-( -->
+	<PropertyGroup>
+		<StaticWebAssetFingerprintingEnabled>false</StaticWebAssetFingerprintingEnabled>
+	</PropertyGroup>
+
+ <!--Package Readme.md File-->
+ <PropertyGroup>
+  <PackageReadmeFile>readme.md</PackageReadmeFile>
+ </PropertyGroup>
+ <ItemGroup>
+  <None Include="readme.md" Pack="true" PackagePath="\" />
+ </ItemGroup>
+
  <!--NuGets-->
  <ItemGroup>
-  <PackageReference Include="Blazored.LocalStorage" Version="4.4.*" />
+  <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
   <PackageReference Include="Blazored.SessionStorage" Version="2.4.*" />
-  <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.10.0" />
-  <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.*" />
-  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.*" />
-  <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="7.0.*" />
-  <PackageReference Include="Microsoft.JSInterop" Version="7.0.*" />
+  <PackageReference Include="ITVisions.Util" Version="10.*" />
   <PackageReference Include="UAParser" Version="3.1.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+ </ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="10.*-*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.*-*" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.*-*" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.*-*" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="10.*-*" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.*-*" />
+		<PackageReference Include="Microsoft.JSInterop" Version="10.*-*" />
+	</ItemGroup>
+
+ <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+  <PackageReference Include="Microsoft.AspNetCore.Components" Version="9.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.*" />
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="9.*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.*" />
+  <PackageReference Include="Microsoft.JSInterop" Version="9.*" />
+ </ItemGroup>
+ 
+ <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+  <PackageReference Include="Microsoft.AspNetCore.Components" Version="8.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.*" />
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="8.*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.*" />
+  <PackageReference Include="Microsoft.JSInterop" Version="8.*" />
  </ItemGroup>
 
  <!--Dateien-->
  <ItemGroup>
   <None Remove="ITVisions.jpg" />
-  <None Remove="readme.txt" />
   <None Remove="www.IT-Visions.de_Logo.png" />
  </ItemGroup>
  <ItemGroup>
   <Content Include="Controls\ConfirmDialog.razor.js" />
- </ItemGroup>
- <ItemGroup>
-  <EmbeddedResource Include="readme.txt" />
- </ItemGroup>
- <ItemGroup>
-  <None Include="wwwroot\ITVisions.jpg">
-   <Pack>True</Pack>
-   <PackagePath></PackagePath>
-  </None>
+  <Content Include="readme.md" />
  </ItemGroup>
  <ItemGroup>
   <Resource Include="ITVisions.jpg" />
  </ItemGroup>
  <ItemGroup>
-  <Content Update="wwwroot\www.IT-Visions.de_Logo.png">
+  <Content Update="wwwroot\css\bootstrap\bootstrap.min.css">
+   <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+   <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+  </Content>
+  <Content Update="wwwroot\css\bootstrap\bootstrap.min.css.map">
+   <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+   <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+  </Content>
+  <Content Update="wwwroot\img\ITVisions.jpg">
+   <Pack>True</Pack>
+   <PackagePath></PackagePath>
+  </Content>
+  <Content Update="wwwroot\img\www.IT-Visions.de_Logo.png">
    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
  </ItemGroup>

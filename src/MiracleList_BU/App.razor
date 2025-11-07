@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Web.Client
+@using Web.Client.Components
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+ <base href="/" />
+
+ <title>MiracleList_BU / @("v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString())</title>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width" />
+ <base href="/" />
+
+ <!--Bootstrap -->
+ <link rel="stylesheet" href="@Assets["/_content/ITVisions.Blazor/css/bootstrap/bootstrap.min.css"]" />
+ <script src="@Assets["/_content/ITVisions.Blazor/js/jquery.min.js"]"></script>
+ <script src="@Assets[" /_content/ITVisions.Blazor/js/bootstrap.min.js"]" defer></script>
+
+ <!-- Bundle aller CSS-Dateien, die Razor Components zugeordnet sind-->
+ <link rel="stylesheet" href="@Assets["MiracleList_BS.styles.css"]" />
+
+ <!-- Eigenständige CSS-Dateien und ICO-Dateien aus wwwRoot -->
+ <link rel="icon" type="image/vnd.microsoft.icon" href="/_content/MLBlazorRCL/favicon.ico">
+ <link rel="stylesheet" href="@Assets["/_content/MLBlazorRCL/styles.css"]" />
+ <link rel="stylesheet" href="@Assets["/_content/ITVisions.Blazor/css/itvstyles.css"]" />
+
+ <!-- -------- Für Radzen Components -->
+ <link rel="stylesheet" href="@Assets["/_content/Radzen.Blazor/css/default-base.css"]">
+ <script src="@Assets["/_content/Radzen.Blazor/Radzen.Blazor.js"]"></script>
+
+ <!-- -------- Für BlazorContextMenu https://github.com/stavroskasidis/BlazorContextMenu -->
+ <link rel="stylesheet" href="@Assets["/_content/Blazor.ContextMenu/blazorContextMenu.min.css"]" />
+ <script src="@Assets["/_content/Blazor.ContextMenu/blazorContextMenu.min.js"]" ></script>
+
+ <!-- -------- Für BlazorUtil -->
+ <script src="@Assets["/_content/ITVisions.Blazor/BlazorUtil.js"]"></script>
+
+ <!-- -------- Für CHARTIST.JS -->
+ <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+ <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+
+ <ImportMap />
+
+ <HeadOutlet @rendermode="@RenderMode.InteractiveAuto"/>
+</head>
+
+<body>
+ <div class="container-fluid">
+  <Routes @rendermode="@RenderMode.InteractiveAuto" />
+ </div>
+
+  <!-- -------- Allgemeine JS-Lib von Microsoft für Blazor -->
+ <script src="_framework/blazor.web.js"></script>
+</body>
+</html>
+
+@* 
+Render-Modus einstellen bei <HeadOutlet> und <Routes>
+----------------------------------------------------
+@rendermode="InteractiveServer": Static -> Server
+@rendermode="InteractiveWebAssembly": Static -> WebAssembly
+@rendermode="InteractiveAuto": Static -> Server -> WebAssembly
+
+Prerendering abschalten:
+@rendermode="new InteractiveServerRenderMode(prerender: false)"
+@rendermode="new InteractiveServerRenderMode(prerender: false)"
+@rendermode="new InteractiveAutoRenderMode(prerender: false)"
+*@

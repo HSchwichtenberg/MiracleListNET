@@ -35,6 +35,12 @@ namespace ITVisions.Blazor
    var s = await _jsRuntime.InvokeAsync<string>("getCookie");
    return s;
   }
+
+  public async Task SetCookieDetails(string name, object value, int days = 1)
+  {
+   await _jsRuntime.InvokeVoidAsync("setCookieDetails", name, value, days);
+  }
+
   public async Task<bool> SetCookie(string name, object value, bool endless = false)
   {
    if (_jsRuntime == null) return false;
@@ -50,7 +56,6 @@ namespace ITVisions.Blazor
    cookie += "; expires = Fri, 31 Dec 1970 23:59:59 GMT";
    return await _jsRuntime.InvokeAsync<bool>("setCookie", cookie);
   }
-
 
  }
 }

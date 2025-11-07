@@ -1,0 +1,40 @@
+<Project>
+
+ <!--Verwendete .NET-Version-->
+ <PropertyGroup>
+  <TargetFramework>net10.0</TargetFramework>
+ </PropertyGroup>
+
+ <!--App-Version-->
+ <PropertyGroup>
+  <Version>10.0.0</Version>
+  <AssemblyVersion>10.0.0</AssemblyVersion>
+  <FileVersion>10.0.0</FileVersion>
+  <InformationalVersion>10.0.0</InformationalVersion>
+  <ApplicationVersion>10</ApplicationVersion>
+  <ApplicationDisplayVersion>10.0.0</ApplicationDisplayVersion>
+ </PropertyGroup>
+
+ <!--App-Infos-->
+ <PropertyGroup>
+  <Authors>Dr. Holger Schwichtenberg (www.IT-Visions.de)</Authors>
+  <Company>www.IT-Visions.de</Company>
+  <Product>MiracleList</Product>
+  <Copyright>(C) Dr. Holger Schwichtenberg (www.IT-Visions.de)</Copyright>
+  <PackageProjectUrl>https://www.miraclelist.net</PackageProjectUrl>
+  <PackageReleaseNotes>Programmcodebeispiele zum Blazor 10.0-Buch von Dr. Holger Schwichtenberg für Buchversion 10.0.0</PackageReleaseNotes>
+ </PropertyGroup>
+
+ <!--Aktuell keine NuGet-Sicherheits-Warnungen-->
+ <PropertyGroup>
+  <NuGetAudit>false</NuGetAudit>
+  <!--<NuGetAuditLevel>critical</NuGetAuditLevel>-->
+  <!--Nur kritische NuGet-Sicherheits-Warnungen-->
+ </PropertyGroup>
+ 
+ <!--Für neuen Roslyn C# Tokenizer in Blazor-->
+ <PropertyGroup>
+  <Features>use-roslyn-tokenizer;$(Features)</Features>
+ </PropertyGroup>
+ 
+</Project>

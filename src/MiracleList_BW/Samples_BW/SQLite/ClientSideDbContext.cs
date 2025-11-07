@@ -1,32 +1,33 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-namespace LocalData;
+﻿//   Verträgt sich nicht mit aktiviertem Multi-Threading in BW :-(
 
-internal class ClientSideDbContext : DbContext
-{
- public DbSet<Log> LogSet { get; set; } = default!;
+//using Microsoft.EntityFrameworkCore;
+//namespace LocalData;
 
- public ClientSideDbContext(DbContextOptions<ClientSideDbContext> options)
-     : base(options)
- {
- }
+//internal class ClientSideDbContext : DbContext
+//{
+// public DbSet<Log> LogSet { get; set; } = default!;
 
- public ClientSideDbContext()
- {
+// public ClientSideDbContext(DbContextOptions<ClientSideDbContext> options)
+//     : base(options)
+// {
+// }
 
- }
+// public ClientSideDbContext()
+// {
 
- protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
- {
-  optionsBuilder.UseSqlite($"Filename=Log.db");
- }
+// }
+
+// protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+// {
+//  optionsBuilder.UseSqlite($"Filename=Log.db");
+// }
 
 
- protected override void OnModelCreating(ModelBuilder modelBuilder)
- {
-  base.OnModelCreating(modelBuilder);
+// protected override void OnModelCreating(ModelBuilder modelBuilder)
+// {
+//  base.OnModelCreating(modelBuilder);
 
-  modelBuilder.Entity<Log>().HasIndex(nameof(Log.Text));
+//  modelBuilder.Entity<Log>().HasIndex(nameof(Log.Text));
 
- }
-}
+// }
+//}

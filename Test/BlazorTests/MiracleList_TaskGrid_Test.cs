@@ -40,7 +40,7 @@ public class MiracleTaskGridTest : TestContext {
   Services.AddSingleton<IWebHostEnvironment>(new MockWebHostEnvironment());
   Services.AddSingleton<NavigationManager>(new MockNavigationManager(UriBefore));
   //jsMock = Services.AddMockJSRuntime(JSRuntimeMockMode.Loose); // loose is default
-  Services.AddSingleton<BlazorUtil>(new BlazorUtil(this.JSInterop.JSRuntime, new MockNavigationManager(UriBefore), null));
+  Services.AddSingleton<BlazorUtil>(new BlazorUtil(this.JSInterop.JSRuntime, new MockNavigationManager(UriBefore)));
   Services.AddSingleton<AuthenticationStateProvider, MockAuthenticationStateProvider>();
   Services.AddBlazoredLocalStorage(); // ggf. ersetzen durch Mock. Bisher nicht notwendig :-)
   JSInterop.Mode = JSRuntimeMode.Loose; // Loose mode configures the implementation to just return the default value when it receives an invocation that has not been explicitly set up

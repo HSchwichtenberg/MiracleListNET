@@ -1,0 +1,25 @@
+﻿@page "/CircuitList/Aktivitaeten"
+
+<h4>Demo für CreateInboundActivityHandler()</h4>
+<p>
+ Seit Blazor 8.0 bekommt es in der Basisklasse CircuitHandler eine virtuelle Methode CreateInboundActivityHandler(), die jedes Mal aufgerufen wird für jeden Circuit, wenn der Benutzer aktiv war, d.h. irgendeinen Klick, Mausbewegung oder Tastaturanschlag ausführt (sofern an eine Navigation oder Ereignisbehandlung gebunden!). Siehe Browserkonsole!
+</p>
+
+Eingabe zum Testen, ob das eine vom Circuit bemerkte Aktivität ist:
+<br />
+Einfaches @@bind:
+<input type="text" @bind="Eingabe" />
+<br />
+@@bind mit @@onkeydown:
+<input type="text" @bind="Eingabe" @onkeydown="Irgendwas" />
+
+@code
+{
+ string Eingabe { get; set; }
+
+ void Irgendwas()
+ {
+  // CircuitHandler sieht Aktivität, auch wenn hier nix passiert
+ }
+
+}

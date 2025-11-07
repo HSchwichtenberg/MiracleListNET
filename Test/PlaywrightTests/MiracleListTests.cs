@@ -1,8 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using System.Xml;
-using System.Xml.Linq;
-using ITVisions;
-using ITVisions.Reflection;
 using Microsoft.Playwright;
 using Microsoft.Playwright.MSTest;
 
@@ -11,6 +7,7 @@ namespace PlaywrightTests;
 [TestClass]
 public class MiracleListTests : PageTest
 {
+ int anzahlKategorien = 5;
  int anzahlAufgaben = 5;
 
  string anmeldename = "testuser " + DateTime.Now.ToString();
@@ -52,12 +49,12 @@ public class MiracleListTests : PageTest
   //var context = await browser.NewContextAsync();
   #endregion
 
-  string URL = TestContext.Properties["URL"].ToString();
+  string URL = TestContext?.Properties["URL"]?.ToString() ?? "";
   Assert.IsTrue(URL.IsNotNullOrEmpty());
   await Page.GotoAsync(URL);
 
   // Expect a title "to contain" a substring.
-  await Expect(Page).ToHaveTitleAsync(new Regex("MiracleList_BS"));
+  await Expect(Page).ToHaveTitleAsync(new Regex("MiracleList_B"));
 
   // Login-Formular ausfüllen: Suche über Placeholder
   //await Page.GetByPlaceholder("Ihre E-Mail-Adresse").FillAsync(anmeldename);
@@ -92,17 +89,20 @@ public class MiracleListTests : PageTest
 
   // // 1 bis n-1 sind <li> Elemente (Letztes Element ist <input>)
   // Zugriff auf die Children ist leider umständlich in Playwright, siehe auch https://github.com/microsoft/playwright/issues/17703 und https://github.com/microsoft/playwright/issues/4845
-  await PlaywrightUtil.VerifyChilddren(col1List, "li", 1);
+  await PlaywrightUtil.VerifyChildren(col1List, "li", 1);
   Assert.AreEqual("input", await PlaywrightUtil.GetLastChildTag(col1List));
   #endregion
 
-  #region Zwei 2 Kategorien anlegen
+  #region Kategorien anlegen
   int anzKategorienVorher = (await Page.Locator("#categoryCount").InnerTextAsync()).ToInt32();
-  await Page.GetByPlaceholder("Neue Kategorie...").FillAsync("Kat1");
-  await Page.GetByPlaceholder("Neue Kategorie...").PressAsync("Enter");
-  await Page.GetByPlaceholder("Neue Kategorie...").FillAsync("Kat2");
-  await Page.GetByPlaceholder("Neue Kategorie...").PressAsync("Enter");
-  await Expect(Page.Locator("#categoryCount")).ToHaveTextAsync((anzKategorienVorher + 2).ToString());
+  for (int i = 1; i <= anzahlKategorien; i++)
+  {
+   await Page.GetByPlaceholder("Neue Kategorie...").FillAsync($"Testkategorie {i}");
+   await Page.GetByPlaceholder("Neue Kategorie...").PressAsync("Enter");
+   await Expect(Page.Locator("#categoryCount")).ToHaveTextAsync((anzKategorienVorher + i).ToString());
+   // In der neuen Kategorie gibt es erstmal keine Aufgaben
+   await Expect(Page.Locator("#taskCount")).ToHaveTextAsync("0");
+  }
   await Page.ScreenshotAsync(new() { Path = "NachDemAnlegenDerKategorien.png" });
   #endregion
 
@@ -110,7 +110,7 @@ public class MiracleListTests : PageTest
   for (int i = 1; i <= anzahlAufgaben; i++)
   {
    await Expect(Page.Locator("#taskCount")).ToHaveTextAsync((i - 1).ToString());
-   await Page.GetByPlaceholder("Neue Aufgabe...").FillAsync("Aufgabe #" + i);
+   await Page.GetByPlaceholder("Neue Aufgabe...").FillAsync("Testaufgabe #" + i);
    await Page.GetByPlaceholder("Neue Aufgabe...").PressAsync("Enter");
    await Expect(Page.Locator("#taskCount")).ToHaveTextAsync(i.ToString());
   }
@@ -148,7 +148,7 @@ public class MiracleListTests : PageTest
 
   await Login();
 
-
+  // Counter vorher merken
   var count = (await Page.Locator("#taskCount").InnerTextAsync()).ToInt32();
 
   // Neue Aufgabe anlegen
@@ -188,7 +188,5 @@ public class MiracleListTests : PageTest
   await Expect(Page.Locator(".list-group-item").Filter(new() { Has = Page.GetByText(aufgabenTitel) }).Locator(".badge")).ToHaveTextAsync("A");
 
   await Page.ScreenshotAsync();
-
-
  }
 }

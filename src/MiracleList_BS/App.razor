@@ -1,36 +1,53 @@
-﻿@inject NavigationManager NavigationManager
+﻿@namespace Web
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+@inject BlazorUtil Util
 
-<CascadingAuthenticationState>
- <Router AppAssembly="typeof(Startup).Assembly"
-         AdditionalAssemblies="new[] { typeof(Samples.RazorSyntax.Listen).Assembly,typeof(MLBlazorRCL.MainView.Main).Assembly }">
-  <Navigating>
-   <div>
-    <p>Loading the requested page...</p>
-   </div>
-  </Navigating>
-  <Found Context="routeData">
-   <AuthorizeRouteView RouteData="@routeData"
-                       DefaultLayout="@typeof(MLBlazorRCL.Layout.MainLayout)">
-    <Authorizing>
-     <div class="spinner">
-      <div class="rect1"></div>
-      <div class="rect2"></div>
-      <div class="rect3"></div>
-      <div class="rect4"></div>
-      <div class="rect5"></div>
-     </div>
-    </Authorizing>
-    <NotAuthorized>
-     @{
-      NavigationManager.NavigateTo("/");
-     }
-     @*oder: Sie sind nicht angemeldet und können den Inhalt dieser Seite daher nicht sehen. Bitte melden Sie sich an in der <a href="/Login">Anmeldemaske</a>*@
-    </NotAuthorized>
-   </AuthorizeRouteView>
-  </Found>
-  <NotFound>
-   <h1>Page not found</h1>
-   <p>Sorry, but there's nothing here!</p>
-  </NotFound>
- </Router>
-</CascadingAuthenticationState>
+<!DOCTYPE html>
+<html>
+<head>
+ <title>MiracleList_BS / @("v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString())</title>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width" />
+ <base href="/" />
+
+ <!--Bootstrap -->
+ <link rel="stylesheet" href="@Assets["/_content/ITVisions.Blazor/css/bootstrap/bootstrap.min.css"]" />
+ <script src="@Assets["/_content/ITVisions.Blazor/js/jquery.min.js"]"></script>
+ <script src="@Assets[" /_content/ITVisions.Blazor/js/bootstrap.min.js"]" defer></script>
+
+ <!-- Bundle aller CSS-Dateien, die Razor Components zugeordnet sind-->
+ <link rel="stylesheet" href="@Assets["MiracleList_BS.styles.css"]" />
+
+ <!-- Eigenständige CSS-Dateien und ICO-Dateien aus wwwRoot -->
+ <link rel="icon" type="image/vnd.microsoft.icon" href="/_content/MLBlazorRCL/favicon.ico">
+ <link rel="stylesheet" href="@Assets["/_content/MLBlazorRCL/styles.css"]" />
+ <link rel="stylesheet" href="@Assets["/_content/ITVisions.Blazor/css/itvstyles.css"]" />
+
+ <!-- -------- Für Radzen Components -->
+ <link rel="stylesheet" href="@Assets["/_content/Radzen.Blazor/css/default-base.css"]">
+ <script src="@Assets["/_content/Radzen.Blazor/Radzen.Blazor.js"]"></script>
+
+ <!-- -------- Für BlazorContextMenu https://github.com/stavroskasidis/BlazorContextMenu -->
+ <link rel="stylesheet" href="@Assets["/_content/Blazor.ContextMenu/blazorContextMenu.min.css"]" />
+ <script src="@Assets["/_content/Blazor.ContextMenu/blazorContextMenu.min.js"]"></script>
+
+ <!-- -------- Für BlazorUtil -->
+ <script src="@Assets["/_content/ITVisions.Blazor/BlazorUtil.js"]"></script>
+
+ <!-- -------- Für CHARTIST.JS -->
+ <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+ <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+
+ <ImportMap />
+ <HeadOutlet @rendermode="InteractiveServer" />
+ @* oder ohne Prerendering:<HeadOutlet @rendermode="new InteractiveServerRenderMode(prerender: false)" /> *@
+</head>
+
+<body>
+ <Routes @rendermode="InteractiveServer" />
+ @* oder ohne Prerendering:  <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" /> *@
+ <ReconnectModal /> @* Neu in .NET 10.0 *@ 
+ <!-- -------- Allgemeine JS-Lib von Microsoft für Blazor -->
+ <script src="@Assets["_framework/blazor.web.js"]"></script>
+</body>
+</html>

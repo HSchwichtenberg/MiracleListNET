@@ -8,6 +8,7 @@ using ITVisions;
 using ITVisions.EFCore;
 using ITVisions.Network;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using Z.EntityFramework.Plus;
 
 namespace BL;
@@ -137,7 +138,7 @@ public class UserManager : EntityManagerBase<Context, User>
   if (u != null)
   {
    // Token will be invalid after certain TimeSpan of Inactivity
-   if ((Env.Now - u.LastActivity) > TokenValidity) return null;
+   if (!CreateIfNotExists && (Env.Now - u.LastActivity) > TokenValidity) return null;
    u.LastActivity = Env.Now;
    ctx.SaveChanges();
    return u;
@@ -154,7 +155,7 @@ public class UserManager : EntityManagerBase<Context, User>
  {
   this.StartTracking();
 
-  var u = ctx.UserSet.SingleOrDefault(x => x.UserName.ToLower() == name.ToLower());
+  var u = ctx.UserSet.SingleOrDefault(x => x.UserName.ToLower() == name.ToLower() && x.Deactivated == null);
 
   if (u != null) // username found!
   {
@@ -188,7 +189,7 @@ public class UserManager : EntityManagerBase<Context, User>
    u.PasswordHash = hashObj.HashedText;
    u.Salt = hashObj.Salt;
    u.Created = Env.Now;
-
+  
    Guid clientIDGUID;
    if (Guid.TryParse(clientID, out clientIDGUID))
    {
@@ -333,8 +334,9 @@ Env.Now.AddDays(1), Importance.A, 0.5m, new List<SubTask>() { st1, st2 });
  {
   using (var ctx = new Context())
   {
+   // hier müsste kein SQL sein, das könnte man natürlich auch per LINQ implementieren,
+   // aber ich will zeigen, dass SQL bei Unit Tests nicht mit InMemory-DB geht ;-)
    var r = ctx.UserSet.FromSqlRaw("Select * from [User]").OrderByDescending(x => x.Created).Take(10).ToList();
-
    return r;
   }
  }

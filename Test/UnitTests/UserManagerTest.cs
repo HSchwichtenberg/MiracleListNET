@@ -1,8 +1,7 @@
-﻿using BL;
+﻿using System;
+using BL;
 using BO;
-using System;
 using Xunit;
-
 
 // XUNIT: https://xunit.github.io/docs/getting-started-dotnet-core.html
 
@@ -75,7 +74,6 @@ namespace UnitTests
    Assert.All<Category>(cset, x => Assert.Equal(x.UserID, um.CurrentUser.UserID));
   }
 
-
   // DEMO: 70. Unit Tests mit XUnit
   /// <summary>
   /// Teste Login-Logik
@@ -143,7 +141,7 @@ namespace UnitTests
    // Arrange: Neuen User anlegen!
    var env1 = new DummyEnv(DateTime.Now, "", "");
    var um1 = new UserManager(name, kennwort, "", env1);
-   Assert.NotNull(um1.CurrentUser); 
+   Assert.NotNull(um1.CurrentUser);
    string token = um1.CurrentUser.Token;
    Assert.True(Guid.TryParse(token, out _));
 
@@ -160,10 +158,10 @@ namespace UnitTests
   }
 
   [Theory]
-  [InlineData("test3")]
-  [InlineData("test2")]
-  [InlineData("test1")]
-  public void ExtistingUserTest(string name)
+  [InlineData("testuser3")]
+  [InlineData("testuser2")]
+  [InlineData("testuser1")]
+  public void ExistingUserTest(string name)
   {
    var um = new UserManager(name, true);
    var cm = new CategoryManager(um.CurrentUser.UserID);

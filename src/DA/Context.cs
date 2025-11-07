@@ -71,7 +71,6 @@ namespace DA
      {
       if (Context.ConnectionString.Contains("Ora"))
       {
-       // TODO: Derzeitiges DevArt-Paket nicht kompatibel zu derzeitigen EFC-Version :-(
        builder.UseOracle(Context.ConnectionString);
       }
       else

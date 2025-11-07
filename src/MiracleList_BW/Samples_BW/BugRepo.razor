@@ -1,0 +1,17 @@
+﻿@page "/Samples_BW/BugRepo"
+
+<h3>BUG</h3>
+
+<button @onclick="GetOS">Get OS Info</button>
+
+@OSInfo
+
+@code
+{
+ string OSInfo = "";
+ void GetOS()
+ {
+  OSInfo += (System.Environment.OSVersion.Platform == PlatformID.Other ? "Browser" : System.Environment.OSVersion);
+ }
+
+}

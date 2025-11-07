@@ -1,5 +1,6 @@
-﻿@attribute [Authorize]
+﻿@* @attribute [Authorize] TODO!!! *@
 @inject BlazorUtil Util
+
 @using BO
 @using Microsoft.AspNetCore.Components.Forms
 @using Blazored.FluentValidation @*Install-Package Blazored.FluentValidation*@
@@ -10,7 +11,8 @@
 
  <div style="padding: 0">
   <div>
-   <h4>Task</h4>
+
+    <div class="columnHeadline">Bearbeiten der Aufgabe #@Task.TaskID</div>
 
    <NavigationLock ConfirmExternalNavigation="@true"
                    OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
@@ -19,11 +21,13 @@
     @*<DataAnnotationsValidator />*@
     <FluentValidationValidator />
     <!--Schaltflächen-->
-    <button id="save" type="button" title="Änderungen speichern"
-    @onclick="Save" class="btn btn-success" disabled="@(!editContext.Validate())">
-     <span class="glyphicon glyphicon-floppy-save"></span> <span class="hidden-xs" i18n>Speichern</span>
-    </button>
-    <button id="cancel" type="button" title="Änderungen verwerfen" @onclick="Cancel" class="btn btn-warning"><span class="glyphicon glyphicon-remove"></span> <span class="hidden-xs" i18n>Abbrechen</span></button>
+    <div style="margin-bottom:7px">
+     <button id="save" type="button" title="Änderungen an Aufgabe #@Task.TaskID speichern"
+             @onclick="Save" class="btn btn-success" disabled="@(!editContext.Validate())">
+      <span class="glyphicon glyphicon-floppy-save"></span> <span class="hidden-xs" i18n>Speichern</span>
+     </button>
+     <button id="cancel" type="button" title="Änderungen an Aufgabe #@Task.TaskID verwerfen" @onclick="Cancel" class="btn btn-warning"><span class="glyphicon glyphicon-remove"></span> <span class="hidden-xs" i18n>Abbrechen</span></button>
+    </div>
     <!--Validierungsausgabe-->
     @if (!editContext.Validate())
     {

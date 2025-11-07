@@ -1,6 +1,6 @@
 ﻿//using Xunit;
 
-//namespace MyFirstDotNetCoreTests
+//namespace DemoTests
 //{
 // public class MathTests
 // {

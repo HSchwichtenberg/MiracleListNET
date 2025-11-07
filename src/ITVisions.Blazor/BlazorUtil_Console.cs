@@ -92,6 +92,7 @@ namespace ITVisions.Blazor
 
   public async void Log(string s, LogType typ = LogType.info)
   {
+   System.Diagnostics.Trace.WriteLine(s);
    s = LogPrefix + s;
    var methodToCall = "console." + typ.ToString();
    try

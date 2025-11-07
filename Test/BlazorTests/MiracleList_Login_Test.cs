@@ -46,6 +46,7 @@ namespace MiracleListTests
   private IRenderedComponent<MLBlazorRCL.Login.Login> ArrangeAndAct(string name, string kennwort)
   {
 
+   #region Mocks für DI einrichten
    ctx.JSInterop.Mode = JSRuntimeMode.Loose; // Loose mode configures the implementation to just return the default value when it receives an invocation that has not been explicitly set up https://bunit.dev/docs/test-doubles/emulating-ijsruntime.html
    ctx.Services.AddSingleton<IWebHostEnvironment>(new MockWebHostEnvironment());
    //ctx.Services.AddSingleton<NavigationManager>(new MockNavigationManager(UriBefore));
@@ -68,6 +69,7 @@ namespace MiracleListTests
    //var state = Mock.Create<Task<AuthenticationState>>();
 
    var navMan = Services.GetRequiredService<FakeNavigationManager>();
+   #endregion
 
    var cut = ctx.RenderComponent<MLBlazorRCL.Login.Login>(); // parameters => parameters.Add(p => p.authenticationStateTask, state));
 

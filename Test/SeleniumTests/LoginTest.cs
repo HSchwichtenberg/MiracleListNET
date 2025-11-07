@@ -41,7 +41,7 @@ namespace MiracleListUITests
     b.FindElement(By.Id("password")).SendKeys(kennwort);
 
     // Screenshot!
-    ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot1.png", ScreenshotImageFormat.Png);
+    ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot1.png");
 
     // Button
     b.FindElement(By.Id("login")).Click();
@@ -52,7 +52,7 @@ namespace MiracleListUITests
 
     Assert.IsTrue(b.Url.EndsWith("/main"));
 
-    ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot2.png", ScreenshotImageFormat.Png);
+    ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot2.png");
 
     Assert.IsTrue(b.FindElement(By.Id("LoggedInUser")).Text.Contains(anmeldename));
 

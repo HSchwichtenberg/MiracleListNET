@@ -1,22 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
 
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
-  <Version>7.17.0.0</Version><AssemblyVersion>7.17.0.0</AssemblyVersion><FileVersion>7.17.0.0</FileVersion><InformationalVersion>7.17.0.0-09/19/2023 20:08:43</InformationalVersion></PropertyGroup>
+ <PropertyGroup>
+  <ImplicitUsings>enable</ImplicitUsings>
+  <Nullable>enable</Nullable>
+  <IsPackable>false</IsPackable>
+  <IsTestProject>true</IsTestProject>
+ </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="ITV.AppUtil.NETStandard" Version="9.10.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
-    <PackageReference Include="Microsoft.Playwright.MSTest" Version="1.37.1" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
-    <PackageReference Include="coverlet.collector" Version="3.2.0" />
-  </ItemGroup>
+ <ItemGroup>
+		<PackageReference Include="ITVisions.Util" Version="10.*" />
+  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.*" />
+  <PackageReference Include="Microsoft.Playwright.MSTest" Version="1.*" />
+
+		<!--TODO: Wenn man hier auf 4.* umstellt, wird TestContext nicht mehr gefunden :-( Dokumentation zu dem Breaking Change nicht spontan auffindbar in Google.
+		Auch hier steht die Lösung nicht: https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-mstest-migration-v3-v4-->
+		<PackageReference Include="MSTest.TestAdapter" Version="3.*" />
+  <PackageReference Include="MSTest.TestFramework" Version="3.*" />
+  <PackageReference Include="coverlet.collector" Version="6.0.*">
+    <PrivateAssets>all</PrivateAssets>
+    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+  </PackageReference>
+ </ItemGroup>
 
  <!--Für Playwright-->
  <PropertyGroup>

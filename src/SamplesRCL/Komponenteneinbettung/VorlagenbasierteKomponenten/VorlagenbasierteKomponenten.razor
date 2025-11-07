@@ -3,14 +3,43 @@
 @using ITVisions.Blazor.Controls
 @inject BlazorUtil Util
 
-<h1>Vorlagenbasierte Komponentenvorlagen</h1>
+<h1>Vorlagenbasierte Komponenten</h1>
+
+<h3>ITVCheckbox</h3>
+<ITVCheckbox @bind-Value="Aktiv" Label="Aktiv? Ja oder Nein?" @bind-Value:after="Log"></ITVCheckbox>
+<br />
+Wert: @Aktiv
+
+<h3>ITVInputRadio</h3>
+<InputRadioGroup @bind-Value="Zahl">
+ <ITVInputRadio Value="1" Label="Eins" ValueChanged="Log"></ITVInputRadio>
+ <ITVInputRadio Value="2" Label="Zwei" ValueChanged="Log"></ITVInputRadio>
+ <ITVInputRadio Value="3" Label="Drei" ValueChanged="Log"></ITVInputRadio>
+</InputRadioGroup>
+<br />
+Wert: @Zahl
+
+@code
+{
+ enum Zahlen { Null, Eins, Zwei, Drei}
+
+ bool Aktiv = true;
+ int Zahl = 1;
+
+ void Log()
+ {
+   Util.Log("Aktiv=" + Aktiv + " Zahl=" + Zahl);
+ }
+}
+
 
 <h3>ITVButton (vorlagenbasiert + AdditionalAttributes)</h3>
-
 <p>
 
+ Animationsmindestdauer:
+ <input type="number" @bind-value="animationsDauer" style="width:40px" />
 
-<ITVButton onClick="Aktion" AnimationSeconds="1" class="btn btn-success" title="mit Animation">
+<ITVButton onClick="Aktion" AnimationSeconds="@animationsDauer" class="btn btn-success" title="mit Animation">
  <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
 </ITVButton>
 
@@ -20,21 +49,23 @@
 </p>
 
 <p>
-<ITVButton onClick="AktionMitFehler" AnimationSeconds="1" class="btn btn-danger" title="mit Animation und Fehler ohne Fehlerbehandlung">
+<ITVButton onClick="AktionMitFehler" AnimationSeconds="@animationsDauer" class="btn btn-danger" title="mit Animation und Fehler ohne Fehlerbehandlung">
  <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
 </ITVButton>
 
-<ITVButton onClick="AktionMitFehler" onError='async (ex)=>await Util.Alert("FEHLER: " + ex.Message)' AnimationSeconds="1" class="btn btn-danger" title="mit Animation und Fehler mit Fehlerbehandlung">
+<ITVButton onClick="AktionMitFehler" onError='async (ex)=>await Util.Alert("FEHLER: " + ex.Message)' AnimationSeconds="@animationsDauer" class="btn btn-danger" title="mit Animation und Fehler mit Fehlerbehandlung">
  <span class='glyphicon glyphicon-plus'></span> Wert = @counter - Klick mich!
 </ITVButton>
 </p>
 
 @code
 {
+ byte animationsDauer = 2;
  int counter = 41;
 
  async Task Aktion()
  {
+  counter++;
   counter++;
  }
 
@@ -45,7 +76,6 @@
  }
 }
 
-<br />
 <h3>Expander</h3>
 
 @code

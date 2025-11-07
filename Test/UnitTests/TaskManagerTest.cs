@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Xunit;
+using System.Xml.Linq;
 using BL;
 using BO;
 using DA;
 using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
+using Xunit;
 
 // XUNIT: https://xunit.github.io/docs/getting-started-dotnet-core.html
 
@@ -80,22 +80,16 @@ namespace UnitTests
   public void CreateTaskDueInDaysTest()
   {
    Skip.If(Util.IsInMemory, "Only runs as integration test as the InMem-DB does not support Computed Columns!");
-
    BO.Task t = CreateTaskDueIn3Days();
-
    Assert.Equal(3, t.DueInDays);// Computed Column Test: not supported in InMem-DB
   }
-
-
 
   [SkippableFact] // NUGET: Xunit.SkippableFact https://github.com/AArnott/Xunit.SkippableFact
   [Trait("Category", "Integration")]
   public void DefaultTitleTest()
   {
    Skip.If(Util.IsInMemory, "Only runs as integration test as the InMem-DB does not support Default Values!");
-
    BO.Task t = CreateTaskDueIn3Days();
-
    Assert.Equal(BO.Task.DefaultTitle, t.Title); // Default Value Test: not supported in InMem-DB
   }
 
@@ -146,7 +140,6 @@ subtaskList);
 
   }
 
-
   [Theory]
   [InlineData("Aufgabe1")]
   [InlineData("Aufgabe2")]
@@ -168,7 +161,6 @@ subtaskList);
    Assert.Equal(dat, t.Due);
   }
 
-
   [Theory]
   [InlineData("Aufgabe1")]
   [InlineData("Aufgabe2")]
@@ -188,7 +180,6 @@ subtaskList);
    Assert.NotNull(t);
    Assert.Null(t.Due);
   }
-
 
   [Theory]
   [InlineData("test6")]
@@ -212,7 +203,6 @@ subtaskList);
    // Status sollte nun umgekehrt sein!
    Assert.Equal(!statusBefore, t2.Done);
   }
-
 
   [Theory]
   [InlineData("test6")]

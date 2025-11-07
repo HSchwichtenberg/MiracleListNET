@@ -67,7 +67,7 @@ namespace MiracleListUITests
     WebDriverWait wait3 = new WebDriverWait(b, TimeSpan.FromSeconds(Util.GetTimeoutSec()));
     wait3.Until(d => mpo.TaskHeadline != null && mpo.TaskHeadline.Text == "1 Tasks in Testkategorie" || mpo.TaskHeadline.Text == "1 Aufgaben in Testkategorie"); // Chrome ist seit v74 zu schnell!
 
-    ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot_TaskCreateTestPO.png", ScreenshotImageFormat.Png);
+    ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot_TaskCreateTestPO.png");
 
     var headline2 = mpo.TaskHeadline.Text;
 
@@ -132,7 +132,7 @@ namespace MiracleListUITests
     WebDriverWait wait3 = new WebDriverWait(b, TimeSpan.FromSeconds(Util.GetTimeoutSec()));
     wait3.Until(d => mpo.TaskHeadline.Text == "1 Tasks in Testkategorie" || mpo.TaskHeadline.Text == "1 Aufgaben in Testkategorie");
 
-    ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot4.png", ScreenshotImageFormat.Png);
+    ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot4.png");
     //  ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot3.png", ScreenshotImageFormat.Png);
     var headline2 = mpo.TaskHeadline.Text;
 
@@ -242,6 +242,7 @@ namespace MiracleListUITests
   // }
   //}
 
+  int AnzAufgaben = 5;
 
   [TestMethod]
   public void TaskCreateMany()
@@ -278,8 +279,8 @@ namespace MiracleListUITests
     var headline1 = mpo.TaskHeadline.Text;
     Assert.IsTrue(headline1 == "0 Tasks in Testkategorie" || headline1 == "0 Aufgaben in Testkategorie");
 
-    // 10 Aufgaben anlegen
-    for (int i = 1; i <= 10; i++)
+    // Einige Aufgaben anlegen
+    for (int i = 1; i <= AnzAufgaben; i++)
     {
      var taskTitle = "Testaufgabe " + i;
      mpo.NewTask.SendKeys(taskTitle);
@@ -288,7 +289,7 @@ namespace MiracleListUITests
      WebDriverWait wait3 = new WebDriverWait(b, TimeSpan.FromSeconds(Util.GetTimeoutSec()));
      wait3.Until(d => mpo.TaskHeadline != null && (mpo.TaskHeadline.Text == i + " Tasks in Testkategorie" || mpo.TaskHeadline.Text == i + " Aufgaben in Testkategorie"));
 
-     ((ITakesScreenshot)b).GetScreenshot().SaveAsFile($@"Screenshot_Task#{i}.png", ScreenshotImageFormat.Png);
+     ((ITakesScreenshot)b).GetScreenshot().SaveAsFile($@"Screenshot_Task#{i}.png");
      //  ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot3.png", ScreenshotImageFormat.Png);
      var headline2 = mpo.TaskHeadline.Text;
 

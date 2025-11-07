@@ -19,9 +19,17 @@ namespace ITVisions.Blazor
 
   public async Task<bool> Notification(string head, string text)
   {
-   Log("Notification", head + "/" + text);
-   if (_jsRuntime == null) return false;
-   return await _jsRuntime.InvokeAsync<bool>("showNotification", head, text);
+   try
+   {
+    Log("Notification", head + "/" + text);
+    if (_jsRuntime == null) return false;
+    return await _jsRuntime.InvokeAsync<bool>("showNotification", head, text);
+   }
+   catch (System.Exception ex)
+   {
+    this.Error("Notification: " + ex.Message);
+    return false;
+   }
   }
  }
 }

@@ -1,22 +1,41 @@
-﻿
-<div class="alert @Type alert-dismissible fade show" role="alert">
-  <h4>@Title</h4>
-@Text
+﻿@using ITVisions
+
+<div class="alert @Type.Prefix("alert-") alert-dismissible fade show" role="alert">
+ <h4>@Title</h4>
+
+ @if (ChildContent != null)
+ {
+  @ChildContent
+ }
+ else
+ {
+  @Text
+ }
+
+ @if (AllowClose)
+ {
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
+   <span aria-hidden="true">&times;</span>
   </button>
-</div
+ }
+</div>
 
 
 @code {
 
  [Parameter]
- public string Type { get; set; } = "alert-warning";
+ public bool AllowClose { get; set; } = true;
 
  [Parameter]
- public RenderFragment? Title { get; set; }
+ public string Type { get; set; } = "alert-primary";
 
  [Parameter]
- public RenderFragment? Text { get; set; }
+ public RenderFragment Title { get; set; }
+
+ [Parameter]
+ public RenderFragment Text { get; set; }
+
+ [Parameter]
+ public RenderFragment ChildContent { get; set; }
 
 }

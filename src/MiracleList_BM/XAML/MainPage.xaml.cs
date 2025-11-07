@@ -5,12 +5,14 @@ using MiracleList;
 
 namespace BM;
 
-public partial class MainPage : ContentPage {
+public partial class MainPage : ContentPage
+{
  public HybridSharedState HybridSharedState { get; set; }
  public IAppState AppState { get; set; }
  IDispatcherTimer timer;
 
- public MainPage(IAppState appstate, HybridSharedState hybridSharedState) {
+ public MainPage(IAppState appstate, HybridSharedState hybridSharedState)
+ {
   InitializeComponent();
 
   AppState = appstate;
@@ -25,12 +27,14 @@ public partial class MainPage : ContentPage {
   timer.Start();
 
   // Events des BlazorWebView Controls
-  C_WebView.BlazorWebViewInitializing += (object o, BlazorWebViewInitializingEventArgs e) => {
+  C_WebView.BlazorWebViewInitializing += (object o, BlazorWebViewInitializingEventArgs e) =>
+  {
    //e.EnvironmentOptions = new Microsoft.Web.WebView2.Core.CoreWebView2EnvironmentOptions();
    ////e.EnvironmentOptions.AllowSingleSignOnUsingOSPrimaryAccount = true; // https://github.com/dotnet/maui/issues/5512
   };
 
-  C_WebView.BlazorWebViewInitialized += (object o, BlazorWebViewInitializedEventArgs e) => {
+  C_WebView.BlazorWebViewInitialized += (object o, BlazorWebViewInitializedEventArgs e) =>
+  {
    HybridSharedState.HostControl = e.WebView;
 
    #region ZOOMEN
@@ -58,16 +62,18 @@ public partial class MainPage : ContentPage {
   StatusBarUpdate();
  }
 
- private async void About_Clicked(object sender, EventArgs e) {
+ private async void About_Clicked(object sender, EventArgs e)
+ {
   await DisplayAlert(".NET MAUI-Rahmenanwendung für MiracleList Blazor MAUI", new ITVisions.EnvInfo().GetString(), "OK");
  }
 
- public void StatusBarUpdate() {
+ public void StatusBarUpdate()
+ {
 
 
-  if (this.Width>500) { this.C_Status.FontSize = 13; }
+  if (this.Width > 500) { this.C_Status.FontSize = 13; }
   else { this.C_Status.FontSize = 9; }
-  this.C_Status.Text = $"{System.Runtime.InteropServices.RuntimeInformation.OSDescription} | {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription} | Blazor MAUI {FileVersionInfo.GetVersionInfo(typeof(BlazorWebView).Assembly.Location).FileVersion} | Process #{System.Environment.ProcessId} {System.IO.Path.GetFileName(System.Environment.ProcessPath)} | Thread #{System.Threading.Thread.CurrentThread.ManagedThreadId} | {System.Diagnostics.Process.GetCurrentProcess().WorkingSet64 / 1024 / 1024} MB | {DateTime.Now.ToLongTimeString()} | {(AppState.IsLoggedIn ? AppState.Username : "Kein Benutzer")} | {HybridSharedState.Location ?? "Starting..."}";
+  this.C_Status.Text = $"{System.Runtime.InteropServices.RuntimeInformation.OSDescription} | {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription} | Blazor MAUI {FileVersionInfo.GetVersionInfo(typeof(BlazorWebView).Assembly?.Location)?.FileVersion} | Process #{System.Environment.ProcessId} {System.IO.Path.GetFileName(System.Environment.ProcessPath)} | Thread #{System.Threading.Thread.CurrentThread.ManagedThreadId} | {System.Diagnostics.Process.GetCurrentProcess().WorkingSet64 / 1024 / 1024} MB | {DateTime.Now.ToLongTimeString()} | {(AppState.IsLoggedIn ? AppState.Username : "Kein Benutzer")} | {HybridSharedState.Location ?? "Starting..."}";
 
   // seit .NET 7.0 gibt es auch Tooltips in .NET MAUI
   ToolTipProperties.SetText(this.C_Status, "Letzte Aktualisierung am " + DateTime.Now + " in Thread #" + System.Threading.Thread.CurrentThread.ManagedThreadId);

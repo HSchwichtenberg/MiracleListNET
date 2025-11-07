@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Components.Server.Circuits;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Microsoft.JSInterop;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.Server.Circuits;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
 
 namespace ITVisions.Blazor.Services
 {
@@ -26,11 +26,11 @@ namespace ITVisions.Blazor.Services
   /// </summary>
   public static ConcurrentBag<CircuitInfo> CircuitSet = new ConcurrentBag<CircuitInfo>();
 
-  public CircuitListCircuitHandler(ILogger<CircuitHandler> logger, IJSRuntime jsRuntime, IHttpContextAccessor ca)
+  public CircuitListCircuitHandler(ILogger<CircuitHandler> logger, IJSRuntime jsRuntime) // TODO: , IHttpContextAccessor ca
   {
    this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
    this.jsRuntime = jsRuntime ?? throw new ArgumentNullException(nameof(jsRuntime));
-   this.ca = ca;
+   //this.ca = ca;
    this.logger.LogInformation($"{nameof(Services.CircuitListCircuitHandler)}.ctor");
   }
 
@@ -39,25 +39,21 @@ namespace ITVisions.Blazor.Services
    logger.LogInformation($"{nameof(CircuitListCircuitHandler)}.{nameof(OnCircuitOpenedAsync)}: {circuit.Id}");
 
    var myC = new CircuitInfo(circuit);
+   myC.ClientIP = "n/a";
    try
    {
-    myC.ClientIP = ca.HttpContext.Connection.RemoteIpAddress.ToString();
+    myC.ClientIP = ca?.HttpContext?.Connection?.RemoteIpAddress?.ToString();
    }
-   catch (Exception)
-   {
-    myC.ClientIP = "n/a";
-   }
+   catch (Exception) { }
 
+   myC.ClientBrowser = "n/a";
    try
    {
     var uaParser = UAParser.Parser.GetDefault();
-    var ua = uaParser.Parse(ca.HttpContext.Request.Headers["User-Agent"]);
+    var ua = uaParser.Parse(ca?.HttpContext?.Request?.Headers["User-Agent"]);
     myC.ClientBrowser = ua.UA + " @ " + ua.OS;
    }
-   catch (Exception)
-   {
-    myC.ClientBrowser = "n/a";
-   }
+   catch (Exception) { }
 
    CircuitSet.Add(myC);
 

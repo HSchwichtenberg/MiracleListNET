@@ -7,11 +7,12 @@ using BL;
 using Blazored.LocalStorage; // NuGet Blazor.Extensions.Storage
 using Blazored.Toast;
 using ITVisions.Blazor;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Infrastructure;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebView;
 using Microsoft.AspNetCore.Components.WebView.Wpf;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Web.WebView2.Core;
@@ -48,7 +49,7 @@ public partial class MainWindow : Window
 
   #region Konfigurationsdatei einlesen
   var builder = new ConfigurationBuilder()
-       .SetBasePath(Directory.GetCurrentDirectory())
+       .SetBasePath(System.AppContext.BaseDirectory)
        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .AddUserSecrets(Assembly.GetExecutingAssembly(), true);
   Configuration = builder.Build();
@@ -69,6 +70,11 @@ public partial class MainWindow : Window
   services.AddBlazoredToast();
   services.AddSingleton<IAppState, AppState>();
   services.AddScoped<IMiracleListProxy, MiracleListNoProxy>();
+
+  // Die folgenden beiden DI-Statements sind nur notwendig, weil gemeinsame (!) Razor-Komponenten den PersistentComponentState nutzen,
+  // der in Blazor-Hybrid normalerweise gar nicht gebraucht wird
+  services.AddSingleton<ComponentStatePersistenceManager>();
+  services.AddSingleton<PersistentComponentState>(sp => sp.GetRequiredService<ComponentStatePersistenceManager>().State);
   #endregion
 
   #region DI für Beispiele außerhalb der MiracleList
@@ -130,7 +136,7 @@ public partial class MainWindow : Window
   };
 
   // ggf. Notwendig für MSIX
-  //C_WebView.HostPage = System.AppContext.BaseDirectory + @"\web\wwwroot\index.html"; // für MSIX, sonst einfach: @"web\wwwroot\index.html";
+  C_WebView.HostPage = System.AppContext.BaseDirectory + @"\wwwroot\index.html"; // für MSIX, sonst einfach: @"web\wwwroot\index.html";
 
   // Zeitgesteuerte Aktualisierung der Statusbar
   timer = new System.Windows.Threading.DispatcherTimer();
@@ -165,7 +171,19 @@ public partial class MainWindow : Window
  /// </summary>
  public void StatusBarUpdate()
  {
-  this.C_Status.Content = $"{System.Runtime.InteropServices.RuntimeInformation.OSDescription} | {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription} | Blazor Desktop {FileVersionInfo.GetVersionInfo(typeof(BlazorWebView).Assembly.Location).FileVersion} | " +
+  string blazoprDesktopAssemblyFileVersion = "n/a";
+  try
+  {
+   // Das kann fehlschlagen bei Single-File-Deployment
+   blazoprDesktopAssemblyFileVersion = FileVersionInfo.GetVersionInfo(typeof(BlazorWebView).Assembly.Location).FileVersion;
+  }
+  catch (Exception)
+  {
+
+  }
+
+
+  this.C_Status.Content = $"{System.Runtime.InteropServices.RuntimeInformation.OSDescription} | {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription} | Blazor Desktop {blazoprDesktopAssemblyFileVersion} | " +
     "WebView " + CoreWebView2Environment.GetAvailableBrowserVersionString() + " | " +
    $"Process #{System.Environment.ProcessId} | {System.IO.Path.GetFileName(System.Environment.ProcessPath)} | {System.Diagnostics.Process.GetCurrentProcess().WorkingSet64 / 1024 / 1024} MB | {DateTime.Now.ToLongTimeString()} | {(AppState.IsLoggedIn ? AppState.Username : "Kein Benutzer")} | {HybridSharedState.Location ?? "Starting..."}";
   this.C_Status.ToolTip = "Letzte Aktualisierung in Managed Thread #" + System.Threading.Thread.CurrentThread.ManagedThreadId;

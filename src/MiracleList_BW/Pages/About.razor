@@ -1,6 +1,7 @@
 ﻿@page "/about"
 @using ITVisions.Blazor
 @using ITVisions.Blazor.Controls
+@using MLBlazorRCL.Texts
 @using Microsoft.AspNetCore.Components.WebAssembly.Hosting
 @inject IWebAssemblyHostEnvironment env
 
@@ -17,6 +18,8 @@
   <br />
   <b>Environment:</b> @env.Environment
   
+  <UsedComponents></UsedComponents>
+
   <h2>Backend-Server</h2>
   @ServerUrl
   <br />

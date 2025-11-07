@@ -26,6 +26,8 @@ public class User
 
  public DateTime Created { get; set; } = DateTime.Now;
  public DateTime? LastActivity { get; set; } = DateTime.Now;
+ public DateTime? Deactivated { get; set; } = null;
+
  public string Memo { get; set; }
  public int? MaxTasks { get; set; }
 

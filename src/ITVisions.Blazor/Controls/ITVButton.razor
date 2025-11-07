@@ -57,7 +57,7 @@
   Working = true;
   await UIUpdate();
 
-  // Animation soll min. x Sekunden laufen
+  #region Animation (soll min. x Sekunden laufen)
   if (AnimationSeconds > 0)
   {
    ShowAnimation = true;
@@ -78,7 +78,9 @@
    };
    t.Start();
   }
+  #endregion
 
+  #region Button-Aktion mit Fehlerabfangen
   try
   {
    await onClick.InvokeAsync();
@@ -99,9 +101,9 @@
     await this.InvokeAsync(this.StateHasChanged);
     util.Error(ex.ToString()); 
     await util.Alert(ex.GetFullMessage());
-
    }
   }
+  #endregion
   Working = false;
 
   if (MinDone)

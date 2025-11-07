@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
+
+ <!--Weitere App-Metadaten -->
+ <PropertyGroup>
+  <Description>Blazor Web App (Blazor United) Version of the MiracleList Web Frontend</Description>
+ </PropertyGroup>
+ 
+ <!--Compilereinstellungen-->
+ <PropertyGroup>
+  <RootNamespace>Web</RootNamespace>
+  <Nullable>enable</Nullable>
+  <ImplicitUsings>enable</ImplicitUsings>
+ </PropertyGroup>
+ <ItemGroup>
+   <Compile Include="..\MiracleList_BS\Authentication\MLAuthSchemeHandler.cs" Link="Authentication\MLAuthSchemeHandler.cs" />
+ </ItemGroup>
+
+ <!--Projekte und NuGet-Pakete-->
+ <ItemGroup>
+  <ProjectReference Include="..\MiracleList_BU.Client\MiracleList_BU.Client.csproj" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.*-*" />
+ </ItemGroup>
+ <ItemGroup>
+   <Folder Include="Authentication\" />
+   <Folder Include="wwwroot\" />
+ </ItemGroup>
+
+</Project>

@@ -21,7 +21,7 @@
  private bool? _Value;
 
  [Parameter]
- public bool? Value
+ public bool? Value 
  {
   get => _Value;
   set
@@ -69,7 +69,7 @@
  [JSInvokable]
  public void SetValue(bool? value)
  {
-  util.Log("TriState.SetValue:" + ID + "=" + value);
+  @* util.Log("TriState.SetValue:" + ID + "=" + value); *@
   this.Value = value;
  }
 }

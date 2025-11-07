@@ -1,18 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
- <PropertyGroup>
-  <TargetFramework>net7.0</TargetFramework>
-  <RazorLangVersion>7.0</RazorLangVersion>
-  <Copyright>Dr. Holger Schwichtenberg, www.IT-Visions.de 2019-2023</Copyright>
-  <Version>7.17.0.0</Version>
-  <AssemblyVersion>7.17.0.0</AssemblyVersion>
-  <FileVersion>7.17.0.0</FileVersion>
-  <InformationalVersion>7.17.0.0-09/19/2023 20:08:43</InformationalVersion>
-  <LangVersion>latest</LangVersion>
- </PropertyGroup>
+ <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
 
- <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-  <NoWarn>1701;1702;1998</NoWarn>
+ <!--Compiler-->
+ <PropertyGroup>
+  <NoWarn>1998;HTML00004</NoWarn>
  </PropertyGroup>
 
  <!--Projektreferenzen-->
@@ -24,25 +16,28 @@
 
  <ItemGroup>
   <!--Zusätzliche Pakete von Microsoft-->
-  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.*" />
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.*" />
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="7.0.*" />
-  <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-  <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
-  <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.*" />
-  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
-  <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
-  <PackageReference Include="System.Net.Http.Json" Version="7.0.*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="10.0.*-*" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.*-*" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="10.0.*-*" />
+  <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="10.0.*-*" />
+  <PackageReference Include="Microsoft.Data.SqlClient" Version="6.*" />
+  <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.*-*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.*-*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.*-*" />
+
+  <!--Verträgt sich nicht mit aktiviertem Multi-Threading in BW :-(-->
+  <!--<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.*-*" />-->
 
   <!--Zusätzliche Pakete von Anderen-->
-  <PackageReference Include="Blazor.ContextMenu" Version="1.16.0" />
-  <PackageReference Include="Blazor.Extensions.Logging" Version="2.0.4" />
-  <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
-  <PackageReference Include="Blazored.Toast" Version="4.1.0" />
-  <PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
-  <PackageReference Include="Radzen.Blazor" Version="4.11.0" />
+  <PackageReference Include="Blazor.ContextMenu" Version="2.*" />
+  <PackageReference Include="Blazor.Extensions.Logging" Version="2.*" />
+  <PackageReference Include="Blazored.LocalStorage" Version="4.*" />
+  <PackageReference Include="Blazored.Toast" Version="4.*" />
+  <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
+  <PackageReference Include="Radzen.Blazor" Version="8.1.6" />
 
+  <!--Fix Pakethölle-->
+  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.*-*" />
  </ItemGroup>
 
  <ItemGroup>

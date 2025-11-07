@@ -1,203 +1,226 @@
 ﻿@page "/SamplesList"
 @page "/Samples"
+@inject BlazorUtil Util
 @using ITVisions.Blazor.Controls
 
-<h3>Weitere Blazor-Beispiele aus dem Buch <a href="https://it-visions.de/blazorbuch">'ASP.NET Core Blazor'</a></h3>
+<h3>Weitere Blazor-Beispiele aus dem Buch <a href="https://www.it-visions.de/blazorbuch">'Blazor-Buch'</a> vom <a href="https://www.dotnet-doktor.de/">Dr. Holger Schwichtenberg</a> </h3>
 
-<p>Viele (aber nicht alle) Beispiele aus dem <a href="https://it-visions.de/blazorbuch">Blazor-Buch</a> drehen sich um das <a href="/main">MiracleList-Szenario</a>. Dies hat zwei Gründe:<ul>
+<p>
+ Viele (aber nicht alle) Beispiele aus dem <a href="https://www.it-visions.de/blazorbuch">Blazor-Buch</a> drehen sich um das <a href="/main">MiracleList-Szenario</a>. Dies hat zwei Gründe:
+ <ul>
   <li>Einige Beispiele passen inhaltlich einfach nicht in das Szenario "MiracleList".</li>
   <li>Aus didaktischen Gründen ist es an einigen Stellen geboten, einfachere Beispiele zu behandeln.</li>
  </ul>
- 
- Diese Liste, sortiert nach Buchkapiteln, umfasst die Beispiele, die sich bewusst nicht die Geschäftslogik von MiracleList nutzen, weil sie fachlich nicht zu MiracleList passen oder weil didaktisch besser ist, ein Feature oder Verhalten isoliert darzustellen.</p>
 
-<Card3>
- <Header>Überblick über Blazor</Header>
- <Text>
-  <ul>
-   <li><a href="/Samples/Performance">Performancemessungen</a></li>
-   <li><a href="/Samples/APIs">API-Zugriffe</a></li>
-  </ul>
- </Text>
-</Card3>
+ Diese Liste, sortiert nach Buchkapiteln, umfasst die Beispiele, die sich bewusst nicht die Geschäftslogik von MiracleList nutzen, weil sie fachlich nicht zu MiracleList passen oder weil didaktisch besser ist, ein Feature oder Verhalten isoliert darzustellen.
+</p>
 
-<Card3>
- <Header>Übersetzung und Debugging</Header>
- <Text>
-  <ul>
-   <li><a href="/Samples/Fehler">Debugging</a></li>
-  </ul>
- </Text>
-</Card3>
+<p>Aktueller Rendering-Modus: <b>@this.RendererInfo.Name</b></p>
 
-<Card3>
- <Header>Komponenten (Razor Components)</Header>
- <Text>
-  <ul>
-   <li><a href="/Samples/MarkupFileOnlyComponent">Komponente nur mit .razor-Datei und Inline-Code</a></li>
-   <li><a href="/Samples/CodeBehindVererbung">Code-Behind mit Vererbung</a></li>
-   <li><a href="/Samples/CodeBehindPartielleKlasse">Code-Behind mit partieller Klasse</a></li>
-   <li><a href="/Samples/CodeOnly">Code-Behind nur mit Code</a></li>
-   <li><a href="/Samples/CodeBehindOnlyNonVisual">Nutzung einer nicht-visuellen Komponente</a></li>
-   <li><a href="/Samples/CodeOnly">Komponenten ohne Razor nur aus Programmcode </a></li>
-  </ul>
- </Text>
-</Card3>
+<div class="row">
+ <div class="col-xs-6">
 
+  <Card3>
+   <Header>Überblick über Blazor</Header>
+   <Text>
+    <ul>
+     <li><a href="/Samples/Performance">Performancemessungen</a></li>
+     <li><a href="/Samples/APIs">API-Zugriffe</a></li>
+    </ul>
+   </Text>
+  </Card3>
 
-<Card3>
- <Header>Routing und Navigation</Header>
- <Text>
-  <ul>
-   <li><a href="/Samples/Routing">Routing und Navigation</a></li>
-  </ul>
- </Text>
-</Card3>
+  <Card3>
+   <Header>Übersetzung und Debugging</Header>
+   <Text>
+    <ul>
+     <li><a href="/Samples/Fehler">Debugging</a></li>
+    </ul>
+   </Text>
+  </Card3>
 
+  <Card3>
+   <Header>Komponenten (Razor Components)</Header>
+   <Text>
+    <ul>
+     <li><a href="/Samples/MarkupFileOnlyComponent">Komponente nur mit .razor-Datei und Inline-Code</a></li>
+     <li><a href="/Samples/CodeBehindVererbung">Code-Behind mit Vererbung</a></li>
+     <li><a href="/Samples/CodeBehindPartielleKlasse">Code-Behind mit partieller Klasse</a></li>
+     <li><a href="/Samples/CodeOnly">Code-Behind nur mit Code</a></li>
+     <li><a href="/Samples/CodeBehindOnlyNonVisual">Nutzung einer nicht-visuellen Komponente</a></li>
+     <li><a href="/Samples/CodeOnly">Komponenten ohne Razor nur aus Programmcode </a></li>
+    </ul>
+   </Text>
+  </Card3>
 
-<Card3>
- <Header>Razor-Syntax</Header>
- <Text>
-  <ul>
-   <li><a href="/Samples/RazorSyntax">Razor-Syntax</a></li>
-   <li><a href="/Samples/Lottospiel">Lottospiel</a></li>
-   <li><a href="/Samples/Listen">Razor-Listen</a></li>
-  </ul>
- </Text>
-</Card3>
+  <Card3>
+   <Header>Routing und Navigation</Header>
+   <Text>
+    <ul>
+     <li><a href="/Samples/Routing">Routing und Navigation</a></li>
+    </ul>
+   </Text>
+  </Card3>
 
 
-<Card3>
- <Header>Ereignisse und Ereignisbehandlung</Header>
- <Text>
-  <ul>
-   <li><a href="/Samples/events">Razor-Ereignisse</a></li>
-  </ul>
- </Text>
-</Card3>
+  <Card3>
+   <Header>Razor-Syntax</Header>
+   <Text>
+    <ul>
+     <li><a href="/Samples/RazorSyntax">Razor-Syntax</a></li>
+     <li><a href="/Samples/Lottospiel">Lottospiel</a></li>
+     <li><a href="/Samples/Listen">Razor-Listen</a></li>
+    </ul>
+   </Text>
+  </Card3>
+
+  <Card3>
+   <Header>Ereignisse und Ereignisbehandlung</Header>
+   <Text>
+    <ul>
+     <li><a href="/Samples/events">Razor-Ereignisse</a></li>
+    </ul>
+   </Text>
+  </Card3>
+
+  <Card3>
+   <Header>Komponenteneinbettung / Unterkomponenten</Header>
+   <Text>
+    <ul>
+     <li><a href="/Samples/Komponentenhost_ValueType">Komponenteneinbettung (Zahl als Parameter)</a></li>
+     <li><a href="/Samples/Komponentenhost_Eigenertyp">Komponenteneinbettung (Eigener Typ als Parameter)</a></li>
+     <li><a href="/Samples/Komponentenhost_Misc">Komponenteneinbettung (verschiedene Beispiele)</a></li>
+     <li><a href="/Samples/KaskadierendeParameter">Kaskadierende Parameter</a></li>
+     <li><a href="/Samples/VorlagenbasierteKomponenten">Vorlagenbasierte Komponenten</a></li>
+     <li><a href="/Samples/Fehlerbehandlung">Fehlerbehandlung mit Error Boundaries</a></li>
+    </ul>
+   </Text>
+  </Card3>
+
+  <Card3>
+   <Header>Zustandsverwaltung</Header>
+   <Text>
+    <ul>
+     <li><a href="/Samples/StateManagement">Komponentenzustand</a></li>
+     <li><a href="/Samples/Cookies">Cookies</a></li>
+     <li><a href="/Samples/CounterPersistentComponentState">Persistent Component State</a></li>
+    </ul>
+   </Text>
+  </Card3>
+
+  <Card3>
+   <Header>Formulare/Eingabemasken und Datenbindung</Header>
+   <Text>
+    <ul>
+     <li><a href="/Samples/FormComponents">Formulare mit Blazor-Komponenten (EditForm)</a></li>
+     <li><a href="/Samples/InputRadioGroup_InputRadio">Optionsfelder (InputRadio und InputRadioGroup) (seit BLAZOR 5.0)</a></li>
+     <li><a href="/Samples/FileUpload">Bild hochladen und anzeigen mit InputFile (seit BLAZOR 5.0)</a></li>
+     <li><a href="/Samples/FormSimple">Einfache Formulare</a></li>
+     <li><a href="/Samples/Focus">Fokus setzen mit FocusAsync() (seit BLAZOR 5.0)</a></li>
+     <li><a href="/Samples/FormComponentsModelWithSubComponent">Formulare mit Blazor-Komponenten (EditForm mit Sub-Component)</a></li>
+     <li><a href="/Samples/SelectControl">Auswahlsteuerelemente</a></li>
+     <li><a href="/Samples/Databinding">Datenbindung</a></li>
+     <li><a href="/Samples/DatabindingTips">Datenbindung - Neue Features seit BLAZOR 7.0</a></li>
+     <li><a href="/Samples/SelectControl">Auswahlsteuerelemente</a></li>
+     <li><a href="/Samples/Fehler">Fehlerbehandlung</a></li>
+    </ul>
+   </Text>
+  </Card3>
+
+  <Card3>
+   <Header>Klassenbibliotheken und Razor Class Libraries (RCL)</Header>
+   <Text>
+    <ul>
+     <li><a href="/Samples/RCL">Verwendung einer RCL</a></li>
+    </ul>
+   </Text>
+  </Card3>
+
+  <Card3>
+   <Header>Dependency Injection (DI)</Header>
+   <Text>
+    <ul>
+     <li><a href="/Samples/DI">Dependency Injection</a></li>
+    </ul>
+   </Text>
+  </Card3>
+
+  <Card3>
+   <Header>Interoperabilität zwischen .NET und JavaScript</Header>
+   <Text>
+    <ul>
+     <li><a href="/Samples/interop">JavaScript-Interop</a></li>
+     <li><a href="/Samples/chart">JavaScript-Interop: Diagramm malen mit Chartist.js</a></li>
+     <li><a href="/Samples/Angular">JavaScript-Interop mit Angular über WebComponents</a></li>
+    </ul>
+   </Text>
+  </Card3>
+
+  <Card3>
+   <Header>System- und Browserinformationen</Header>
+   <Text>
+    <ul>
+     <li><a href="/Samples/sysinfo">Systeminformationen</a></li>
+    </ul>
+   </Text>
+  </Card3>
+
+  <Card3>
+   <Header>Authentifizierung und Benutzerverwaltung</Header>
+   <Text>
+    <ul>
+     <li><a href="/Samples/Authentifizierungszustand">Authentifizierung</a></li>
+    </ul>
+   </Text>
+  </Card3>
 
 
-<Card3>
- <Header>Komponenteneinbettung / Unterkomponenten</Header>
- <Text>
-  <ul>
-   <li><a href="/Samples/Komponentenhost_Zahl">Komponenteneinbettung (Zahl als Parameter)</a></li>
-   <li><a href="/Samples/Komponentenhost_Eigenertyp">Komponenteneinbettung (Eigener Typ als Parameter)</a></li>
-   <li><a href="/Samples/KaskadierendeParameter">Kaskadierende Parameter</a></li>
-   <li><a href="/Samples/VorlagenbasierteKomponenten">Vorlagenbasierte Komponenten</a></li>
-  </ul>
- </Text>
-</Card3>
+  <Card3>
+   <Header>Tipps, Tricks und Tools</Header>
+   <Text>
+    <ul>
+     <li><a href="/Samples/BlazorArchitecture">Blazor-Typ</a></li>
+     <li><a href="/Samples/Browserkonsole">Browserkonsole</a></li>
+     <li><a href="/Samples/HTMLHead">HTML-Head beeinflussen</a></li>
+     <li><a href="/Samples/Rendering">Rendering</a></li>
+     <li><a href="/Samples/TimedUpdates">Zeitgesteuerte Seitenaktualisierung mit Timer</a></li>
+     <li><a href="/Samples/ProgressBar">Fortschrittsanzeige</a></li>
+     <li><a href="/Samples/Countdown">Countdown</a></li>
+     <li><a href="/Samples/DesktopNotifications">Desktop Notifications</a></li>
+     <li><a href="/Samples/BlazorTimerHost">Timer-Komponente</a></li>
+     <li><a href="/Samples/AlertHost">Hinweis-Komponente</a></li>
+     <li><a href="/Samples/Lokalisierung">Mehrsprachigkeit/Lokalisierung</a></li>
+    </ul>
+   </Text>
+  </Card3>
+ </div>
 
+ <div class="col-xs-6"> @* Spalte 2 *@
 
-<Card3>
- <Header>Zustandsverwaltung</Header>
- <Text>
-  <ul>
-   <li><a href="/Samples/StateManagement">Komponentenzustand</a></li>
-   <li><a href="/Samples/Cookies">Cookies</a></li>
-   <li><a href="/Samples/Fehlerbehandlung">Fehlerbehandlung mit Error Boundaries</a></li>
-  </ul>
- </Text>
-</Card3>
+  <Card3>
+   <Header>Kapitelübergreifende Beispiele</Header>
+   <Text>
+    <ul>
+     <li><a href="/main">MiracleList</a></li>
+     <li><a href="/Samples/QuadratwurzelRechner">Quadratwurzel-Rechner</a> (wird als prägnantes, aber vielschichtiges Beispiel zum Vergleich mit anderen Webframeworks verwendet; bisher nicht im Buch beschrieben)</li>
+     <li><a href="/Samples/ThemenübergreifendeBeispiele/QuadratwurzelRechnerImHost">Quadratwurzel-Rechner in Host-Komponente</a></li>
+    </ul>
+   </Text>
+  </Card3>
 
+  <Card3>
+   <Header>Weitere Beispiele, die bisher noch nicht im Buch beschrieben sind</Header>
+   <Text>
+    <ul>
+     @if (Util.IsWebAssembly)
+     {
+      <li><a href="/Samples/DynamicDLLLoading">Dynamic Assembly Loading / Eigenes Lazy Loading</a></li>
+     }
+     <li><a href="/Samples/BootstrapModal">Modaler Dialog mit Boostrap 4 in Razor Component verpackt</a></li>
+     <li><a href="/Samples/DynamicControls">Dynamic Controls</a></li>
+    </ul>
+   </Text>
+  </Card3>
 
-<Card3>
- <Header>Formulare/Eingabemasken und Datenbindung</Header>
- <Text>
-  <ul>
-   <li><a href="/Samples/FormComponents">Formulare mit Blazor-Komponenten (EditForm)</a></li>
-   <li><a href="/Samples/InputRadioGroup_InputRadio">Optionsfelder (InputRadio und InputRadioGroup) (seit BLAZOR 5.0)</a></li>
-   <li><a href="/Samples/FileUpload">Bild hochladen und anzeigen mit InputFile (seit BLAZOR 5.0)</a></li>
-   <li><a href="/Samples/FormSimple">Einfache Formulare</a></li>
-   <li><a href="/Samples/Focus">Fokus setzen mit FocusAsync() (seit BLAZOR 5.0)</a></li>
-   <li><a href="/Samples/FormComponentsModelWithSubComponent">Formulare mit Blazor-Komponenten (EditForm mit Sub-Component)</a></li>
-   <li><a href="/Samples/SelectControl">Auswahlsteuerelemente</a></li>
-   <li><a href="/Samples/Databinding">Datenbindung</a></li>
-   <li><a href="/Samples/DatabindingTips">Datenbindung - Neue Features seit BLAZOR 7.0</a></li>
-   <li><a href="/Samples/SelectControl">Auswahlsteuerelemente</a></li>
-   <li><a href="/Samples/Fehler">Fehlerbehandlung</a></li>
-  </ul>
- </Text>
-</Card3>
-
-<Card3>
- <Header>Klassenbibliotheken und Razor Class Libraries (RCL)</Header>
- <Text>
-  <ul>
-   <li><a href="/Samples/RCL">Verwendung einer RCL</a></li>
-  </ul>
- </Text>
-</Card3>
-
-<Card3>
- <Header>Dependency Injection (DI)</Header>
- <Text>
-  <ul>
-   <li><a href="/Samples/DI">Dependency Injection</a></li>
-  </ul>
- </Text>
-</Card3>
-
-<Card3>
- <Header>Interoperabilität zwischen .NET und JavaScript</Header>
- <Text>
-  <ul>
-   <li><a href="/Samples/interop">JavaScript-Interop</a></li>
-   <li><a href="/Samples/chart">JavaScript-Interop: Diagramm malen mit Chartist.js</a></li>
-   <li><a href="/Samples/Angular">JavaScript-Interop mit Angular über WebComponents</a></li>
-  </ul>
- </Text>
-</Card3>
-
-<Card3>
- <Header>System- und Browserinformationen</Header>
- <Text>
-  <ul>
-   <li><a href="/Samples/sysinfo">Systeminformationen</a></li>
-  </ul>
- </Text>
-</Card3>
-
-<Card3>
- <Header>Authentifizierung und Benutzerverwaltung</Header>
- <Text>
-  <ul>
-   <li><a href="/Samples/Authentifizierungszustand">Authentifizierung</a></li>
-  </ul>
- </Text>
-</Card3>
-
-
-<Card3>
- <Header>Tipps, Tricks und Tools</Header>
- <Text>
-  <ul>
-   <li><a href="/Samples/BlazorArchitecture">Blazor-Typ</a></li>
-   <li><a href="/Samples/Browserkonsole">Browserkonsole</a></li>
-   <li><a href="/Samples/HTMLHead">HTML-Head beeinflussen</a></li>
-   <li><a href="/Samples/Rendering">Rendering</a></li>
-   <li><a href="/Samples/TimedUpdates">Zeitgesteuerte Seitenaktualisierung mit Timer</a></li>
-   <li><a href="/Samples/ProgressBar">Fortschrittsanzeige</a></li>
-   <li><a href="/Samples/Countdown">Countdown</a></li>
-   <li><a href="/Samples/DesktopNotifications">Desktop Notifications</a></li>
-   <li><a href="/Samples/BlazorTimerHost">Timer-Komponente</a></li>
-   <li><a href="/Samples/AlertHost">Hinweis-Komponente</a></li>
-   <li><a href="/Samples/Lokalisierung">Mehrsprachigkeit/Lokalisierung</a></li>
-  </ul>
- </Text>
-</Card3>
-
-<Card3>
- <Header>Weitere Beispiele, die bisher noch nicht im Buch beschrieben sind:</Header>
- <Text>
-  <ul>
-   <li><a href="/Samples/DynamicDLLLoading">Dynamic DLL Loading</a></li>
-   <li><a href="/Samples/MultiThreading">Multi Threading</a></li>
-   <li><a href="/Samples/BootstrapModal">Modaler Dialog mit Boostrap 4 in Razor Component verpackt</a></li>
-   <li><a href="/Samples/DynamicControls">Dynamic Controls</a></li>
-
-  </ul>
- </Text>
-</Card3>
-
+ </div>
+</div>

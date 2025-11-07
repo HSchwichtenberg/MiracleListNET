@@ -1,6 +1,7 @@
 ﻿@page "/about"
 @using ITVisions.Blazor.Controls
 @using ITVisions.Web
+@using MLBlazorRCL.Texts
 @inject HybridSharedState HybridSharedState
 @*@using Microsoft.AspNetCore.Hosting*@
 
@@ -16,6 +17,14 @@
   <h2>WebView</h2>
 
   @((MarkupString)HybridSharedState.HostControl.WebView.ToNameValueString(attributeSeparator: "<br><b>", nameValueSeparator: "</b>: "))
+ 
+  <UsedComponents Components='
+                  (new SortedDictionary<string, Type>() {
+                 {"Entity Framework Core",typeof(Microsoft.EntityFrameworkCore.DbContext)},
+                 {"BlazorWebView",typeof(Microsoft.AspNetCore.Components.WebView.Wpf.BlazorWebView)},
+                 {"MessagePack",typeof(MessagePack.MessagePackSerializer)},
+})
+'></UsedComponents>
  </div>
 
  <div class="col-xs-6">

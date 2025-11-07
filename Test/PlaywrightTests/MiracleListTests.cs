@@ -36,11 +36,11 @@ public class MiracleListTests : PageTest
    Path = TestContext.TestName + ".zip"
   });
  }
-
+ 
  [TestMethod]
  public async Task Login()
  {
-  #region Optionale TestRun-Konfiguration per Code
+  #region Optionale TestRunner-Konfiguration per Code
   //await using var browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
   //{
   // Headless = true,

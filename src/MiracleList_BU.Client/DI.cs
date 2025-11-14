@@ -20,7 +20,6 @@ public class DI
   services.AddScoped<IMLAuthenticationStateProvider, MLAuthenticationStateProvider3Tier>();
   services.AddScoped<AuthenticationStateProvider, MLAuthenticationStateProvider3Tier>();
   services.AddAuthorizationCore();
-  services.AddCascadingAuthenticationState();
   #endregion
 
   #region DI für Serverkommunikation

@@ -9,11 +9,18 @@ namespace MLBlazorRCL.MainView
 
  public partial class TaskEdit
  {
+  /// <summary>
+  /// Zu bearbeitende Aufgabe
+  /// </summary>
   [Parameter]
   [EditorRequired] // Pflichtparameter (nur VS!)
   public BO.Task Task { get; set; } // zu bearbeitende Aufgabe
 
-  [Parameter] // Ereignis, wenn Aufgabe sich geändert hat
+  /// <summary>
+  /// Ereignis, wenn Aufgabe sich geÃ¤ndert hat. 
+  /// True = Gespeichert. False = Cancel
+  /// </summary>
+  [Parameter] 
   public EventCallback<bool> TaskHasChanged { get; set; }
 
   private EditContext editContext { get; set; } = null;
@@ -33,7 +40,7 @@ namespace MLBlazorRCL.MainView
 
   public async Task OnBeforeInternalNavigation(LocationChangingContext context)
   {
-   var isConfirmed = await Util.Confirm("Möchten Sie die Seite verlassen ohne zu speichern?");
+   var isConfirmed = await Util.Confirm("M chten Sie die Seite verlassen ohne zu speichern?");
 
    if (!isConfirmed)
    {
@@ -44,7 +51,7 @@ namespace MLBlazorRCL.MainView
 
   #region Hilfsfunktionen
   /// <summary>
-  /// Liefert die Information, ob ein Property im EditContext gültige Inhalte hat
+  /// Liefert die Information, ob ein Property im EditContext g ltige Inhalte hat
   /// </summary>
   /// <param name="fieldname">Name des Properties</param>
   public bool IsValid(string fieldname)

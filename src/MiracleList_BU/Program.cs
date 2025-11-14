@@ -79,7 +79,7 @@ public class Program
      .AddInteractiveServerRenderMode()
      .AddInteractiveWebAssemblyRenderMode()
      .AddAdditionalAssemblies( // Suche nach Routen in diesen Assemblies:
-      typeof(Web.Client.Components.Routes).Assembly,
+      typeof(Web.Client.Routes).Assembly,
       typeof(MLBlazorRCL.Login.Login).Assembly,
       typeof(Samples.SamplesList).Assembly
       );

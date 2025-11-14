@@ -1,4 +1,3 @@
-using System.Net;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Components.WebAssembly.Services;
 using MiracleList;
@@ -53,18 +52,6 @@ public class Program
    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
    app.UseHsts();
   }
-
-  #region Bei Static SSR: Umleiten von 401-Fehler auf die /Login-Seite
-  app.UseStatusCodePages(async context =>
-  {
-   var request = context.HttpContext.Request;
-   var response = context.HttpContext.Response;
-   if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
-   {
-    response.Redirect("/Login");  //redirect to the login page.
-   }
-  });
-  #endregion
 
   #region Authentifizierung und Autorisierung nutzen
   app.UseAuthentication();

@@ -49,5 +49,17 @@
  <ReconnectModal /> @* Neu in .NET 10.0 *@ 
  <!-- -------- Allgemeine JS-Lib von Microsoft für Blazor -->
  <script src="@Assets["_framework/blazor.web.js"]"></script>
+
+ @* Optional: Manueller Start, um Standards zu ändern *@
+@*  <script src="@Assets["_framework/blazor.web.js"]" autostart="false"></script>
+ <script>
+  Blazor.start({
+   circuit: {
+    configureSignalR: function(builder) {
+     builder.withServerTimeout(40000).withKeepAliveInterval(5000); // Standard ist 30s/15s
+    }
+   }
+  }); *@
+ </script>
 </body>
 </html>

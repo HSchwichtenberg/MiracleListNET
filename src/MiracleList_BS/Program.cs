@@ -35,7 +35,22 @@ public class Program
 
   // Add services to the container.
   builder.Services.AddRazorComponents()
-      .AddInteractiveServerComponents(opt => { CUI.Yellow(opt.ToNameValueString()); });
+      .AddInteractiveServerComponents(opt =>
+      {
+       CUI.H2("Blazor Server Options");
+       // Ausgabe der Blazor Server-Standardeinstellung in die Kestrel-Konsole. Man sieht davon allerdings nichts im IIS
+       CUI.Yellow(opt.ToNameValueString());
+       // Ändern der Werte:
+       opt.DisconnectedCircuitMaxRetained = 200; // Standard ist nur 100
+       opt.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(10); // Standard ist nur 3 Min.
+      }).AddHubOptions(opt =>
+      {
+       CUI.H2("Hub Options");
+       // Ausgabe der SignalR-Standardeinstellung in die Kestrel-Konsole. Man sieht davon allerdings nichts im IIS
+       CUI.Yellow(opt.ToNameValueString());
+       // Ändern der Werte:
+       opt.KeepAliveInterval = TimeSpan.FromSeconds(10); // Keep-Alive vom Server an Client; Standard ist 15 Sekunden
+      });
 
   ConfigureServices(builder.Services);
 
@@ -77,7 +92,7 @@ public class Program
 
   app.UseHttpsRedirection();
 
-   app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true); // ab .NET 10.0. Muss vor UseAntiforgery(); stehen!
+  app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true); // ab .NET 10.0. Muss vor UseAntiforgery(); stehen!
 
   app.UseAntiforgery();
   #region Mehrsprachigkeit

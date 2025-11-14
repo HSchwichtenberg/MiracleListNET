@@ -40,12 +40,12 @@
 
  <ImportMap />
  <HeadOutlet @rendermode="InteractiveServer" />
- @* oder ohne Prerendering:<HeadOutlet @rendermode="new InteractiveServerRenderMode(prerender: false)" /> *@
+ @* oder ohne Prerendering: <HeadOutlet @rendermode="new InteractiveServerRenderMode(prerender: false)" /> *@
 </head>
 
 <body>
  <Routes @rendermode="InteractiveServer" />
- @* oder ohne Prerendering:  <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" /> *@
+ @* oder ohne Prerendering: <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" /> *@
  <ReconnectModal /> @* Neu in .NET 10.0 *@ 
 
  <!-- -------- Allgemeine JS-Lib von Microsoft für Blazor -->

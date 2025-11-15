@@ -6,7 +6,6 @@ using DA;
 using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.JSInterop;
 using MiracleList;
@@ -14,8 +13,8 @@ using MiracleList;
 namespace Web;
 
 /// <summary>
-/// AuthenticationStateProvider for MiracleList Blazor Server
-/// uses the MiracleList Business Logic (UserManager) for Authentication
+/// AuthenticationStateProvider für MiracleList Blazor Server
+/// verwendet die MiracleList Business Logic (UserManager) für Authentifizierung
 /// </summary>
 public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, IMLAuthenticationStateProvider
 {
@@ -44,7 +43,8 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
  public async Task SetCurrentBackend(string backendkey)
  {
   var backend = AppState.GetBackendByKey(backendkey);
-  if (backend == null) { return; };
+  if (backend == null) { return; }
+  ;
   Context.ConnectionString = backend;
   AppState.BackendURL = backend;
 
@@ -133,7 +133,8 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
  /// </summary>
  private AuthenticationState CreateAuthenticationState(BO.User u)
  {
-  // If you create your identity including authenticationType parameter the user is authenticated. If you create your identity without authenticationType parameter, the user is not authenticated.
+  // If you create your identity including authenticationType parameter the user is authenticated.
+  // If you create your identity without authenticationType parameter, the user is not authenticated.
   if (u == null)
   { // not authenticated :-(
    return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
@@ -174,7 +175,8 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
    await SetCurrentBackend(await localStorage.GetItemAsync<string>(BackendStorageKey));
    string token = await localStorage.GetItemAsync<string>(TokenStorageKey);
    if (!String.IsNullOrEmpty(token)) { SetCurrentUser(new UserManager(token).CurrentUser); Notify(); return true; }
-   else { 
+   else
+   {
     await localStorage.RemoveItemAsync(TokenStorageKey);
     await blazorUtil.RemoveCookie(TokenStorageKey);
    } // Token löschen, wenn ungültig!

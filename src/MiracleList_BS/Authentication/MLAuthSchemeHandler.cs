@@ -9,6 +9,10 @@ using MiracleList;
 
 namespace Web;
 
+/// <summary>
+/// Notwendig für Blazor Static SSR
+/// Aufruf in Program.cs: services.AddAuthentication().AddScheme<MLAuthSchemeOptions, MLAuthSchemeHandler>("ML", opts => { });
+/// </summary>
 public class MLAuthSchemeHandler : AuthenticationHandler<MLAuthSchemeOptions>
 {
  public MLAuthSchemeHandler(

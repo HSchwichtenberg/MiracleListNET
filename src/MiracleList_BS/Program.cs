@@ -103,9 +103,9 @@ public class Program
   app.UseRequestLocalization(localizationOptions);
   #endregion
 
-  #region Bei Static SSR: Umleiten von 401-Fehler auf die /Login-Seite
+  #region Authentifizierung und Autorisierung nutzen
   app.UseStatusCodePages(async context =>
-  {
+  { // Bei Static SSR: Umleiten von 401-Fehler auf die /Login-Seite
    var request = context.HttpContext.Request;
    var response = context.HttpContext.Response;
    if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
@@ -113,9 +113,6 @@ public class Program
     response.Redirect("/Login");  //redirect to the login page.
    }
   });
-  #endregion
-
-  #region Authentifizierung und Autorisierung nutzen
   app.UseAuthentication();
   app.UseAuthorization();
   #endregion
@@ -183,6 +180,7 @@ public class Program
   // NUGET: Blazor.Extensions.Storage
   // GITHUB: https://github.com/BlazorExtensions/Storage
   #endregion
+
   #region DI für SignalR Server ("Hub") für MiracleList Notifications
   services.AddSignalR().AddMessagePackProtocol().AddHubOptions<MLHub>(o => o.StatefulReconnectBufferSize = 120000); //100.000 ist der Defaultwert!
   #endregion

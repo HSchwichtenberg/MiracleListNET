@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Components.WebAssembly.Services;
 using MiracleList;
@@ -54,6 +55,15 @@ public class Program
   }
 
   #region Authentifizierung und Autorisierung nutzen
+  app.UseStatusCodePages(async context =>
+  { // Bei Static SSR: Umleiten von 401-Fehler auf die /Login-Seite
+   var request = context.HttpContext.Request;
+   var response = context.HttpContext.Response;
+   if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
+   {
+    response.Redirect("/Login");  //redirect to the login page.
+   }
+  });
   app.UseAuthentication();
   app.UseAuthorization();
   #endregion

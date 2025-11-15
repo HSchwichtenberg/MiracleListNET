@@ -5,7 +5,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 #region DI
 // Dienste, die Server und Client gemeinsam nutzen
-Web.Client.DI.AddServices(builder.Services);
+Web.Client.SharedDI.AddServices(builder.Services);
 
 // Spezielle Dienste nur für Server
 builder.Services.AddSingleton<IAppState, Web.Client.AppState>();

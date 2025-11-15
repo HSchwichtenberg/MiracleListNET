@@ -32,11 +32,10 @@ public class Program
   builder.Services.AddSingleton<IAppState, AppState>();
   builder.Services.AddHttpContextAccessor();
   builder.Services.AddAuthentication().AddScheme<MLAuthSchemeOptions, MLAuthSchemeHandler>("ML", opts => { }); // notwendig, damit bei Static SSR Prerendering Zugriffe auf Unterseiten zum Fehler 401 führen, der dann auf /login umgeleitet wird
-
   #endregion
 
   #region DI: Dienste, die Server und Client gemeinsam nutzen
-  Web.Client.DI.AddServices(builder.Services);
+  Web.Client.SharedDI.AddServices(builder.Services);
   #endregion
 
   var app = builder.Build();
@@ -54,7 +53,7 @@ public class Program
    app.UseHsts();
   }
 
-  #region Authentifizierung und Autorisierung nutzen
+  #region Authentifizierung und Autorisierung konfigurieren
   app.UseStatusCodePages(async context =>
   { // Bei Static SSR: Umleiten von 401-Fehler auf die /Login-Seite
    var request = context.HttpContext.Request;

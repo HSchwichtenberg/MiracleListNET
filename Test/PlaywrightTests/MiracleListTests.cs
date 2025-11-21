@@ -75,7 +75,6 @@ public class MiracleListTests : PageTest
   // Der Anmeldename sollte auf dem Bildschirm dargestellt sein
   await Expect(Page.Locator("#LoggedInUser").Nth(0)).ToContainTextAsync(anmeldename);
   await Page.ScreenshotAsync(new() { Path = "NachLogin.png" });
-
  }
 
  [TestMethod]
@@ -255,5 +254,4 @@ public class MiracleListTests : PageTest
   var taskSet = Page.Locator("#TaskSet");
   await Expect(taskSet.GetByText(TaskName)).ToHaveCountAsync(0);
  }
-
 }

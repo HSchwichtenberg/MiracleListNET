@@ -32,11 +32,10 @@ public class Program
   builder.Services.AddSingleton<IAppState, AppState>();
   builder.Services.AddHttpContextAccessor();
   builder.Services.AddAuthentication().AddScheme<MLAuthSchemeOptions, MLAuthSchemeHandler>("ML", opts => { }); // notwendig, damit bei Static SSR Prerendering Zugriffe auf Unterseiten zum Fehler 401 führen, der dann auf /login umgeleitet wird
-
   #endregion
 
   #region DI: Dienste, die Server und Client gemeinsam nutzen
-  Web.Client.DI.AddServices(builder.Services);
+  Web.Client.SharedDI.AddServices(builder.Services);
   #endregion
 
   var app = builder.Build();
@@ -54,9 +53,9 @@ public class Program
    app.UseHsts();
   }
 
-  #region Bei Static SSR: Umleiten von 401-Fehler auf die /Login-Seite
+  #region Authentifizierung und Autorisierung konfigurieren
   app.UseStatusCodePages(async context =>
-  {
+  { // Bei Static SSR: Umleiten von 401-Fehler auf die /Login-Seite
    var request = context.HttpContext.Request;
    var response = context.HttpContext.Response;
    if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
@@ -64,9 +63,6 @@ public class Program
     response.Redirect("/Login");  //redirect to the login page.
    }
   });
-  #endregion
-
-  #region Authentifizierung und Autorisierung nutzen
   app.UseAuthentication();
   app.UseAuthorization();
   #endregion
@@ -79,7 +75,7 @@ public class Program
      .AddInteractiveServerRenderMode()
      .AddInteractiveWebAssemblyRenderMode()
      .AddAdditionalAssemblies( // Suche nach Routen in diesen Assemblies:
-      typeof(Web.Client.Components.Routes).Assembly,
+      typeof(Web.Client.Routes).Assembly,
       typeof(MLBlazorRCL.Login.Login).Assembly,
       typeof(Samples.SamplesList).Assembly
       );

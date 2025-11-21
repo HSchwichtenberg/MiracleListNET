@@ -7,7 +7,7 @@ using MLBlazorRCL.MainView;
 
 namespace Web.Client;
 
-public class DI
+public class SharedDI
 {
  /// <summary>
  /// Gemeinsame Dienste für Server und Client

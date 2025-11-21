@@ -68,7 +68,7 @@ public partial class ClientID2
  [Inject]
  private IConfiguration config { get; set; } // injected via DI
  [CascadingParameter]
- public HttpContext HttpContext { get; set; }
+ public Microsoft.AspNetCore.Http.HttpContext HttpContext { get; set; }
  #endregion
 
  private EditContext editContext { get; set; }

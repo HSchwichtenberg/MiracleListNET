@@ -1,6 +1,5 @@
 ﻿#pragma warning disable 1998
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
@@ -11,7 +10,10 @@ using MiracleList;
 
 namespace Web;
 
-// DEMO: 41. MLAuthenticationStateProvider
+/// <summary>
+/// Authentication State Provider 3Tier gegen WebAPI-Backend
+/// Wird verwendet in MiracleList_BW und MiracleList_BU.Client
+/// </summary>
 public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, IMLAuthenticationStateProvider
 {
  #region DI / [Inject] not possible here
@@ -43,7 +45,8 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
  {
 
   var backend = AppState.GetBackendByKey(backendKey);
-  if (backend == null) { return; };
+  if (backend == null) { return; }
+  ;
 
   proxy.BaseUrl = backend;
   AppState.BackendURL = backend;
@@ -250,7 +253,6 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
     result.StateDetails = ex.Message;
    }
   }
-
   return result;
  }
 }

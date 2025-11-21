@@ -50,9 +50,11 @@ public class MiracleListTests : PageTest
   #endregion
 
   string URL = TestContext?.Properties["URL"]?.ToString() ?? "";
+  Console.WriteLine("Öffne: " + URL);
   Assert.IsTrue(URL.IsNotNullOrEmpty());
   await Page.GotoAsync(URL);
-
+  Console.WriteLine("Geöffnet: " + URL);
+  await Page.PauseAsync(); // Öffnet Inspector und pausiert hier
   // Expect a title "to contain" a substring.
   await Expect(Page).ToHaveTitleAsync(new Regex("MiracleList_B"));
 
@@ -157,7 +159,7 @@ public class MiracleListTests : PageTest
  }
 
  [TestMethod]
- public async Task AufgabenBearbeiten()
+ public async Task AufgabenBearbeitenInklusiveUnteraufgaben()
  {
   string aufgabenTitel = "Testaufgabe " + Guid.NewGuid();
 

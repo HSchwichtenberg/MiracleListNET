@@ -206,41 +206,40 @@ public class MiracleListTests : PageTest
  }
 
  [TestMethod]
- public async Task MyTest()
+ public async Task AufgabeBearbeitenUndLoeschen()
  {
+  string TaskName = Guid.NewGuid().ToString();
   await Page.GotoAsync("https://miraclelist-bu.azurewebsites.net/");
   await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Benutzeranmeldung" })).ToBeVisibleAsync();
-
-
 
   await Page.GetByRole(AriaRole.Textbox, new() { Name = "Ihre E-Mail-Adresse" }).ClickAsync();
   await Page.GetByRole(AriaRole.Textbox, new() { Name = "Ihre E-Mail-Adresse" }).FillAsync("pwtest");
   await Page.GetByRole(AriaRole.Textbox, new() { Name = "Ihre E-Mail-Adresse" }).PressAsync("Tab");
   await Page.GetByRole(AriaRole.Textbox, new() { Name = "Kennwort Server" }).FillAsync("pwtest");
   await Page.GetByRole(AriaRole.Button, new() { Name = "Anmelden" }).ClickAsync();
-  await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Benutzer: pwtest Logout" })).ToBeVisibleAsync();
-
+  await Expect(Page.Locator("body")).ToContainTextAsync("pwtest");
+  await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "Logout" })).ToBeVisibleAsync();
   await Page.GetByRole(AriaRole.Textbox, new() { Name = "Neue Aufgabe..." }).ClickAsync();
-  await Page.GetByRole(AriaRole.Textbox, new() { Name = "Neue Aufgabe..." }).FillAsync("Test");
+  await Page.GetByRole(AriaRole.Textbox, new() { Name = "Neue Aufgabe..." }).FillAsync(TaskName);
   await Page.GetByRole(AriaRole.Textbox, new() { Name = "Neue Aufgabe..." }).PressAsync("Enter");
-  await Page.GetByRole(AriaRole.Listitem, new() { Name = "Task #58799" }).ClickAsync(new()
+  await Expect(Page.GetByText(TaskName)).ToBeVisibleAsync();
+
+  await Page.GetByText(TaskName).ClickAsync();
+  await Expect(Page.Locator("body")).ToContainTextAsync("Bearbeiten der Aufgabe");
+  await Page.GetByLabel("Wichtigkeit").SelectOptionAsync(new[] { "A" });
+  await Page.GetByRole(AriaRole.Button, new() { Name = " Speichern" }).ClickAsync();
+  await Expect(Page.Locator("#TaskSet")).ToContainTextAsync("A");
+  await Page.GetByText(TaskName).ClickAsync(new()
   {
    Button = MouseButton.Right,
   });
-  void Page_Dialog_EventHandler(object sender, IDialog dialog)
-  {
-   Console.WriteLine($"Dialog message: {dialog.Message}");
-   dialog.DismissAsync();
-   Page.Dialog -= Page_Dialog_EventHandler;
-  }
-  Page.Dialog += Page_Dialog_EventHandler;
-  await Page.GetByText("Details zu dieser Aufgabe").ClickAsync();
-  await Page.GetByRole(AriaRole.Listitem, new() { Name = "Task #58799" }).ClickAsync();
-  await Expect(Page.GetByRole(AriaRole.Button, new() { Name = " Speichern" })).ToBeVisibleAsync();
+  await Page.GetByText("Aufgabe löschen").ClickAsync();
+  await Expect(Page.GetByText("Remove this Task?")).ToBeVisibleAsync();
+  await Page.GetByRole(AriaRole.Button, new() { Name = "Yes" }).ClickAsync();
 
-  await Page.Locator("div").Filter(new() { HasTextRegex = new Regex("^Fällig am 11\\/21\\/2025$") }).Nth(2).ClickAsync();
-  await Expect(Page.GetByRole(AriaRole.Textbox, new() { Name = "Titel" })).ToBeVisibleAsync();
-  await Expect(Page.Locator("body")).ToContainTextAsync("Bearbeiten der Aufgabe #58799");
+  // Warten bis es unterhalb von <ol id="TaskSet" kein Element mehr mit dem Text gibt
+  var taskSet = Page.Locator("#TaskSet");
+  await Expect(taskSet.GetByText(TaskName)).ToHaveCountAsync(0);
  }
 
 }

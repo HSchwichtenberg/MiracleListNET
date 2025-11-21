@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Microsoft.Playwright;
 using Microsoft.Playwright.MSTest;
 
@@ -37,7 +36,7 @@ public class MiracleListTests : PageTest
    Path = TestContext.TestName + ".zip"
   });
  }
- 
+
  [TestMethod]
  public async Task Login()
  {
@@ -205,4 +204,43 @@ public class MiracleListTests : PageTest
 
   await Page.ScreenshotAsync();
  }
+
+ [TestMethod]
+ public async Task MyTest()
+ {
+  await Page.GotoAsync("https://miraclelist-bu.azurewebsites.net/");
+  await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Benutzeranmeldung" })).ToBeVisibleAsync();
+
+
+
+  await Page.GetByRole(AriaRole.Textbox, new() { Name = "Ihre E-Mail-Adresse" }).ClickAsync();
+  await Page.GetByRole(AriaRole.Textbox, new() { Name = "Ihre E-Mail-Adresse" }).FillAsync("pwtest");
+  await Page.GetByRole(AriaRole.Textbox, new() { Name = "Ihre E-Mail-Adresse" }).PressAsync("Tab");
+  await Page.GetByRole(AriaRole.Textbox, new() { Name = "Kennwort Server" }).FillAsync("pwtest");
+  await Page.GetByRole(AriaRole.Button, new() { Name = "Anmelden" }).ClickAsync();
+  await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Benutzer: pwtest Logout" })).ToBeVisibleAsync();
+
+  await Page.GetByRole(AriaRole.Textbox, new() { Name = "Neue Aufgabe..." }).ClickAsync();
+  await Page.GetByRole(AriaRole.Textbox, new() { Name = "Neue Aufgabe..." }).FillAsync("Test");
+  await Page.GetByRole(AriaRole.Textbox, new() { Name = "Neue Aufgabe..." }).PressAsync("Enter");
+  await Page.GetByRole(AriaRole.Listitem, new() { Name = "Task #58799" }).ClickAsync(new()
+  {
+   Button = MouseButton.Right,
+  });
+  void Page_Dialog_EventHandler(object sender, IDialog dialog)
+  {
+   Console.WriteLine($"Dialog message: {dialog.Message}");
+   dialog.DismissAsync();
+   Page.Dialog -= Page_Dialog_EventHandler;
+  }
+  Page.Dialog += Page_Dialog_EventHandler;
+  await Page.GetByText("Details zu dieser Aufgabe").ClickAsync();
+  await Page.GetByRole(AriaRole.Listitem, new() { Name = "Task #58799" }).ClickAsync();
+  await Expect(Page.GetByRole(AriaRole.Button, new() { Name = " Speichern" })).ToBeVisibleAsync();
+
+  await Page.Locator("div").Filter(new() { HasTextRegex = new Regex("^Fällig am 11\\/21\\/2025$") }).Nth(2).ClickAsync();
+  await Expect(Page.GetByRole(AriaRole.Textbox, new() { Name = "Titel" })).ToBeVisibleAsync();
+  await Expect(Page.Locator("body")).ToContainTextAsync("Bearbeiten der Aufgabe #58799");
+ }
+
 }

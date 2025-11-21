@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Azure.Core.Pipeline;
 using ITVisions;
 using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
@@ -105,11 +104,11 @@ public partial class Main : IAsyncDisposable
    Util.Log("SignalR.Connecting to " + hubURL.ToString());
    AppState.HubConnection = new HubConnectionBuilder()
        .WithUrl(hubURL)
-							.WithServerTimeout(new TimeSpan(0,0,40)) // Standard ist 30
-							.WithKeepAliveInterval(new TimeSpan(0, 0, 20)) // Standard ist 15
+       .WithServerTimeout(new TimeSpan(0, 0, 40)) // Standard ist 30
+       .WithKeepAliveInterval(new TimeSpan(0, 0, 20)) // Standard ist 15
        .AddMessagePackProtocol()
        .WithAutomaticReconnect() // Seit .NET Core 3.1
-								.WithStatefulReconnect() // Seit .NET 8.0
+       .WithStatefulReconnect() // Seit .NET 8.0
        .ConfigureLogging(logging =>
        {
         logging.AddProvider(new ITVisions.Logging.UniversalLoggerProvider(Util.Warn));
@@ -170,7 +169,6 @@ public partial class Main : IAsyncDisposable
 
  #region Anzeigen von Kategorien und Aufgaben
 
-
  /// <summary>
  /// Sorgt für das Ausblenden der Aufgabenliste auf kleinen Bildschirmen
  /// </summary>
@@ -179,7 +177,6 @@ public partial class Main : IAsyncDisposable
  {
   this.category = null;
  }
-
 
  /// <summary>
  /// Lädt die Liste der Kategorien und zeigt die Aufgaben der ersten Kategorie

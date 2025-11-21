@@ -205,11 +205,22 @@ public class MiracleListTests : PageTest
   await Page.ScreenshotAsync();
  }
 
+ /// <summary>
+ /// Test wurde mit Testgenerator
+ /// bin/Debug/net10.0/playwright.ps1 codegen miraclelist-bu.azurewebsites.net
+ /// erzeugt und dann angepasst
+ /// </summary>
+ /// <returns></returns>
  [TestMethod]
  public async Task AufgabeBearbeitenUndLoeschen()
  {
   string TaskName = Guid.NewGuid().ToString();
-  await Page.GotoAsync("https://miraclelist-bu.azurewebsites.net/");
+
+  // statt statischer URL von Testgenerator
+  string URL = TestContext?.Properties["URL"]?.ToString() ?? "";
+  Assert.IsTrue(URL.IsNotNullOrEmpty());
+  await Page.GotoAsync(URL);
+
   await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Benutzeranmeldung" })).ToBeVisibleAsync();
 
   await Page.GetByRole(AriaRole.Textbox, new() { Name = "Ihre E-Mail-Adresse" }).ClickAsync();
@@ -237,6 +248,7 @@ public class MiracleListTests : PageTest
   await Expect(Page.GetByText("Remove this Task?")).ToBeVisibleAsync();
   await Page.GetByRole(AriaRole.Button, new() { Name = "Yes" }).ClickAsync();
 
+  // Manuell, da Test von Testgenerator nicht funktioniert hat
   // Warten bis es unterhalb von <ol id="TaskSet" kein Element mehr mit dem Text gibt
   var taskSet = Page.Locator("#TaskSet");
   await Expect(taskSet.GetByText(TaskName)).ToHaveCountAsync(0);

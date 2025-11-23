@@ -7,7 +7,9 @@ namespace MiracleList_Backend.Hubs
 {
 
  /// <summary>
- /// DEMO: 60. SignalR-Hub (im Backend)
+ /// Die Blazor Server-Implementierung der MiracleList-Webanwendung besitzt
+ /// einen eigenen SignalR-Hub, denn das MiracleList-Backend mit dem dortigen Hub
+ /// wird hier nicht verwendet.
  /// </summary>
  public class MLHub : Hub<IMLHub>
  {

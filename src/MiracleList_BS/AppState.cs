@@ -96,7 +96,6 @@ public class AppState : IAppState
   {
   }
 
-
   var filesPath = Path.Combine(host.WebRootPath, "Files");
   try
   {

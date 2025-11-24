@@ -23,21 +23,21 @@
 		<div class="row">
 			<div class="col-xs-12 form-group">
 				<label for="username">E-Mail-Adresse</label>
-				<input name="username" @bind="this.Username" id="username" type="text" placeholder="Ihre E-Mail-Adresse" required class="form-control" disabled="@(!this.RendererInfo.IsInteractive)">
+				<input name="username" id="username" @bind="this.Username" type="text" placeholder="Ihre E-Mail-Adresse" required class="form-control" disabled="@(!this.RendererInfo.IsInteractive)">
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-xs-12 form-group">
 				<label for="password">Kennwort</label>
-				<input name="password" @bind="this.Password" id="password" placeholder="Ihr Kennwort" required type="password" class="form-control" disabled="@(!this.RendererInfo.IsInteractive)">
+				<input name="password" id="password" @bind="this.Password" placeholder="Ihr Kennwort" required type="password" class="form-control" disabled="@(!this.RendererInfo.IsInteractive)">
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-xs-12 form-group">
-				<label for="server">Server</label>
-				<select name="server" @bind="this.Backend" id="backend" class="form-control">
+				<label for="backend">Server</label>
+				<select name="backend" id="backend" @bind="this.Backend" class="form-control">
 					@foreach (var cs in AppState.GetBackendSet())
 					{
 						<option value="@cs.Key">@cs.Key</option>

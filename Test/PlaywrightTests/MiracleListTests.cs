@@ -10,7 +10,7 @@ public class MiracleListTests : PageTest
  int anzahlKategorien = 5;
  int anzahlAufgaben = 5;
 
- string anmeldename = "testuser " + DateTime.Now.ToString();
+ string anmeldename = "testuser_" + DateTime.Now.ToString().Replace(".", "").Replace(":", "") + "@test.IT-Visions.de";
  string kennwort = "geheim";
 
  [TestInitialize()]

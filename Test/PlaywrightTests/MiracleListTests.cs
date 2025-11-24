@@ -67,12 +67,12 @@ public class MiracleListTests : PageTest
   // oder Suche über ID
   //await Page.FillAsync("#username", anmeldename);
   //await Page.FillAsync("#password", kennwort);
-  // oder Suche über Label
+  //await Page.ClickAsync("#login");
+  // oder Suche über Label bzw. Name
   await Page.GetByLabel("E-Mail-Adresse").FillAsync(anmeldename);
   await Page.GetByLabel("Kennwort").FillAsync(anmeldename);
-  await Page.FillAsync("#password", kennwort);
+  await Page.Locator("button[name='login']").ClickAsync();
 
-  await Page.ClickAsync("#login");
   await Page.ScreenshotAsync(new() { Path = "VorLogin.png" });
 
   // Nun sollten wir auf der Hauptseite sein, der Titel sollte aber gleich sein
@@ -81,12 +81,14 @@ public class MiracleListTests : PageTest
 
   // Der Anmeldename sollte auf dem Bildschirm dargestellt sein
   await Expect(Page.Locator("#LoggedInUser").Nth(0)).ToContainTextAsync(anmeldename);
+  await Expect(Page.Locator("#TaskHeadline")).ToContainTextAsync("Aufgaben");
   await Page.ScreenshotAsync(new() { Path = "NachLogin.png" });
  }
 
  [TestMethod]
- public async Task AufgabenAnlegenUndLoeschen()
+ public async Task CategoryListCSSClassTest()
  {
+
   await Login();
 
   #region Prüfe korrektes Rendern der Kategorieliste
@@ -95,11 +97,27 @@ public class MiracleListTests : PageTest
   // Überprüfe, ob es das <ol>-Element gibt
   Assert.IsNotNull(col1List);
 
-  // // 1 bis n-1 sind <li> Elemente (Letztes Element ist <input>)
-  // Zugriff auf die Children ist leider umständlich in Playwright, siehe auch https://github.com/microsoft/playwright/issues/17703 und https://github.com/microsoft/playwright/issues/4845
+  // Prüfe, ob alle LI-Elemente diese CSS-Klasse haben: list-group-item
+  var col1List2 = Page.Locator("#col1 ol li");
+  var lis = await col1List2.ElementHandlesAsync();
+  foreach (IElementHandle li in lis)
+  {
+   var cssclass = await li.GetAttributeAsync("class");
+   Assert.StartsWith("list-group-item", cssclass);
+  }
+
+  // Oder alte Variante - 1 bis n-1 sind <li> Elemente (Letztes Element ist <input>)
+  // Zugriff auf die Children war leider umständlich in Playwright vor v1.36, siehe auch https://github.com/microsoft/playwright/issues/17703 und https://github.com/microsoft/playwright/issues/4845
   await PlaywrightUtil.VerifyChildren(col1List, "li", 1);
   Assert.AreEqual("input", await PlaywrightUtil.GetLastChildTag(col1List));
+
   #endregion
+ }
+
+ [TestMethod]
+ public async Task AufgabenAnlegenUndLoeschen()
+ {
+  await Login();
 
   #region Kategorien anlegen
   int anzKategorienVorher = (await Page.Locator("#categoryCount").InnerTextAsync()).ToInt32();
@@ -140,7 +158,7 @@ public class MiracleListTests : PageTest
    Assert.IsTrue(isChecked, "Input isChecked " + await input.GetAttributeAsync("ID"));
 
    // ODER per Expect().ToBeCheckedAsync():
-   // Aber leider kann man bei Excpect kein IElementHandle angeben, daher Umweg über Locator
+   // Aber leider kann man bei Expect kein IElementHandle angeben, daher Umweg über Locator
    var locator = Page.Locator($"#{(await input.GetAttributeAsync("id"))}");
    await Assertions.Expect(locator).ToBeCheckedAsync();
   }
@@ -231,10 +249,10 @@ public class MiracleListTests : PageTest
 
   await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Benutzeranmeldung" })).ToBeVisibleAsync();
 
-  await Page.GetByRole(AriaRole.Textbox, new() { Name = "Ihre E-Mail-Adresse" }).ClickAsync();
-  await Page.GetByRole(AriaRole.Textbox, new() { Name = "Ihre E-Mail-Adresse" }).FillAsync("pwtest");
-  await Page.GetByRole(AriaRole.Textbox, new() { Name = "Ihre E-Mail-Adresse" }).PressAsync("Tab");
-  await Page.GetByRole(AriaRole.Textbox, new() { Name = "Kennwort Server" }).FillAsync("pwtest");
+  await Page.GetByRole(AriaRole.Textbox, new() { Name = "E-Mail-Adresse" }).ClickAsync();
+  await Page.GetByRole(AriaRole.Textbox, new() { Name = "E-Mail-Adresse" }).FillAsync("pwtest");
+  await Page.GetByRole(AriaRole.Textbox, new() { Name = "E-Mail-Adresse" }).PressAsync("Tab");
+  await Page.GetByRole(AriaRole.Textbox, new() { Name = "Kennwort" }).FillAsync("pwtest");
   await Page.GetByRole(AriaRole.Button, new() { Name = "Anmelden" }).ClickAsync();
   await Expect(Page.Locator("body")).ToContainTextAsync("pwtest");
   await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "Logout" })).ToBeVisibleAsync();

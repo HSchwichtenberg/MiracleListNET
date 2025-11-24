@@ -16,7 +16,7 @@
   <LaunchOptions>
    <Headless>false</Headless>
    <!--<Channel>msedge</Channel>-->
-   <SlowMo>300</SlowMo>
+   <SlowMo>400</SlowMo>
   </LaunchOptions>
  </Playwright>
  

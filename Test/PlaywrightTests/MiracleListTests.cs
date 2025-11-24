@@ -49,12 +49,14 @@ public class MiracleListTests : PageTest
   //var context = await browser.NewContextAsync();
   #endregion
 
+  #region URL öffnen
   string URL = TestContext?.Properties["URL"]?.ToString() ?? "";
   Console.WriteLine("Öffne: " + URL);
   Assert.IsTrue(URL.IsNotNullOrEmpty());
   await Page.GotoAsync(URL);
-  Console.WriteLine("Geöffnet: " + URL);
-  await Page.PauseAsync(); // Öffnet Inspector und pausiert hier
+  //await Page.PauseAsync(); // Öffnet Inspector und pausiert hier
+  #endregion
+
   // Expect a title "to contain" a substring.
   await Expect(Page).ToHaveTitleAsync(new Regex("MiracleList_B"));
 
@@ -63,8 +65,13 @@ public class MiracleListTests : PageTest
   //await Page.GetByPlaceholder("Ihr Kennwort").FillAsync(kennwort);
   //await Page.GetByRole(AriaRole.Button, new() { Name = "Anmelden" }).ClickAsync();
   // oder Suche über ID
-  await Page.FillAsync("#username", anmeldename);
+  //await Page.FillAsync("#username", anmeldename);
+  //await Page.FillAsync("#password", kennwort);
+  // oder Suche über Label
+  await Page.GetByLabel("E-Mail-Adresse").FillAsync(anmeldename);
+  await Page.GetByLabel("Kennwort").FillAsync(anmeldename);
   await Page.FillAsync("#password", kennwort);
+
   await Page.ClickAsync("#login");
   await Page.ScreenshotAsync(new() { Path = "VorLogin.png" });
 

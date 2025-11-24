@@ -1,97 +1,130 @@
 ﻿<style>
- .container {
-  height: 50%;
-  width: auto;
- }
+    
+    .container {
+        width: auto;
+    }
 
- .circle * {
-  height: 200px;
-  width: 200px;
-  overflow: hidden;
-  background-image: url(https://hack.lenotta.com/wp-content/uploads/2014/07/outerRing.svg);
-  background-size: 100% auto;
-  background-position: center;
-  background-repeat: no-repeat;
-  margin: auto;
- }
+     @if (!OnTop)
+    {
+        <text>
+       .container {
+        height: 50%;    
+        }
+       </text>
+    }
 
- .circle .inner {
-  background-size: 80px 80px;
-  border-radius: 50%;
-  background-image: url(https://hack.lenotta.com/wp-content/uploads/2014/07/circleFull.svg);
-  -webkit-animation: cw 1.5s infinite;
-  animation: cw 1.5s infinite;
- }
+    @if (OnTop)
+    {
+        <text>
+        .circle {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50 %, -50 %);
+        z-index: 999999;
+        }
+        </text>
+    }
 
- .circle .middle {
-  background-size: 144px 144px;
-  background-image: url(https://hack.lenotta.com/wp-content/uploads/2014/07/ring.svg);
-  -webkit-animation: ccw 3s linear infinite;
-  animation: cw 3s linear infinite;
- }
+    @if (!OnTop)
+    {
+        <text>
+           .circle * {
+           margin: auto;
+        }
+        </text>
+    }
 
- .circle .outer {
-  -webkit-animation: cw 6s linear infinite;
-  animation: cw 6s linear infinite;
- }
+        .circle * {
+            height: 200px;
+            width: 200px;
+            overflow: hidden;
+            background-image: url(https://hack.lenotta.com/wp-content/uploads/2014/07/outerRing.svg);
+            background-size: 100% auto;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
 
- @@-webkit-keyframes cw {
-  0% {
-   -webkit-transform: rotate(0deg);
-  }
+        .circle .inner {
+            background-size: 80px 80px;
+            border-radius: 50%;
+            background-image: url(https://hack.lenotta.com/wp-content/uploads/2014/07/circleFull.svg);
+            -webkit-animation: cw 1.5s infinite;
+            animation: cw 1.5s infinite;
+        }
 
-  100% {
-   -webkit-transform: rotate(360deg);
-  }
- }
- /* Standard syntax */
- @@keyframes cw {
-  0% {
-   transform: rotate(0deg);
-  }
+        .circle .middle {
+            background-size: 144px 144px;
+            background-image: url(https://hack.lenotta.com/wp-content/uploads/2014/07/ring.svg);
+            -webkit-animation: ccw 3s linear infinite;
+            animation: cw 3s linear infinite;
+        }
 
-  100% {
-   transform: rotate(360deg);
-  }
- }
+        .circle .outer {
+            -webkit-animation: cw 6s linear infinite;
+            animation: cw 6s linear infinite;
+        }
 
- @@-webkit-keyframes ccw {
-  0% {
-   -webkit-transform: rotate(0deg);
-  }
+    @@-webkit-keyframes cw {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
 
-  100% {
-   -webkit-transform: rotate(-360deg);
-  }
- }
- /* Standard syntax */
- @@keyframes ccw {
-  0% {
-   transform: rotate(0deg);
-  }
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+    /* Standard syntax */
+    @@keyframes cw {
+        0% {
+            transform: rotate(0deg);
+        }
 
-  100% {
-   transform: rotate(-360deg);
-  }
- }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @@-webkit-keyframes ccw {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(-360deg);
+        }
+    }
+    /* Standard syntax */
+    @@keyframes ccw {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(-360deg);
+        }
+    }
 
 </style>
 
 <div class="circle" title="@Tooltip">
- <div class="outer">
-  <div class="middle">
-   <div class="inner">
-   </div>
-  </div>
- </div>
+    <div class="outer">
+        <div class="middle">
+            <div class="inner">
+            </div>
+        </div>
+    </div>
 </div>
 <div style="text-align:center">@ChildContent</div>
 
 @code
 {
- [Parameter]
- public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
 
- [Parameter]
- public string Tooltip { get; set; } = "In Arbeit... Bitte haben Sie einen Moment Geduld";
+    [Parameter]
+    public string Tooltip { get; set; } = "In Arbeit... Bitte haben Sie einen Moment Geduld";
+
+    [Parameter]
+    public bool OnTop { get; set; } = false;
 }

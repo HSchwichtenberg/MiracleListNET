@@ -1,78 +1,78 @@
 <!--Projektdatei der MiracleList Blazor Desktop App-->
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
- <!--Hinweis: Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
+    <!--Hinweis: Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
 
- <!--Weitere App-Metadaten -->
- <PropertyGroup>
-  <Description>Blazor Desktop (Blazor Hybrid) Version of the MiracleList Web Frontend</Description>
- </PropertyGroup>
+    <!--Weitere App-Metadaten -->
+    <PropertyGroup>
+        <Description>Blazor Desktop (Blazor Hybrid) Version of the MiracleList Web Frontend</Description>
+    </PropertyGroup>
 
- <!--Runtime + Compiler-->
- <PropertyGroup>
-  <TargetFramework>net10.0-windows</TargetFramework>
-  <OutputType>WinExe</OutputType>
-  <UseWPF>true</UseWPF>
-  <IsShippingPackage>false</IsShippingPackage>
-  <RootNamespace>BD</RootNamespace>
-  <StartupObject>BD.Desktop.WPFApp</StartupObject>
- </PropertyGroup>
+    <!--Runtime + Compiler-->
+    <PropertyGroup>
+        <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+        <OutputType>WinExe</OutputType>
+        <UseWPF>true</UseWPF>
+        <IsShippingPackage>false</IsShippingPackage>
+        <RootNamespace>BD</RootNamespace>
+        <StartupObject>BD.Desktop.WPFApp</StartupObject>
+    </PropertyGroup>
 
- <!--Grafiken-->
- <PropertyGroup>
-  <ApplicationIcon>Desktop/MiracleList.ico</ApplicationIcon>
-  <UserSecretsId>6f1a0d90-5d1c-470b-bb9a-2864e88e326b</UserSecretsId>
- </PropertyGroup>
- <ItemGroup>
-  <Page Remove="Desktop\App.xaml" />
- </ItemGroup>
- <ItemGroup>
-  <ApplicationDefinition Include="Desktop\App.xaml" />
- </ItemGroup>
- <ItemGroup>
-  <EmbeddedResource Include="Desktop\MiracleList.ico" />
- </ItemGroup>
+    <!--Grafiken-->
+    <PropertyGroup>
+        <ApplicationIcon>Desktop/MiracleList.ico</ApplicationIcon>
+        <UserSecretsId>6f1a0d90-5d1c-470b-bb9a-2864e88e326b</UserSecretsId>
+    </PropertyGroup>
+    <ItemGroup>
+        <Page Remove="Desktop\App.xaml" />
+    </ItemGroup>
+    <ItemGroup>
+        <ApplicationDefinition Include="Desktop\App.xaml" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Desktop\MiracleList.ico" />
+    </ItemGroup>
 
- <!--Projektreferenzen-->
- <ItemGroup>
-  <ProjectReference Include="..\MiracleList_Interfaces\MiracleList_Interfaces.csproj" />
-  <ProjectReference Include="..\BL\BL.csproj" />
-  <ProjectReference Include="..\BO\BO.csproj" />
-  <ProjectReference Include="..\ITVisions.Blazor\ITVisions.Blazor.csproj" />
-  <ProjectReference Include="..\MLBlazorRCL\MLBlazorRCL.csproj" />
-  <ProjectReference Include="..\SamplesRCL\SamplesRCL.csproj" />
- </ItemGroup>
+    <!--Projektreferenzen-->
+    <ItemGroup>
+        <ProjectReference Include="..\MiracleList_Interfaces\MiracleList_Interfaces.csproj" />
+        <ProjectReference Include="..\BL\BL.csproj" />
+        <ProjectReference Include="..\BO\BO.csproj" />
+        <ProjectReference Include="..\ITVisions.Blazor\ITVisions.Blazor.csproj" />
+        <ProjectReference Include="..\MLBlazorRCL\MLBlazorRCL.csproj" />
+        <ProjectReference Include="..\SamplesRCL\SamplesRCL.csproj" />
+    </ItemGroup>
 
- <!--Nuget-Pakete-->
- <ItemGroup>
-  <!--Standardreferenzen für BD-->
-  <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.*-*" />
-  <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
- </ItemGroup>
+    <!--Nuget-Pakete-->
+    <ItemGroup>
+        <!--Standardreferenzen für BD-->
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="10.0.*-*" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.*-*" />
+        <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+    </ItemGroup>
 
- <!--COM-Referenzen für Word-Interop-->
- <ItemGroup>
-  <COMReference Include="Microsoft.Office.Interop.Word">
-   <WrapperTool>tlbimp</WrapperTool>
-   <VersionMinor>7</VersionMinor>
-   <VersionMajor>8</VersionMajor>
-   <Guid>00020905-0000-0000-c000-000000000046</Guid>
-   <Lcid>0</Lcid>
-   <Isolated>false</Isolated>
-   <EmbedInteropTypes>true</EmbedInteropTypes>
-  </COMReference>
- </ItemGroup>
+    <!--COM-Referenzen für Word-Interop-->
+    <ItemGroup>
+        <COMReference Include="Microsoft.Office.Interop.Word">
+            <WrapperTool>tlbimp</WrapperTool>
+            <VersionMinor>7</VersionMinor>
+            <VersionMajor>8</VersionMajor>
+            <Guid>00020905-0000-0000-c000-000000000046</Guid>
+            <Lcid>0</Lcid>
+            <Isolated>false</Isolated>
+            <EmbedInteropTypes>true</EmbedInteropTypes>
+        </COMReference>
+    </ItemGroup>
 
- <!--Verlinkte Datei aus BS-Projekt: MLAuthenticationStateProvider2Tier-->
- <ItemGroup>
-  <Compile Include="..\MiracleList_BS\Authentication\MLAuthenticationStateProvider2Tier.cs" Link="Web\Authentication\MLAuthenticationStateProvider2Tier.cs" />
- </ItemGroup>
+    <!--Verlinkte Datei aus BS-Projekt: MLAuthenticationStateProvider2Tier-->
+    <ItemGroup>
+        <Compile Include="..\MiracleList_BS\Authentication\MLAuthenticationStateProvider2Tier.cs" Link="Web\Authentication\MLAuthenticationStateProvider2Tier.cs" />
+    </ItemGroup>
 
- <!--Einstellungen für BD: wwwRoot-Ordner mit ins Ausgabeverzeichnis -->
- <ItemGroup>
-  <None Update="wwwroot\**">
-   <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
- </ItemGroup>
+    <!--Einstellungen für BD: wwwRoot-Ordner mit ins Ausgabeverzeichnis -->
+    <ItemGroup>
+        <None Update="wwwroot\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 </Project>

@@ -69,8 +69,6 @@ public partial class MainPage : ContentPage
 
  public void StatusBarUpdate()
  {
-
-
   if (this.Width > 500) { this.C_Status.FontSize = 13; }
   else { this.C_Status.FontSize = 9; }
   this.C_Status.Text = $"{System.Runtime.InteropServices.RuntimeInformation.OSDescription} | {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription} | Blazor MAUI {FileVersionInfo.GetVersionInfo(typeof(BlazorWebView).Assembly?.Location)?.FileVersion} | Process #{System.Environment.ProcessId} {System.IO.Path.GetFileName(System.Environment.ProcessPath)} | Thread #{System.Threading.Thread.CurrentThread.ManagedThreadId} | {System.Diagnostics.Process.GetCurrentProcess().WorkingSet64 / 1024 / 1024} MB | {DateTime.Now.ToLongTimeString()} | {(AppState.IsLoggedIn ? AppState.Username : "Kein Benutzer")} | {HybridSharedState.Location ?? "Starting..."}";

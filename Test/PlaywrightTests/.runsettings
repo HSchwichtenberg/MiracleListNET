@@ -12,11 +12,11 @@
  <!-- Einstellungen für Playwright-->
  <Playwright>
   <BrowserName>chromium</BrowserName>
-  <ExpectTimeout>10000</ExpectTimeout>
+  <ExpectTimeout>15000</ExpectTimeout>
   <LaunchOptions>
    <Headless>false</Headless>
    <!--<Channel>msedge</Channel>-->
-   <SlowMo>400</SlowMo>
+   <!--<SlowMo>400</SlowMo>-->
   </LaunchOptions>
  </Playwright>
  

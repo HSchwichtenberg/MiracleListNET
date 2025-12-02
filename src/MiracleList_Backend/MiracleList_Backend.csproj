@@ -55,10 +55,6 @@
   <ProjectReference Include="..\ITVTagHelper\ITVTagHelper.csproj" />
  </ItemGroup>
 
- <PropertyGroup>
-  <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
- </PropertyGroup>
-
  <ItemGroup>
   <!--<PackageReference Include="EntityFrameworkProfiler" Version="5.0.5032" />-->
   <PackageReference Include="ITVisions.Util" Version="10.*" />

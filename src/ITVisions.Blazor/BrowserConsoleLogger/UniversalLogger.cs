@@ -11,8 +11,8 @@ namespace ITVisions.Logging;
 /// </summary>
 public sealed class UniversalLoggerProvider : ILoggerProvider
 {
- private readonly IDisposable _onChangeToken = null;
- private UniversalLoggerConfiguration _currentConfig = null;
+ private readonly IDisposable? _onChangeToken = null;
+ private UniversalLoggerConfiguration? _currentConfig = null;
  private readonly ConcurrentDictionary<string, UniversalLogger> _loggers =
      new(StringComparer.OrdinalIgnoreCase);
 
@@ -26,7 +26,7 @@ public sealed class UniversalLoggerProvider : ILoggerProvider
  public ILogger CreateLogger(string categoryName) =>
     _loggers.GetOrAdd(categoryName, name => new UniversalLogger(name, () => new UniversalLoggerConfiguration(), LogTo));
 
- private UniversalLoggerConfiguration GetCurrentConfig() => _currentConfig;
+ private UniversalLoggerConfiguration? GetCurrentConfig() => _currentConfig;
 
  public void Dispose()
  {

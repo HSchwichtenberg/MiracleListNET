@@ -71,13 +71,15 @@ namespace DA
      {
       if (Context.ConnectionString.Contains("Ora"))
       {
-       builder.UseOracle(Context.ConnectionString);
+       // Stand 2.12.2025 noch nicht verfügbar für EFCore 10.0
+       //builder.UseOracle(Context.ConnectionString);
       }
       else
       {
        if (Context.ConnectionString.Contains("mysql"))
        {
-        builder.UseMySql(Context.ConnectionString, ServerVersion.AutoDetect(Context.ConnectionString)); // UseMySQL for Oracle MySql Driver
+        // Stand 2.12.2025 noch nicht verfügbar für EFCore 10.0
+        //builder.UseMySql(Context.ConnectionString, ServerVersion.AutoDetect(Context.ConnectionString)); // UseMySQL for Oracle MySql Driver
        }
        else
        {
@@ -100,11 +102,12 @@ namespace DA
    //var p = System.Diagnostics.Process.GetCurrentProcess();
    //Console.WriteLine(p.ProcessName + "/" + System.Diagnostics.Debugger.IsAttached);
 
-   // necessary for MySQL. Both the Oracle and the Pomelo Driver have a problem with Guid columns: "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'uniqueidentifie"
-   if (Database.IsMySql())
-   {
-    builder.Entity<Client>().Property<Guid>("ClientID").HasColumnType("char(36)");
-   }
+   // Stand 2.12.2025 noch nicht verfügbar für EFCore 10.0
+   //if (Database.IsMySql())
+   //{
+   // // necessary for MySQL. Both the Oracle and the Pomelo Driver have a problem with Guid columns: "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'uniqueidentifie"
+   // builder.Entity<Client>().Property<Guid>("ClientID").HasColumnType("char(36)");
+   //}
 
    #region Trick for pseudo entities for grouping and Views
 

@@ -66,8 +66,8 @@
   <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.*-*" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.*-*" />
   <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.*-*" />
-  <PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.*" />
-  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-*" />
+  <!--<PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.*" />-->
+  <!--<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-*" />-->
  </ItemGroup>
 
  <ItemGroup>

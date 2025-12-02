@@ -43,61 +43,61 @@
 
  <body>
   <!-- Ladeanimation -->
- <div class="container-fluid">
-  <div id="app">
-   <h3 style="text-align: center">Lade MiracleList...</h3>
-   <div class="spinner">
-    <div class="rect1"></div>
-    <div class="rect2"></div>
-    <div class="rect3"></div>
-    <div class="rect4"></div>
-    <div class="rect5"></div>
+  <div class="container-fluid">
+   <div id="app">
+    <h3 style="text-align: center">Lade MiracleList...</h3>
+    <div class="spinner">
+     <div class="rect1"></div>
+     <div class="rect2"></div>
+     <div class="rect3"></div>
+     <div class="rect4"></div>
+     <div class="rect5"></div>
+    </div>
+   </div> <!--Ende App-->
+   <!-- Fehleranzeigeleiste -->
+   <div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
    </div>
-  </div> <!--Ende App-->
-  <!-- Fehleranzeigeleiste -->
-  <div id="blazor-error-ui">
-   An unhandled error has occurred.
-   <a href class="reload">Reload</a>
-   <a class="dismiss">🗙</a>
+   <!-- Standard-JS-Lib von Microsoft für Blazor WebAssembly -->
+   <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+
+   <script>
+    //Blazor.start({
+
+    // loadBootResource: function (type, name, defaultUri, integrity) {
+    //  console.log(`Will load '${type}' with name '${name}' from URI '${defaultUri}' and integrity '${integrity}'`);
+
+    //  switch (type) {
+    //   case 'dotnetjs':
+    //   case 'dotnetwasm':
+    //   case 'timezonedata':
+    //   //return `https://E123/blazorwebassembly/3.2.0/${name}`;
+    //  }
+
+    //  // Other types are 'assembly' and 'pdb' but you probably wouldn't want to fetch those from a CDN as they would be custom-linked for your app
+    //  // By returning undefined for other types, we let the framework use its normal strategy for those types
+    //  }
+    //});
+   </script>
+
+   <!-- Eigene JS-Funktionen aus Razor Class Library -->
+   <script src="/_content/ITVisions.Blazor/BlazorUtil.js"></script>
+   <!--Für PWA-->
+   <script>navigator.serviceWorker.register('service-worker.js');</script>
+   <!--Für CHARTIST.JS -->
+   <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+   <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+
+   <!--Für Lokalisierung-->
+   <script>
+    window.blazorCulture = {
+     get: () => window.localStorage['BlazorCulture'],
+     set: (value) => window.localStorage['BlazorCulture'] = value
+    };
+   </script>
   </div>
-  <!-- Standard-JS-Lib von Microsoft für Blazor WebAssembly -->
-  <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
-
-  <script>
-   //Blazor.start({
-
-   // loadBootResource: function (type, name, defaultUri, integrity) {
-   //  console.log(`Will load '${type}' with name '${name}' from URI '${defaultUri}' and integrity '${integrity}'`);
-
-   //  switch (type) {
-   //   case 'dotnetjs':
-   //   case 'dotnetwasm':
-   //   case 'timezonedata':
-   //   //return `https://E123/blazorwebassembly/3.2.0/${name}`;
-   //  }
-
-   //  // Other types are 'assembly' and 'pdb' but you probably wouldn't want to fetch those from a CDN as they would be custom-linked for your app
-   //  // By returning undefined for other types, we let the framework use its normal strategy for those types
-   //  }
-   //});
-  </script>
-
-  <!-- Eigene JS-Funktionen aus Razor Class Library -->
-  <script src="/_content/ITVisions.Blazor/BlazorUtil.js"></script>
-  <!--Für PWA-->
-  <script>navigator.serviceWorker.register('service-worker.js');</script>
-  <!--Für CHARTIST.JS -->
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-  <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
-
-  <!--Für Lokalisierung-->
-  <script>
-   window.blazorCulture = {
-    get: () => window.localStorage['BlazorCulture'],
-    set: (value) => window.localStorage['BlazorCulture'] = value
-   };
-  </script>
- </div>
 
  </body>
 </html>

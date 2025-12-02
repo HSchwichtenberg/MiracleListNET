@@ -7,7 +7,7 @@ public static class WebView2Helper
  /// </summary>
  /// <param name="version">Gibt die gefundene Versionsnummer zurück (oder null, wenn nicht installiert).</param>
  /// <returns>true, wenn installiert; andernfalls false.</returns>
- public static bool IsWebView2Installed(out string? version)
+ public static bool IsWebView2Installed(out string version)
  {
   version = null;
 

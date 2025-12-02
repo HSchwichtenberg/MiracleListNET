@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MiracleList;
+#nullable enable
 
 namespace Web;
 
@@ -18,18 +19,19 @@ public class MLAuthSchemeHandler : AuthenticationHandler<MLAuthSchemeOptions>
  public MLAuthSchemeHandler(
      IOptionsMonitor<MLAuthSchemeOptions> options,
      ILoggerFactory logger,
-     UrlEncoder encoder, IHttpContextAccessor httpContextAccessor) : base(options, logger, encoder)
+     UrlEncoder encoder, IHttpContextAccessor httpContextAccessor) 
+     : base(options, logger, encoder)
  {
   HttpContextAccessor = httpContextAccessor;
  }
 
- public IMLAuthenticationStateProvider AuthenticationStateProvider { get; }
+ public IMLAuthenticationStateProvider? AuthenticationStateProvider { get; }
  public IHttpContextAccessor HttpContextAccessor { get; }
  const string TokenStorageKey = "MLToken";
 
  protected async override Task<AuthenticateResult> HandleAuthenticateAsync()
  {
-  string token = HttpContextAccessor.HttpContext.Request.Cookies[TokenStorageKey];
+  string token = HttpContextAccessor.HttpContext?.Request.Cookies[TokenStorageKey] ?? "";
   if (string.IsNullOrEmpty(token))
   {
    return AuthenticateResult.Fail("No Access");

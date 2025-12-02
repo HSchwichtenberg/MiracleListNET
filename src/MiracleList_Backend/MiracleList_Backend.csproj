@@ -1,91 +1,98 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
- <!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
+	<!--Hinweis: <TargetFramework> und Versionsnummer+Metadaten für App kommen aus Directory.Build.props-->
 
- <PropertyGroup Label="Globals">
-  <SccProjectName>SAK</SccProjectName>
-  <SccProvider>SAK</SccProvider>
-  <SccAuxPath>SAK</SccAuxPath>
-  <SccLocalPath>SAK</SccLocalPath>
- </PropertyGroup>
+	<PropertyGroup Label="Globals">
+		<SccProjectName>SAK</SccProjectName>
+		<SccProvider>SAK</SccProvider>
+		<SccAuxPath>SAK</SccAuxPath>
+		<SccLocalPath>SAK</SccLocalPath>
+	</PropertyGroup>
 
- <PropertyGroup>
-  <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-  <AssemblyName>Miraclelist_WebAPI</AssemblyName>
-  <OutputType>Exe</OutputType>
-  <PackageId>Miraclelist</PackageId>
-  <CodeAnalysisRuleSet>..\..\rules.ruleset</CodeAnalysisRuleSet>
-  <Description>Backend for MiracleList (Sample Application)</Description>
-  <UserSecretsId>17877888-c559-4d28-bbed-c3436690aec2</UserSecretsId>
- </PropertyGroup>
+	<PropertyGroup>
+		<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+		<AssemblyName>Miraclelist_WebAPI</AssemblyName>
+		<OutputType>Exe</OutputType>
+		<PackageId>Miraclelist</PackageId>
+		<CodeAnalysisRuleSet>..\..\rules.ruleset</CodeAnalysisRuleSet>
+		<Description>Backend for MiracleList (Sample Application)</Description>
+		<UserSecretsId>17877888-c559-4d28-bbed-c3436690aec2</UserSecretsId>
+	</PropertyGroup>
 
- <PropertyGroup Condition=" '$(Configuration)' == '' Or '$(Configuration)' == 'Debug'">
-  <EnvironmentName>Development</EnvironmentName>
- </PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == '' Or '$(Configuration)' == 'Debug'">
+		<EnvironmentName>Development</EnvironmentName>
+	</PropertyGroup>
 
- <PropertyGroup Condition=" '$(Configuration)' != '' AND '$(Configuration)' != 'Debug' ">
-  <EnvironmentName>Production</EnvironmentName>
- </PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' != '' AND '$(Configuration)' != 'Debug' ">
+		<EnvironmentName>Production</EnvironmentName>
+	</PropertyGroup>
 
- <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-  <DocumentationFile>bin\Debug\net5.0\Miraclelist_WebAPI.xml</DocumentationFile>
- </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>bin\Debug\net5.0\Miraclelist_WebAPI.xml</DocumentationFile>
+	</PropertyGroup>
 
- <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-  <DocumentationFile>bin\Release\net5.0\Miraclelist_WebAPI.xml</DocumentationFile>
- </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DocumentationFile>bin\Release\net5.0\Miraclelist_WebAPI.xml</DocumentationFile>
+	</PropertyGroup>
 
- <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
-  <ItemGroup>
-   <DocFile Include="bin\$(Configuration)\$(TargetFramework)\$(TargetName).xml" />
-  </ItemGroup>
-  <Copy SourceFiles="@(DocFile)" DestinationFolder="$(PublishDir)" SkipUnchangedFiles="false" />
- </Target>
+	<Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+		<ItemGroup>
+			<DocFile Include="bin\$(Configuration)\$(TargetFramework)\$(TargetName).xml" />
+		</ItemGroup>
+		<Copy SourceFiles="@(DocFile)" DestinationFolder="$(PublishDir)" SkipUnchangedFiles="false" />
+	</Target>
 
- <ItemGroup>
-  <None Update="wwwroot\**\*">
-   <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-  </None>
- </ItemGroup>
+	<ItemGroup>
+		<None Update="wwwroot\**\*">
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</None>
+	</ItemGroup>
 
- <ItemGroup>
-  <ProjectReference Include="..\BL\BL.csproj" />
-  <ProjectReference Include="..\BO\BO.csproj" />
-  <ProjectReference Include="..\ITVRazorPagesRCL\ITVRazorPagesClassLibrary.csproj" />
-  <ProjectReference Include="..\ITVTagHelper\ITVTagHelper.csproj" />
- </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\BL\BL.csproj" />
+		<ProjectReference Include="..\BO\BO.csproj" />
+		<ProjectReference Include="..\ITVRazorPagesRCL\ITVRazorPagesClassLibrary.csproj" />
+		<ProjectReference Include="..\ITVTagHelper\ITVTagHelper.csproj" />
+	</ItemGroup>
 
- <ItemGroup>
-  <!--<PackageReference Include="EntityFrameworkProfiler" Version="5.0.5032" />-->
-  <PackageReference Include="ITVisions.Util" Version="10.*" />
-  <PackageReference Include="ITV.EFCoreUtil" Version="8.*" />
-  <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.*" />
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.*" />
-  <PackageReference Include="Swashbuckle.AspNetCore" Version="9.*" />
-  <PackageReference Include="System.ComponentModel.Annotations" Version="5.*" />
-  <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.*-*" />
-  <PackageReference Include="System.Data.SqlClient" Version="4.*" />
- </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.*" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="10.0.*-*" />
+		<PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.*" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="9.*" />
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.*-*" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.*" />
+	</ItemGroup>
 
- <ItemGroup>
-  <Folder Include="Properties\PublishProfiles\" />
- </ItemGroup>
+<!--Eigene Pakete-->
+	<ItemGroup>
+		<PackageReference Include="ITVisions.Util" Version="10.*" />
+		<PackageReference Include="ITV.EFCoreUtil" Version="8.*" />
+	</ItemGroup>
 
- <ItemGroup>
+	<ItemGroup>
+		<!--<PackageReference Include="EntityFrameworkProfiler" Version="5.0.5032" />-->
+	</ItemGroup>
 
- </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Properties\PublishProfiles\" />
+	</ItemGroup>
 
- <ItemGroup>
-  <Content Update="Pages\xAddress.cshtml">
-   <Pack>$(IncludeRazorContentInPack)</Pack>
-  </Content>
-  <Content Update="Views\Impressum\Index.cshtml">
-   <Pack>$(IncludeRazorContentInPack)</Pack>
-  </Content>
-  <Content Update="wwwroot\AddedColumnsConfig.txt">
-   <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </Content>
- </ItemGroup>
+	<ItemGroup>
+
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Update="Pages\xAddress.cshtml">
+			<Pack>$(IncludeRazorContentInPack)</Pack>
+		</Content>
+		<Content Update="Views\Impressum\Index.cshtml">
+			<Pack>$(IncludeRazorContentInPack)</Pack>
+		</Content>
+		<Content Update="wwwroot\AddedColumnsConfig.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
 </Project>

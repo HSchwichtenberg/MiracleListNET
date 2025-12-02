@@ -27,9 +27,9 @@
 
 @code {
 	[CascadingParameter]
-	private Microsoft.AspNetCore.Http.HttpContext? HttpContext { get; set; }
+	private Microsoft.AspNetCore.Http.HttpContext HttpContext { get; set; }
 
-	private string? RequestId { get; set; }
+	private string RequestId { get; set; }
 	private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
 	protected override void OnInitialized() =>

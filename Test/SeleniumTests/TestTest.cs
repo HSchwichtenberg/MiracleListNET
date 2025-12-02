@@ -20,7 +20,8 @@ namespace MiracleListUITests
    Console.WriteLine("Console.WriteLine");
    System.Diagnostics.Trace.WriteLine("System.Diagnostics.Trace.WriteLine");
    System.Diagnostics.Debug.WriteLine("System.Diagnostics.Debug.WriteLine");
-   Assert.IsTrue(true);
+   #pragma warning disable MSTEST0032 // Assertion condition is always true
+   Assert.AreEqual(2, 1+1);
   }
 
  }

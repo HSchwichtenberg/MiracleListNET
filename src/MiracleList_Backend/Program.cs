@@ -56,6 +56,7 @@ public class Program
   MailUtil.SMTPSSL = configuration["EMail:SMTPSecure"] == "true";
 
   // TODO: Umstellen auf WebApplicationBuilder, da WebHostBuilder veraltet ist
+   #pragma warning disable ASPDEPR008 // Type or member is obsolete
   IWebHost builder = WebHost.CreateDefaultBuilder(args)
    .UseUrls(hostUrl)
    .UseSetting("detailedErrors", "true")
@@ -76,6 +77,7 @@ public class Program
      logging.AddConsole();
     })
    .Build();
+#pragma warning restore ASPDEPR008 // Type or member is obsolete
 
   CUI.H3("Server Features:");
   foreach (var sf in builder.ServerFeatures)

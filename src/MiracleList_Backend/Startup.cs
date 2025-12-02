@@ -383,7 +383,7 @@ public class GlobalExceptionFilter : IExceptionFilter
   context.HttpContext.Response.ContentType = "text/plain";
 
   var s = "MiracleListBackend v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-  s += " on ASP.NET Core v" + typeof(WebHost).Assembly.GetName().Version.ToString() + " GlobalExceptionFilter: ";
+  s += " on ASP.NET Core v" + typeof(WebApplicationBuilder).Assembly.GetName().Version.ToString() + " GlobalExceptionFilter: ";
 
   context.HttpContext.Response.WriteAsync(s + context.Exception.ToString());
 

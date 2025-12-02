@@ -1,5 +1,7 @@
 ﻿#pragma warning disable 1998
+#nullable enable
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
@@ -17,14 +19,15 @@ namespace Web;
 public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, IMLAuthenticationStateProvider
 {
  #region DI / [Inject] not possible here
- private IMiracleListProxy proxy { get; set; } = null; // Backend Proxy
- private IAppState AppState { get; set; } = null; // App State
+ private IMiracleListProxy proxy { get; set; } // Backend Proxy
+ private IAppState AppState { get; set; }  // App State
  public IServiceProvider ServiceProvider { get; }
- private BlazorUtil blazorUtil { get; set; } = null; // Utility for Browser Console
+ private BlazorUtil blazorUtil { get; set; } // Utility for Browser Console
  private ILocalStorageService localStorage { get; set; } // Local Storage in Browser
  #endregion
 
  // Data from Login() operation
+ [AllowNull]
  public LoginInfo CurrentLoginInfo { get; set; } = null;
 
  // Name of local Storage Keys
@@ -41,12 +44,11 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
   this.ServiceProvider = ServiceProvider;
  }
 
- public async Task SetCurrentBackend(string backendKey)
+ public async Task SetCurrentBackend(string? backendKey)
  {
-
+  if (backendKey == null) { return; }
   var backend = AppState.GetBackendByKey(backendKey);
   if (backend == null) { return; }
-  ;
 
   proxy.BaseUrl = backend;
   AppState.BackendURL = backend;
@@ -54,7 +56,7 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
   await localStorage.SetItemAsync("Backend", AppState.BackendDisplayName);
  }
 
- private void SetCurrentUser(LoginInfo current)
+ private void SetCurrentUser(LoginInfo? current)
  {
   this.CurrentLoginInfo = current;
   AppState.Token = current != null ? current.Token : "";
@@ -69,7 +71,7 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
 
   var backend = AppState.GetBackendByKey(backendKey);
 
-  var l = new LoginInfo() { Username = username, Password = password, ClientID = AppState.ClientID };
+  var l = new LoginInfo() { Username = username, Password = password, ClientID = AppState.ClientID ?? "" };
   await SetCurrentBackend(backend);
 
   blazorUtil.Log($"{nameof(LogIn)}: Login at {backend} for {l.Username} ...");
@@ -159,7 +161,7 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
      blazorUtil.Log("Data from Re-Validation", this.CurrentLoginInfo);
      if (this.CurrentLoginInfo == null || String.IsNullOrEmpty(CurrentLoginInfo.Token))
      {
-      blazorUtil.Log($"{nameof(LogIn)}: Token not valid: {CurrentLoginInfo.Message}!");
+      blazorUtil.Log($"{nameof(LogIn)}: Token not valid: {CurrentLoginInfo?.Message}!");
       await localStorage.RemoveItemAsync(LoginInfoStorageKey);  // Token löschen, wenn ungültig!
       CurrentLoginInfo = null;
      }
@@ -199,7 +201,7 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
  /// <summary>
  /// Convert LoginInfo to AuthenticationState
  /// </summary>
- private AuthenticationState CreateAuthenticationState(LoginInfo l)
+ private AuthenticationState CreateAuthenticationState(LoginInfo? l)
  {
   // If you create your identity including authenticationType parameter the user is authenticated. If you create your identity without authenticationType parameter, the user is not authenticated.
   if (l == null || String.IsNullOrEmpty(l.Token))
@@ -236,7 +238,7 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
   // und wir nicht mit einer Instanz verschiedene Server abfragen können!
   using (var scope = ServiceProvider.CreateScope())
   {
-   IMiracleListProxy proxy = scope.ServiceProvider.GetService(typeof(IMiracleListProxy)) as IMiracleListProxy;
+   IMiracleListProxy proxy = (IMiracleListProxy)scope.ServiceProvider.GetService(typeof(IMiracleListProxy))!;
    proxy.BaseUrl = address;
    try
    {

@@ -23,8 +23,8 @@ public class AppState : IAppState
  public string? SignalRHubURL { get; set; }
  public HubConnection? HubConnection { get; set; }
 
- public string CurrentUserDirectoryAbsolutePath { get; } 
- public string CurrentUserDirectoryRelativePath { get; }
+ public string CurrentUserDirectoryAbsolutePath { get; } = "";
+ public string CurrentUserDirectoryRelativePath { get; } = "";
 
  private readonly IConfiguration configuration;
  private readonly IWebHostEnvironment host;

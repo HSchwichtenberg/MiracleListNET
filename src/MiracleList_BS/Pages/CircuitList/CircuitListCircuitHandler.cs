@@ -20,7 +20,7 @@ namespace ITVisions.Blazor.Services
  {
   private readonly ILogger<CircuitHandler> logger;
   private readonly IJSRuntime jsRuntime;
-  private readonly IHttpContextAccessor ca;
+  private readonly IHttpContextAccessor ca = null;
   /// <summary>
   /// Globale Liste aller Circuits
   /// </summary>

@@ -3,6 +3,7 @@
 
 @using ITVisions.Blazor
 @using Microsoft.JSInterop
+@using System.Diagnostics.CodeAnalysis
 
 @*Quelle: https://www.jqueryscript.net/form/three-state-switch-theswitch.html*@
 
@@ -21,6 +22,10 @@
  private bool? _Value;
 
  [Parameter]
+ [SuppressMessage(
+    "Usage",
+    "BL0007:Component parameters should be auto properties",
+    Justification = "Geht nicht mit bind:after")]
  public bool? Value 
  {
   get => _Value;
@@ -40,12 +45,6 @@
  public EventCallback<TriStateInfo> Changed { get; set; }
 
  bool Initiliazed = false;
- //IJSObjectReference skript;
-
- //protected override async Task OnInitializedAsync()
- //{
-
- //}
 
  protected override async Task OnAfterRenderAsync(bool firstRender)
  {

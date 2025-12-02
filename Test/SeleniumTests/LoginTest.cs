@@ -50,11 +50,11 @@ namespace MiracleListUITests
 
     wait.Until(d => b.Url.EndsWith("/main"));
 
-    Assert.IsTrue(b.Url.EndsWith("/main"));
+    Assert.EndsWith("/main", b.Url);
 
     ((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot2.png");
 
-    Assert.IsTrue(b.FindElement(By.Id("LoggedInUser")).Text.Contains(anmeldename));
+    Assert.Contains(anmeldename, b.FindElement(By.Id("LoggedInUser")).Text);
 
     //// Wait for results to show
     //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));

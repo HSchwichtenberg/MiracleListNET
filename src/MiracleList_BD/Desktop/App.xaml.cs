@@ -28,7 +28,7 @@ public partial class WPFApp : Application
 
   SetupExceptionHandling();
 
-  if (!WebView2Helper.IsWebView2Installed(out string? version))
+  if (!WebView2Helper.IsWebView2Installed(out string version))
   {
    var result = MessageBox.Show($"❌ Blazor Desktop erfordert Komponente 'Microsoft Edge WebView2'. Diese wurde auf dem System nicht gefunden!\n\nDie Installation des Edge-Browsers selbst reicht nicht!\n\nSiehe https://developer.microsoft.com/de-de/microsoft-edge/webview2\n\nMöchten Sie die Komponente jetzt herunterladen?", $"{System.Diagnostics.Process.GetCurrentProcess().ProcessName}: WebView2 not found", MessageBoxButton.YesNo);
    if (result == MessageBoxResult.Yes)

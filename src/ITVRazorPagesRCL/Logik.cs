@@ -10,7 +10,6 @@ namespace ITVRazorClassLibrary
   public static string GetVersion()
   {
    return "2018-08-30";
-
   }
  }
 }

@@ -48,9 +48,9 @@ public class AppState : IAppState
   }
 
   // Direkter Zugriff auf diese drei Einträge
-  this.StagingURL = this.configuration["Backend:StagingURL"];
-  this.LiveURL = this.configuration["Backend:LiveURL"];
-  this.DebugURL = this.configuration["Backend:DebugURL"];
+  this.StagingURL = this.configuration["Backend:StagingURL"] ?? "";
+  this.LiveURL = this.configuration["Backend:LiveURL"] ?? "";
+  this.DebugURL = this.configuration["Backend:DebugURL"] ?? "";
 
   Console.WriteLine($"AppState.ctor: {this.LiveURL}/{this.StagingURL}/{this.DebugURL} ");
 

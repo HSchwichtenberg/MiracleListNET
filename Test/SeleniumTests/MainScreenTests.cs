@@ -40,8 +40,8 @@ namespace MiracleListUITests
     var mpo = new MainPO(b);
     mpo.Wait();
 
-    Assert.IsTrue(b.Url.EndsWith("/main"));
-    Assert.IsTrue(mpo.LoggedInUserText.Contains(anmeldename));
+    Assert.EndsWith("/main", b.Url);
+    Assert.Contains(anmeldename, mpo.LoggedInUserText);
 
     //((ITakesScreenshot)b).GetScreenshot().SaveAsFile(@"Screenshot3.png", ScreenshotImageFormat.Png);
 
@@ -76,8 +76,8 @@ namespace MiracleListUITests
     var taskElements = mpo.TaskSet.FindElements(By.CssSelector("li"));
     IWebElement task = taskElements[0];
 
-    Assert.AreEqual(1, taskElements.Count);
-    Assert.IsTrue(task.Text.Contains(taskTitle));
+    Assert.HasCount(1, taskElements);
+    Assert.Contains(taskTitle, task.Text);
 
     // ENDE
     b.Quit();
@@ -107,9 +107,9 @@ namespace MiracleListUITests
     var mpo = new MainPO(b);
     mpo.Wait();
 
-    Assert.IsTrue(b.Url.EndsWith("/main"));
+    Assert.EndsWith("/main", b.Url);
 
-    Assert.IsTrue(mpo.LoggedInUserText.Contains(anmeldename));
+    Assert.Contains(anmeldename, mpo.LoggedInUserText);
 
     // Kategorie anlegen
     mpo.NewCategory.SendKeys("Testkategorie");
@@ -140,8 +140,8 @@ namespace MiracleListUITests
 
     var taskElements = mpo.TaskSet.FindElements(By.CssSelector("li"));
 
-    Assert.AreEqual(1, taskElements.Count);
-    Assert.IsTrue(taskElements[0].Text.Contains(taskTitle));
+    Assert.HasCount(1, taskElements);
+    Assert.Contains(taskTitle, taskElements[0].Text);
 
     // ENDE
     b.Quit();
@@ -265,9 +265,9 @@ namespace MiracleListUITests
     var mpo = new MainPO(b);
     mpo.Wait();
 
-    Assert.IsTrue(b.Url.EndsWith("/main"));
+    Assert.EndsWith("/main", b.Url);
 
-    Assert.IsTrue(mpo.LoggedInUserText.Contains(anmeldename));
+    Assert.Contains(anmeldename, mpo.LoggedInUserText);
     Console.WriteLine(mpo.LoggedInUserText);
     // Kategorie anlegen
     mpo.NewCategory.SendKeys("Testkategorie");
@@ -297,9 +297,9 @@ namespace MiracleListUITests
 
      var taskElements = mpo.TaskSet.FindElements(By.CssSelector("li"));
 
-     Assert.AreEqual(i, taskElements.Count);
+     Assert.HasCount(i, taskElements);
 
-     Assert.IsTrue(taskElements[i - 1].Text.Contains(taskTitle));
+     Assert.Contains(taskTitle, taskElements[i - 1].Text);
 
      Console.WriteLine(taskTitle + ": OK!");
     }

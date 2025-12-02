@@ -54,6 +54,7 @@ public class Program
   MailUtil.SMTPPassword = configuration["EMail:SMTPPassword"];
   MailUtil.SMTPSSL = configuration["EMail:SMTPSecure"] == "true";
 
+  // TODO: Umstellen auf WebApplicationBuilder, da WebHostBuilder veraltet ist
   var builder = WebHost.CreateDefaultBuilder(args)
    .UseUrls(hostUrl)
    .UseSetting("detailedErrors", "true")

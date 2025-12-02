@@ -70,7 +70,7 @@ public class MiracleListTests : PageTest
   //await Page.ClickAsync("#login");
   // oder Suche über Label bzw. Name
   await Page.GetByLabel("E-Mail-Adresse").FillAsync(anmeldename);
-  await Page.GetByLabel("Kennwort").FillAsync(anmeldename);
+  await Page.GetByLabel("Kennwort").FillAsync(kennwort);
   await Page.Locator("button[name='login']").ClickAsync();
 
   await Page.ScreenshotAsync(new() { Path = "VorLogin.png" });

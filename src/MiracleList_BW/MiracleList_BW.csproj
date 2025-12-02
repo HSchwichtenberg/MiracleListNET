@@ -33,9 +33,9 @@
 		<WasmEnableStreamingResponse>false</WasmEnableStreamingResponse>
 	
 		<!-- Optional für AOT-Kompilierung-->
-		<RunAOTCompilation>true</RunAOTCompilation>
+		<!--<RunAOTCompilation>true</RunAOTCompilation>
 		<PublishTrimmed>true</PublishTrimmed>
-		<InvariantGlobalization>true</InvariantGlobalization>
+		<InvariantGlobalization>true</InvariantGlobalization>-->
  </PropertyGroup>
 
  <!--Optional Multi-Threading-->

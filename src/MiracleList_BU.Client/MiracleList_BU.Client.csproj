@@ -11,9 +11,7 @@
  <PropertyGroup>
   <ImplicitUsings>enable</ImplicitUsings>
   <RootNamespace>Web.Client</RootNamespace>
-		<RunAOTCompilation>true</RunAOTCompilation>
-		<PublishTrimmed>true</PublishTrimmed>
-		<InvariantGlobalization>true</InvariantGlobalization>
+	
   <Nullable>enable</Nullable>
   <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
   <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
@@ -24,7 +22,14 @@
 	<!-- Ab .NET 10.0 notwendig, da generierter Proxy noch kein Response Streaming nutzt-->
 	<WasmEnableStreamingResponse>false</WasmEnableStreamingResponse>
 	</PropertyGroup>
-	
+
+	<!--Optional: AOT für Blazor WebAssembly-->
+	<PropertyGroup>
+		<!--<RunAOTCompilation>true</RunAOTCompilation>
+		<PublishTrimmed>true</PublishTrimmed>
+		<InvariantGlobalization>true</InvariantGlobalization>-->
+	</PropertyGroup>
+
 	<!--Eine Datei, die auch in MiracleList_BW verwendet wird-->
 	<ItemGroup>
    <Compile Include="..\MiracleList_BW\Authentication\MLAuthenticationStateProvider3Tier.cs" Link="Authentication\MLAuthenticationStateProvider3Tier.cs" />

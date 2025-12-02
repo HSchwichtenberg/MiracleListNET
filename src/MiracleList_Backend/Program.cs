@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace MiracleList;
@@ -33,7 +34,7 @@ public class Program
   CUI.Headline("Main");
   CUI.Print("OS: " + System.Environment.OSVersion);
   CUI.Print("Runtime: " + ITVisions.CLRInfo.GetClrVersion());
-  CUI.Print("Webframework: ASP.NET Core v" + typeof(WebHost).Assembly.GetName().Version.ToString());
+  CUI.Print("Webframework: ASP.NET Core v" + typeof(WebApplicationBuilder).Assembly.GetName().Version.ToString());
 
   var configuration = new Microsoft.Extensions.Configuration.ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
@@ -55,7 +56,7 @@ public class Program
   MailUtil.SMTPSSL = configuration["EMail:SMTPSecure"] == "true";
 
   // TODO: Umstellen auf WebApplicationBuilder, da WebHostBuilder veraltet ist
-  var builder = WebHost.CreateDefaultBuilder(args)
+  IWebHost builder = WebHost.CreateDefaultBuilder(args)
    .UseUrls(hostUrl)
    .UseSetting("detailedErrors", "true")
    .UseStartup<Startup>()

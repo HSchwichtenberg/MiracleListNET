@@ -14,10 +14,10 @@ namespace BL
    public CheckClientResultCode CheckClientResultCode;
    public Client client;
   }
+
   public enum CheckClientResultCode
   {
    Ok, ClientIDWrongFormat, ClientIDUnknown, ClientLimitExceeded, ClientIDDuplicate
-
   }
 
   public void Trace(string s)

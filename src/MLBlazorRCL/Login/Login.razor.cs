@@ -51,6 +51,7 @@ public class LoginModel : ComponentBase
   if (this.NavigationManager.Uri.Contains("/logout", StringComparison.OrdinalIgnoreCase))
   {
    await ((IMLAuthenticationStateProvider)mLAuthenticationStateProvider).Logout();
+   return;
   }
   #endregion
 
@@ -107,6 +108,11 @@ public class LoginModel : ComponentBase
  /// </summary>
  protected async Task Login()
  {
+  if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
+  {
+   LoginStatus = "Bitte E-Mail-Adresse und Kennwort eingeben.";
+   return;
+  }
   LoginStatus = "Anmeldung wird geprüft...";
   Util.Log($"{nameof(LoginModel)}.{nameof(Login)}: {Username}/{Password}/{Backend}");
 

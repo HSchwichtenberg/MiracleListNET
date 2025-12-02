@@ -18,6 +18,9 @@
  DateTime lastCheck = DateTime.Now;
  HubConnectionState? lastState = null;
 
+ int ConnectionCheckIntervalSecondsMin = 1;
+ int ConnectionCheckIntervalSecondsMax = 30;
+
  protected override async Task OnInitializedAsync()
  {
 
@@ -25,49 +28,65 @@
 
   await Run();
 
-  // alle 10 Sekunden
-  using var periodicTimer = new PeriodicTimer(TimeSpan.FromSeconds(10));
+  // alle x Sekunden
+  using var periodicTimer = new PeriodicTimer(TimeSpan.FromSeconds(ConnectionCheckIntervalSecondsMin));
   while (await periodicTimer.WaitForNextTickAsync())
   {
-   await Run();
+   var ok = await Run();
+   if (ok) 
+   {
+    Util.Log("Connections OK -> Connection Check Interval Seconds = " + ConnectionCheckIntervalSecondsMax);
+    periodicTimer.Period = TimeSpan.FromSeconds(ConnectionCheckIntervalSecondsMax);
+   }
+   else 
+   {
+    Util.Warn("Connections Not OK -> Connection Check Interval Seconds = " + ConnectionCheckIntervalSecondsMin);
+    periodicTimer.Period = TimeSpan.FromSeconds(ConnectionCheckIntervalSecondsMin);
+   }
   }
-
  }
 
- async Task Run()
+ async Task<bool> Run()
  {
+  bool result = false;
   lastCheck = DateTime.Now;
-  Util.Log("Connection Check...");
+  // Util.Log("Connection Check...");
   // Überwachung des Backends per Timer
   _ = Task.Run(
-     async () =>
-     {
-      if (String.IsNullOrEmpty(AppState.BackendURL))
-      {
-       backendState.State = BackendStateStatus.Checking;
-       backendState.StateDetails = "";
-      }
-      else
-      {
-       var result = await MLAuthenticationStateProvider.CheckBackend(AppState.BackendURL);
-       backendState.State = result.State;
-       backendState.StateDetails = result.StateDetails;
-       Util.Log("Backend State", result.State);
-      }
+            async () =>
+            {
+             if (String.IsNullOrEmpty(AppState.BackendURL))
+             {
+              backendState.State = BackendStateStatus.Checking;
+              backendState.StateDetails = "";
+             }
+             else
+             {
+              var result = await MLAuthenticationStateProvider.CheckBackend(AppState.BackendURL);
+              backendState.State = result.State;
+              backendState.StateDetails = result.StateDetails;
+              // Util.Log("Backend State", result.State);
+             }
 
-      await InvokeAsync(StateHasChanged);
-     }
+             await InvokeAsync(StateHasChanged);
+            }
      ); // end Task
 
   // Überwachung der HubConnection per Timer
   if ((lastState == null || lastState != AppState.HubConnection.State) && AppState.HubConnection != null)
   {
-   Util.Log("HubConnection State", AppState.HubConnection.State);
+   // Util.Log("HubConnection State", AppState.HubConnection.State);
    await InvokeAsync(StateHasChanged);
-   Util.Log("HubConnection State has changed: " + lastState + "->" + AppState.HubConnection.State);
+   // Util.Log("HubConnection State has changed: " + lastState + "->" + AppState.HubConnection.State);
    lastState = AppState.HubConnection.State;
   }
 
   await InvokeAsync(StateHasChanged);
+
+  if (backendState.State == BackendStateStatus.OK && AppState.HubConnection != null && AppState.HubConnection.State == HubConnectionState.Connected)
+  {
+   result = true;
+  }
+  return result;
  }
 }

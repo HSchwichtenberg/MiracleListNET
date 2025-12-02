@@ -28,7 +28,7 @@ public class SignalRTests
   // Benutzer erstellen und Token holen
   string username = Guid.NewGuid().ToString();
   string password = username;
-  string clientID = "11111111-1111-1111-1111-111111111111";
+  string clientID = "11111111-1111-1111-1111-111111111111"; // bitte eigene Client-ID hier eintragen. Beantragen unter https://miraclelistbackend.azurewebsites.net
   var loginInfo = new LoginInfo() { ClientID = clientID, Username = username, Password = password };
   var loginResult = await Proxy.LoginAsync(loginInfo);
 

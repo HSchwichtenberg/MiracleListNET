@@ -26,7 +26,7 @@ public class Program
  {
   //BL.DataGenerator.Run();
 
-  CUI.MainHeadline("MiracleList Backend v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+  CUI.AppTitlePanel("MiracleList Backend v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
   Console.WriteLine();
   var versions = ITVisions.CLRInfo.GetClrVersion();
@@ -46,7 +46,7 @@ public class Program
   // set a hostURL to use if there is no hosturl in the config
   var hostUrl = configuration["hosturl"];
   if (string.IsNullOrEmpty(hostUrl))
-   hostUrl = "http://localhost:8899";
+   hostUrl = "http://localhost:8889";
   CUI.Print("HostURL: " + hostUrl);
 
   // Set Mailconfig
@@ -56,7 +56,7 @@ public class Program
   MailUtil.SMTPSSL = configuration["EMail:SMTPSecure"] == "true";
 
   // TODO: Umstellen auf WebApplicationBuilder, da WebHostBuilder veraltet ist
-   #pragma warning disable ASPDEPR008 // Type or member is obsolete
+#pragma warning disable ASPDEPR008 // Type or member is obsolete
   IWebHost builder = WebHost.CreateDefaultBuilder(args)
    .UseUrls(hostUrl)
    .UseSetting("detailedErrors", "true")
@@ -77,9 +77,8 @@ public class Program
      logging.AddConsole();
     })
    .Build();
-#pragma warning restore ASPDEPR008 // Type or member is obsolete
 
-  CUI.H3("Server Features:");
+  CUI.Print("Server Features:");
   foreach (var sf in builder.ServerFeatures)
   {
    Console.WriteLine(sf.Key + "=" + sf.Value);
@@ -93,6 +92,7 @@ public class Program
    }
   }
 
+  CUI.Headline("Run");
   builder.Run();
  }
 

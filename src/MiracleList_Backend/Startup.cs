@@ -79,6 +79,7 @@ public class Startup
   Configuration = builder.Build();
 
   var CS = Configuration["ConnectionStrings:MiracleListDB"];
+  if (CS.IsNotNullOrEmpty()) { CUI.Success("OK"); }
   // Inject connection string into DAL
   DA.Context.IsRuntime = true;
   DA.Context.ConnectionString = CS;

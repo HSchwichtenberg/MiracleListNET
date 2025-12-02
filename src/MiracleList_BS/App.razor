@@ -44,6 +44,7 @@
 </head>
 
 <body>
+ <div class="container-fluid">
  <Routes @rendermode="InteractiveServer" />
  @* oder ohne Prerendering: <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" /> *@
  <ReconnectModal /> @* Neu in .NET 10.0 *@ 
@@ -62,5 +63,6 @@
    }
   });
   </script> *@
+  </div>
 </body>
 </html>

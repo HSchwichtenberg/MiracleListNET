@@ -34,7 +34,7 @@
   <PackageReference Include="Blazored.LocalStorage" Version="4.*" />
   <PackageReference Include="Blazored.Toast" Version="4.*" />
   <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
-  <PackageReference Include="Radzen.Blazor" Version="8.1.6" />
+  <PackageReference Include="Radzen.Blazor" Version="8.3.5" />
 
   <!--Fix Pakethölle-->
   <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.*-*" />

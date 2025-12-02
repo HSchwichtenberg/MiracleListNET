@@ -4,7 +4,7 @@
  <link rel="icon" type="image/x-icon" href="favicon.ico">
  <style>
   body {
-      background: rgba(255, 221, 134, 1) !important;
+   background: rgba(255, 221, 134, 1) !important;
   }
  </style>
  <link href="bootstrap.min.css" rel="stylesheet" />
@@ -24,21 +24,6 @@
 
     <p>Dieser Server stellt das <b>Backend auf Basis von .NET/C#/ASP.NET Core</b> bereit. Es ist kostenfrei für Test- und Ausbildungszwecke für jedermann nutzbar. Eine <a href="/clientid">Registrierung für eine Client-ID</a> ist aber erforderlich, damit jeder Client einen eigenen Mandaten erhält.</p>
 
-    <p>
-     Es gibt derzeit folgende Frontends:
-     <ul>
-      <li><a target="_blank" href="https://miraclelist.azurewebsites.net/">TypeScript/Angular</a> im Browser, in Cordova und in Electron</li>
-      <li><a target="_blank" href="https://miraclelist-vue.azurewebsites.net/">TypeScript/Vue.js</a> im Browser</li>
-      <li><a target="_blank" href="https://miraclelist-bs.azurewebsites.net/">C#/Blazor Server</a> im Browser</li>
-      <li><a target="_blank" href="https://miraclelist-bw.azurewebsites.net/">C#/Blazor WebAssembly</a> im Browser</li>
-      <li><a target="_blank" href="https://miraclelist-bu.azurewebsites.net/">C#/Blazor United (Auto-Render-Mode)</a> im Browser</li>
-      <li>C#/Blazor Desktop auf Windows (<a target="_blank" href="https://www.IT-Visions.de/BlazorBuch">Code im Buch "Blazor"</a>)</li>
-     </ul>
-
-
-    </p>
-
-
    </div>
 
    <!--Spalte 2-->
@@ -47,120 +32,146 @@
     <br />
     <div class="list-group ">
 
+     <div class="jumbotron" style="padding-top:5px;padding-bottom:10px">
+      <h1 class="display-4">Auf diesem Server</h1>
+      <a class="list-group-item" href="/about">Server and Version Info</a><br />
+      <!--<a class="list-group-item" href="/UserStatistics">User Statistics</a><br />-->
 
-     <a class="list-group-item" href="/about">Server and Version Info</a><br />
-     <!--<a class="list-group-item" href="/UserStatistics">User Statistics</a><br />-->
+      <a class="list-group-item" href="/swagger/v1/swagger.json">Swagger OpenAPI Specification (OAS) für API v1 (JSON) </a><br />
+      <a class="list-group-item" href="/swagger/v2/swagger.json">Swagger OpenAPI Specification (OAS) für API v2 (JSON)</a><br />
+      <a class="list-group-item" href="/swagger">API-Hilfeseiten (v1 and v2)</a><br />
+      <a class="list-group-item" href="/clientid">Client ID beantragen</a><br />
+</div>
 
-     <a class="list-group-item" href="/swagger/v1/swagger.json">Swagger OpenAPI Specification (OAS) für API v1 (JSON) </a><br />
-     <a class="list-group-item" href="/swagger/v2/swagger.json">Swagger OpenAPI Specification (OAS) für API v2 (JSON)</a><br />
-     <a class="list-group-item" href="/swagger">API-Hilfeseiten (v1 and v2)</a><br />
-     <a class="list-group-item" href="/clientid">Client ID beantragen</a><br />
+      <div class="jumbotron" style="padding-top:5px;padding-bottom:10px">
+       <h1 class="display-4">Verfügbare Frontends</h1>
 
 
-     <div class="row">
-      <div class="col-xs-6">
-       <a class="list-group-item" href="https://miraclelist-vue.azurewebsites.net">MiracleList Web UI (TypeScript/Vue.js)</a><br />
+       <div class="row">
+        <div class="col-xs-8">
+         <a class="list-group-item" href="https://miraclelist-vue.azurewebsites.net">MiracleList Web UI (TypeScript/Vue.js)</a><br />
+        </div>
+        <div class="col-xs-4">
+         <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListVue">Quellcode auf Github</a><br />
+        </div>
+       </div>
+
+       <div class="row">
+        <div class="col-xs-8">
+         <a class="list-group-item" href="https://miraclelist.azurewebsites.net">MiracleList Web UI (TypeScript/Angular)</a><br />
+        </div>
+        <div class="col-xs-4">
+         <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListAngular">Quellcode auf Github</a><br />
+        </div>
+       </div>
+
+       <div class="row">
+        <div class="col-xs-8">
+         <a class="list-group-item" href="https://Miraclelist.azurewebsites.net/download/MiracleListElectron-win32-x64.rar">MiracleList Desktop App für Windows (Download, RAR-Archiv, ~43 MB)</a><br />
+        </div>
+
+        <div class="col-xs-4">
+         <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListAngular">Quellcode auf Github</a><br />
+        </div>
+
+       </div>
+
+       <div class="row">
+        <div class="col-xs-8">
+         <a class="list-group-item" href="https://Miraclelist.azurewebsites.net/download/MiracleListElectron-linux-x64.rar">MiracleList Desktop App für Linux (Download, RAR-Archiv, ~36 MB)</a><br />
+        </div>
+
+        <div class="col-xs-4">
+         <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListAngular">Quellcode auf Github</a><br />
+        </div>
+
+       </div>
+
+
+       <div class="row">
+        <div class="col-xs-8">
+
+         <a class="list-group-item" href="https://Miraclelist.azurewebsites.net/download/MiracleListElectron-darwin-x64.zip">MiracleList Desktop App für MacOS (Download, ZIP-Archiv, ~44 MB)</a><br />
+        </div>
+
+        <div class="col-xs-4">
+         <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListAngular">Quellcode auf Github</a><br />
+        </div>
+
+       </div>
+
+
+
+       <div class="row">
+        <div class="col-xs-8">
+         <a class="list-group-item" href="https://miraclelist-bw.azurewebsites.net">MiracleList Web UI (C#/Blazor WebAssembly)</a><br />
+        </div>
+
+        <div class="col-xs-4">
+         <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListNET">Quellcode auf Github</a><br />
+        </div>
+       </div>
+
+       <div class="row">
+        <div class="col-xs-8">
+         <a class="list-group-item" href="https://miraclelist-bs.azurewebsites.net">MiracleList Web UI (C#/Blazor Server)</a><br />
+        </div>
+
+        <div class="col-xs-4">
+         <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListNET">Quellcode auf Github</a><br />
+        </div>
+       </div>
+
+       <div class="row">
+        <div class="col-xs-8">
+         <a class="list-group-item" href="https://miraclelist-bu.azurewebsites.net">MiracleList Web UI (C#/Blazor Auto-Render-Modus)</a><br />
+        </div>
+
+        <div class="col-xs-4">
+         <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListNET">Quellcode auf Github</a><br />
+        </div>
+       </div>
+
+       <div class="row">
+        <div class="col-xs-8">
+         <a class="list-group-item" href="https://www.IT-Visions.de/BlazorBuch">MiracleList Desktop App für Windows (C#/Blazor Desktop/WPF)</a><br />
+        </div>
+
+        <div class="col-xs-4">
+         <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListNET">Quellcode auf Github</a><br />
+        </div>
+
+       </div>
+
+
+       <div class="row">
+        <div class="col-xs-8">
+         <a class="list-group-item" href="https://www.IT-Visions.de/BlazorBuch">MiracleList Desktop App für Windows, macOS, Android und iOS (C#/Blazor MAUI)</a><br />
+        </div>
+
+        <div class="col-xs-4">
+         <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListNET">Quellcode auf Github</a><br />
+        </div>
+
+       </div>
+
+
+       <div class="row">
+        <div class="col-xs-8">
+         <a class="list-group-item" href="https://www.IT-Visions.de/BlazorBuch">MiracleList Cross-Platform-App für Windows, Android, iOS, macOS und Tizen (C#/Blazor MAUI/.NET MAUI)</a><br />
+        </div>
+
+        <div class="col-xs-4">
+         <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListNET">Quellcode auf Github</a><br />
+        </div>
+
+       </div>
       </div>
-      <div class="col-xs-6">
-       <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListVue">Quellcode auf Github</a><br />
-      </div>
+
+      <a class="list-group-item" href="/imprint">Impressum</a><br />
+
      </div>
-
-     <div class="row">
-      <div class="col-xs-6">
-       <a class="list-group-item" href="https://miraclelist.azurewebsites.net">MiracleList Web UI (TypeScript/Angular)</a><br />
-      </div>
-      <div class="col-xs-6">
-       <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListAngular">Quellcode auf Github</a><br />
-      </div>
-     </div>
-
-     <div class="row">
-      <div class="col-xs-6">
-       <a class="list-group-item" href="https://Miraclelist.azurewebsites.net/download/MiracleListElectron-win32-x64.rar">MiracleList Desktop App für Windows (Download, RAR-Archiv, ~43 MB)</a><br />
-      </div>
-
-      <div class="col-xs-6">
-       <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListAngular">Quellcode auf Github</a><br />
-      </div>
-
-     </div>
-
-     <div class="row">
-      <div class="col-xs-6">
-       <a class="list-group-item" href="https://Miraclelist.azurewebsites.net/download/MiracleListElectron-linux-x64.rar">MiracleList Desktop App für Linux (Download, RAR-Archiv, ~36 MB)</a><br />
-      </div>
-
-      <div class="col-xs-6">
-       <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListAngular">Quellcode auf Github</a><br />
-      </div>
-
-     </div>
-
-
-     <div class="row">
-      <div class="col-xs-6">
-
-       <a class="list-group-item" href="https://Miraclelist.azurewebsites.net/download/MiracleListElectron-darwin-x64.zip">MiracleList Desktop App für MacOS (Download, ZIP-Archiv, ~44 MB)</a><br />
-      </div>
-
-      <div class="col-xs-6">
-       <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListAngular">Quellcode auf Github</a><br />
-      </div>
-
-     </div>
-
-
-
-     <div class="row">
-      <div class="col-xs-6">
-       <a class="list-group-item" href="https://miraclelist-bw.azurewebsites.net">MiracleList Web UI (C#/Blazor WebAssembly)</a><br />
-      </div>
-
-      <div class="col-xs-6">
-       <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListNET">Quellcode auf Github</a><br />
-      </div>
-
-     </div>
-
-     <div class="row">
-      <div class="col-xs-6">
-       <a class="list-group-item" href="https://miraclelist-bs.azurewebsites.net">MiracleList Web UI (C#/Blazor Server)</a><br />
-      </div>
-
-      <div class="col-xs-6">
-       <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListNET">Quellcode auf Github</a><br />
-      </div>
-
-     </div>
-
-     <div class="row">
-      <div class="col-xs-6">
-       <a class="list-group-item" href="https://www.IT-Visions.de/BlazorBuch">MiracleList Desktop App für Windows (C#/Blazor Desktop/WPF)</a><br />
-      </div>
-
-      <div class="col-xs-6">
-       <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListNET">Quellcode auf Github</a><br />
-      </div>
-
-     </div>
-
-
-     <div class="row">
-      <div class="col-xs-6">
-       <a class="list-group-item" href="https://www.IT-Visions.de/BlazorBuch">MiracleList Cross-Platform-App für Windows, Android, iOS, macOS und Tizen (C#/Blazor MAUI/.NET MAUI)</a><br />
-      </div>
-
-      <div class="col-xs-6">
-       <a class="list-group-item" href="https://github.com/HSchwichtenberg/MiracleListNET">Quellcode auf Github</a><br />
-      </div>
-
-     </div>
-
-     <a class="list-group-item" href="/imprint">Impressum</a><br />
-
     </div>
-   </div>
   </div>
  </div>
 </body>

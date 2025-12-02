@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using BO;
 using DA;
 using ITVisions.EFCore;
-using Microsoft.EntityFrameworkCore;
 
 namespace BL
 {
@@ -34,9 +32,7 @@ namespace BL
    if (guidStr == "TODO: Ihre erhaltene ClientID") new CheckClientResult() { CheckClientResultCode = CheckClientResultCode.Ok };
    Guid guid;
    if (!Guid.TryParse(guidStr, out guid)) new CheckClientResult() { CheckClientResultCode = CheckClientResultCode.ClientIDWrongFormat };
-   //ctx.ClientSet.OrderBy(x=>x.ClientID).Last();
 
-   //   System.InvalidCastException : Unable to cast object of type 'System.Guid' to type 'System.String'.
    var clients = ctx.ClientSet.Where(x => x.ClientID == guid).ToList();
    if (clients.Count == 0) return new CheckClientResult() { CheckClientResultCode = CheckClientResultCode.ClientIDUnknown };
    if (clients.Count > 1) return new CheckClientResult() { CheckClientResultCode = CheckClientResultCode.ClientIDDuplicate };

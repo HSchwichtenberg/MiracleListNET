@@ -30,7 +30,7 @@
 		<div class="row">
 			<div class="col-xs-12 form-group">
 				<label for="password">Kennwort</label>
-				<input name="password" id="password" @bind="this.Password" @bind:after="Login" placeholder="Ihr Kennwort" required type="password" class="form-control" disabled="@(!this.RendererInfo.IsInteractive)">
+				<input name="password" id="password" @bind="this.Password" placeholder="Ihr Kennwort" required type="password" class="form-control" disabled="@(!this.RendererInfo.IsInteractive)">
 			</div>
 		</div>
 
@@ -49,7 +49,9 @@
 			</div>
 		</div>
 
-		<button @onclick="Login" class="btn @(this.RendererInfo.IsInteractive ? "btn-primary" : "btn-danger")" disabled="@(!this.RendererInfo.IsInteractive)" type="submit" id="login" name="login">Anmelden</button>
+
+
+  <button @onclick="Login" style="margin-top:-10px" class="btn @(this.RendererInfo.IsInteractive ? "btn-primary" : "btn-danger")" disabled="@(!this.RendererInfo.IsInteractive)" type="submit" id="login" name="login">Anmelden</button> <input type="checkbox" class="bigCheckbox" @bind="ForceReload" disabled="@(!this.RendererInfo.IsInteractive)" /> Anmeldung mit erzwungenem Neuladen
 
 		<span id="errorMsg" class="text-danger">@LoginStatus</span>
 	</div>

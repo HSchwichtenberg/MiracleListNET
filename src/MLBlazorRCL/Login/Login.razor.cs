@@ -33,6 +33,8 @@ public class LoginModel : ComponentBase
  [SupplyParameterFromQuery(Name = "pwd")]
  public string Q_Password { get; set; }
 
+ public bool ForceReload { get; set; } = false;
+
  #region Properties zur Datenbindung
  public string Username { get; set; }
  public string Password { get; set; }
@@ -99,7 +101,7 @@ public class LoginModel : ComponentBase
    // Set the Backend-URL for the Proxy
    var url = "https://miraclelistbackend.azurewebsites.net/";
    LoginInfo li = await ((IMLAuthenticationStateProvider)mLAuthenticationStateProvider).LogIn(Q_User, Q_Password, url);
-   if (li != null && String.IsNullOrEmpty(li.Message)) { NavigationManager.NavigateTo("/app"); return; }
+   if (li != null && String.IsNullOrEmpty(li.Message)) { NavigationManager.NavigateTo("/app",ForceReload); return; }
   }
  }
 
@@ -134,7 +136,7 @@ public class LoginModel : ComponentBase
     LoginStatus = "";
     // DEMO: 32. NavigationManager
     Util.Log("Login.DoLogin: Login OK!");
-    this.NavigationManager.NavigateTo("/main");
+    NavigationManager.NavigateTo("/main", ForceReload); 
     return;
    }
    else

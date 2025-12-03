@@ -135,7 +135,7 @@ public partial class Main : IAsyncDisposable
 
     if (changedCategory.CategoryID == this.category.CategoryID)
     {
-     toastService.ShowSuccess($"Die Aufgabe dieser Kategorie #{category.CategoryID}: \"{this.category.Name}\" wurden auf n einer anderen Anwendungsinstanz verändert.");
+     toastService.ShowSuccess($"Die Aufgabe dieser Kategorie #{category.CategoryID}: \"{this.category.Name}\" wurden in einer anderen Anwendungsinstanz verändert.");
      await ShowTaskSet(this.category); // Daten neu laden
      await InvokeAsync(StateHasChanged); // InvokeAsync() notwendig hier, weil die Nachricht im Hintergrund (anderer Thread) kommt
     }

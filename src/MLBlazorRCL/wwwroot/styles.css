@@ -60,7 +60,6 @@ h4, h5 {
  }
 /*#endregion Überschreiben von Bootstrap-Eigenschaften*/
 
-
 /*#region Überschreiben der zu kleinen Vorgaben im Radzen-Grid*/
 .rz-cell-data {
  font-size: 1.0rem !important;

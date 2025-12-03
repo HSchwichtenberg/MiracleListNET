@@ -26,6 +26,8 @@ public class Program
 
  public static void Main(string[] args)
  {
+  CUI.AppTitlePanel("MiracleList Blazor Server v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
+
   IConfiguration Configuration;
 
   var builder = WebApplication.CreateBuilder(args);

@@ -14,7 +14,7 @@ public partial class App : Application {
  public IAppState Appstate { get; }
  public HybridSharedState HybridSharedState { get; }
 
- protected override Window CreateWindow(IActivationState? activationState)
+ protected override Window CreateWindow(IActivationState activationState)
  {
   var w = new Window(new MainPage(Appstate, HybridSharedState));
   // Setzt den Fenstertitel (nur auf Desktop-OS)

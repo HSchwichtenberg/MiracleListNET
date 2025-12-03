@@ -54,13 +54,13 @@
   
   <span id="errorMsg" class="text-danger">@LoginStatus</span>
 
-  @if (AppState.ShouldOfferReloadAfterLoginForTransitionToWebAssembly && this.RendererInfo.IsInteractive && this.RendererInfo.Name != "WebAssembly")
+  @if (this.IsAutoRenderMode && this.RendererInfo.IsInteractive && this.RendererInfo.Name == "Server")
   {
    @* Diese Option macht nur Sinn beim AutoRenderMode, um den Übergang von Blazor Server zu Blazor WebAssembly nach dem Login zu erzwingen *@
    <text>
     <br />
     <input type="checkbox" class="bigCheckbox" @bind="ForceReload" style="margin-left:10px" disabled="@(!this.RendererInfo.IsInteractive)" />
-    Neuladen im Browser erzwingen zum Übergang zu Blazor WebAssembly
+    Nach der Anmeldung Neuladen im Browser erzwingen zum Übergang zu Blazor WebAssembly
    </text>
   }
 	</div>

@@ -6,6 +6,7 @@ using Blazored.LocalStorage;
 using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Web;
 using MiracleList;
 
 namespace MLBlazorRCL;
@@ -35,6 +36,9 @@ public class LoginModel : ComponentBase
 
  public bool ForceReload { get; set; } = false;
 
+ [PersistentState] // Zwingend notwendig, da RenderMode.InteractiveAuto nur im Prerendering ermittelbar! 
+ public bool IsAutoRenderMode { get; set; } = false;
+
  #region Properties zur Datenbindung
  public string Username { get; set; }
  public string Password { get; set; }
@@ -47,7 +51,10 @@ public class LoginModel : ComponentBase
  protected override async System.Threading.Tasks.Task OnInitializedAsync()
  {
   shouldRender = false;   // Rendern unterdrücken, falls wir die Anmeldeseite gar nicht darstellen müssen
-  ForceReload = AppState.ShouldOfferReloadAfterLoginForTransitionToWebAssembly;
+
+  // InteractiveAuto liefert Blazor nur beim Prerendering!
+  if (this.AssignedRenderMode == RenderMode.InteractiveAuto) IsAutoRenderMode = true;
+  ForceReload = IsAutoRenderMode;
 
   Util.Log($"{nameof(LoginModel)}.{nameof(OnInitializedAsync)}: {this.NavigationManager.Uri} | RenderMode: {this.RendererInfo.Name} -> {this.AssignedRenderMode}");
   #region Umleitung als Reaktion auf die URL /logout

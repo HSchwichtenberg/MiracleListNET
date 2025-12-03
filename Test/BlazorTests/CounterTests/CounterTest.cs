@@ -3,7 +3,7 @@ using Xunit.Abstractions;
 
 namespace BlazorTests.CounterTests;
 
-public class CounterTests : TestContext
+public class CounterTests : BunitContext
 {
  private readonly ITestOutputHelper output;
 
@@ -19,7 +19,7 @@ public class CounterTests : TestContext
  public void CounterTest()
  {
   // Arrange (cut = Component under Test)
-  var cut = RenderComponent<Counter>();
+  var cut = Render<Counter>();
 
   // Act
   cut.Find("button").Click();
@@ -53,7 +53,7 @@ public class CounterTests : TestContext
  public void CounterTestmitWait()
  {
   // Arrange (cut = Component under Test)
-  var cut = RenderComponent<CounterAsync>();
+  var cut = Render<CounterAsync>();
 
   // Act
   cut.Find("button").Click();

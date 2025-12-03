@@ -22,7 +22,7 @@ using Pages = Web.Pages;
 namespace MiracleListTests
 {
 
- public class MiracleTaskEditTest : TestContext
+ public class MiracleTaskEditTest : BunitContext
  {
   string UriBefore = "http://myserver/Login";
 
@@ -59,7 +59,7 @@ namespace MiracleListTests
    tm.CreateTask(task);
 
    // Auth. faken
-   var authContext = this.AddTestAuthorization();
+   var authContext = this.AddAuthorization();
    authContext.SetAuthorized("testuser");
    authContext.SetClaims(
        new Claim(ClaimTypes.Sid, um.CurrentUser.UserID.ToString()),
@@ -73,7 +73,7 @@ namespace MiracleListTests
    BO.Task task = Prepare();
 
    // Diese Komponente laden
-   var cut = RenderComponent<TaskEdit>(
+   var cut = Render<TaskEdit>(
     p => p
      .Add(x => x.Task, task)
      .Add(x => x.TaskHasChanged, (saved) => { Assert.True(saved); })
@@ -94,7 +94,7 @@ namespace MiracleListTests
    BO.Task task = Prepare();
 
    // Diese Komponente laden
-   var cut = RenderComponent<TaskEdit>(
+   var cut = Render<TaskEdit>(
     p => p
      .Add(x => x.Task, task)
      .Add(x => x.TaskHasChanged, (saved) => { Assert.False(saved); })

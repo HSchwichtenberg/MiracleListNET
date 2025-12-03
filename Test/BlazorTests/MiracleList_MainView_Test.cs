@@ -31,7 +31,7 @@ using Xunit.Abstractions;
 namespace MiracleListTests;
 
 // DEMO: 71. Razor Component Tests mit BUnit
-public class MiracleList_MainView_Test : TestContext
+public class MiracleList_MainView_Test : BunitContext
 {
  private readonly ITestOutputHelper output;
 
@@ -83,7 +83,7 @@ public class MiracleList_MainView_Test : TestContext
 
   // neuer Benutzer mit Standardkategorien
   string name = "testuser " + Guid.NewGuid();
-  var authContext = this.AddTestAuthorization();
+  var authContext = this.AddAuthorization();
   authContext.SetAuthorized(name);
  }
 
@@ -136,7 +136,7 @@ public class MiracleList_MainView_Test : TestContext
   #endregion
 
   // Komponente rendern
-  IRenderedComponent<MLBlazorRCL.MainView.Main> cut = RenderComponent<MLBlazorRCL.MainView.Main>();
+  IRenderedComponent<MLBlazorRCL.MainView.Main> cut = Render<MLBlazorRCL.MainView.Main>();
 
   // Stimmt die angezeigte Anzahl der Kategorien und Aufgaben? (basiert auf obigen Fake-Daten)
   var t = cut.Find("#categoryCount").Text();

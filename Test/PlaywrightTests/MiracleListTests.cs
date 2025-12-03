@@ -59,6 +59,7 @@ public class MiracleListTests : PageTest
 
   // Expect a title "to contain" a substring.
   await Expect(Page).ToHaveTitleAsync(new Regex("MiracleList_B"));
+  await Page.ScreenshotAsync(new() { Path = "VorLogin.png" });
 
   // Login-Formular ausfüllen: Suche über Placeholder
   //await Page.GetByPlaceholder("Ihre E-Mail-Adresse").FillAsync(anmeldename);
@@ -72,8 +73,6 @@ public class MiracleListTests : PageTest
   await Page.GetByLabel("E-Mail-Adresse").FillAsync(anmeldename);
   await Page.GetByLabel("Kennwort").FillAsync(kennwort);
   await Page.Locator("button[name='login']").ClickAsync();
-
-  await Page.ScreenshotAsync(new() { Path = "VorLogin.png" });
 
   // Nun sollten wir auf der Hauptseite sein, der Titel sollte aber gleich sein
   await Expect(Page).ToHaveURLAsync(new Regex("main"));

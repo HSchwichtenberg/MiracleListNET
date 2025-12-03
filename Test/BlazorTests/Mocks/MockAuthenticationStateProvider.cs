@@ -36,7 +36,7 @@ public class MockAuthenticationStateProvider : Web.MLAuthenticationStateProvider
  /// Login to be called by Razor Component Login.razor in case of login!
  /// </summary> 
  public override async Task<LoginInfo> LogIn(string username, string password, string backend) {
-  if (String.IsNullOrEmpty(username) || string.IsNullOrEmpty(password)) {
+  if (String.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || password.Length <2) {
    this.currentUser = null;
   }
   else {

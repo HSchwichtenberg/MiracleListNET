@@ -25,7 +25,7 @@ using Pages = Web.Pages;
 namespace MiracleListTests
 {
  // DEMO: 71. Razor Component Tests mit BUnit
- public class MiracleListLoginTest : TestContext
+ public class MiracleListLoginTest : BunitContext
  {
 
   //myserver ist beliebiges Wort. Es wird kein HTTP-Request dahin gesendet!
@@ -41,12 +41,13 @@ namespace MiracleListTests
   {
 
   }
-  TestContext ctx = new TestContext();
+  BunitContext  ctx = new BunitContext();
 
   private IRenderedComponent<MLBlazorRCL.Login.Login> ArrangeAndAct(string name, string kennwort)
   {
 
    #region Mocks für DI einrichten
+   ctx.AddBunitPersistentComponentState();
    ctx.JSInterop.Mode = JSRuntimeMode.Loose; // Loose mode configures the implementation to just return the default value when it receives an invocation that has not been explicitly set up https://bunit.dev/docs/test-doubles/emulating-ijsruntime.html
    ctx.Services.AddSingleton<IWebHostEnvironment>(new MockWebHostEnvironment());
    //ctx.Services.AddSingleton<NavigationManager>(new MockNavigationManager(UriBefore));
@@ -65,13 +66,13 @@ namespace MiracleListTests
    IMiracleListProxy mockProxy = Mock.Create<IMiracleListProxy>();
    ctx.Services.AddSingleton(mockProxy);
    ctx.Services.AddScoped<IAppState, AppState>();
-
+   ctx.Renderer.SetRendererInfo(new RendererInfo("Server",true));
    //var state = Mock.Create<Task<AuthenticationState>>();
 
-   var navMan = Services.GetRequiredService<FakeNavigationManager>();
+   //var navMan = Services.GetRequiredService<ITVisions.Blazor.Mail.FakeNavigationManager>();
    #endregion
 
-   var cut = ctx.RenderComponent<MLBlazorRCL.Login.Login>(); // parameters => parameters.Add(p => p.authenticationStateTask, state));
+   var cut = ctx.Render<MLBlazorRCL.Login.Login>(); // parameters => parameters.Add(p => p.authenticationStateTask, state));
 
    // Prüfung 1: Richtiges Fenster geladen?
    cut.Find("h2").MarkupMatches(@"<h2 class='Headline'>Benutzeranmeldung</h2>");
@@ -101,7 +102,7 @@ namespace MiracleListTests
    string name = "testuser " + Guid.NewGuid();
    string kennwort = Guid.NewGuid().ToString();
 
-   var authContext = ctx.AddTestAuthorization();
+   var authContext = ctx.AddAuthorization();
    authContext.SetAuthorized(name);
    var stateProvider = Services.GetService<AuthenticationStateProvider>();
 
@@ -116,10 +117,23 @@ namespace MiracleListTests
   }
 
   [Fact]
+  public void LoginEmpty()
+  {
+   string name = "";
+   string kennwort = "";
+
+   // Arrange and Act
+   IRenderedComponent<MLBlazorRCL.Login.Login> cut = ArrangeAndAct(name, kennwort);
+
+   // Prüfung
+   Assert.Contains("Bitte E-Mail-Adresse und Kennwort eingeben", cut.Find("#errorMsg").TextContent);
+  }
+
+   [Fact]
   public void LoginError()
   {
-   string name = "testusers " + DateTime.Now;
-   string kennwort = "";
+   string name = "test";
+   string kennwort = "-";
 
    // Arrange and Act
    IRenderedComponent<MLBlazorRCL.Login.Login> cut = ArrangeAndAct(name, kennwort);
@@ -128,10 +142,10 @@ namespace MiracleListTests
    var console = ctx.JSInterop.Invocations["console.info"];
    Assert.Contains(console, x => x.Arguments[0].ToString() == "BLAZOR: Login.DoLogin: Login Error!");
 
-   // Prüfung 2: Konsolenausgabe
+   // Prüfung 2: Meldung in der Seite
    Assert.Contains("Anmeldefehler: not ok", cut.Find("#errorMsg").TextContent);
 
-   // Prüfung 3: Navigation
+   // Prüfung 3: Navigation ist nicht erfolgt: Wir sind immer noch auf der Login-Seite!
    Assert.Equal(UriBefore, cut.Instance.NavigationManager.Uri);
   }
  }

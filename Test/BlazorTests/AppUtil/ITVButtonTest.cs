@@ -13,7 +13,7 @@ namespace BlazorTests.BlazorUtilTests;
 /// These tests are written entirely in C#.
 /// Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating-basic-tests-in-cs-files
 /// </summary>
-public class ITVButtonTest : TestContext
+public class ITVButtonTest : BunitContext
 {
  public ITVButtonTest()
  {
@@ -24,7 +24,7 @@ public class ITVButtonTest : TestContext
  public void EmptyButton()
  {
   // Arrange
-  var cut = RenderComponent<ITVButton>();
+  var cut = Render<ITVButton>();
 
   // Assert that content of the paragraph shows counter at zero
   cut.Find("button").Text().MarkupMatches("");
@@ -35,7 +35,7 @@ public class ITVButtonTest : TestContext
  {
   string content = "Test<b>button</b>";
   // Arrange
-  var cut = RenderComponent<ITVButton>(p => p.AddChildContent(content));
+  var cut = Render<ITVButton>(p => p.AddChildContent(content));
 
   // Assert that the counter was incremented
   cut.Find("button").Html().MarkupMatches(content);
@@ -57,7 +57,7 @@ public class ITVButtonTest : TestContext
 
   };
 
-  var cut = RenderComponent<ITVButton>(p => p.AddChildContent(content)
+  var cut = Render<ITVButton>(p => p.AddChildContent(content)
                                              .Add(x => x.AnimationSeconds, (byte)delay)
                                              .Add(x => x.onClick, onClickHandler)
                                              .AddUnmatched("style","background-color:red"));
@@ -118,7 +118,7 @@ public class ITVButtonTest : TestContext
    Assert.Equal("Testfehler", ex.Message);
   };
 
-  var cut = RenderComponent<ITVButton>(p => p.AddChildContent(content)
+  var cut = Render<ITVButton>(p => p.AddChildContent(content)
                                              .Add(x => x.AnimationSeconds, (byte)delay)
                                              .Add(x => x.onClick, onClickHandler)
                                              .Add(x => x.onError, onErrorHandler));
@@ -170,7 +170,7 @@ public class ITVButtonTest : TestContext
   };
 
   // wir liefern aber keine Fehlerhandler mit, d.h. die Komponente wird selbst einen Alert-Dialog machen
-  var cut = RenderComponent<ITVButton>(p => p.AddChildContent(content)
+  var cut = Render<ITVButton>(p => p.AddChildContent(content)
                                              .Add(x => x.AnimationSeconds, (byte)delay)
                                              .Add(x => x.onClick, onClickHandler));
   Assert.Equal(1, cut.RenderCount);

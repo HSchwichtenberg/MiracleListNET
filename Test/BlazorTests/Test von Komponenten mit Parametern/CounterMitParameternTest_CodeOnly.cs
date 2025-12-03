@@ -4,13 +4,13 @@ namespace BlazorTests.Test_von_Komponenten_mit_Parametern;
 /// These tests are written entirely in C#.
 /// Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating-basic-tests-in-cs-files
 /// </summary>
-public class CounterMitParameternTest_CodeOnly : TestContext
+public class CounterMitParameternTest_CodeOnly : BunitContext
 {
  [Fact]
  public void CounterStartsAtZero()
  {
   // Arrange
-  var cut = RenderComponent<CounterMitParametern>();
+  var cut = Render<CounterMitParametern>();
 
   // Assert that content of the paragraph shows counter at zero
   cut.Find("p").MarkupMatches("<p>Current count: 0</p>");
@@ -20,7 +20,7 @@ public class CounterMitParameternTest_CodeOnly : TestContext
  public void ClickingButtonIncrementsCounter()
  {
   // Arrange
-  var cut = RenderComponent<CounterMitParametern>(p => p.Add(x => x.Increment, 2).Add(x => x.CurrentCount, 40));
+  var cut = Render<CounterMitParametern>(p => p.Add(x => x.Increment, 2).Add(x => x.CurrentCount, 40));
 
   // Act - click button to increment counter
   cut.Find("button").Click();

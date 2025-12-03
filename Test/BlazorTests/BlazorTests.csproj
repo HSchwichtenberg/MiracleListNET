@@ -10,7 +10,7 @@
 
  <ItemGroup>
   <PackageReference Include="Blazored.LocalStorage" Version="4.*" />
-  <PackageReference Include="bunit" Version="1.*" />
+  <PackageReference Include="bunit" Version="2.1.1" />
   <PackageReference Include="JustMock" Version="2025.*" />
   <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.*-*" />
   <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.*" />

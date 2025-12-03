@@ -18,7 +18,6 @@ using Samples.Komponentendateien;
 using Telerik.JustMock; // Mocking mit Just Mock von Progress Telerik
 using Web;
 using Xunit;
-using static Bunit.ComponentParameterFactory;
 // Testen der BD-Lösung
 //using Pages = BD.Web.Pages;
 // oder z.B. Blazor Server
@@ -26,7 +25,7 @@ using Pages = Web.Pages;
 
 namespace MiracleListTests
 {
- public class MiracleListAboutTest : TestContext
+ public class MiracleListAboutTest : BunitContext
  {
   string UriBefore = "http://myserver/Login";
 
@@ -57,7 +56,7 @@ namespace MiracleListTests
   public void HeadlineOK()
   {
    // Diese Komponente laden
-   var cut = RenderComponent<Pages.About>();
+   var cut = Render<Pages.About>();
    Console.WriteLine(cut.Markup);
    Debug.WriteLine(cut.Markup);
    Trace.WriteLine(cut.Markup);

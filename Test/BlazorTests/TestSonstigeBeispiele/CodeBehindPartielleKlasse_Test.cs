@@ -15,7 +15,7 @@ using Xunit;
 namespace BlazorTests.TestSonstigeBeispiele
 {
 
- public class CodeBehindPartielleKlasse_Test : TestContext
+ public class CodeBehindPartielleKlasse_Test : BunitContext
  {
 
   //public MockJSRuntimeInvokeHandler jsMock { get; set; }
@@ -35,7 +35,7 @@ namespace BlazorTests.TestSonstigeBeispiele
   public void AddTest()
   {
 
-   var cut = RenderComponent<CodeBehindPartielleKlasse>();
+   var cut = Render<CodeBehindPartielleKlasse>();
 
    cut.Markup.Contains(@"<h2>Code-Behind mit partieller Klasse</h2>");
    cut.Markup.Contains(@"Sum: 0");
@@ -52,7 +52,9 @@ namespace BlazorTests.TestSonstigeBeispiele
    Assert.Equal(Uri, cut.Instance.NavigationManager.Uri);
 
    // Es sollte zwei Änderungen im DOM geben
-   Assert.Equal(2, cut.GetChangesSinceFirstRender().Count);
+   // Assert.Equal(2, cut.GetChangesSinceFirstRender().Count);
+   // GetChangesSinceFirstRender() Has been completely removed. We saw not much use of it and therefore cut the ties entirely. You can recreate the functionality to some extend with the given OnRender events. (https://steven-giesel.com/blogPost/0827131c-9b33-4c92-a2fa-5dd6616b72f9)
+
    // Prüfen der Änderungen
    // a) Volltextsuche 
    Assert.Contains("Sum: 3,57", cut.Markup);
@@ -80,7 +82,10 @@ namespace BlazorTests.TestSonstigeBeispiele
    decimal erwartet = 3.0m;
    string erwartetDOMFormat = erwartet.ToString(new CultureInfo("en-us"));
 
-   var cut = RenderComponent<CodeBehindPartielleKlasse>(("X", 1.0m), ("Y", 2.0m));
+   var cut = Render<CodeBehindPartielleKlasse>(
+    parameters => parameters
+      .Add(p => p.X, 1.0m)
+      .Add(p => p.Y, 2.0m));
 
    cut.Markup.Contains(@"<h2>Code-Behind mit partieller Klasse</h2>");
    cut.Markup.Contains(@"Sum: 0");
@@ -97,7 +102,7 @@ namespace BlazorTests.TestSonstigeBeispiele
    Assert.Equal(Uri, cut.Instance.NavigationManager.Uri);
 
    // Es sollte zwei Änderungen im DOM geben
-   Assert.Equal(2, cut.GetChangesSinceFirstRender().Count);
+   //Assert.Equal(2, cut.GetChangesSinceFirstRender().Count);
    // Prüfen der Änderungen
    // a) Volltextsuche 
    Assert.Contains("Sum: " + erwartet, cut.Markup);

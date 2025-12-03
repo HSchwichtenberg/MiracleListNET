@@ -28,7 +28,7 @@ using Xunit;
 
 namespace MiracleListTests;
 
-public class MiracleTaskGridTest : TestContext {
+public class MiracleTaskGridTest : BunitContext {
  string UriBefore = "http://myserver/Login";
 
  TestStore store = new TestStore(); 
@@ -65,7 +65,7 @@ public class MiracleTaskGridTest : TestContext {
  private IRenderedComponent<TaskGrid> Prepare() {
 
   // Razor-Komponente laden
-  var cut = RenderComponent<TaskGrid>();
+  var cut = Render<TaskGrid>();
   Console.WriteLine(cut.Markup); // für Test-Debugging
   // Prüfung, ob alle erwarteten Aufgaben geladen
   Assert.Equal("All Tasks View: 15 Tasks", cut.Find("h3").TextContent);

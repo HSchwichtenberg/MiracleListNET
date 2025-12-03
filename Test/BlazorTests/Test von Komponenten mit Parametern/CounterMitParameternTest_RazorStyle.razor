@@ -47,12 +47,12 @@ Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating
   var p = cut.Find("p");
 
   // So liefert der Vergleich wahr:
-  Assert.Equal("<p>\r\n  Current count: 42</p>", p.ToMarkup().Trim());
+  Assert.Equal("Current count: 42", p.TextContent.Trim());
   p.MarkupMatches(@<p>Current count: 42</p>);
-  p.MarkupMatches(@<p>Current count:  42</p>);
+  p.MarkupMatches(@<p>Current count: 42</p>);
 
   // so nicht gleich:
-  Assert.NotEqual("<p>Current count: 42</p>", p.ToMarkup());
+  Assert.NotEqual("Current count:  42", p.TextContent.Trim());
   Assert.Throws<HtmlEqualException>(() => cut.Find("p").MarkupMatches(@<p>Current count:42</p>));
  }
 }

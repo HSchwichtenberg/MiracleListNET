@@ -77,7 +77,7 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
   blazorUtil.Log($"{nameof(LogIn)}: Login at {backend} for {l.Username} ...");
   try
   {
-   // Aufruf von /Login via generiertem Proxy
+   // Aufruf von /Login im Backend via generiertem Proxy
    SetCurrentUser(await proxy.LoginAsync(l));
 
    if (String.IsNullOrEmpty(CurrentLoginInfo.Token)) // Kein Token --> Fehler
@@ -101,6 +101,7 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
 
   // Notify new state!
   Notify();
+
   // Store user token and backend URL in local Storage
   blazorUtil.Log("Write to Local storage", proxy.BaseUrl + "/" + CurrentLoginInfo.Username);
   await localStorage.SetItemAsync(LoginInfoStorageKey, CurrentLoginInfo);
@@ -195,7 +196,7 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
  {
   var aus = CreateAuthenticationState(CurrentLoginInfo);
   var e = Task.FromResult(aus);
-  this.NotifyAuthenticationStateChanged(e);
+  base.NotifyAuthenticationStateChanged(e);
  }
 
  /// <summary>

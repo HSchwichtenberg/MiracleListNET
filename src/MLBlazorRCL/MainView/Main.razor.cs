@@ -93,8 +93,9 @@ public partial class Main : IAsyncDisposable
 
  protected override async Task OnAfterRenderAsync(bool firstRender)
  {
-
   if (!firstRender) return; // alles Folgende nur 1x machen
+
+  toastService.ShowInfo($"Hallo "  + AppState.Username + ", herzlich Willkommen bei MiracleList!");
 
   #region ---- ASP.NET Core SignalR-Verbindung aufbauen
   if (AppState.SignalRHubURL.IsNotNullOrEmpty())

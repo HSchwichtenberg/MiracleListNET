@@ -5,9 +5,25 @@
 @inject BlazorUtil Util
 @inject NavigationManager NavigationManager
 
-@*Nicht ständig sichtbarer Toast / Einbindung für alle Unterkomponenten*@
-<BlazoredToasts Timeout="5" ShowProgressBar="true" Position="Blazored.Toast.Configuration.ToastPosition.BottomLeft" RemoveToastsOnNavigation="true" />
-@*Nicht ständig sichtbarer Dialog aus MLBlazorRCL / Einbindung für alle Unterkomponenten*@
+
+
+@* --- Nicht ständig sichtbarer Toast / Einbindung für alle Unterkomponenten*@
+<style>
+ .blazored-toast {
+  width: 40rem !important;
+ }
+
+ .blazored-toast-message {
+  font-size: 12px !important;
+ }
+</style>
+<BlazoredToasts 
+ Timeout="15" 
+ ShowProgressBar="true" 
+ Position="Blazored.Toast.Configuration.ToastPosition.BottomLeft" 
+ RemoveToastsOnNavigation="true" />
+
+@* --- Nicht ständig sichtbarer Dialog aus MLBlazorRCL / Einbindung für alle Unterkomponenten*@
 <ConfirmDialog></ConfirmDialog>
 
 <div class="row" style="background: white; margin-bottom: 10px">

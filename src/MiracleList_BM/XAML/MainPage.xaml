@@ -6,7 +6,7 @@
              x:Class="BM.MainPage"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
 
- <Grid RowDefinitions="*,40" ColumnDefinitions="*">
+ <Grid RowDefinitions="*,Auto" ColumnDefinitions="*">
   
   <!--Alte Syntax vor .NET 10.0: <Grid.RowDefinitions>
    <RowDefinition Height="*" />
@@ -33,9 +33,18 @@
     <ColumnDefinition Width="80" />
    </Grid.ColumnDefinitions>
 
-   <Label x:Name="C_Status" Grid.Column="0" TextColor="white" FontSize="9" Margin="10,5,0,0"></Label>
-   <Button x:Name="C_About" Margin="0,5,10,10" Clicked="About_Clicked" HorizontalOptions="End" Grid.Column="1" Padding="4" Text="About" ToolTipProperties.Text="Opens a dialog with details about this Hybrid App" FontSize="10"></Button>
-  </Grid>
+   <Label x:Name="C_Status" VerticalTextAlignment="Center" Grid.Column="0" TextColor="white" FontSize="9" Margin="10,5,0,0"></Label>
+  <Button x:Name="C_About"
+        Grid.Column="1"
+        Text="About"
+        FontSize="10"
+        Padding="4"
+        Margin="0,5,10,5"
+        Clicked="About_Clicked"
+        ToolTipProperties.Text="Opens a dialog with details about this Hybrid App"
+        HorizontalOptions="End"
+        VerticalOptions="Center" />
+		</Grid>
 
  </Grid>
 </ContentPage>

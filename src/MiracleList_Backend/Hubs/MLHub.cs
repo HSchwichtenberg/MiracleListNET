@@ -8,7 +8,7 @@ namespace MiracleList_Backend.Hubs;
 /// <summary>
 /// DEMO: 60. SignalR-Hub (im Backend)
 /// </summary>
-public class MLHub : Hub<IMLHub>
+public class MLHub : Hub<IMLHubV2>
 {
  //[HubMethodName("Register")] -> nur, wenn Name der Nachricht anders als Methodennamen sein soll
  public async Task Register(string token)

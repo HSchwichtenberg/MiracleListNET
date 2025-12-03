@@ -11,7 +11,7 @@ namespace MiracleList_Backend.Hubs
  /// einen eigenen SignalR-Hub, denn das MiracleList-Backend mit dem dortigen Hub
  /// wird hier nicht verwendet.
  /// </summary>
- public class MLHub : Hub<IMLHub>
+ public class MLHubV3 : Hub<IMLHubV3>
  {
   /// <summary>
   /// Die UserID ist eigentliche eine Zahl. Zur Kompatibilität mit dem 3-Tier-Ansatz, wo ein Token (Text) verwendet wird, wird hier auch die UserID per Text übermittelt
@@ -44,14 +44,15 @@ namespace MiracleList_Backend.Hubs
    await Clients.OthersInGroup(userID).CategoryListUpdate(Context.ConnectionId);
   }
 
-  public async Task TaskListUpdate(string userID, int categoryID)
+  public async Task TaskListUpdate(string userID, BO.Category category)
   {
+   if (category == null) return;
    CheckUserID(userID);
 
    // Protokollierung
-   new BL.LogManager().Log(BO.Event.Call, BO.Severity.Information, "User=" + userID + "Category=" + categoryID, nameof(TaskListUpdate));
+   new BL.LogManager().Log(BO.Event.Call, BO.Severity.Information, "User=" + userID + "Category=" + category.CategoryID, nameof(TaskListUpdate));
    // Sende Benachrichtigung an die ganze Gruppe, außer der aktuellen Verbindung!
-   await Clients.OthersInGroup(userID).TaskListUpdate(Context.ConnectionId, categoryID);
+   await Clients.OthersInGroup(userID).TaskListUpdate(Context.ConnectionId, category);
   }
 
   /// <summary>

@@ -52,7 +52,7 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
 
   proxy.BaseUrl = backend;
   AppState.BackendURL = backend;
-  AppState.SignalRHubURL = new Uri(new Uri(backend), "MLHubV2").ToString();
+  AppState.SignalRHubURL = new Uri(new Uri(backend), "MLHubV3").ToString();
   await localStorage.SetItemAsync("Backend", AppState.BackendDisplayName);
  }
 

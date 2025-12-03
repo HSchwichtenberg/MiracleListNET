@@ -13,6 +13,7 @@
  <ItemGroup>
   <PackageReference Include="ITVisions.Util" Version="10.*" />
   <PackageReference Include="FluentValidation" Version="12.1.0" />
+  <PackageReference Include="MessagePack.Annotations" Version="3.1.4" />
   <PackageReference Include="Newtonsoft.Json" Version="13.0.*" />
   <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
  </ItemGroup>

@@ -120,7 +120,7 @@ public class Program
   #endregion
 
   #region für ASP.NET SignalR
-  app.MapHub<MLHub>("/MLHub",
+  app.MapHub<MLHubV3>("/MLHub",
     signalRConnectionOptions =>
     {
      signalRConnectionOptions.AllowStatefulReconnects = true; // seit .NET 8.0
@@ -184,7 +184,7 @@ public class Program
   #endregion
 
   #region DI für SignalR Server ("Hub") für MiracleList Notifications
-  services.AddSignalR().AddMessagePackProtocol().AddHubOptions<MLHub>(o => o.StatefulReconnectBufferSize = 120000); //100.000 ist der Defaultwert!
+  services.AddSignalR().AddMessagePackProtocol().AddHubOptions<MLHubV3>(o => o.StatefulReconnectBufferSize = 120000); //100.000 ist der Defaultwert!
   #endregion
 
   #region DI für Beispiele außerhalb der MiracleList

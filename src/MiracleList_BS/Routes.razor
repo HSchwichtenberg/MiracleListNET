@@ -31,8 +31,17 @@
    </Authorizing>
 
    <NotAuthorized>
-    @{
-    NavigationManager.NavigateTo("/");
+    @code {
+     [Inject] NavigationManager Navigation { get; set; }
+
+     protected override void OnAfterRender(bool firstRender)
+     {
+      if (firstRender)
+      {
+       // Navigation erst NACH dem Renderzyklus
+       _ = InvokeAsync(() => Navigation.NavigateTo("/"));
+      }
+     }
     }
    </NotAuthorized>
 

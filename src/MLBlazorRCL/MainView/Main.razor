@@ -16,7 +16,7 @@
  <!-- ### Spalte 1: Kategorien-->
  @if (categorySet != null)
  {
-  <div id="col1" class="MLPanel col-sm-4 col-md-3 col-lg-2 @(this.task!=null ? "hidden-sm hidden-xs": ""  ) @(this.category!=null ? "hidden-xs": ""  )">
+  <div id="col1" class="MLPanel col-sm-4 col-md-3 col-lg-2 @(this.task != null ? "hidden-sm hidden-xs" : "") @(this.category != null ? "hidden-xs" : "")">
    <!-- ---------- Überschrift Spalte 1-->
 
    <div class="columnHeadline"><span id="categoryCount">@(categorySet.Count())</span> <span>Kategorien</span></div>
@@ -28,7 +28,7 @@
    <ol class="list-group scroll">
     @foreach (BO.Category c in categorySet)
     {
-     <li @key="c" class="list-group-item" title="Task Category #@c.CategoryID" style="Background-color:@(this.category != null && c.CategoryID == this.category.CategoryID ? "#E0EEFA" : "white")"
+     <li @key="c" class="list-group-item hover" title="Task Category #@c.CategoryID" style="Background-color:@(this.category != null && c.CategoryID == this.category.CategoryID ? "#E0EEFA" : "white")"
          @onclick="() => ShowTaskSet(c)"
          ondragover="event.preventDefault();" @ondrop="(e) => DropTaskToCategory(e, c)">
       @c.Name
@@ -45,7 +45,7 @@
  <!-- ### Spalte 2: Aufgabenliste in der gewählten Kategorie oder Suchergebnisse -->
  @if (category != null)
  {
-  <div id="col2" class="MLPanel @(this.task!=null ? "hidden-xs col-sm-6 col-md-5 col-lg-6" : "col-xs-12 col-sm-8 col-md-9 col-lg-10" )">
+  <div id="col2" class="MLPanel @(this.task != null ? "hidden-xs col-sm-6 col-md-5 col-lg-6" : "col-xs-12 col-sm-8 col-md-9 col-lg-10")">
 
    @if (this.searchResultSet == null)
    {
@@ -55,18 +55,18 @@
      <div id="TaskHeadline" class="columnHeadline">
       <span id="taskCount">
        @(
-           taskSet == null ? 0 : taskSet.Count()
-           )
+            taskSet == null ? 0 : taskSet.Count()
+            )
       </span>
       Aufgaben in <i> @category?.Name</i>
 
-      <button @onclick="ReturnToCategoryList" style="margin-left:10px" class="btn btn-primary hidden-sm hidden-md hidden-lg hidden-xl" title="Zurück zur Aufgabenkategorieliste">
+      <button @onclick="ReturnToCategoryList" style="margin-left:10px;margin-right:15px" class="btn btn-primary hidden-sm hidden-md hidden-lg hidden-xl" title="Zurück zur Aufgabenkategorieliste">
        <span class="glyphicon glyphicon-arrow-left"></span>
       </button>
 
       <!-- ---------- Filter-->
       @*ACHTUNG: VS-Bug in älteren VS-Versionen. Wird dort als fehlerhaft angezeigt, kompiliert und läuft aber! https://github.com/dotnet/razor/issues/8315*@
-      <select @bind="taskFilter" @bind:after="()=>ShowTaskSet(this.category)" style="margin-left:15px;height:25px;width:170px;display:inline-block" class="form-control input-sm blue">
+      <select @bind="taskFilter" @bind:after="() => ShowTaskSet(this.category)" style="height:25px;width:170px;display:inline-block" class="form-control input-sm blue">
        <option value="0">Alle Aufgaben</option>
        <option value="1">Nur offene Aufgaben</option>
        <option value="2">Nur erledigte Aufgaben</option>
@@ -75,10 +75,27 @@
       <!-- ---------- Schaltlächen -->
       <a href="/TaskGrid/@this.category?.CategoryID"><span id="DataGrid" title="Tabellenansicht" style="margin-left:20px" class="glyphicon glyphicon-align-justify"></span></a>
 
+
+      <button type="button" @onclick="Undo"
+              class="btn btn-link"
+              disabled="@(!this.UndoRedoManager.CanUndo)"
+              title="Undo: @this.UndoRedoManager.NextUndoName"
+              aria-disabled="@(!this.UndoRedoManager.CanUndo)">
+       <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+      </button>
+
+      <button type="button" @onclick="Redo"
+              class="btn btn-link"
+              disabled="@(!this.UndoRedoManager.CanRedo)"
+              title="Redo: @this.UndoRedoManager.NextRedoName"
+              aria-disabled="@(!this.UndoRedoManager.CanRedo)">
+       <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+      </button>
+
       @*Optionale Export-Befehle, die nur einige Blazor-Arten realisieren können*@
       @if (AdditionalComponents.TaskExportAdditionalComponent != null)
       {
-       <span style="margin-left:10px">  <DynamicComponent Type="@AdditionalComponents.TaskExportAdditionalComponent" Parameters="@(new Dictionary<string, object>() { {"category", this.category }, { "taskSet", this.taskSet} })"></DynamicComponent></span>
+       <span style="margin-left:10px">  <DynamicComponent Type="@AdditionalComponents.TaskExportAdditionalComponent" Parameters="@(new Dictionary<string, object>() { { "category", this.category }, { "taskSet", this.taskSet } })"></DynamicComponent></span>
       }
      </div>
     </div>

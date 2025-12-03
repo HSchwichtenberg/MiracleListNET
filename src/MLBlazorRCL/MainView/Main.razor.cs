@@ -18,6 +18,8 @@ namespace MLBlazorRCL.MainView;
 
 public partial class Main : IAsyncDisposable
 {
+ public UndoRedoManager UndoRedoManager { get; set; } = new();
+
  #region DI
  [Inject] AuthenticationStateProvider mLAuthenticationStateProvider { get; set; } = null;
  [Inject] IJSRuntime js { get; set; } = null;
@@ -117,7 +119,7 @@ public partial class Main : IAsyncDisposable
        .Build();
 
    // Reaktion auf eingehende Nachricht
-   AppState.HubConnection.On<string>(nameof(IMLHub.CategoryListUpdate), async (sender) =>
+   AppState.HubConnection.On<string>(nameof(IMLHubV3.CategoryListUpdate), async (sender) =>
    {
     Util.Log($"SignalR.CategoryListUpdate from {sender} (Thread #{System.Threading.Thread.CurrentThread.ManagedThreadId})");
     toastService.ShowSuccess($"Die Aufgabenliste wurde in einer anderen Anwendungsinstanz verändert.");
@@ -126,11 +128,11 @@ public partial class Main : IAsyncDisposable
    });
 
    // Reaktion auf eingehende Nachricht
-   AppState.HubConnection.On<string, int>(nameof(IMLHub.TaskListUpdate), async (sender, categoryID) =>
+   AppState.HubConnection.On<string, BO.Category>(nameof(IMLHubV3.TaskListUpdate), async (sender, changedCategory) =>
    {
-    Util.Log($"SignalR.TaskListUpdate from {sender}: {categoryID} (Thread #{System.Threading.Thread.CurrentThread.ManagedThreadId})");
+    Util.Log($"SignalR.TaskListUpdate from {sender}: Changed Category={changedCategory.CategoryID} (Thread #{System.Threading.Thread.CurrentThread.ManagedThreadId})");
 
-    if (categoryID == this.category.CategoryID)
+    if (changedCategory.CategoryID == this.category.CategoryID)
     {
      toastService.ShowSuccess($"Die Aufgabe dieser Kategorie #{category.CategoryID}: \"{this.category.Name}\" wurden auf n einer anderen Anwendungsinstanz verändert.");
      await ShowTaskSet(this.category); // Daten neu laden
@@ -138,8 +140,7 @@ public partial class Main : IAsyncDisposable
     }
     else
     {
-     var changedCategory = this.categorySet.Where(x => x.CategoryID == categoryID).FirstOrDefault();
-     if (changedCategory != null) toastService.ShowSuccess($"Die Aufgabe der Kategorie #{category.CategoryID}: \"{this.category.Name}\" wurden auf n einer anderen Anwendungsinstanz verändert.");
+     if (changedCategory != null) toastService.ShowSuccess($"Die Aufgabe der Kategorie #{changedCategory.CategoryID}: \"{changedCategory.Name}\" wurden in einer anderen Anwendungsinstanz verändert.");
      // Kein UI-Update notwendig
     }
    });
@@ -147,7 +148,7 @@ public partial class Main : IAsyncDisposable
    // Verbindung zum SignalR-Hub starten
    await AppState.HubConnection.StartAsync();
    // Registrieren für Events
-   await AppState.HubConnection.SendAsync(nameof(IMLHub.Register), AppState.Token);
+   await AppState.HubConnection.SendAsync(nameof(IMLHubV3.Register), AppState.Token);
    Util.Log("SignalR.Connection started!");
   }
   #endregion
@@ -286,10 +287,15 @@ public partial class Main : IAsyncDisposable
   if (string.IsNullOrEmpty(newCategoryName)) return;
   Util.Log("createCategory: " + newCategoryName);
   var newcategory = await Proxy.CreateCategoryAsync(newCategoryName, AppState.Token);
+
+  UndoRedoManager.Create("Create Category " + this.newCategoryName,
+   async () => await Proxy.CreateCategoryAsync(newCategoryName, AppState.Token),
+   async () => await Proxy.DeleteCategoryAsync(newcategory.CategoryID, AppState.Token));
+
   await ShowCategorySet();
   await ShowTaskSet(newcategory);
   this.newCategoryName = "";
-  await SendCategoryListUpdate();
+  await SendCategoryListUpdate(); // SignalR
  }
 
  public async Task CreateTask(string newTaskTitle)
@@ -335,6 +341,12 @@ public partial class Main : IAsyncDisposable
   if (result == false) return;
   // Löschen via WebAPI-Aufruf
   await Proxy.DeleteCategoryAsync(categoryID, AppState.Token);
+
+  var cat = categorySet.FirstOrDefault(c => c.CategoryID == categoryID);
+  UndoRedoManager.Create("Delete Category " + cat.Name,
+  async () => await Proxy.DeleteCategoryAsync(categoryID, AppState.Token),
+  async () => { await Proxy.CreateCategoryAsync(cat.Name, AppState.Token); await ShowTaskSet(cat); });
+
   // aktuelle Category zurücksetzen
   this.category = null;
   this.taskSet = null;
@@ -401,7 +413,7 @@ public partial class Main : IAsyncDisposable
  {
   Util.Log($"SignalR.{nameof(SendCategoryListUpdate)}");
   // DEMO: 61. SignalR-Event auslösen
-  if (IsConnected) await AppState.HubConnection.SendAsync(nameof(IMLHub.CategoryListUpdate), AppState.Token);
+  if (IsConnected) await AppState.HubConnection.SendAsync(nameof(IMLHubV3.CategoryListUpdate), AppState.Token);
   else Util.Warn($"SignalR.{nameof(SendCategoryListUpdate)}: not connected!", "");
  }
 
@@ -410,11 +422,14 @@ public partial class Main : IAsyncDisposable
  /// </summary>
  public async Task SendTaskListUpdate(BO.Task t = null)
  {
-  int categoryIDUpdated;
-  if (t != null) { categoryIDUpdated = t.CategoryID; }
-  else { categoryIDUpdated = this.category.CategoryID; }
-  Util.Log($"SignalR.{nameof(SendTaskListUpdate)}: {categoryIDUpdated}");
-  if (IsConnected) await AppState.HubConnection.SendAsync(nameof(IMLHub.TaskListUpdate), AppState.Token, categoryIDUpdated);
+  BO.Category categoryUpdated;
+
+  // TODO: hier gibt es ein Serialisierungs-StackOverflow-Problem, wenn man die Kategorie inklusive TaskList übermittelt per SignalR
+  if (t != null) { categoryUpdated = t.Category; }
+  else { categoryUpdated =  this.category; }
+  Util.Log($"SignalR.{nameof(SendTaskListUpdate)}: {categoryUpdated.CategoryID}");
+
+  if (IsConnected) await AppState.HubConnection.SendAsync(nameof(IMLHubV3.TaskListUpdate), AppState.Token, categoryUpdated);
   else Util.Warn($"SignalR.{nameof(SendTaskListUpdate)}: not connected!", "");
  }
  #endregion
@@ -437,4 +452,18 @@ public partial class Main : IAsyncDisposable
   taskInDragAndDrop = null;
  }
  #endregion
+
+ private async Task Redo(MouseEventArgs args)
+ {
+  UndoRedoManager.Redo();
+  await ShowCategorySet();
+  await ShowTaskSet(this.categorySet.FirstOrDefault());
+ }
+
+ private async Task Undo(MouseEventArgs args)
+ {
+  UndoRedoManager.Undo();
+  await ShowCategorySet();
+  await ShowTaskSet(this.categorySet.FirstOrDefault());
+ }
 } // end class Main

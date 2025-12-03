@@ -359,6 +359,13 @@ public class Startup
     }
     );
 
+   endpoints.MapHub<MLHubV3>("/MLHubV3",
+ signalRConnectionOptions =>
+ {
+  signalRConnectionOptions.AllowStatefulReconnects = true; // seit .NET 8.0
+ }
+ );
+
    #region For Blazor SSR
    endpoints.MapRazorComponents<App>();
 

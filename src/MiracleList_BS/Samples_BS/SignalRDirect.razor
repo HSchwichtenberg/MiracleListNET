@@ -5,13 +5,13 @@
 <h3>SignalRDirect</h3>
 
 <div>Nachricht über den SignalR-Hub zu versenden, der im gleichen Prozess läuft wie Blazor Server-Oberfläche. Das ist effizienter als über eine HubConnection eine Nachricht zu senden. Es wird in der MiracleList-Implementierung nicht verwendet, weil dies nur in Blazor Server möglich ist. Dann wäre MLBlazorRCL nicht mehr in allen Blazor-Varianten verwendetbar!</div>
-@inject IHubContext<MLHub> hubContext;
+@inject IHubContext<MLHubV3> hubContext;
 
 @code {
 
  async Task MessageToAllClients()
  {
-  await hubContext.Clients.All.SendAsync(nameof(MLHub.CategoryListUpdate), "");
+  await hubContext.Clients.All.SendAsync(nameof(MLHubV3.CategoryListUpdate), "");
  }
 
 }

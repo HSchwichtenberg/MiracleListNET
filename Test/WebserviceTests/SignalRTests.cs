@@ -13,7 +13,7 @@ public class SignalRTests
  MiracleListProxy Proxy;
 
  static string BackendUrl = "https://miraclelistbackend.azurewebsites.net"; //"http://localhost:8889"; //"https://miraclelistbackend.azurewebsites.net"; 
- static string hubURL = $"{BackendUrl}/MLHubV2";
+ static string hubURL = $"{BackendUrl}/MLHubV3";
 
  public SignalRTests(ITestOutputHelper testOutputHelper)
  {
@@ -51,13 +51,13 @@ public class SignalRTests
     .Build();
 
   // Reaktionen auf eingehende Nachricht
-  hc1.On<string, int>(nameof(IMLHub.TaskListUpdate), async (sender, categoryID) =>
+  hc1.On<string, int>(nameof(IMLHubV3.TaskListUpdate), async (sender, categoryID) =>
   {
    _testOutputHelper.WriteLine("TaskListUpdate..." + categoryID);
    result1 = categoryID;
   });
 
-  hc2.On<string, int>(nameof(IMLHub.TaskListUpdate), async (sender, categoryID) =>
+  hc2.On<string, int>(nameof(IMLHubV3.TaskListUpdate), async (sender, categoryID) =>
   {
    _testOutputHelper.WriteLine("TaskListUpdate..." + categoryID);
    result2 = categoryID;
@@ -70,11 +70,11 @@ public class SignalRTests
   Assert.True(hc2.State == HubConnectionState.Connected);
 
   // Registrieren
-  await hc1.SendAsync(nameof(IMLHub.Register), loginResult.Token);
-  await hc2.SendAsync(nameof(IMLHub.Register), loginResult.Token);
+  await hc1.SendAsync(nameof(IMLHubV3.Register), loginResult.Token);
+  await hc2.SendAsync(nameof(IMLHubV3.Register), loginResult.Token);
 
   // Nachricht senden
-  await hc2.SendAsync(nameof(IMLHub.TaskListUpdate), loginResult.Token, categoryIDForTest);
+  await hc2.SendAsync(nameof(IMLHubV3.TaskListUpdate), loginResult.Token, categoryIDForTest);
 
   // Warten auf Ergebnis, max 5 Sekunden
   var start = DateTime.Now;

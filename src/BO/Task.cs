@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using MessagePack;
 
 namespace BO;
 
@@ -66,7 +67,9 @@ public class Task
 
  // -------------- Navigation Properties
  public List<SubTask> SubTaskSet { get; set; } // 1:N
- [Newtonsoft.Json.JsonIgnore] // Do not serialize 
+
+ [JsonIgnore]  // Do not serialize
+ [IgnoreMember]  // für MessagePack
  public Category Category { get; set; }
  public int CategoryID { get; set; } // optional: FK Property
 }

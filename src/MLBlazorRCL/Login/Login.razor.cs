@@ -37,7 +37,7 @@ public class LoginModel : ComponentBase
  public bool ForceReload { get; set; } = false;
 
  [PersistentState] // Zwingend notwendig, da RenderMode.InteractiveAuto nur im Prerendering ermittelbar! 
- public bool IsAutoRenderMode { get; set; } = false;
+ public bool IsAutoRenderMode { get; set; }
 
  #region Properties zur Datenbindung
  public string Username { get; set; }

@@ -1,26 +1,20 @@
 using System;
-using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using BlazorTests.Mocks;
-using Bunit;
-using Bunit.TestDoubles;
 using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MiracleList;
 using Telerik.JustMock;
 using Web;
-using Xunit;
 
 // Testen der BD-Lösung
 //using Pages = BD.Web.Pages;
 // oder z.B. Blazor Server
-using Pages = Web.Pages;
 
 namespace MiracleListTests
 {
@@ -41,7 +35,7 @@ namespace MiracleListTests
   {
 
   }
-  BunitContext  ctx = new BunitContext();
+  BunitContext ctx = new BunitContext();
 
   private IRenderedComponent<MLBlazorRCL.Login.Login> ArrangeAndAct(string name, string kennwort)
   {
@@ -66,7 +60,7 @@ namespace MiracleListTests
    IMiracleListProxy mockProxy = Mock.Create<IMiracleListProxy>();
    ctx.Services.AddSingleton(mockProxy);
    ctx.Services.AddScoped<IAppState, AppState>();
-   ctx.Renderer.SetRendererInfo(new RendererInfo("Server",true));
+   ctx.Renderer.SetRendererInfo(new RendererInfo("Server", true));
    //var state = Mock.Create<Task<AuthenticationState>>();
 
    //var navMan = Services.GetRequiredService<ITVisions.Blazor.Mail.FakeNavigationManager>();
@@ -129,7 +123,7 @@ namespace MiracleListTests
    Assert.Contains("Bitte E-Mail-Adresse und Kennwort eingeben", cut.Find("#errorMsg").TextContent);
   }
 
-   [Fact]
+  [Fact]
   public void LoginError()
   {
    string name = "test";

@@ -13,6 +13,7 @@ namespace Web;
 /// </summary>
 public class AppState : IAppState
 {
+ public bool ShouldOfferReloadAfterLoginForTransitionToWebAssembly => true;
  public string? Token { get; set; }
  public string? Username { get; set; }
  public string? BackendURL { get; set; }

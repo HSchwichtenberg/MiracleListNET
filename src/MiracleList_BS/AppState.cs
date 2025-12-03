@@ -24,6 +24,7 @@ public class AppState : IAppState
  public HubConnection HubConnection { get; set; }
  private string signalRHubURL;
  public string SignalRHubURL { get => signalRHubURL; set => signalRHubURL = value; }
+ public bool ShouldOfferReloadAfterLoginForTransitionToWebAssembly => false;
 
  public string BackendDisplayName
  {

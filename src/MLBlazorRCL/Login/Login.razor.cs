@@ -47,8 +47,9 @@ public class LoginModel : ComponentBase
  protected override async System.Threading.Tasks.Task OnInitializedAsync()
  {
   shouldRender = false;   // Rendern unterdrücken, falls wir die Anmeldeseite gar nicht darstellen müssen
+  ForceReload = AppState.ShouldOfferReloadAfterLoginForTransitionToWebAssembly;
 
-  Util.Log(nameof(LoginModel) + "." + (nameof(OnInitializedAsync)) + ": " + this.NavigationManager.Uri);
+  Util.Log($"{nameof(LoginModel)}.{nameof(OnInitializedAsync)}: {this.NavigationManager.Uri} | RenderMode: {this.RendererInfo.Name} -> {this.AssignedRenderMode}");
   #region Umleitung als Reaktion auf die URL /logout
   if (this.NavigationManager.Uri.Contains("/logout", StringComparison.OrdinalIgnoreCase))
   {

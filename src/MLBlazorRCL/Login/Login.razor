@@ -50,9 +50,19 @@
 			</div>
 		</div>
 
-  <button @onclick="Login" style="margin-top:-10px" class="btn @(this.RendererInfo.IsInteractive ? "btn-primary" : "btn-danger")" disabled="@(!this.RendererInfo.IsInteractive)" type="submit" id="login" name="login">Anmelden</button> <input type="checkbox" class="bigCheckbox" @bind="ForceReload" disabled="@(!this.RendererInfo.IsInteractive)" /> Anmeldung mit erzwungenem Neuladen
+  <button @onclick="Login" style="margin-top:-10px" class="btn @(this.RendererInfo.IsInteractive ? "btn-primary" : "btn-danger")" disabled="@(!this.RendererInfo.IsInteractive)" type="submit" id="login" name="login">Anmelden</button> 
+  
+  <span id="errorMsg" class="text-danger">@LoginStatus</span>
 
-		<span id="errorMsg" class="text-danger">@LoginStatus</span>
+  @if (AppState.ShouldOfferReloadAfterLoginForTransitionToWebAssembly && this.RendererInfo.IsInteractive && this.RendererInfo.Name != "WebAssembly")
+  {
+   @* Diese Option macht nur Sinn beim AutoRenderMode, um den Übergang von Blazor Server zu Blazor WebAssembly nach dem Login zu erzwingen *@
+   <text>
+    <br />
+    <input type="checkbox" class="bigCheckbox" @bind="ForceReload" style="margin-left:10px" disabled="@(!this.RendererInfo.IsInteractive)" />
+    Neuladen im Browser erzwingen zum Übergang zu Blazor WebAssembly
+   </text>
+  }
 	</div>
 </div>
 

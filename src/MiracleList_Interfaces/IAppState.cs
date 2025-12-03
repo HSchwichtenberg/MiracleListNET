@@ -21,6 +21,7 @@ public interface IAppState
  string CurrentUserDirectoryRelativePath { get; }
 
  bool IsLoggedIn { get => !String.IsNullOrEmpty(Username); }
+ bool ShouldOfferReloadAfterLoginForTransitionToWebAssembly { get; }
 
  const string DebugUser = "Max Mustermann";
  const string DebugPassword = "Sehr+Geheim"; // :-)

@@ -5,7 +5,7 @@ body {
 
 .blue {
  /*blue Farbe für einige Texte*/
-  color:#23527C
+ color: #23527C
 }
 
 /*#region Kopfbereich der Seite*/
@@ -49,6 +49,17 @@ h4, h5 {
  overflow-y: auto;
 }
 /*#endregion Hauptansicht*/
+
+/*#region Überschreiben von Bootstrap-Eigenschaften*/
+.list-group-item {
+ transition: background-color 0.2s ease-in-out !important;
+}
+
+ .list-group-item:hover {
+  background-color: #efefef !important;
+ }
+/*#endregion Überschreiben von Bootstrap-Eigenschaften*/
+
 
 /*#region Überschreiben der zu kleinen Vorgaben im Radzen-Grid*/
 .rz-cell-data {
@@ -284,3 +295,4 @@ h4, h5 {
   content: "An error has occurred."
  }
 /*#endregion*/
+

@@ -1,4 +1,4 @@
-﻿@inherits TestContext
+﻿@inherits BunitContext
 @using BlazorTests.Teststyles
 
 @code
@@ -8,7 +8,7 @@
  {
   // Act
   // Arrange
-  using var ctx = new TestContext();
+  using var ctx = new BunitContext();
 
   // Act
   var cut = ctx.Render(@<HelloWorld />);

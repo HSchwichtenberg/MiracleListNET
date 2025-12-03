@@ -50,8 +50,6 @@
 			</div>
 		</div>
 
-
-
   <button @onclick="Login" style="margin-top:-10px" class="btn @(this.RendererInfo.IsInteractive ? "btn-primary" : "btn-danger")" disabled="@(!this.RendererInfo.IsInteractive)" type="submit" id="login" name="login">Anmelden</button> <input type="checkbox" class="bigCheckbox" @bind="ForceReload" disabled="@(!this.RendererInfo.IsInteractive)" /> Anmeldung mit erzwungenem Neuladen
 
 		<span id="errorMsg" class="text-danger">@LoginStatus</span>

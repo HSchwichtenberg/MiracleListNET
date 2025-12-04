@@ -20,7 +20,7 @@ public class MiracleListNoProxy : MiracleList.IMiracleListProxy
  public Task<List<Category>> CategorySetAsync(string mL_AuthToken)
  {
   var bl = new CategoryManager(Int32.Parse(mL_AuthToken));
-  var r = bl.GetCategorySet();
+  var r = bl.GetCategorySet(true);
   return System.Threading.Tasks.Task.FromResult(r);
  }
 

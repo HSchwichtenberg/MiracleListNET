@@ -2,16 +2,13 @@
 using BO;
 using DA;
 using ITVisions.EFCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BL
 {
-public class LogManager : EntityManagerBase<Context, Log>
+ public class LogManager : EntityManagerBase<Context, Log>
  {
 
-  public int Log(Event _event, Severity severity,string text = "", string operation = "", string token = "",int? userID = null, string client = "", string clientDetails = ""  )
+  public int Log(Event _event, Severity severity, string text = "", string operation = "", string token = "", int? userID = null, string client = "", string clientDetails = "")
   {
    text = text ?? "";
    operation = operation ?? "";

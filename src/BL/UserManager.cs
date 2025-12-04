@@ -8,7 +8,6 @@ using ITVisions;
 using ITVisions.EFCore;
 using ITVisions.Network;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 using Z.EntityFramework.Plus;
 
 namespace BL;
@@ -189,7 +188,7 @@ public class UserManager : EntityManagerBase<Context, User>
    u.PasswordHash = hashObj.HashedText;
    u.Salt = hashObj.Salt;
    u.Created = Env.Now;
-  
+
    Guid clientIDGUID;
    if (Guid.TryParse(clientID, out clientIDGUID))
    {

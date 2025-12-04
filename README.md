@@ -68,6 +68,14 @@ Frontend:
 - Windows Presentation Foundation (WPF) mit Blazor Desktop
 - .NET MAUI mit Blazor MAUI
 
+## Verwendete Icons
+Bootstrap 3 Glyphicons
+https://getbootstrap.com/docs/3.3/components/
+
+Font Awesome 7 Free Collection
+https://fontawesome.com/search?q=undo&ic=free-collection
+https://docs.fontawesome.com/web/setup/host-yourself/webfonts
+
 ## Entwicklerdokumentation
 
 Die Entwicklerdokumentation zu den fünf MiracleList-Frontends mit Blazor finden im <a href="https://it-visions.de/blazorbuch">Blazor-Buch von Dr. Holger Schwichtenberg</a>.

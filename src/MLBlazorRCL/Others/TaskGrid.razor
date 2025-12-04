@@ -5,7 +5,7 @@
 @inject IAppState AppState
 @inject BlazorUtil Util
 
-<h3><a href="/Main"><span id="Remove" title="Ansicht im Datagrid" style="margin-left:20px" class="glyphicon glyphicon glyphicon-arrow-left" b-2bqlus8i2e=""></span></a>All Tasks View: @taskSet?.Count Tasks</h3>
+<h3><a href="/Main"><span id="Remove" title="Zurück zur Hauptansicht" style="margin-left:20px" class="glyphicon glyphicon glyphicon-arrow-left" b-2bqlus8i2e=""></span></a> Alle Aufgaben: @taskSet?.Count Tasks</h3>
 
 @*DataGid-Kopf*@
 <RadzenDataGrid @ref="grid" Data="@taskSet" TItem="BO.Task"
@@ -14,10 +14,10 @@
 
  @*Spalten*@
  <Columns>
-  <RadzenDataGridColumn TItem="BO.Task" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="10%" Reorderable="false" Title="Action">
+
+  <RadzenDataGridColumn TItem="BO.Task" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="5%" Reorderable="false" Title="Aktion">
    <Template Context="t">
     <RadzenButton Icon="edit" title="Edit Task" Style="background-color:#479cc8" Size="ButtonSize.Medium" Click="@(args => EditRow(t))" @onclick:stopPropagation="true">
-  
     </RadzenButton>
    </Template>
    <EditTemplate Context="t">
@@ -36,28 +36,35 @@
   <RadzenDataGridColumn TItem="BO.Task" Property="TaskID" Filterable="false" Title="Task-ID" Frozen="true" Width="5%" TextAlign="TextAlign.Center" Reorderable="false">
   </RadzenDataGridColumn>
 
-  <RadzenDataGridColumn TItem="BO.Task" Property="Title" Filterable="true" Title="Title" Width="20%" Reorderable="false">
+  @* -------------------------------- Spalte Ausgabentitel *@
+  <RadzenDataGridColumn TItem="BO.Task" Property="Title" Filterable="true" Title="Ausgabentitel" Width="20%" Reorderable="false">
    <EditTemplate Context="t">
     <RadzenTextBox @bind-Value="t.Title" Style="width:100%; display: block" Name="TaskTitle" />
     <RadzenRequiredValidator Text="Title is required" Component="Title" Popup="true" />
    </EditTemplate>
   </RadzenDataGridColumn>
 
-  <RadzenDataGridColumn TItem="BO.Task" Title="Importance" Sortable="true" Filterable="false" Width="8%" Reorderable="false">
+  @* -------------------------------- Spalte Kategorie *@
+  <RadzenDataGridColumn TItem="BO.Task" Title="Kategorie" Sortable="true" Filterable="false" Width="10%" Reorderable="false">
+   <Template Context="t">
+    <span title="Kategorie: @t.CategoryID">@(categories.FirstOrDefault(x=>x.CategoryID == t.CategoryID)?.Name)</span><br>
+   </Template>
+   <EditTemplate Context="t">
+    <RadzenDropDown @bind-Value="t.CategoryID" TextProperty="@nameof(BO.Category.Name)" ValueProperty="@nameof(BO.Category.CategoryID)" Data="@categories" Style="width:100%" />
+   </EditTemplate>
+  </RadzenDataGridColumn>
+
+  @* -------------------------------- Spalte Wichtigkeit *@
+  <RadzenDataGridColumn TItem="BO.Task" Title="Wichtigkeit" Sortable="true" Filterable="false" Width="8%" Reorderable="false">
    <Template Context="t">
     <span style="text-align: center" class="badge badge-important" title="Importance: @t.Importance">@t.Importance</span><br>
    </Template>
    <EditTemplate Context="t">
-
-    @*BUG: Bug in RadzenDropDown mit Enum in BW:
-    https://forum.radzen.com/t/radzendropdown-with-enum-cast-not-valid/3952
-    *@
-
     <RadzenDropDown @bind-Value="t.Importance" Data="@ImportanceOptions" Style="width:100%" />
    </EditTemplate>
   </RadzenDataGridColumn>
 
-  <RadzenDataGridColumn TItem="BO.Task" Property="Due" Title="Due" Sortable="true" Filterable="false" Width="12%" Reorderable="false">
+  <RadzenDataGridColumn TItem="BO.Task" Property="Fälligkeit" Title="Due" Sortable="true" Filterable="false" Width="12%" Reorderable="false">
    <Template Context="t">
     @if (t.Due.HasValue)
      if (t.Due.Value < DateTime.Now.AddDays(-1))
@@ -75,19 +82,19 @@
    </EditTemplate>
 
   </RadzenDataGridColumn>
-  <RadzenDataGridColumn TItem="BO.Task" Property="Note" Filterable="false" Title="Note" Width="70px" Reorderable="false">
+
+  <RadzenDataGridColumn TItem="BO.Task" Property="Note" Filterable="false" Title="Notiz" Width="70px" Reorderable="false">
    <EditTemplate Context="t">
     <RadzenTextBox @bind-Value="t.Note" Style="width:100%; display: block" Name="TaskNote" />
-
    </EditTemplate>
   </RadzenDataGridColumn>
-
 
  </Columns>
 </RadzenDataGrid>
 
 @code {
  List<BO.Task> taskSet { get; set; }
+ List<BO.Category> categories { get; set; }
 
  RadzenDataGrid<BO.Task> grid;
 
@@ -101,21 +108,10 @@
 
  protected override async Task OnParametersSetAsync()
  {
-  if (CategoryID != 0)
-  { // Eine Aufgabenkategorie in Grid laden
-   taskSet = await Proxy.TaskSetAsync(CategoryID, AppState.Token);
-  }
-  else
-  {
-   // Alle Aufgabenkategorien in Grid laden
-   // Hinweis: Das Backend bietet dafür keine Operation. Daher Iteration über alle Kategorien
-   taskSet = new();
-   var categorySet = await Proxy.CategorySetAsync(AppState.Token);
-   foreach (var c in categorySet)
-   {
-    taskSet.AddRange(await Proxy.TaskSetAsync(c.CategoryID, AppState.Token));
-   }
-  }
+  // Eine oder alle (CategoryID=0) Aufgabenkategorie in Grid laden
+  taskSet = await Proxy.TaskSetAsync(CategoryID, AppState.Token);
+  categories = await Proxy.CategorySetAsync(AppState.Token);
+
 
   Util.Log("TaskSet", taskSet.Count);
  }

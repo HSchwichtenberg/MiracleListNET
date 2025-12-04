@@ -230,7 +230,7 @@ namespace MiracleList.Controllers
   public IEnumerable<Category> GetCategorySet(string token)
   {
    if (!CheckToken(token)) return null;
-   return cm.GetCategorySet();
+   return cm.GetCategorySet(false);
   }
 
   /// <summary>

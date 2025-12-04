@@ -293,7 +293,7 @@ public partial class Main : IAsyncDisposable
    async () => await Proxy.CreateCategoryAsync(newCategoryName, AppState.Token),
    async () => await Proxy.DeleteCategoryAsync(newcategory.CategoryID, AppState.Token));
 
-  await ShowCategorySet();
+  this.categorySet.Add(newcategory);
   await ShowTaskSet(newcategory);
   this.newCategoryName = "";
   await SendCategoryListUpdate(); // SignalR
@@ -304,7 +304,7 @@ public partial class Main : IAsyncDisposable
   if (string.IsNullOrEmpty(newTaskTitle)) return;
   Util.Log("createTask: " + newTaskTitle + " in category: " + this.category.Name);
   var t = new BO.Task();
-  t.TaskID = 0; // notwendig für Server, da der die ID vergibt
+  t.TaskID = 0; // ID wird vom BL/Backend vergeben!
   t.Title = newTaskTitle;
   t.CategoryID = this.category.CategoryID;
   t.Importance = BO.Importance.B;
@@ -313,8 +313,9 @@ public partial class Main : IAsyncDisposable
   t.Order = 0;
   t.Note = "";
   t.Done = false;
-  await Proxy.CreateTaskAsync(t, AppState.Token);
-  await ShowTaskSet(this.category);
+  // BL/Backend liefert den Task zurück mit der korrekten ID
+  t = await Proxy.CreateTaskAsync(t, AppState.Token);
+  this.taskSet.Add(t);
   this.newTaskTitle = "";
 
   await SendTaskListUpdate();

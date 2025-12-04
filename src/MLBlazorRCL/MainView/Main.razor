@@ -32,7 +32,9 @@
          @onclick="() => ShowTaskSet(c)"
          ondragover="event.preventDefault();" @ondrop="(e) => DropTaskToCategory(e, c)">
       @c.Name
+
       <span id="Remove" style="float:right;" class="close" title="Remove Category #@c.CategoryID" @onclick="() => RemoveCategory(c)">x</span>
+      <span class="badge badge-info" title="@c.TaskSet?.Count Aufgaben" style="margin-right:10px">@c.TaskSet?.Count</span>
      </li>
     }
 
@@ -75,22 +77,17 @@
       <!-- ---------- Schaltlächen -->
       <a href="/TaskGrid/@this.category?.CategoryID"><span id="DataGrid" title="Tabellenansicht" style="margin-left:20px" class="glyphicon glyphicon-align-justify"></span></a>
 
+      <a @onclick="Undo"
+              class="@(!this.UndoRedoManager.CanUndo ? "disabled": "")"
+              title="Undo: @this.UndoRedoManager.NextUndoName">
+       <i class="fa-solid fa-rotate-left"></i>
+      </a>
 
-      <button type="button" @onclick="Undo"
-              class="btn btn-link"
-              disabled="@(!this.UndoRedoManager.CanUndo)"
-              title="Undo: @this.UndoRedoManager.NextUndoName"
-              aria-disabled="@(!this.UndoRedoManager.CanUndo)">
-       <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-      </button>
-
-      <button type="button" @onclick="Redo"
-              class="btn btn-link"
-              disabled="@(!this.UndoRedoManager.CanRedo)"
-              title="Redo: @this.UndoRedoManager.NextRedoName"
-              aria-disabled="@(!this.UndoRedoManager.CanRedo)">
-       <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-      </button>
+      <a @onclick="Redo"
+              class="@(!this.UndoRedoManager.CanRedo ? "disabled" : "")"
+              title="Redo: @this.UndoRedoManager.NextRedoName">
+       <i class="fa-solid fa-rotate-right"></i>
+      </a>
 
       @*Optionale Export-Befehle, die nur einige Blazor-Arten realisieren können*@
       @if (AdditionalComponents.TaskExportAdditionalComponent != null)

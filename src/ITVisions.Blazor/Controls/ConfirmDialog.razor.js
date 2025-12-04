@@ -19,7 +19,7 @@ export function confirmBootstrap(dotnetObj, callbackMethodName, id, text, log = 
   $("#confirmModalText-btn-no").off();
  });
  // Zeige Dialog
- console.log("Zeile Dialog...");
+ //console.log("Zeige Dialog...");
  $("#confirmModal").modal();
 }
 

@@ -149,7 +149,7 @@ public class MiracleListApiV2Controller : Controller
  [Authorize(AuthenticationSchemes = "MLToken")] // Auth Policy
  public IEnumerable<BO.Task> GetTaskSet(int categoryId)
  {
-  if (categoryId <= 0) throw new Exception("Ungültig ID!");
+  if (categoryId < 0) throw new Exception("Ungültig ID!");
   Init();
   return tm.GetTaskSet(categoryId);
  }

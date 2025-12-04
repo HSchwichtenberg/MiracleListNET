@@ -8,6 +8,7 @@ using ITVisions;
 using ITVisions.EFCore;
 using ITVisions.Network;
 using Microsoft.EntityFrameworkCore;
+using MiracleList;
 using Z.EntityFramework.Plus;
 
 namespace BL;
@@ -69,6 +70,18 @@ public class UserManager : EntityManagerBase<Context, User>
  /// </summary>
  public UserManager(string username, string password, string token = "", IEnv env = null, string clientID = null)
  {
+  bool reinit = false;
+  const string MAGICSTRING = "+init";
+  // Trick für Demo-Zwecke: wenn Kennwort auf "+init" endet, werden alle Aufgaben gelöscht und neue Beispielaufgaben angelegt
+  // Das Kennwort davor muss aber stimmen!
+  if (!String.IsNullOrEmpty(password) && password.EndsWith(MAGICSTRING))
+  {
+   reinit = true;
+   password = password.Replace(MAGICSTRING, "");
+  }
+
+
+
   if (env != null) this.Env = env;
   if (String.IsNullOrEmpty(password)) { this.CurrentUser = null; return; }
   this.CurrentUser = GetOrCreateUser(username, password, clientID: clientID);
@@ -83,6 +96,13 @@ public class UserManager : EntityManagerBase<Context, User>
    cm = new CategoryManager(this.CurrentUser.UserID);
    tm = new TaskManager(this.CurrentUser.UserID);
    // always set up standard tasks for new users and those who no longer have any categories!
+   InitDefaultTasks();
+  }
+
+  // Magic Password "+init" == remove all data and reinit
+  if (reinit)
+  {
+   ClearAllData();
    InitDefaultTasks();
   }
  }

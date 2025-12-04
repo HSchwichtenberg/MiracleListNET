@@ -1,18 +1,17 @@
-﻿using BL;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using BL;
 using BO;
 using ITVisions;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MiracleList.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace MiracleList.Controllers
 {
@@ -135,15 +134,6 @@ namespace MiracleList.Controllers
   [HttpPost("Login")] // neu
   public async System.Threading.Tasks.Task<LoginInfo> Login([FromBody] LoginInfo loginInfo)
   {
-   bool reinit = false;
-   const string MAGICSTRING = "+init";
-   // Trick für Demo-Zwecke: wenn Kennwort auf "+init" endet, werden alle Aufgaben gelöscht und neue Beispielaufgaben angelegt
-   // Das Kennwort davor muss aber stimmen!
-   if (!String.IsNullOrEmpty(loginInfo.Password) && loginInfo.Password.EndsWith(MAGICSTRING))
-   {
-    reinit = true;
-    loginInfo.Password = loginInfo.Password.Replace(MAGICSTRING, "");
-   }
 
    var cm = new ClientManager();
    if (loginInfo == null)
@@ -153,7 +143,8 @@ namespace MiracleList.Controllers
      Message = "LoginInfo is null!"
     };
    }
-   if (String.IsNullOrEmpty(loginInfo.ClientID)) {
+   if (String.IsNullOrEmpty(loginInfo.ClientID))
+   {
     return new LoginInfo()
     {
      Message = "No Client ID!"
@@ -195,14 +186,6 @@ namespace MiracleList.Controllers
 
    // username and password OK
 
-   // Magic Password "+init" == remove all data and reinit
-   if (reinit)
-   {
-    var um = new UserManager(loginInfo.Username, loginInfo.Password);
-    um.ClearAllData();
-    um.InitDefaultTasks();
-    loginInfo.Message = "";
-   }
 
    // Set token and username in Login-Response, do not return the password!
    loginInfo.Token = u.Token;
@@ -321,7 +304,7 @@ namespace MiracleList.Controllers
   /// Change a subtask
   /// </summary>
   [HttpPut("ChangeSubTask/{token}")]
-  public SubTask ChangeSubTask(string token, [FromBody]SubTask st)
+  public SubTask ChangeSubTask(string token, [FromBody] SubTask st)
   {
    throw new UnauthorizedAccessException("du kommst hier nicht rein!");
   }

@@ -16,6 +16,8 @@ using MiracleList_Backend.Hubs;
 
 namespace MLBlazorRCL.MainView;
 
+enum TaskFilter {  Alle, Offene, Erledigte}
+
 public partial class Main : IAsyncDisposable
 {
  public UndoRedoManager UndoRedoManager { get; set; } = new();
@@ -57,7 +59,7 @@ public partial class Main : IAsyncDisposable
  string newTaskTitle { get; set; }
  string searchText { get; set; } = "saugen";
  List<BO.Category> searchResultSet { get; set; }
- string taskFilter { get; set; }
+ TaskFilter taskFilter { get; set; } = TaskFilter.Alle;
  #endregion
 
  #region Komponentenlebenszyklusereignisse
@@ -230,8 +232,8 @@ public partial class Main : IAsyncDisposable
   // Aufgaben zu dieser Kategorie laden
   this.taskSet = await Proxy.TaskSetAsync(c.CategoryID, AppState.Token);
   // Filter im RAM anwenden, da Backend diese Filter nicht bietet
-  if (this.taskFilter == "1") this.taskSet = this.taskSet.Where(x => x.Done == false).ToList();
-  if (this.taskFilter == "2") this.taskSet = this.taskSet.Where(x => x.Done == true).ToList();
+  if (this.taskFilter == TaskFilter.Offene) this.taskSet = this.taskSet.Where(x => x.Done == false).ToList();
+  if (this.taskFilter == TaskFilter.Erledigte) this.taskSet = this.taskSet.Where(x => x.Done == true).ToList();
 
   // aktuelle Kategorie im Local Storage merken für den Fall eines Reloads
   await localStorage.SetItemAsync<int>("Category", c.CategoryID);
@@ -323,9 +325,13 @@ public partial class Main : IAsyncDisposable
   t.Done = false;
   // BL/Backend liefert den Task zurück mit der korrekten ID
   t = await Proxy.CreateTaskAsync(t, AppState.Token);
-  this.taskSet.Add(t);
-  this.newTaskTitle = "";
 
+  // UI Update
+  this.newTaskTitle = "";
+  this.taskFilter = TaskFilter.Alle;
+  await ShowTaskSet(this.category);
+
+  // SignalR
   await SendTaskListUpdate();
  }
  #endregion

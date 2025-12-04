@@ -493,6 +493,8 @@ public partial class Main : IAsyncDisposable
   {
    Util.Log("Redo: Aufgabe #" + t.TaskID + " löschen!");
    await Proxy.DeleteTaskAsync(t.TaskID, AppState.Token);
+   await ShowTaskSet(category);
+   await this.SendTaskListUpdate();
   },
   async () =>
   {
@@ -501,6 +503,7 @@ public partial class Main : IAsyncDisposable
    t = await Proxy.CreateTaskAsync(t, AppState.Token);
    var category = this.categorySet.FirstOrDefault(x => x.CategoryID == t.CategoryID);
    await ShowTaskSet(category);
+   await this.SendTaskListUpdate();
   });
   await this.SendTaskListUpdate();
   await ReloadTaskList();

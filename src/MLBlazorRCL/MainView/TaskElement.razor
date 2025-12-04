@@ -15,17 +15,19 @@
    <span class="badge badge-important" style="margin-right:10px" title="Wichtigkeit: @Task.Importance">@Task.Importance</span>
   </span>
 
-  <input type="checkbox" name="@("done" + Task.TaskID)" id="@("done" + Task.TaskID)" checked="@Task.Done" class="MLcheckbox" @onclick:stopPropagation="true" @onchange=@(async(eventArgs) => { Task.Done = (bool)eventArgs.Value; await ChangeTaskDone(Task); }) />
+  <input type="checkbox" name="@("done" + Task.TaskID)" id="@("done" + Task.TaskID)" checked="@Task.Done" class="MLcheckbox" @onclick:stopPropagation="true" @onchange=@(async (eventArgs) => { Task.Done = (bool)eventArgs.Value; await ChangeTaskDone(Task); }) />
 
   <b>@Task.Title</b>
   <br>
   <div>
 
    @if (Task.Due.HasValue)
-    if (Task.Due.Value.Date < DateTime.Now.Date) {
+    if (Task.Due.Value.Date < DateTime.Now.Date)
+    {
      <span style="color:red;" title="@Task.Due.Value.ToShortDateString()">Fällig seit @Task.Due.Value.Date.ToRelativeDate(true)</span>
     }
-    else {
+    else
+    {
      <span style="color:green;" title="@Task.Due.Value.ToShortDateString()">Fällig am @Task.Due.Value.Date.ToShortDateString()</span>
     }
   </div>
@@ -42,31 +44,37 @@
 </ContextMenu>
 
 @code {
- // Parameter für den zu rendernden Task
+ /// <summary>Parameter für den zu rendernden Task<summary>
  [Parameter]
  public BO.Task Task { get; set; }
- // Ist die zu rendernde Aufgabe die aktive Aufgabe?
+
+ /// <summary>Ist die zu rendernde Aufgabe die aktive Aufgabe?</summary>
  [Parameter]
  public bool Active { get; set; }
 
- [Parameter] // Ereignis, wenn Haken bei Aufgabe geändert wird
+ /// <summary>Ereignis, wenn Haken bei Aufgabe geändert wird</summary>
+ [Parameter] // 
  public EventCallback<BO.Task> TaskChecked { get; set; }
 
- [Parameter] // Ereignis, wenn Aufgabe gelöscht wurde
+ /// <summary>Ereignis, wenn Aufgabe gelöscht wurde</summary>
+ [Parameter] 
  public EventCallback<BO.Task> TaskRemoved { get; set; }
 
- [Parameter] // Ereignis, wenn Aufgabe angeklickt wurde
+ /// <summary>Ereignis, wenn Aufgabe angeklickt wurde</summary>
+ [Parameter]
  public EventCallback<BO.Task> TaskClicked { get; set; }
 
- [Parameter] // Ereignis, wenn Aufgabe gezogen wird
+ /// <summary>Ereignis, wenn Aufgabe mit der Maus gezogen wird</summary>
+ [Parameter] 
  public EventCallback<BO.Task> TaskDragged { get; set; }
 
- #region Entfernen von Aufgaben
+ #region ------------ Entfernen von Aufgaben
  DotNetObjectReference<TaskElement> obj;
  /// <summary>
  /// Ereignisbehandlung: Benutzer löscht Aufgabe
  /// </summary>
- public async System.Threading.Tasks.Task RemoveTask(BO.Task t) {
+ public async System.Threading.Tasks.Task RemoveTask(BO.Task t)
+ {
   obj = DotNetObjectReference.Create(this);
   await Util.ConfirmDialog("Remove this Task?<br><br><b>#" + t.TaskID + ": " + t.Title, t.TaskID, obj, ConfirmedRemoveTask);
  }
@@ -75,7 +83,8 @@
  /// Callback, wenn Benutzer Bestätigungsdialog zum Löschen einer Aufgabe betätigt hat
  /// </summary>
  [JSInvokable]
- public async Task ConfirmedRemoveTask(int taskID, bool result) {
+ public async Task ConfirmedRemoveTask(int taskID, bool result)
+ {
   Util.Log($"ConfirmedRemoveTask: #{taskID}:{result}");
   if (result == false) return;
   // Löschen via Proxy-Aufruf
@@ -102,38 +111,43 @@
  //}
  #endregion
 
- #region Kontextmenüaktionen
- async Task OnContextAbout(ItemClickEventArgs e) {
+ #region ------------ Kontextmenüaktionen
+ async Task OnContextAbout(ItemClickEventArgs e)
+ {
   Util.Log($"Context Menu Item Clicked => Menu: {e.ContextMenuId}, MenuTarget: {e.ContextMenuTargetId}, IsCanceled: {e.IsCanceled}, MenuItem: {e.MenuItemElement}, MouseEvent: {e.MouseEvent} Data: {e.Data}");
   var t = e.Data as BO.Task;
   await Util.Alert("Task #" + t.TaskID + " was created on " + t.Created);
  }
 
- async Task OnContextEdit(ItemClickEventArgs e) {
+ async Task OnContextEdit(ItemClickEventArgs e)
+ {
   await SetTaskActive(e.Data as BO.Task);
  }
 
- async Task OnContextRemove(ItemClickEventArgs e) {
+ async Task OnContextRemove(ItemClickEventArgs e)
+ {
   await this.RemoveTask(e.Data as BO.Task);
  }
  #endregion
 
- #region Andere Ereignisse
-
- public async Task SetTaskActive(BO.Task task) {
+ #region ------------ Andere Ereignisse
+ public async Task SetTaskActive(BO.Task task)
+ {
   await TaskClicked.InvokeAsync(task);
  }
 
- public async Task DragTask(DragEventArgs e, BO.Task task) {
+ public async Task DragTask(DragEventArgs e, BO.Task task)
+ {
   await TaskDragged.InvokeAsync(task);
  }
 
- public async Task ChangeTaskDone(BO.Task t) {
+ public async Task ChangeTaskDone(BO.Task t)
+ {
   Util.Log("Change Task: " + t.TaskID + " Done: " + t.Done);
   await Proxy.ChangeTaskDoneAsync(t.TaskID, t.Done, AppState.Token);
   // Ereignis an Mutterkomponente
   await TaskChecked.InvokeAsync(t);
  }
-
  #endregion
+
 }

@@ -52,6 +52,16 @@ public class TaskManager : EntityManagerBase<Context, BO.Task>
  /// </summary>
  public BO.Task CreateTask(BO.Task t)
  {
+  // setze die IDs auf 0, damit EFCore erkennt, dass die Werte von DB vergeben werden
+  // sollte eigentlich bei neuen Aufgaben so sein, aber im Fall von Undo sicherstellen, dass wirklich 0!
+  t.TaskID = 0;
+  if (t.SubTaskSet != null)
+  {
+   foreach (var s in t.SubTaskSet)
+   {
+    s.SubTaskID = 0;
+   }
+  }
   ValidateTask(t);
   return this.New(t);
  }

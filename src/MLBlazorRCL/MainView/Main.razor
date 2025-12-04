@@ -75,7 +75,7 @@
       </select>
 
       <!-- ---------- Schaltlächen -->
-      <a href="/TaskGrid/@this.category?.CategoryID"><span id="DataGrid" title="Tabellenansicht" style="margin-left:20px" class="glyphicon glyphicon-align-justify"></span></a>
+      <a href="/TaskGrid"><span id="DataGrid" title="Tabellenansicht" style="margin-left:20px" class="glyphicon glyphicon-align-justify"></span></a>
 
       <a @onclick="Undo"
               class="@(!this.UndoRedoManager.CanUndo ? "disabled": "")"
@@ -108,7 +108,7 @@
        <TaskElement Task="t" @key="t"
                     Active="(t.TaskID == this.task?.TaskID)"
                     TaskChecked="async ()=>await this.SendTaskListUpdate()"
-                    TaskRemoved="async ()=> { await this.SendTaskListUpdate(); await ReloadTaskList(); }"
+                    TaskRemoved="(t)=>TaskRemoved(t)"
                     TaskClicked="(t)=>ShowTaskDetail(t)"
                     TaskDragged="(t)=>DragTask(null,t)">
        </TaskElement>

@@ -11,7 +11,7 @@
  <li class="list-group-item" @onclick="() => SetTaskActive(Task)" style="Background-color: @(Active ? "#E0EEFA" : "white")" title="Task #@Task.TaskID" draggable="true" @ondragstart="(e) => DragTask(e, Task)">
 
   <span style="float: right; margin-right: 10px">
-   <span id="Remove" class="close" title="Remove Task #@Task.TaskID" @onclick="() => RemoveTask(Task)">x</span>
+   <span id="Remove" class="close" title="Remove Task #@Task.TaskID" @onclick="() => RemoveTask(Task)" @onclick:stopPropagation>x</span>
    <span class="badge badge-important" style="margin-right:10px" title="Wichtigkeit: @Task.Importance">@Task.Importance</span>
   </span>
 

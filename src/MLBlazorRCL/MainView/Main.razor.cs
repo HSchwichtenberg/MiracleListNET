@@ -95,7 +95,7 @@ public partial class Main : IAsyncDisposable
  {
   if (!firstRender) return; // alles Folgende nur 1x machen
 
-  toastService.ShowInfo($"Hallo "  + AppState.Username + ", herzlich Willkommen bei MiracleList!");
+  //toastService.ShowInfo($"Hallo " + AppState.Username + ", herzlich Willkommen bei MiracleList!");
 
   #region ---- ASP.NET Core SignalR-Verbindung aufbauen
   if (AppState.SignalRHubURL.IsNotNullOrEmpty())
@@ -289,9 +289,17 @@ public partial class Main : IAsyncDisposable
   Util.Log("createCategory: " + newCategoryName);
   var newcategory = await Proxy.CreateCategoryAsync(newCategoryName, AppState.Token);
 
-  UndoRedoManager.Create("Create Category " + this.newCategoryName,
-   async () => await Proxy.CreateCategoryAsync(newCategoryName, AppState.Token),
-   async () => await Proxy.DeleteCategoryAsync(newcategory.CategoryID, AppState.Token));
+  UndoRedoManager.Create("Kategorie angelegt: " + this.newCategoryName,
+   async () =>
+   {
+    await Proxy.CreateCategoryAsync(newCategoryName, AppState.Token);
+    await ShowCategorySet();
+   },
+   async () =>
+   {
+    await Proxy.DeleteCategoryAsync(newcategory.CategoryID, AppState.Token);
+    await ShowCategorySet();
+   });
 
   this.categorySet.Add(newcategory);
   await ShowTaskSet(newcategory);
@@ -345,9 +353,16 @@ public partial class Main : IAsyncDisposable
   await Proxy.DeleteCategoryAsync(categoryID, AppState.Token);
 
   var cat = categorySet.FirstOrDefault(c => c.CategoryID == categoryID);
-  UndoRedoManager.Create("Delete Category " + cat.Name,
-  async () => await Proxy.DeleteCategoryAsync(categoryID, AppState.Token),
-  async () => { await Proxy.CreateCategoryAsync(cat.Name, AppState.Token); await ShowTaskSet(cat); });
+  UndoRedoManager.Create("Kategorie gelöscht: " + cat.Name,
+  async () =>
+  {
+   await Proxy.DeleteCategoryAsync(categoryID, AppState.Token);
+   await ShowCategorySet();
+  },
+  async () => { 
+   await Proxy.CreateCategoryAsync(cat.Name, AppState.Token);
+   await ShowCategorySet();
+  });
 
   // aktuelle Category zurücksetzen
   this.category = null;
@@ -428,7 +443,7 @@ public partial class Main : IAsyncDisposable
 
   // TODO: hier gibt es ein Serialisierungs-StackOverflow-Problem, wenn man die Kategorie inklusive TaskList übermittelt per SignalR
   if (t != null) { categoryUpdated = t.Category; }
-  else { categoryUpdated =  this.category; }
+  else { categoryUpdated = this.category; }
   Util.Log($"SignalR.{nameof(SendTaskListUpdate)}: {categoryUpdated.CategoryID}");
 
   if (IsConnected) await AppState.HubConnection.SendAsync(nameof(IMLHubV3.TaskListUpdate), AppState.Token, categoryUpdated);
@@ -458,14 +473,30 @@ public partial class Main : IAsyncDisposable
  private async Task Redo(MouseEventArgs args)
  {
   UndoRedoManager.Redo();
-  await ShowCategorySet();
-  await ShowTaskSet(this.categorySet.FirstOrDefault());
  }
 
  private async Task Undo(MouseEventArgs args)
  {
   UndoRedoManager.Undo();
-  await ShowCategorySet();
-  await ShowTaskSet(this.categorySet.FirstOrDefault());
+ }
+
+ private async Task TaskRemoved(BO.Task t)
+ {
+  UndoRedoManager.Create("Aufgabe gelöscht: " + t.Title,
+  async () =>
+  {
+   Util.Log("Redo: Aufgabe #" + t.TaskID + " löschen!");
+   await Proxy.DeleteTaskAsync(t.TaskID, AppState.Token);
+  },
+  async () =>
+  {
+   Util.Log("Undo: Aufgabe #" + t.TaskID + " gelöscht!");
+   t.TaskID = 0; // damit Backend neue ID vergibt
+   t = await Proxy.CreateTaskAsync(t, AppState.Token);
+   var category = this.categorySet.FirstOrDefault(x => x.CategoryID == t.CategoryID);
+   await ShowTaskSet(category);
+  });
+  await this.SendTaskListUpdate();
+  await ReloadTaskList();
  }
 } // end class Main

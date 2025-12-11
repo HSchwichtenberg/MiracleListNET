@@ -67,7 +67,7 @@
    {
     <div class="form-check" style="margin-bottom:10px">
      <input type="checkbox" @bind="silent" class="form-check-input bigCheckbox">
-     <label class="form-check-label bigCheckboxLabel">Stiller Upload <span class="ZusatzInfoSmall">keine E-Mail an Teilnehmer*innen, wenn angewählt</span></label>
+     <label class="form-check-label bigCheckboxLabel">Stiller Upload <span class="ZusatzInfoSmall">@SilentMessage</span></label>
     </div>
    }
 
@@ -114,6 +114,8 @@
  public bool UseComment { get; set; } = false;
  [Parameter]
  public bool UseSilent { get; set; } = false;
+ [Parameter]
+ public string SilentMessage { get; set; } = "";
  [Parameter]
  public string AcceptableFileTypes { get; set; } = "";
  [Parameter]

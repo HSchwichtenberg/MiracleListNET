@@ -1,0 +1,110 @@
+﻿@code {
+
+ [Parameter]
+ public string Class { get; set; }
+
+ [Parameter]
+ public string Text { get; set; }
+
+ [Parameter]
+ public RenderFragment PreHTML { get; set; }
+
+ [Parameter]
+ public RenderFragment PostHTML { get; set; }
+
+ [Parameter]
+ public string Tooltip { get; set; }
+
+ [Parameter]
+ public string Width { get; set; }
+
+ [Parameter]
+ public bool IsEMail { get; set; } = false;
+
+ public string BackgroundColor
+ {
+  get
+  {
+   const string DefaultColor = "#6c757d";
+   // Gibt #6c757d (secondary) zurück, wenn keine bekannte Badge-Klasse gefunden wird
+   if (string.IsNullOrEmpty(Class)) return DefaultColor;
+
+   return Class.ToLower() switch
+   {
+    var c when c.Contains("badge-primary") => "#007bff",
+    var c when c.Contains("badge-secondary") => "#6c757d",
+    var c when c.Contains("badge-success") => "#28a745",
+    var c when c.Contains("badge-danger") => "#dc3545",
+    var c when c.Contains("badge-warning") => "#ffc107",
+    var c when c.Contains("badge-info") => "#17a2b8",
+    var c when c.Contains("badge-light") => "#f8f9fa",
+    var c when c.Contains("badge-dark") => "#343a40",
+    _ => DefaultColor
+   };
+  }
+ }
+}
+
+@if (IsEMail)
+{
+ <table role="presentation" cellspacing="0" cellpadding="0" border="0"
+        style="border-collapse:separate;border-spacing:0;
+               mso-table-lspace:0pt;mso-table-rspace:0pt;">
+  <tr>
+
+   <!-- Text davor -->
+   <td style="font-family:Arial, sans-serif;
+                font-size:14px;
+                vertical-align:middle;
+                white-space:nowrap;">
+    @PreHTML
+   </td>
+
+   <!-- kleiner Abstand -->
+   <td style="width:6px;font-size:1px;line-height:1px;">&nbsp;</td>
+
+   <!-- Badge -->
+   <td style="vertical-align:middle;">
+    <table title="@Tooltip" role="presentation" cellspacing="0" cellpadding="0" border="0"
+           style="border-collapse:separate;border-spacing:0;
+                     mso-table-lspace:0pt;mso-table-rspace:0pt;
+                     background:@BackgroundColor;
+                     border-radius:4px;
+                     @(string.IsNullOrEmpty(Width) ? "" : $"width:{Width};")">
+     <tr>
+      <td style="padding:2px 6px;
+                      font-size:12px;
+                      line-height:14px;
+                      font-weight:700;
+                      font-family:Arial, sans-serif;
+                      color:#ffffff;
+                      white-space:nowrap;
+                      text-align:center;
+                      mso-line-height-rule:exactly;
+                      @(string.IsNullOrEmpty(Width) ? "" : $"width:{Width};")">
+       @Text
+      </td>
+     </tr>
+    </table>
+   </td>
+
+   <!-- kleiner Abstand -->
+   <td style="width:6px;font-size:1px;line-height:1px;">&nbsp;</td>
+
+   <!-- Text danach -->
+   <td style="font-family:Arial, sans-serif;
+                font-size:14px;
+                vertical-align:middle;
+                white-space:nowrap;">
+      @PostHTML
+   </td>
+
+  </tr>
+ </table>
+
+}
+else
+{
+ <span title="@Tooltip" style="@(string.IsNullOrEmpty(Width) ? "" : $"width:{Width};")" class="@Class badge">@Text</span>
+}
+

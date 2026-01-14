@@ -119,12 +119,13 @@ where T : Microsoft.AspNetCore.Components.IComponent
   // Outlook is only taking the first class listed in the class attribute, ignoring everything else !!!
 
   html = "<html><head><style>" +
-   "hr { border: none; height: 3px; color: #12B4FF; background-color: #12B4FF;} " +
-   "h3 { color:white;font-family: Futura Md Bt, Futura Bold, Arial Black;font-weight:bold;border-top:2px solid #12B4FF;border-bottom:2px solid #12B4FF;background-color:#12B4FF;border-left: 16px solid #12B4FF;margin-top:15px; }" +
-   ".badge-success { display: inline-block; font-size: 75%; font-weight: 700; line-height: 1; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: 0.25rem; color: #fff; background-color: #28a745; border: 3px solid #28a745; } " +
-   ".badge-info { display: inline-block; font-size: 75%; font-weight: 700; line-height: 1; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: 0.25rem; color: #fff; background-color: #17a2b8; border: 3px solid #17a2b8} " +
-   ".badge-danger { display: inline-block; font-size: 75%; font-weight: 700; line-height: 1; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: 0.25rem; color: #fff; background-color: #dc3545; border: 3px solid #dc3545} " +
-   ".badge-secondary { display: inline-block; font-size: 75%; font-weight: 700; line-height: 1; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: 0.25rem; color: #fff; background-color: #6c757d; border: 3px solid #6c757d} " +
+   " hr { border: none; height: 3px; color: #12B4FF; background-color: #12B4FF;} " +
+   " h3 { color:white;font-family: Futura Md Bt, Futura Bold, Arial Black;font-weight:bold;border-top:2px solid #12B4FF;border-bottom:2px solid #12B4FF;background-color:#12B4FF;border-left: 16px solid #12B4FF;margin-top:15px; }" +
+
+   " .badge-success { display: inline-block; font-size: 75%; font-weight: 700; line-height: 12px;  text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: 0.25rem; color: #fff; background-color: #28a745; border: 3px solid #28a745; } " +
+   " .badge-info { display: inline-block; font-size: 75%; font-weight: 700; line-height: 12px; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: 0.25rem; color: #fff; background-color: #17a2b8; border: 3px solid #17a2b8} " +
+   " .badge-danger { display: inline-block; font-size: 75%; font-weight: 700; line-height: 12px; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: 0.25rem; color: #fff; background-color: #dc3545; border: 3px solid #dc3545} " +
+   " .badge-secondary { display: inline-block; font-size: 75%; font-weight: 700; line-height: 12px; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: 0.25rem; color: #fff; background-color: #6c757d; border: 3px solid #6c757d} " +
    "</style><body>" +
    html +
    "</body></html>";

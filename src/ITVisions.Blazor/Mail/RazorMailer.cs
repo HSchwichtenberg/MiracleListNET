@@ -109,7 +109,8 @@ where T : Microsoft.AspNetCore.Components.IComponent
 
   // https://www.litmus.com/blog/a-guide-to-bulletproof-buttons-in-email-design
   var linkStyle = """
-   style='font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; font-weight: bold; text-decoration: none; border-radius: 5px; background-color: #12B4FF; border-top: 12px solid #12B4FF; border-bottom: 12px solid #12B4FF; border-right: 18px solid #12B4FF; border-left: 18px solid #12B4FF; display: inline-block;'  
+   style='font-size: 13px; font-family: Helvetica, Arial, sans-serif; color: #12B4FF; font-weight: bold; text-decoration: none; border-radius: 2px; background-color: white; padding-top:8px; border-top: 2px solid #12B4FF; padding-bottom:8px; border-bottom: 2px solid #12B4FF; padding-right:8px; border-right: 2px solid #12B4FF; padding-left:8px; border-left: 2px solid #12B4FF; display: inline-block;'  
+
    """;
 
   html = html.Replace("class=\"mailbutton\"", linkStyle);

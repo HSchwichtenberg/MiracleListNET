@@ -14,6 +14,12 @@ namespace ITVisions.Blazor
  /// </summary>
  public partial class BlazorUtil
  {
+
+  /// <summary>
+  /// Setzt den Titel des Browserfensters via JavaScript
+  /// </summary>
+  /// <param name="text"></param>
+  /// <returns></returns>
   public async Task SetTitle(string text)
   {
    if (_jsRuntime == null) return;

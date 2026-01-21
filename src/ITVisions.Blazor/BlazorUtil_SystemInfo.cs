@@ -77,12 +77,22 @@ namespace ITVisions.Blazor
    return GetBrowserInfo().Result.ToUpper().Contains("MSIE");
   }
 
+  /// <summary>
+  /// IP des Aufrufers
+  /// </summary>
   public string GetClientIP()
   {
    if (httpContextAccessor == null || httpContextAccessor.HttpContext == null) return "n/a";
    try
    {
     var s = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+
+    // Falls hinter einem Proxy (X-Forwarded-For Header prüfen)
+    if (httpContextAccessor.HttpContext.Request.Headers.ContainsKey("X-Forwarded-For") == true)
+    {
+     s = httpContextAccessor.HttpContext.Request.Headers["X-Forwarded-For"].ToString().Split(',')[0].Trim();
+    }
+
     if (String.IsNullOrEmpty(s)) return "n/a";
     return s;
    }

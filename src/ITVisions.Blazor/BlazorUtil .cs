@@ -19,12 +19,23 @@ namespace ITVisions.Blazor
   private NavigationManager NavigationManager { get; set; } = null;
   private IHttpContextAccessor httpContextAccessor { get; set; } = null;
 
-  // DI
+  /// <summary>
+  /// DI ohne IHttpContextAccessor
+  /// </summary>
   public BlazorUtil(IJSRuntime jsRuntime, NavigationManager NavigationManager)
   {
    _jsRuntime = jsRuntime;
    this.NavigationManager = NavigationManager;
-   //TODO: this.httpContextAccessor = httpContextAccessor;
+  }
+
+  /// <summary>
+  /// DI mit IHttpContextAccessor
+  /// </summary>
+  public BlazorUtil(IJSRuntime jsRuntime, NavigationManager NavigationManager, IHttpContextAccessor httpContextAccessor)
+  {
+   _jsRuntime = jsRuntime;
+   this.NavigationManager = NavigationManager;
+  this.httpContextAccessor = httpContextAccessor;
   }
 
   #region Blazor Type

@@ -1,6 +1,6 @@
 ﻿@using ITVisions
 
-<div class="alert @Type.Prefix("alert-") alert-dismissible fade show" role="alert">
+<div style="width:100%" class="alert @Type.Prefix("alert-") alert-dismissible fade show @AdditionalClasses" title="@Tooltip" role="alert">
  <h4>@Title</h4>
 
  @if (ChildContent != null)
@@ -20,7 +20,6 @@
  }
 </div>
 
-
 @code {
 
  [Parameter]
@@ -37,5 +36,11 @@
 
  [Parameter]
  public RenderFragment ChildContent { get; set; }
+
+ [Parameter]
+ public string AdditionalClasses { get; set; }
+
+ [Parameter]
+ public string Tooltip { get; set; }
 
 }

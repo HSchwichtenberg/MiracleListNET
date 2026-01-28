@@ -65,9 +65,9 @@
      {
       @foreach (var tag in Tags)
       {
-       <span class="badge badge-secondary badge-small mr-1" @onclick="() => InsertTag(tag.Value)" title="Fügt diesen Text ein: @tag.Value">
+    <a href="#" class="badge badge-primary" @onclick="() => InsertTag(tag.Value)" title="Fügt diesen Text ein: @tag.Value">
         #@tag.Key
-       </span>
+       </a>
       }
      }
     </div>

@@ -60,7 +60,19 @@
     <div class="form-group">
      Kommentar zu @(this.filesToUpload.Count == 1 ? "dieser Datei" : " diesen " + this.filesToUpload.Count + " Dateien") <span class="ZusatzInfoSmall">optional, max @MaxCommentLength Zeichen</span>
      <textarea @bind="comment" class="form-control" maxlength="@MaxCommentLength" rows="@(MaxCommentLength<200 ? 1 : 2)"></textarea>
+
+     @if (this.Tags != null)
+     {
+      @foreach (var tag in Tags)
+      {
+       <span class="badge badge-secondary badge-small mr-1" @onclick="() => InsertTag(tag.Value)" title="Fügt diesen Text ein: @tag.Value">
+        #@tag.Key
+       </span>
+      }
+     }
     </div>
+
+
    }
 
    @if (UseSilent)
@@ -122,6 +134,8 @@
  public string Headline { get; set; } = "Upload";
  [Parameter]
  public string Label { get; set; } = "Bitte Datei(en) per Drag&Drop hier fallen lassen oder mit Dialog wählen";
+ [Parameter]
+ public Dictionary<string, string> Tags { get; set; } = null;
 
  public List<string> AcceptableFileTypesList
  {
@@ -305,5 +319,10 @@
    await Util.Alert("Fehler beim Upload:\n" + ex.Message);
   }
 
+ }
+
+ void InsertTag(string tagText)
+ {
+  comment = comment.Add(" ",tagText);
  }
 }

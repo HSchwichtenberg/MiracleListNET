@@ -61,6 +61,7 @@
 		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
 		<PackageReference Include="Blazored.SessionStorage" Version="2.4.*" />
 		<PackageReference Include="ITVisions.Util" Version="10.*" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="UAParser" Version="3.1.*" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
 	</ItemGroup>

@@ -1,0 +1,80 @@
+﻿@using ITVisions.Blazor
+@inject BlazorUtil Util
+
+@code {
+ [Parameter]
+ public string ID { get; set; } = ""; // Anspringen per URL #ID funktioniert bisher nicht :-(
+
+ // [Parameter]
+ // public bool Open { get; set; } = false; // TODO: bisher ohne Funktion
+
+ [Parameter]
+ public RenderFragment? Head { get; set; } = null;
+
+ [Parameter]
+ public RenderFragment? Content { get; set; } = null;
+
+ [Parameter]
+ public bool IsOpen { get; set; } = false;
+
+ [Parameter]
+ public EventCallback<bool> IsOpenChanged { get; set; }
+
+ [Parameter]
+ public string Title { get; set; } = "";
+
+ [Parameter]
+ public string URL { get; set; }
+
+ [Parameter]
+ public string URLTitle { get; set; }
+
+ static int count { get; set; }
+ public int CountID { get; set; }
+
+ protected override void OnInitialized()
+ {
+  count++;
+  this.CountID = count;
+  Util.Log(count);
+ }
+
+ private async Task ToggleAccordion()
+ {
+  IsOpen = !IsOpen;
+  await IsOpenChanged.InvokeAsync(IsOpen);
+ }
+
+}
+
+@if (!String.IsNullOrEmpty(ID))
+{
+ <a id="@ID"></a>
+}
+
+<div class="accordion-item">
+ <h4 class="accordion-header"  id="@("region" + CountID)">
+  <button title="@Title" class="accordion-button @(IsOpen ? "" : "collapsed")"
+          type="button"
+          @onclick="() => ToggleAccordion()">
+   <i class="bi bi-chevron-@(IsOpen ? "down" : "right") me-2"></i>
+   <span style="flex: 1;">@Head</span>
+   @if (!string.IsNullOrEmpty(URL))
+   {
+    <a href="@URL" 
+       target="_blank" 
+       title="@URLTitle" 
+       class="ms-2"
+       style="color: inherit; text-decoration: none;"
+       @onclick:stopPropagation="true">
+     <i class="bi bi-box-arrow-up-right"></i>
+    </a>
+   }
+  </button>
+ </h4>
+ <div class="accordion-collapse collapse @(IsOpen ? "show" : "")" id="@(" collapse" + CountID)">
+  <div class="accordion-body">
+   @Content
+  </div>
+ </div>
+</div>

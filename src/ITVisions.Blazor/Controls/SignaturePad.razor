@@ -1,0 +1,204 @@
+@using Microsoft.JSInterop
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+<style>
+ .signature-pad-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+ }
+
+ .signature-pad__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+ }
+
+ /* Auf kleinen Bildschirmen: Buttons unter das Canvas */
+ @@media (max-width: 767px) {
+  .signature-pad-container {
+   flex-direction: column;
+   align-items: stretch;
+  }
+
+  .signature-pad__actions {
+   flex-direction: row;
+   justify-content: center;
+   margin-top: 12px;
+  }
+ }
+</style>
+
+<div class="signature-pad">
+ <div style="margin-bottom: 8px;">
+  <label class="form-label">@LabelText</label>
+ </div>
+ <div class="signature-pad-container">
+  <canvas @ref="_canvas"
+          width="@Width"
+          height="@Height"
+          class="@CanvasClass"
+          style="touch-action: @(IsSaved ? "auto" : "none"); background: @BackgroundColor; border: 1px solid #ccc; border-radius: 4px; opacity: @(IsSaved ? "0.7" : "1");"></canvas>
+
+  <div class="signature-pad__actions">
+   @if (IsSaved)
+   {
+    <div class="alert alert-success mb-0" style="padding: 0.5rem 1rem;">
+     <span class="oi oi-check me-1"></span> Gespeichert
+    </div>
+   }
+   else
+   {
+    @if (ShowSaveButton)
+    {
+     <button type="button" class="@SaveButtonClass" @onclick="SaveAsync">@SaveButtonText</button>
+    }
+    @if (ShowClearButton)
+    {
+     <button type="button" class="@ClearButtonClass" @onclick="ClearAsync">@ClearButtonText</button>
+    }
+   }
+  </div>
+ </div>
+</div>
+
+@code {
+ private ElementReference _canvas;
+ private IJSObjectReference? _module;
+ private DotNetObjectReference<SignaturePad>? _dotNetRef;
+ private bool _isSaved = false;
+
+ [Parameter] public int Width { get; set; } = 650;
+ [Parameter] public int Height { get; set; } = 150;
+ [Parameter] public string LabelText { get; set; } = "Bitte unterschreiben Sie hier mit der Maus oder per Touch:";
+ [Parameter] public string StrokeColor { get; set; } = "#111";
+ [Parameter] public string BackgroundColor { get; set; } = "#ffffff";
+ [Parameter] public double LineWidth { get; set; } = 2.0;
+ [Parameter] public bool ShowClearButton { get; set; } = true;
+ [Parameter] public bool ShowSaveButton { get; set; } = true;
+ [Parameter] public string ClearButtonText { get; set; } = "Unterschrift löschen";
+ [Parameter] public string SaveButtonText { get; set; } = "Unterschrift speichern";
+ [Parameter] public string CanvasClass { get; set; } = "signature-pad__canvas";
+ [Parameter] public string ClearButtonClass { get; set; } = "btn btn-sm btn-secondary";
+ [Parameter] public string SaveButtonClass { get; set; } = "btn btn-sm btn-primary";
+ [Parameter] public bool ShowWatermark { get; set; } = true;
+ [Parameter] public string WatermarkText { get; set; } = "Rechtsverbindliche Unterschrift";
+ [Parameter] public string WatermarkText2 { get; set; } = "";
+ [Parameter] public EventCallback<string> OnChange { get; set; }
+
+ public bool IsSaved => _isSaved;
+
+ protected override async Task OnAfterRenderAsync(bool firstRender)
+ {
+  if (!firstRender)
+  {
+   return;
+  }
+
+  _module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/ITVisions.Blazor/Controls/SignaturePad.razor.js");
+  _dotNetRef = DotNetObjectReference.Create(this);
+
+  await _module.InvokeVoidAsync("init", _canvas, _dotNetRef, new SignaturePadOptions
+  {
+   StrokeColor = StrokeColor,
+   BackgroundColor = BackgroundColor,
+   LineWidth = LineWidth,
+   ShowWatermark = ShowWatermark,
+   WatermarkText = WatermarkText,
+   WatermarkText2 = WatermarkText2
+  });
+ }
+
+ public async Task SaveAsync()
+ {
+  if (_module is null || _isSaved)
+  {
+   return;
+  }
+
+  var isEmpty = await IsEmptyAsync();
+  if (isEmpty)
+  {
+   return;
+  }
+
+  var dataUrl = await GetImageDataUrlAsync();
+  if (!string.IsNullOrWhiteSpace(dataUrl))
+  {
+   _isSaved = true;
+
+   // Deaktiviere die Interaktion im Canvas
+   await _module.InvokeVoidAsync("disable", _canvas);
+
+   // Trigger OnChange Event
+   await OnChange.InvokeAsync(dataUrl);
+  }
+ }
+
+ public async Task ClearAsync()
+ {
+  if (_module is null || _isSaved)
+  {
+   return;
+  }
+
+  await _module.InvokeVoidAsync("clear", _canvas, BackgroundColor);
+ }
+
+ public async Task<string?> GetImageDataUrlAsync()
+ {
+  if (_module is null)
+  {
+   return null;
+  }
+
+  return await _module.InvokeAsync<string>("getDataUrl", _canvas);
+ }
+
+ public async Task<bool> IsEmptyAsync()
+ {
+  if (_module is null)
+  {
+   return true;
+  }
+
+  return await _module.InvokeAsync<bool>("isEmpty", _canvas);
+ }
+
+ [JSInvokable]
+ public async Task NotifyChanged()
+ {
+  if (!OnChange.HasDelegate || _isSaved)
+  {
+   return;
+  }
+
+  var dataUrl = await GetImageDataUrlAsync();
+  if (!string.IsNullOrWhiteSpace(dataUrl))
+  {
+   // await OnChange.InvokeAsync(dataUrl);
+  }
+ }
+
+ public async ValueTask DisposeAsync()
+ {
+  if (_module is not null)
+  {
+   await _module.InvokeVoidAsync("dispose", _canvas);
+   await _module.DisposeAsync();
+  }
+
+  _dotNetRef?.Dispose();
+ }
+
+ private sealed class SignaturePadOptions
+ {
+  public string StrokeColor { get; set; } = "#111";
+  public string BackgroundColor { get; set; } = "#ffffff";
+  public double LineWidth { get; set; } = 2.0;
+  public bool ShowWatermark { get; set; } = true;
+  public string WatermarkText { get; set; } = "Rechtsverbindliche Unterschrift";
+  public string WatermarkText2 { get; set; } = "";
+ }
+}

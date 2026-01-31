@@ -1,0 +1,88 @@
+
+
+/* Accordion Styling */
+.accordion-item {
+ border: 1px solid #dee2e6;
+ margin-bottom: 1rem;
+ border-radius: 0.5rem;
+ overflow: hidden;
+ transition: box-shadow 0.3s ease;
+}
+
+ .accordion-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+ }
+
+.accordion-button {
+ font-size: 19px;
+ background: linear-gradient(to right, #f8f9fa 0%, #e9ecef 100%);
+ color: #333;
+ font-weight: 600;
+ border: none;
+ padding: 1rem 1.5rem;
+ display: flex !important;
+ align-items: flex-start !important;
+ width: 100%;
+ transition: all 0.3s ease;
+ text-align: left !important;
+ white-space: normal !important;
+ word-wrap: break-word;
+ overflow-wrap: break-word;
+ line-height: 1.0;
+}
+
+ .accordion-button i {
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+  margin-right: 0.75rem;
+ }
+
+@media (max-width: 991.98px) {
+ .accordion-button {
+  font-size: 1.0rem;
+  padding: 0.75rem 1rem;
+ }
+}
+
+.accordion-button:not(.collapsed) {
+ background: linear-gradient(135deg, #12B4FF 0%, #0d8fd9 100%);
+ color: white;
+ box-shadow: 0 2px 8px rgba(18, 180, 255, 0.3);
+}
+
+.accordion-button:hover {
+ background: linear-gradient(135deg, #12B4FF 0%, #0d8fd9 100%);
+ color: white;
+}
+
+.accordion-button:focus {
+ box-shadow: 0 0 0 0.25rem rgba(18, 180, 255, 0.25);
+}
+
+.accordion-body {
+ padding: 1.0rem;
+ padding-left: 1.5rem;
+ padding-right: 1.5rem;
+ background: white;
+ animation: fadeIn 0.3s ease-in;
+}
+
+/* ---- Fading */
+.fade-in {
+ animation: fadeIn 0.5s ease-in;
+}
+
+/* Animations */
+@keyframes fadeIn {
+ from {
+  opacity: 0;
+  transform: translateY(10px);
+ }
+
+ to {
+  opacity: 1;
+  transform: translateY(0);
+ }
+}
+

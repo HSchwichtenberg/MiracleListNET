@@ -16,10 +16,10 @@
 
 	<!--Versionen-->
 	<PropertyGroup>
-		<Version>10.1.2.0</Version>
-		<AssemblyVersion>10.1.2.0</AssemblyVersion>
-		<FileVersion>10.1.2.0</FileVersion>
-		<InformationalVersion>10.1.2.0</InformationalVersion>
+		<Version>10.2.0.0</Version>
+		<AssemblyVersion>10.2.0.0</AssemblyVersion>
+		<FileVersion>10.2.0.0</FileVersion>
+		<InformationalVersion>10.2.0.0</InformationalVersion>
 	</PropertyGroup>
 
 	<!--Autor-->

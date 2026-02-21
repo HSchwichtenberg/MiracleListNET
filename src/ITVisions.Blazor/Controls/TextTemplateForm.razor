@@ -1,0 +1,208 @@
+﻿@using ITVisions.Blazor.Controls
+@using ITVisions
+
+<Debug>
+ @Template
+
+ @FormFields.Count
+</Debug>
+
+@if (FormFields != null && FormFields.Any())
+{
+
+ <EditForm Model="this" OnValidSubmit="OnSubmit">
+  @foreach (var field in FormFields)
+  {
+   @if (field.Type == FieldType.Headline)
+   {
+    <h4 class="headline">@field.Label</h4>
+   }
+   else
+   {
+    <div class="form-group mb-3">
+     @if (!string.IsNullOrEmpty(field.Label))
+     {
+      <label class="fw-bold">@field.Label</label>
+     }
+
+     @if (field.Type == FieldType.RadioButtons)
+    {
+     <div class="d-flex gap-3">
+      @foreach (var option in field.Options)
+      {
+       <div class="form-check">
+        <input class="form-check-input" type="radio" name="@field.Key" id="@($"{field.Key}_{option}")" 
+               value="@option" @onchange="@(e => { field.ValueString = option; NotifyValuesChanged(); })" 
+               checked="@(field.ValueString == option)" />
+        <label class="form-check-label" for="@($"{field.Key}_{option}")">@option</label>
+       </div>
+      }
+     </div>
+    }
+    else if (field.Type == FieldType.Text)
+    {
+     <input type="text" class="form-control" @bind="field.ValueString" @bind:after="NotifyValuesChanged" />
+    }
+    else if (field.Type == FieldType.TextArea)
+    {
+     <textarea class="form-control" rows="4" @bind="field.ValueString" @bind:after="NotifyValuesChanged"></textarea>
+    }
+    </div>
+   }
+  }
+
+  @if (ShowSubmitButton)
+  {
+   <button type="submit" class="btn btn-primary">@SubmitButtonText</button>
+  }
+ </EditForm>
+}
+
+@code {
+ [Parameter]
+ public string Template { get; set; }
+
+ [Parameter]
+ public EventCallback<FormFieldList> OnValuesChanged { get; set; }
+
+ [Parameter]
+ public bool ShowSubmitButton { get; set; } = true;
+
+ [Parameter]
+ public string SubmitButtonText { get; set; } = "Absenden";
+
+ private FormFieldList FormFields { get; set; } = new();
+
+ protected override void OnParametersSet()
+ {
+  if (!string.IsNullOrEmpty(Template))
+  {
+   ParseTemplate();
+  }
+ }
+
+ private void ParseTemplate()
+ {
+  FormFields.Clear();
+
+  var lines = Template.Split('\n', StringSplitOptions.TrimEntries);
+  string currentSection = null;
+  int fieldCounter = 0;
+
+  foreach (var line in lines)
+  {
+   if (string.IsNullOrWhiteSpace(line)) continue;
+
+   // Headline mit #
+   if (line.StartsWith("#"))
+   {
+    var headlineText = line.TrimStart('#').Trim();
+    currentSection = headlineText;
+    FormFields.Add(new FormField
+    {
+     Key = $"headline_{fieldCounter++}",
+     Label = headlineText,
+     Type = FieldType.Headline
+    });
+    continue;
+   }
+
+   // Zeile mit Feld
+   if (line.StartsWith("-"))
+   {
+    var fieldLine = line.TrimStart('-').Trim();
+    var parts = fieldLine.Split(':', 2);
+
+    if (parts.Length == 2)
+    {
+     var label = parts[0].Trim();
+     var fieldDef = parts[1].Trim();
+     var key = $"{currentSection}_{label}".Replace(" ", "_").Replace(":", "");
+     fieldCounter++;
+
+     // Radio-Buttons erkennen
+     if (fieldDef.Contains("O "))
+     {
+      // Entferne führende/nachfolgende Whitespaces und splitte bei "O "
+      var optionParts = fieldDef.Split(new[] { "O " }, StringSplitOptions.RemoveEmptyEntries);
+      var options = optionParts
+       .Select(o => o.Trim())
+       .Where(o => !string.IsNullOrWhiteSpace(o))
+       .ToList();
+
+      FormFields.Add(new FormField
+      {
+       Key = key,
+       Label = $"{currentSection}: {label}",
+       Type = FieldType.RadioButtons,
+       Options = options
+      });
+     }
+     // Textarea
+     else if (fieldDef.Contains("[Textarea]"))
+     {
+      FormFields.Add(new FormField
+      {
+       Key = key,
+       Label = $"{currentSection}: {label}",
+       Type = FieldType.TextArea
+      });
+     }
+     // Textfeld
+     else if (fieldDef.Contains("___") || fieldDef.Contains("[Text]"))
+     {
+      FormFields.Add(new FormField
+      {
+       Key = key,
+       Label = $"{currentSection}: {label}",
+       Type = FieldType.Text
+      });
+     }
+    }
+   }
+   // Standalone Felder (ohne -)
+   else if (line.Contains("___") || line.Contains("[Text]"))
+   {
+    var parts = line.Split(new[] { "___", "[Text]" }, StringSplitOptions.None);
+    var label = parts[0].TrimEnd(':').Trim();
+    var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
+
+    FormFields.Add(new FormField
+    {
+     Key = key,
+     Label = label,
+     Type = FieldType.Text
+    });
+   }
+   else if (line.Contains("[Textarea]"))
+   {
+    var label = line.Replace("[Textarea]", "").TrimEnd(':').Trim();
+    var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
+
+    FormFields.Add(new FormField
+    {
+     Key = key,
+     Label = label,
+     Type = FieldType.TextArea
+    });
+   }
+  }
+ }
+
+ private async void NotifyValuesChanged()
+ {
+  await OnValuesChanged.InvokeAsync(FormFields);
+ }
+
+ private async Task OnSubmit()
+ {
+  await OnValuesChanged.InvokeAsync(FormFields);
+ }
+
+ public FormFieldList GetFormFields()
+ {
+  return FormFields;
+ }
+
+
+}

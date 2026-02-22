@@ -27,310 +27,385 @@ public static class TextTemplateFormParser
    // Headline mit #
    if (line.StartsWith("#"))
    {
-    var headlineText = line.TrimStart('#').Trim();
-    currentSection = headlineText;
-    formFields.Add(new FormField
-    {
-     Key = $"headline_{fieldCounter++}",
-     Label = headlineText,
-     Type = FieldType.Headline
-    });
+    currentSection = ParseHeadline(line, ref fieldCounter, formFields);
     continue;
    }
 
-   // Zeile mit Feld
+   // Zeile mit Feld (- oder +)
    if (line.StartsWith("-") || line.StartsWith("+"))
    {
-    var isRequired = line.StartsWith("+");
-    var fieldLine = line.TrimStart('-', '+').Trim();
-    var parts = fieldLine.Split(':', 2);
-
-    if (parts.Length == 2)
-    {
-     var label = parts[0].Trim();
-     var fieldDef = parts[1].Trim();
-     var key = $"{currentSection}_{label}".Replace(" ", "_").Replace(":", "");
-     fieldCounter++;
-
-     // Radio-Buttons erkennen
-     if (fieldDef.Contains("O "))
-     {
-      // Entferne führende/nachfolgende Whitespaces und splitte bei "O "
-      var optionParts = fieldDef.Split(new[] { "O " }, StringSplitOptions.RemoveEmptyEntries);
-      var options = optionParts
-       .Select(o => o.Trim())
-       .Where(o => !string.IsNullOrWhiteSpace(o))
-       .ToList();
-
-      // Wenn nur eine Option vorhanden ist, als Checkbox behandeln
-      if (options.Count == 1)
-      {
-       formFields.Add(new FormField
-       {
-        Key = key,
-        Label = $"{currentSection}: {label}",
-        Type = FieldType.CheckBox,
-        Options = options,
-        Required = isRequired
-       });
-      }
-      else
-      {
-       formFields.Add(new FormField
-       {
-        Key = key,
-        Label = $"{currentSection}: {label}",
-        Type = FieldType.RadioButtons,
-        Options = options,
-        Required = isRequired
-       });
-      }
-     }
-     // Multiselect
-     else if (fieldDef.Contains("[Multiselect]"))
-     {
-      var optionsString = fieldDef.Replace("[Multiselect]", "").Trim();
-      var options = optionsString.Split(',')
-       .Select(o => o.Trim())
-       .Where(o => !string.IsNullOrWhiteSpace(o))
-       .ToList();
-
-      formFields.Add(new FormField
-      {
-       Key = key,
-       Label = $"{currentSection}: {label}",
-       Type = FieldType.Multiselect,
-       Options = options,
-       Required = isRequired
-      });
-     }
-     // Rating
-     else if (fieldDef.Contains("[Rating]"))
-     {
-      var rangeString = fieldDef.Replace("[Rating]", "").Trim();
-      var options = new List<string>();
-
-      // Prüfe auf Bereich (z.B. "1-5")
-      if (rangeString.Contains("-"))
-      {
-       var partsRating = rangeString.Split('-');
-       if (partsRating.Length == 2 && int.TryParse(partsRating[0], out int start) && int.TryParse(partsRating[1], out int end))
-       {
-        for (int i = start; i <= end; i++)
-        {
-         options.Add(i.ToString());
-        }
-       }
-      }
-
-      formFields.Add(new FormField
-      {
-       Key = key,
-       Label = $"{currentSection}: {label}",
-       Type = FieldType.Rating,
-       Options = options,
-       Required = isRequired
-      });
-     }
-     // Textarea
-     else if (fieldDef.Contains("[Textarea]"))
-     {
-      formFields.Add(new FormField
-      {
-       Key = key,
-       Label = $"{currentSection}: {label}",
-       Type = FieldType.TextArea,
-       Required = isRequired
-      });
-     }
-     // Number
-     else if (fieldDef.Contains("[Number]"))
-     {
-      var rangeString = fieldDef.Replace("[Number]", "").Trim();
-      int? min = null;
-      int? max = null;
-
-      // Prüfe auf Bereich (z.B. "0-10")
-      if (rangeString.Contains("-"))
-      {
-       var partsNumber = rangeString.Split('-');
-       if (partsNumber.Length == 2 && int.TryParse(partsNumber[0], out int minVal) && int.TryParse(partsNumber[1], out int maxVal))
-       {
-        min = minVal;
-        max = maxVal;
-       }
-      }
-
-      formFields.Add(new FormField
-      {
-       Key = key,
-       Label = $"{currentSection}: {label}",
-       Type = FieldType.Number,
-       Min = min,
-       Max = max,
-       Value = min,
-       Required = isRequired
-      });
-     }
-     // Date
-     else if (fieldDef.Contains("[Date]"))
-     {
-      formFields.Add(new FormField
-      {
-       Key = key,
-       Label = $"{currentSection}: {label}",
-       Type = FieldType.Date,
-       Required = isRequired
-      });
-     }
-     // Email
-     else if (fieldDef.Contains("[Email]"))
-     {
-      formFields.Add(new FormField
-      {
-       Key = key,
-       Label = $"{currentSection}: {label}",
-       Type = FieldType.Email,
-       Required = isRequired
-      });
-     }
-     // Phone
-     else if (fieldDef.Contains("[Phone]"))
-     {
-      formFields.Add(new FormField
-      {
-       Key = key,
-       Label = $"{currentSection}: {label}",
-       Type = FieldType.Phone,
-       Required = isRequired
-      });
-     }
-     // Textfeld
-     else if (fieldDef.Contains("___") || fieldDef.Contains("[Text]"))
-     {
-      formFields.Add(new FormField
-      {
-       Key = key,
-       Label = $"{currentSection}: {label}",
-       Type = FieldType.Text,
-       Required = isRequired
-      });
-     }
-     // Select (kommagetrennte Optionen ohne spezielle Marker)
-     else if (fieldDef.Contains(","))
-     {
-      var options = fieldDef.Split(',')
-       .Select(o => o.Trim())
-       .Where(o => !string.IsNullOrWhiteSpace(o))
-       .ToList();
-
-      formFields.Add(new FormField
-      {
-       Key = key,
-       Label = $"{currentSection}: {label}",
-       Type = FieldType.Select,
-       Options = options,
-       Required = isRequired
-      });
-     }
-    }
+    ParseFieldWithPrefix(line, currentSection, ref fieldCounter, formFields);
    }
-   // Standalone Felder (ohne -)
-   else if (line.Contains("___") || line.Contains("[Text]"))
+   // Standalone Felder (ohne - oder +)
+   else
    {
-    var parts = line.Split(new[] { "___", "[Text]" }, StringSplitOptions.None);
-    var label = parts[0].TrimEnd(':').Trim();
-    var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
-
-    formFields.Add(new FormField
-    {
-     Key = key,
-     Label = label,
-     Type = FieldType.Text
-    });
-   }
-   else if (line.Contains("[Textarea]"))
-   {
-    var label = line.Replace("[Textarea]", "").TrimEnd(':').Trim();
-    var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
-
-    formFields.Add(new FormField
-    {
-     Key = key,
-     Label = label,
-     Type = FieldType.TextArea
-    });
-   }
-   else if (line.Contains("[Number]"))
-   {
-    var tempLine = line.Replace("[Number]", "|||[Number]|||");
-    var parts = tempLine.Split(new[] { "|||[Number]|||" }, StringSplitOptions.None);
-    var label = parts[0].TrimEnd(':').Trim();
-    var rangeString = parts.Length > 1 ? parts[1].Trim() : "";
-    var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
-
-    int? min = null;
-    int? max = null;
-
-    // Prüfe auf Bereich (z.B. "0-10")
-    if (rangeString.Contains("-"))
-    {
-     var rangeParts = rangeString.Split('-');
-     if (rangeParts.Length == 2 && int.TryParse(rangeParts[0], out int minVal) && int.TryParse(rangeParts[1], out int maxVal))
-     {
-      min = minVal;
-      max = maxVal;
-     }
-    }
-
-    formFields.Add(new FormField
-    {
-     Key = key,
-     Label = label,
-     Type = FieldType.Number,
-     Min = min,
-     Max = max,
-     Value = min
-    });
-   }
-   else if (line.Contains("[Date]"))
-   {
-    var label = line.Replace("[Date]", "").TrimEnd(':').Trim();
-    var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
-
-    formFields.Add(new FormField
-    {
-     Key = key,
-     Label = label,
-     Type = FieldType.Date
-    });
-   }
-   else if (line.Contains("[Email]"))
-   {
-    var label = line.Replace("[Email]", "").TrimEnd(':').Trim();
-    var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
-
-    formFields.Add(new FormField
-    {
-     Key = key,
-     Label = label,
-     Type = FieldType.Email
-    });
-   }
-   else if (line.Contains("[Phone]"))
-   {
-    var label = line.Replace("[Phone]", "").TrimEnd(':').Trim();
-    var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
-
-    formFields.Add(new FormField
-    {
-     Key = key,
-     Label = label,
-     Type = FieldType.Phone
-    });
+    ParseStandaloneField(line, ref fieldCounter, formFields);
    }
   }
 
   return formFields;
+ }
+
+ private static string ParseHeadline(string line, ref int fieldCounter, FormFieldList formFields)
+ {
+  var headlineText = line.TrimStart('#').Trim();
+  formFields.Add(new FormField
+  {
+   Key = $"headline_{fieldCounter++}",
+   Label = headlineText,
+   Type = FieldType.Headline
+  });
+  return headlineText;
+ }
+
+ private static void ParseFieldWithPrefix(string line, string currentSection, ref int fieldCounter, FormFieldList formFields)
+ {
+  var isRequired = line.StartsWith("+");
+  var fieldLine = line.TrimStart('-', '+').Trim();
+  var parts = fieldLine.Split(':', 2);
+
+  if (parts.Length != 2) return;
+
+  var label = parts[0].Trim();
+  var fieldDef = parts[1].Trim();
+  var key = $"{currentSection}_{label}".Replace(" ", "_").Replace(":", "");
+  fieldCounter++;
+
+  // Prüfe auf verschiedene Feldtypen
+  if (fieldDef.Contains("O "))
+  {
+   ParseRadioButtonsOrCheckbox(key, currentSection, label, fieldDef, isRequired, formFields);
+  }
+  else if (fieldDef.Contains("[Multiselect]"))
+  {
+   ParseMultiselect(key, currentSection, label, fieldDef, isRequired, formFields);
+  }
+  else if (fieldDef.Contains("[Rating]"))
+  {
+   ParseRating(key, currentSection, label, fieldDef, isRequired, formFields);
+  }
+  else if (fieldDef.Contains("[Textarea]"))
+  {
+   ParseTextArea(key, currentSection, label, isRequired, formFields);
+  }
+  else if (fieldDef.Contains("[Number]"))
+  {
+   ParseNumber(key, currentSection, label, fieldDef, isRequired, formFields);
+  }
+  else if (fieldDef.Contains("[Date]"))
+  {
+   ParseDate(key, currentSection, label, isRequired, formFields);
+  }
+  else if (fieldDef.Contains("[Email]"))
+  {
+   ParseEmail(key, currentSection, label, isRequired, formFields);
+  }
+  else if (fieldDef.Contains("[Phone]"))
+  {
+   ParsePhone(key, currentSection, label, isRequired, formFields);
+  }
+  else if (fieldDef.Contains("___") || fieldDef.Contains("[Text]"))
+  {
+   ParseText(key, currentSection, label, isRequired, formFields);
+  }
+  else if (fieldDef.Contains(","))
+  {
+   ParseSelect(key, currentSection, label, fieldDef, isRequired, formFields);
+  }
+ }
+
+ private static void ParseRadioButtonsOrCheckbox(string key, string currentSection, string label, string fieldDef, bool isRequired, FormFieldList formFields)
+ {
+  var optionParts = fieldDef.Split(new[] { "O " }, StringSplitOptions.RemoveEmptyEntries);
+  var options = optionParts
+   .Select(o => o.Trim())
+   .Where(o => !string.IsNullOrWhiteSpace(o))
+   .ToList();
+
+  // Wenn nur eine Option vorhanden ist, als Checkbox behandeln
+  var fieldType = options.Count == 1 ? FieldType.CheckBox : FieldType.RadioButtons;
+
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = fieldType,
+   Options = options,
+   Required = isRequired
+  });
+ }
+
+ private static void ParseMultiselect(string key, string currentSection, string label, string fieldDef, bool isRequired, FormFieldList formFields)
+ {
+  var optionsString = fieldDef.Replace("[Multiselect]", "").Trim();
+  var options = optionsString.Split(',')
+   .Select(o => o.Trim())
+   .Where(o => !string.IsNullOrWhiteSpace(o))
+   .ToList();
+
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.Multiselect,
+   Options = options,
+   Required = isRequired
+  });
+ }
+
+ private static void ParseRating(string key, string currentSection, string label, string fieldDef, bool isRequired, FormFieldList formFields)
+ {
+  var rangeString = fieldDef.Replace("[Rating]", "").Trim();
+  var options = ParseRangeOptions(rangeString);
+
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.Rating,
+   Options = options,
+   Required = isRequired
+  });
+ }
+
+ private static void ParseTextArea(string key, string currentSection, string label, bool isRequired, FormFieldList formFields)
+ {
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.TextArea,
+   Required = isRequired
+  });
+ }
+
+ private static void ParseNumber(string key, string currentSection, string label, string fieldDef, bool isRequired, FormFieldList formFields)
+ {
+  var rangeString = fieldDef.Replace("[Number]", "").Trim();
+  var (min, max) = ParseMinMax(rangeString);
+
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.Number,
+   Min = min,
+   Max = max,
+   Value = min,
+   Required = isRequired
+  });
+ }
+
+ private static void ParseDate(string key, string currentSection, string label, bool isRequired, FormFieldList formFields)
+ {
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.Date,
+   Required = isRequired
+  });
+ }
+
+ private static void ParseEmail(string key, string currentSection, string label, bool isRequired, FormFieldList formFields)
+ {
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.Email,
+   Required = isRequired
+  });
+ }
+
+ private static void ParsePhone(string key, string currentSection, string label, bool isRequired, FormFieldList formFields)
+ {
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.Phone,
+   Required = isRequired
+  });
+ }
+
+ private static void ParseText(string key, string currentSection, string label, bool isRequired, FormFieldList formFields)
+ {
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.Text,
+   Required = isRequired
+  });
+ }
+
+ private static void ParseSelect(string key, string currentSection, string label, string fieldDef, bool isRequired, FormFieldList formFields)
+ {
+  var options = fieldDef.Split(',')
+   .Select(o => o.Trim())
+   .Where(o => !string.IsNullOrWhiteSpace(o))
+   .ToList();
+
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.Select,
+   Options = options,
+   Required = isRequired
+  });
+ }
+
+ private static void ParseStandaloneField(string line, ref int fieldCounter, FormFieldList formFields)
+ {
+  if (line.Contains("___") || line.Contains("[Text]"))
+  {
+   ParseStandaloneText(line, ref fieldCounter, formFields);
+  }
+  else if (line.Contains("[Textarea]"))
+  {
+   ParseStandaloneTextArea(line, ref fieldCounter, formFields);
+  }
+  else if (line.Contains("[Number]"))
+  {
+   ParseStandaloneNumber(line, ref fieldCounter, formFields);
+  }
+  else if (line.Contains("[Date]"))
+  {
+   ParseStandaloneDate(line, ref fieldCounter, formFields);
+  }
+  else if (line.Contains("[Email]"))
+  {
+   ParseStandaloneEmail(line, ref fieldCounter, formFields);
+  }
+  else if (line.Contains("[Phone]"))
+  {
+   ParseStandalonePhone(line, ref fieldCounter, formFields);
+  }
+ }
+
+ private static void ParseStandaloneText(string line, ref int fieldCounter, FormFieldList formFields)
+ {
+  var parts = line.Split(new[] { "___", "[Text]" }, StringSplitOptions.None);
+  var label = parts[0].TrimEnd(':').Trim();
+  var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
+
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.Text
+  });
+ }
+
+ private static void ParseStandaloneTextArea(string line, ref int fieldCounter, FormFieldList formFields)
+ {
+  var label = line.Replace("[Textarea]", "").TrimEnd(':').Trim();
+  var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
+
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.TextArea
+  });
+ }
+
+ private static void ParseStandaloneNumber(string line, ref int fieldCounter, FormFieldList formFields)
+ {
+  var tempLine = line.Replace("[Number]", "|||[Number]|||");
+  var parts = tempLine.Split(new[] { "|||[Number]|||" }, StringSplitOptions.None);
+  var label = parts[0].TrimEnd(':').Trim();
+  var rangeString = parts.Length > 1 ? parts[1].Trim() : "";
+  var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
+
+  var (min, max) = ParseMinMax(rangeString);
+
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.Number,
+   Min = min,
+   Max = max,
+   Value = min
+  });
+ }
+
+ private static void ParseStandaloneDate(string line, ref int fieldCounter, FormFieldList formFields)
+ {
+  var label = line.Replace("[Date]", "").TrimEnd(':').Trim();
+  var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
+
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.Date
+  });
+ }
+
+ private static void ParseStandaloneEmail(string line, ref int fieldCounter, FormFieldList formFields)
+ {
+  var label = line.Replace("[Email]", "").TrimEnd(':').Trim();
+  var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
+
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.Email
+  });
+ }
+
+ private static void ParseStandalonePhone(string line, ref int fieldCounter, FormFieldList formFields)
+ {
+  var label = line.Replace("[Phone]", "").TrimEnd(':').Trim();
+  var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
+
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.Phone
+  });
+ }
+
+ private static List<string> ParseRangeOptions(string rangeString)
+ {
+  var options = new List<string>();
+
+  if (rangeString.Contains("-"))
+  {
+   var parts = rangeString.Split('-');
+   if (parts.Length == 2 && int.TryParse(parts[0], out int start) && int.TryParse(parts[1], out int end))
+   {
+    for (int i = start; i <= end; i++)
+    {
+     options.Add(i.ToString());
+    }
+   }
+  }
+
+  return options;
+ }
+
+ private static (int? min, int? max) ParseMinMax(string rangeString)
+ {
+  int? min = null;
+  int? max = null;
+
+  if (rangeString.Contains("-"))
+  {
+   var parts = rangeString.Split('-');
+   if (parts.Length == 2 && int.TryParse(parts[0], out int minVal) && int.TryParse(parts[1], out int maxVal))
+   {
+    min = minVal;
+    max = maxVal;
+   }
+  }
+
+  return (min, max);
  }
 }

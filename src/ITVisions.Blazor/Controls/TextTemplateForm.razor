@@ -9,6 +9,12 @@
 
 @if (FormFields != null && FormFields.Any())
 {
+ @if (!string.IsNullOrEmpty(ValidationErrorMessage))
+ {
+  <div class="alert alert-danger" role="alert">
+   @ValidationErrorMessage
+  </div>
+ }
 
  <EditForm Model="this" OnValidSubmit="OnSubmit">
   @foreach (var field in FormFields)
@@ -22,7 +28,13 @@
     <div class="form-group mb-3">
      @if (!string.IsNullOrEmpty(field.Label))
      {
-      <label class="fw-bold">@field.Label</label>
+      <label class="fw-bold">
+       @field.Label
+       @if (field.Required)
+       {
+        <span style="margin-left:5px" title="Pflichtfeld" class="text-danger">*</span>
+       }
+      </label>
      }
 
      @if (field.Type == FieldType.RadioButtons)
@@ -39,13 +51,94 @@
       }
      </div>
     }
+    else if (field.Type == FieldType.CheckBox)
+    {
+     <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="@field.Key" 
+             checked="@(!string.IsNullOrEmpty(field.ValueString))" 
+             @onchange="@(e => { field.ValueString = ((bool)e.Value) ? field.Options[0] : ""; NotifyValuesChanged(); })" />
+      <label class="form-check-label" for="@field.Key">@field.Options[0]</label>
+     </div>
+    }
+    else if (field.Type == FieldType.Select)
+    {
+     <select class="form-select" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required">
+      <option value="">Bitte wählen...</option>
+      @foreach (var option in field.Options)
+      {
+       <option value="@option">@option</option>
+      }
+     </select>
+    }
+    else if (field.Type == FieldType.Multiselect)
+    {
+     <div class="d-flex flex-column gap-2">
+      @foreach (var option in field.Options)
+      {
+       var isSelected = field.ValueString?.Split(',').Select(v => v.Trim()).Contains(option) ?? false;
+       <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="@($"{field.Key}_{option}")" 
+               checked="@isSelected"
+               @onchange="@(e => HandleMultiselectChange(field, option, (bool)e.Value))" />
+        <label class="form-check-label" for="@($"{field.Key}_{option}")">@option</label>
+       </div>
+      }
+     </div>
+    }
+    else if (field.Type == FieldType.Rating)
+    {
+     <div class="d-flex gap-2 align-items-center">
+      @foreach (var option in field.Options)
+      {
+       var isSelected = field.ValueString == option;
+       <button type="button" class="btn @(isSelected ? "btn-warning" : "btn-outline-secondary")" 
+               style="min-width: 40px;"
+               @onclick="@(() => { field.ValueString = option; NotifyValuesChanged(); })">
+        @if (isSelected)
+        {
+         <span>★</span>
+        }
+        else
+        {
+         <span>☆</span>
+        }
+        @option
+       </button>
+      }
+      @if (!string.IsNullOrEmpty(field.ValueString))
+      {
+       <button type="button" class="btn btn-sm btn-link" @onclick="@(() => { field.ValueString = ""; NotifyValuesChanged(); })">Zurücksetzen</button>
+      }
+     </div>
+    }
     else if (field.Type == FieldType.Text)
     {
-     <input type="text" class="form-control" @bind="field.ValueString" @bind:after="NotifyValuesChanged" />
+     <input type="text" class="form-control" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
     }
     else if (field.Type == FieldType.TextArea)
     {
-     <textarea class="form-control" rows="4" @bind="field.ValueString" @bind:after="NotifyValuesChanged"></textarea>
+     <textarea class="form-control" rows="4" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required"></textarea>
+    }
+    else if (field.Type == FieldType.Number)
+    {
+     <input type="number" class="form-control" 
+            @bind="field.ValueString" 
+            @bind:after="NotifyValuesChanged" 
+            min="@field.Min" 
+            max="@field.Max" 
+            required="@field.Required" />
+    }
+    else if (field.Type == FieldType.Date)
+    {
+     <input type="date" class="form-control" @bind="field.ValueDateTime" @bind:after="NotifyValuesChanged" required="@field.Required" />
+    }
+    else if (field.Type == FieldType.Email)
+    {
+     <input type="email" class="form-control" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
+    }
+    else if (field.Type == FieldType.Phone)
+    {
+     <input type="tel" class="form-control" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
     }
     </div>
    }
@@ -72,6 +165,7 @@
  public string SubmitButtonText { get; set; } = "Absenden";
 
  private FormFieldList FormFields { get; set; } = new();
+ private string ValidationErrorMessage { get; set; } = "";
 
  protected override void OnParametersSet()
  {
@@ -86,8 +180,48 @@
   await OnValuesChanged.InvokeAsync(FormFields);
  }
 
+ private void HandleMultiselectChange(FormField field, string option, bool isChecked)
+ {
+  var selectedValues = string.IsNullOrEmpty(field.ValueString)
+   ? new List<string>()
+   : field.ValueString.Split(',').Select(v => v.Trim()).ToList();
+
+  if (isChecked && !selectedValues.Contains(option))
+  {
+   selectedValues.Add(option);
+  }
+  else if (!isChecked && selectedValues.Contains(option))
+  {
+   selectedValues.Remove(option);
+  }
+
+  field.ValueString = string.Join(", ", selectedValues);
+  NotifyValuesChanged();
+ }
+
  private async Task OnSubmit()
  {
+  // Validierung der Pflichtfelder
+  ValidationErrorMessage = "";
+  var missingFields = new List<string>();
+
+  foreach (var field in FormFields.Where(f => f.Required && f.Type != FieldType.Headline))
+  {
+   var isEmpty = string.IsNullOrWhiteSpace(field.ValueString);
+
+   if (isEmpty)
+   {
+    missingFields.Add(field.Label);
+   }
+  }
+
+  if (missingFields.Any())
+  {
+   ValidationErrorMessage = $"Bitte füllen Sie folgende Pflichtfelder aus: {string.Join(", ", missingFields)}";
+   StateHasChanged();
+   return;
+  }
+
   await OnValuesChanged.InvokeAsync(FormFields);
  }
 
@@ -95,6 +229,5 @@
  {
   return FormFields;
  }
-
 
 }

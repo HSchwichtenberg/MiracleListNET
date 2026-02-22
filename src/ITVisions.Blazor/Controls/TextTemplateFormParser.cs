@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using ITVisions;
 
 namespace ITVisions.Blazor.Controls;
@@ -84,7 +85,21 @@ public static class TextTemplateFormParser
    }
   }
 
-  var key = $"{currentSection}_{label}".Replace(" ", "_").Replace(":", "");
+  // Falls Key bereits vergeben ist, hänge GUID an
+  if (formFields.Any(f => f.Label == label))
+  {
+   label = $"{label}_!DOPPELT!_{Guid.NewGuid():N}";
+  }
+
+  var baseKey = $"{currentSection}_{label}".Replace(" ", "_").Replace(":", "");
+  var key = baseKey;
+
+  // Falls Key bereits vergeben ist, hänge GUID an
+  if (formFields.Any(f => f.Key == key))
+  {
+   key = $"{baseKey}_{Guid.NewGuid():N}";
+  }
+
   fieldCounter++;
 
   // Prüfe auf verschiedene Feldtypen

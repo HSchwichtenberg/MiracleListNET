@@ -194,6 +194,9 @@
  [Parameter]
  public EventCallback<FormFieldList> OnValuesChanged { get; set; }
 
+  [Parameter]
+ public EventCallback<FormFieldList> OnSubmited { get; set; }
+
  [Parameter]
  public bool ShowSubmitButton { get; set; } = true;
 
@@ -272,6 +275,7 @@
   }
 
   await OnValuesChanged.InvokeAsync(FormFields);
+  await OnSubmited.InvokeAsync(FormFields);
  }
 
  public FormFieldList GetFormFields()

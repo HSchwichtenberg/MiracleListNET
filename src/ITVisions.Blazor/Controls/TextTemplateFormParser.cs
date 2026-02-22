@@ -7,6 +7,10 @@ namespace ITVisions.Blazor.Controls;
 
 public static class TextTemplateFormParser
 {
+
+ /// <summary>
+ /// Parsen eines Texttemplates in eine strukturierte Liste von FormField-Objekten, die verschiedene Feldtypen und Optionen unterstützen.
+ /// </summary>
  public static FormFieldList Parse(string template)
  {
   var formFields = new FormFieldList();
@@ -36,10 +40,9 @@ public static class TextTemplateFormParser
    {
     ParseFieldWithPrefix(line, currentSection, ref fieldCounter, formFields);
    }
-   // Standalone Felder (ohne - oder +)
    else
    {
-    ParseStandaloneField(line, ref fieldCounter, formFields);
+   
    }
   }
 
@@ -68,53 +71,82 @@ public static class TextTemplateFormParser
 
   var label = parts[0].Trim();
   var fieldDef = parts[1].Trim();
+
+  // Prüfe auf Standardwert (= wert am Ende)
+  string defaultValue = null;
+  if (fieldDef.Contains(" = "))
+  {
+   var defaultParts = fieldDef.Split(new[] { " = " }, StringSplitOptions.None);
+   if (defaultParts.Length == 2)
+   {
+    fieldDef = defaultParts[0].Trim();
+    defaultValue = defaultParts[1].Trim();
+   }
+  }
+
   var key = $"{currentSection}_{label}".Replace(" ", "_").Replace(":", "");
   fieldCounter++;
 
   // Prüfe auf verschiedene Feldtypen
   if (fieldDef.Contains("O "))
   {
-   ParseRadioButtonsOrCheckbox(key, currentSection, label, fieldDef, isRequired, formFields);
+   ParseRadioButtonsOrCheckbox(key, currentSection, label, fieldDef, isRequired, defaultValue, formFields);
   }
   else if (fieldDef.Contains("[Multiselect]"))
   {
-   ParseMultiselect(key, currentSection, label, fieldDef, isRequired, formFields);
+   ParseMultiselect(key, currentSection, label, fieldDef, isRequired, defaultValue, formFields);
   }
   else if (fieldDef.Contains("[Rating]"))
   {
-   ParseRating(key, currentSection, label, fieldDef, isRequired, formFields);
+   ParseRating(key, currentSection, label, fieldDef, isRequired, defaultValue, formFields);
+  }
+  else if (fieldDef.Contains("[Range]"))
+  {
+   ParseRange(key, currentSection, label, fieldDef, isRequired, defaultValue, formFields);
   }
   else if (fieldDef.Contains("[Textarea]"))
   {
-   ParseTextArea(key, currentSection, label, isRequired, formFields);
+   ParseTextArea(key, currentSection, label, isRequired, defaultValue, formFields);
   }
   else if (fieldDef.Contains("[Number]"))
   {
-   ParseNumber(key, currentSection, label, fieldDef, isRequired, formFields);
+   ParseNumber(key, currentSection, label, fieldDef, isRequired, defaultValue, formFields);
   }
   else if (fieldDef.Contains("[Date]"))
   {
-   ParseDate(key, currentSection, label, isRequired, formFields);
+   ParseDate(key, currentSection, label, isRequired, defaultValue, formFields);
+  }
+  else if (fieldDef.Contains("[Time]"))
+  {
+   ParseTime(key, currentSection, label, isRequired, defaultValue, formFields);
   }
   else if (fieldDef.Contains("[Email]"))
   {
-   ParseEmail(key, currentSection, label, isRequired, formFields);
+   ParseEmail(key, currentSection, label, isRequired, defaultValue, formFields);
+  }
+  else if (fieldDef.Contains("[Password]"))
+  {
+   ParsePassword(key, currentSection, label, isRequired, defaultValue, formFields);
+  }
+  else if (fieldDef.Contains("[Url]"))
+  {
+   ParseUrl(key, currentSection, label, isRequired, defaultValue, formFields);
   }
   else if (fieldDef.Contains("[Phone]"))
   {
-   ParsePhone(key, currentSection, label, isRequired, formFields);
+   ParsePhone(key, currentSection, label, isRequired, defaultValue, formFields);
   }
   else if (fieldDef.Contains("___") || fieldDef.Contains("[Text]"))
   {
-   ParseText(key, currentSection, label, isRequired, formFields);
+   ParseText(key, currentSection, label, isRequired, defaultValue, formFields);
   }
   else if (fieldDef.Contains(","))
   {
-   ParseSelect(key, currentSection, label, fieldDef, isRequired, formFields);
+   ParseSelect(key, currentSection, label, fieldDef, isRequired, defaultValue, formFields);
   }
  }
 
- private static void ParseRadioButtonsOrCheckbox(string key, string currentSection, string label, string fieldDef, bool isRequired, FormFieldList formFields)
+ private static void ParseRadioButtonsOrCheckbox(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, FormFieldList formFields)
  {
   var optionParts = fieldDef.Split(new[] { "O " }, StringSplitOptions.RemoveEmptyEntries);
   var options = optionParts
@@ -131,11 +163,12 @@ public static class TextTemplateFormParser
    Label = label,
    Type = fieldType,
    Options = options,
-   Required = isRequired
+   Required = isRequired,
+   Value = defaultValue
   });
  }
 
- private static void ParseMultiselect(string key, string currentSection, string label, string fieldDef, bool isRequired, FormFieldList formFields)
+ private static void ParseMultiselect(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, FormFieldList formFields)
  {
   var optionsString = fieldDef.Replace("[Multiselect]", "").Trim();
   var options = optionsString.Split(',')
@@ -149,11 +182,12 @@ public static class TextTemplateFormParser
    Label = label,
    Type = FieldType.Multiselect,
    Options = options,
-   Required = isRequired
+   Required = isRequired,
+   Value = defaultValue
   });
  }
 
- private static void ParseRating(string key, string currentSection, string label, string fieldDef, bool isRequired, FormFieldList formFields)
+ private static void ParseRating(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, FormFieldList formFields)
  {
   var rangeString = fieldDef.Replace("[Rating]", "").Trim();
   var options = ParseRangeOptions(rangeString);
@@ -164,22 +198,41 @@ public static class TextTemplateFormParser
    Label = label,
    Type = FieldType.Rating,
    Options = options,
+   Required = isRequired,
+   Value = defaultValue
+  });
+ }
+
+ private static void ParseRange(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, FormFieldList formFields)
+ {
+  var rangeString = fieldDef.Replace("[Range]", "").Trim();
+  var (min, max) = ParseMinMax(rangeString);
+
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.Range,
+   Min = min,
+   Max = max,
+   Value = !string.IsNullOrEmpty(defaultValue) ? defaultValue : min?.ToString(),
    Required = isRequired
   });
  }
 
- private static void ParseTextArea(string key, string currentSection, string label, bool isRequired, FormFieldList formFields)
+ private static void ParseTextArea(string key, string currentSection, string label, bool isRequired, string defaultValue, FormFieldList formFields)
  {
   formFields.Add(new FormField
   {
    Key = key,
    Label = label,
    Type = FieldType.TextArea,
-   Required = isRequired
+   Required = isRequired,
+   Value = defaultValue
   });
  }
 
- private static void ParseNumber(string key, string currentSection, string label, string fieldDef, bool isRequired, FormFieldList formFields)
+ private static void ParseNumber(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, FormFieldList formFields)
  {
   var rangeString = fieldDef.Replace("[Number]", "").Trim();
   var (min, max) = ParseMinMax(rangeString);
@@ -191,56 +244,96 @@ public static class TextTemplateFormParser
    Type = FieldType.Number,
    Min = min,
    Max = max,
-   Value = min,
+   Value = !string.IsNullOrEmpty(defaultValue) ? defaultValue : min?.ToString(),
    Required = isRequired
   });
  }
 
- private static void ParseDate(string key, string currentSection, string label, bool isRequired, FormFieldList formFields)
+ private static void ParseDate(string key, string currentSection, string label, bool isRequired, string defaultValue, FormFieldList formFields)
  {
   formFields.Add(new FormField
   {
    Key = key,
    Label = label,
    Type = FieldType.Date,
-   Required = isRequired
+   Required = isRequired,
+   Value = defaultValue
   });
  }
 
- private static void ParseEmail(string key, string currentSection, string label, bool isRequired, FormFieldList formFields)
+ private static void ParseTime(string key, string currentSection, string label, bool isRequired, string defaultValue, FormFieldList formFields)
+ {
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.Time,
+   Required = isRequired,
+   Value = defaultValue
+  });
+ }
+
+ private static void ParseEmail(string key, string currentSection, string label, bool isRequired, string defaultValue, FormFieldList formFields)
  {
   formFields.Add(new FormField
   {
    Key = key,
    Label = label,
    Type = FieldType.Email,
-   Required = isRequired
+   Required = isRequired,
+   Value = defaultValue
   });
  }
 
- private static void ParsePhone(string key, string currentSection, string label, bool isRequired, FormFieldList formFields)
+ private static void ParsePassword(string key, string currentSection, string label, bool isRequired, string defaultValue, FormFieldList formFields)
+ {
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.Password,
+   Required = isRequired,
+   Value = defaultValue
+  });
+ }
+
+ private static void ParseUrl(string key, string currentSection, string label, bool isRequired, string defaultValue, FormFieldList formFields)
+ {
+  formFields.Add(new FormField
+  {
+   Key = key,
+   Label = label,
+   Type = FieldType.Url,
+   Required = isRequired,
+   Value = defaultValue
+  });
+ }
+
+ private static void ParsePhone(string key, string currentSection, string label, bool isRequired, string defaultValue, FormFieldList formFields)
  {
   formFields.Add(new FormField
   {
    Key = key,
    Label = label,
    Type = FieldType.Phone,
-   Required = isRequired
+   Required = isRequired,
+   Value = defaultValue
   });
  }
 
- private static void ParseText(string key, string currentSection, string label, bool isRequired, FormFieldList formFields)
+ private static void ParseText(string key, string currentSection, string label, bool isRequired, string defaultValue, FormFieldList formFields)
  {
   formFields.Add(new FormField
   {
    Key = key,
    Label = label,
    Type = FieldType.Text,
-   Required = isRequired
+   Required = isRequired,
+   Value = defaultValue
   });
  }
 
- private static void ParseSelect(string key, string currentSection, string label, string fieldDef, bool isRequired, FormFieldList formFields)
+ private static void ParseSelect(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, FormFieldList formFields)
  {
   var options = fieldDef.Split(',')
    .Select(o => o.Trim())
@@ -253,125 +346,11 @@ public static class TextTemplateFormParser
    Label = label,
    Type = FieldType.Select,
    Options = options,
-   Required = isRequired
+   Required = isRequired,
+   Value = defaultValue
   });
  }
-
- private static void ParseStandaloneField(string line, ref int fieldCounter, FormFieldList formFields)
- {
-  if (line.Contains("___") || line.Contains("[Text]"))
-  {
-   ParseStandaloneText(line, ref fieldCounter, formFields);
-  }
-  else if (line.Contains("[Textarea]"))
-  {
-   ParseStandaloneTextArea(line, ref fieldCounter, formFields);
-  }
-  else if (line.Contains("[Number]"))
-  {
-   ParseStandaloneNumber(line, ref fieldCounter, formFields);
-  }
-  else if (line.Contains("[Date]"))
-  {
-   ParseStandaloneDate(line, ref fieldCounter, formFields);
-  }
-  else if (line.Contains("[Email]"))
-  {
-   ParseStandaloneEmail(line, ref fieldCounter, formFields);
-  }
-  else if (line.Contains("[Phone]"))
-  {
-   ParseStandalonePhone(line, ref fieldCounter, formFields);
-  }
- }
-
- private static void ParseStandaloneText(string line, ref int fieldCounter, FormFieldList formFields)
- {
-  var parts = line.Split(new[] { "___", "[Text]" }, StringSplitOptions.None);
-  var label = parts[0].TrimEnd(':').Trim();
-  var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
-
-  formFields.Add(new FormField
-  {
-   Key = key,
-   Label = label,
-   Type = FieldType.Text
-  });
- }
-
- private static void ParseStandaloneTextArea(string line, ref int fieldCounter, FormFieldList formFields)
- {
-  var label = line.Replace("[Textarea]", "").TrimEnd(':').Trim();
-  var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
-
-  formFields.Add(new FormField
-  {
-   Key = key,
-   Label = label,
-   Type = FieldType.TextArea
-  });
- }
-
- private static void ParseStandaloneNumber(string line, ref int fieldCounter, FormFieldList formFields)
- {
-  var tempLine = line.Replace("[Number]", "|||[Number]|||");
-  var parts = tempLine.Split(new[] { "|||[Number]|||" }, StringSplitOptions.None);
-  var label = parts[0].TrimEnd(':').Trim();
-  var rangeString = parts.Length > 1 ? parts[1].Trim() : "";
-  var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
-
-  var (min, max) = ParseMinMax(rangeString);
-
-  formFields.Add(new FormField
-  {
-   Key = key,
-   Label = label,
-   Type = FieldType.Number,
-   Min = min,
-   Max = max,
-   Value = min
-  });
- }
-
- private static void ParseStandaloneDate(string line, ref int fieldCounter, FormFieldList formFields)
- {
-  var label = line.Replace("[Date]", "").TrimEnd(':').Trim();
-  var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
-
-  formFields.Add(new FormField
-  {
-   Key = key,
-   Label = label,
-   Type = FieldType.Date
-  });
- }
-
- private static void ParseStandaloneEmail(string line, ref int fieldCounter, FormFieldList formFields)
- {
-  var label = line.Replace("[Email]", "").TrimEnd(':').Trim();
-  var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
-
-  formFields.Add(new FormField
-  {
-   Key = key,
-   Label = label,
-   Type = FieldType.Email
-  });
- }
-
- private static void ParseStandalonePhone(string line, ref int fieldCounter, FormFieldList formFields)
- {
-  var label = line.Replace("[Phone]", "").TrimEnd(':').Trim();
-  var key = $"field_{fieldCounter++}_{label.Replace(" ", "_")}";
-
-  formFields.Add(new FormField
-  {
-   Key = key,
-   Label = label,
-   Type = FieldType.Phone
-  });
- }
-
+ 
  private static List<string> ParseRangeOptions(string rangeString)
  {
   var options = new List<string>();

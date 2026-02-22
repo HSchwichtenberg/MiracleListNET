@@ -17,17 +17,28 @@
  }
 
  <EditForm Model="this" OnValidSubmit="OnSubmit">
+  @{
+   string currentHeadlineKey = null;
+  }
   @foreach (var field in FormFields)
   {
    @if (field.Type == FieldType.Headline)
    {
-    <h4 class="headline">@field.Label</h4>
+    currentHeadlineKey = field.Key;
+    var isCollapsed = CollapsedSections.Contains(field.Key);
+    <h4 class="headline" @onclick="@(() => ToggleSection(field.Key))" style="cursor: pointer; user-select: none;">
+     <span style="margin-right: 8px;">@(isCollapsed ? "▶" : "▼")</span>
+     @field.Label
+    </h4>
    }
    else
    {
-    <div class="form-group mb-3">
-     @if (!string.IsNullOrEmpty(field.Label))
-     {
+    var shouldShow = string.IsNullOrEmpty(currentHeadlineKey) || !CollapsedSections.Contains(currentHeadlineKey);
+    @if (shouldShow)
+    {
+     <div class="form-group mb-3">
+      @if (!string.IsNullOrEmpty(field.Label))
+      {
       <label class="fw-bold">
        @field.Label
        @if (field.Required)
@@ -111,6 +122,18 @@
       }
      </div>
     }
+    else if (field.Type == FieldType.Range)
+    {
+     <div class="d-flex gap-3 align-items-center">
+      <input type="range" class="form-range" style="flex: 1;" 
+             @bind="field.ValueString" 
+             @bind:after="NotifyValuesChanged" 
+             min="@field.Min" 
+             max="@field.Max" 
+             required="@field.Required" />
+      <span class="badge bg-primary" style="min-width: 50px;">@field.ValueString</span>
+     </div>
+    }
     else if (field.Type == FieldType.Text)
     {
      <input type="text" class="form-control" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
@@ -132,15 +155,28 @@
     {
      <input type="date" class="form-control" @bind="field.ValueDateTime" @bind:after="NotifyValuesChanged" required="@field.Required" />
     }
+    else if (field.Type == FieldType.Time)
+    {
+       <input type="time" class="form-control" @bind="field.ValueDateTime" @bind:after="NotifyValuesChanged" required="@field.Required" />
+    }
     else if (field.Type == FieldType.Email)
     {
      <input type="email" class="form-control" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
+    }
+    else if (field.Type == FieldType.Password)
+    {
+     <input type="password" class="form-control" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
+    }
+    else if (field.Type == FieldType.Url)
+    {
+     <input type="url" class="form-control" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
     }
     else if (field.Type == FieldType.Phone)
     {
      <input type="tel" class="form-control" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
     }
     </div>
+    }
    }
   }
 
@@ -166,12 +202,25 @@
 
  private FormFieldList FormFields { get; set; } = new();
  private string ValidationErrorMessage { get; set; } = "";
+ private HashSet<string> CollapsedSections { get; set; } = new();
 
  protected override void OnParametersSet()
  {
   if (!string.IsNullOrEmpty(Template))
   {
    FormFields = TextTemplateFormParser.Parse(Template);
+  }
+ }
+
+ private void ToggleSection(string sectionKey)
+ {
+  if (CollapsedSections.Contains(sectionKey))
+  {
+   CollapsedSections.Remove(sectionKey);
+  }
+  else
+  {
+   CollapsedSections.Add(sectionKey);
   }
  }
 

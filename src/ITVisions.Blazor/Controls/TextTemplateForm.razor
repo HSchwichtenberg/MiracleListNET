@@ -7,7 +7,7 @@
  @FormFields.Count
 </Debug>
 
-@if (FormFields != null && FormFields.Any())
+@if (!string.IsNullOrWhiteSpace(Template) && FormFields != null && FormFields.Any())
 {
  @if (!string.IsNullOrEmpty(ValidationErrorMessage))
  {
@@ -36,7 +36,7 @@
     var shouldShow = string.IsNullOrEmpty(currentHeadlineKey) || !CollapsedSections.Contains(currentHeadlineKey);
     @if (shouldShow)
     {
-     <div class="form-group mb-3">
+     <div class="form-group">
       @if (!string.IsNullOrEmpty(field.Label))
       {
       <label class="fw-bold">

@@ -68,10 +68,24 @@ public static class TextTemplateFormParser
   var fieldLine = line.TrimStart('-', '+').Trim();
   var parts = fieldLine.Split(':', 2);
 
-  if (parts.Length != 2) return;
+  string label;
+  string fieldDef;
 
-  var label = parts[0].Trim();
-  var fieldDef = parts[1].Trim();
+  // Wenn nur Feldname ohne ":", dann als [Text] behandeln
+  if (parts.Length == 1)
+  {
+   label = parts[0].Trim();
+   fieldDef = "[Text]";
+  }
+  else if (parts.Length == 2)
+  {
+   label = parts[0].Trim();
+   fieldDef = parts[1].Trim();
+  }
+  else
+  {
+   return;
+  }
 
   // Prüfe auf Standardwert (= wert am Ende)
   string defaultValue = null;
@@ -107,51 +121,51 @@ public static class TextTemplateFormParser
   {
    ParseRadioButtonsOrCheckbox(key, currentSection, label, fieldDef, isRequired, defaultValue, formFields);
   }
-  else if (fieldDef.Contains("[Multiselect]"))
+  else if (fieldDef.Contains("[Multiselect]", StringComparison.OrdinalIgnoreCase))
   {
    ParseMultiselect(key, currentSection, label, fieldDef, isRequired, defaultValue, formFields);
   }
-  else if (fieldDef.Contains("[Rating]"))
+  else if (fieldDef.Contains("[Rating]", StringComparison.OrdinalIgnoreCase))
   {
    ParseRating(key, currentSection, label, fieldDef, isRequired, defaultValue, formFields);
   }
-  else if (fieldDef.Contains("[Range]"))
+  else if (fieldDef.Contains("[Range]", StringComparison.OrdinalIgnoreCase))
   {
    ParseRange(key, currentSection, label, fieldDef, isRequired, defaultValue, formFields);
   }
-  else if (fieldDef.Contains("[Textarea]"))
+  else if (fieldDef.Contains("[Textarea]", StringComparison.OrdinalIgnoreCase))
   {
    ParseTextArea(key, currentSection, label, isRequired, defaultValue, formFields);
   }
-  else if (fieldDef.Contains("[Number]"))
+  else if (fieldDef.Contains("[Number]", StringComparison.OrdinalIgnoreCase))
   {
    ParseNumber(key, currentSection, label, fieldDef, isRequired, defaultValue, formFields);
   }
-  else if (fieldDef.Contains("[Date]"))
+  else if (fieldDef.Contains("[Date]", StringComparison.OrdinalIgnoreCase))
   {
    ParseDate(key, currentSection, label, isRequired, defaultValue, formFields);
   }
-  else if (fieldDef.Contains("[Time]"))
+  else if (fieldDef.Contains("[Time]", StringComparison.OrdinalIgnoreCase))
   {
    ParseTime(key, currentSection, label, isRequired, defaultValue, formFields);
   }
-  else if (fieldDef.Contains("[Email]"))
+  else if (fieldDef.Contains("[Email]", StringComparison.OrdinalIgnoreCase))
   {
    ParseEmail(key, currentSection, label, isRequired, defaultValue, formFields);
   }
-  else if (fieldDef.Contains("[Password]"))
+  else if (fieldDef.Contains("[Password]", StringComparison.OrdinalIgnoreCase))
   {
    ParsePassword(key, currentSection, label, isRequired, defaultValue, formFields);
   }
-  else if (fieldDef.Contains("[Url]"))
+  else if (fieldDef.Contains("[Url]", StringComparison.OrdinalIgnoreCase))
   {
    ParseUrl(key, currentSection, label, isRequired, defaultValue, formFields);
   }
-  else if (fieldDef.Contains("[Phone]"))
+  else if (fieldDef.Contains("[Phone]", StringComparison.OrdinalIgnoreCase))
   {
    ParsePhone(key, currentSection, label, isRequired, defaultValue, formFields);
   }
-  else if (fieldDef.Contains("___") || fieldDef.Contains("[Text]"))
+  else if (fieldDef.Contains("___") || fieldDef.Contains("[Text]", StringComparison.OrdinalIgnoreCase))
   {
    ParseText(key, currentSection, label, isRequired, defaultValue, formFields);
   }
@@ -185,7 +199,7 @@ public static class TextTemplateFormParser
 
  private static void ParseMultiselect(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, FormFieldList formFields)
  {
-  var optionsString = fieldDef.Replace("[Multiselect]", "").Trim();
+  var optionsString = System.Text.RegularExpressions.Regex.Replace(fieldDef, "\\[Multiselect\\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
   var options = optionsString.Split(',')
    .Select(o => o.Trim())
    .Where(o => !string.IsNullOrWhiteSpace(o))
@@ -204,7 +218,7 @@ public static class TextTemplateFormParser
 
  private static void ParseRating(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, FormFieldList formFields)
  {
-  var rangeString = fieldDef.Replace("[Rating]", "").Trim();
+  var rangeString = System.Text.RegularExpressions.Regex.Replace(fieldDef, "\\[Rating\\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
   var options = ParseRangeOptions(rangeString);
 
   formFields.Add(new FormField
@@ -220,7 +234,7 @@ public static class TextTemplateFormParser
 
  private static void ParseRange(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, FormFieldList formFields)
  {
-  var rangeString = fieldDef.Replace("[Range]", "").Trim();
+  var rangeString = System.Text.RegularExpressions.Regex.Replace(fieldDef, "\\[Range\\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
   var (min, max) = ParseMinMax(rangeString);
 
   formFields.Add(new FormField
@@ -249,7 +263,7 @@ public static class TextTemplateFormParser
 
  private static void ParseNumber(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, FormFieldList formFields)
  {
-  var rangeString = fieldDef.Replace("[Number]", "").Trim();
+  var rangeString = System.Text.RegularExpressions.Regex.Replace(fieldDef, "\\[Number\\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
   var (min, max) = ParseMinMax(rangeString);
 
   formFields.Add(new FormField

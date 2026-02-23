@@ -27,7 +27,7 @@
     currentHeadlineKey = field.Key;
     var isCollapsed = CollapsedSections.Contains(field.Key);
     <h4 class="headline" @onclick="@(() => ToggleSection(field.Key))" style="cursor: pointer; user-select: none;">
-     <span style="margin-right: 8px;">     <i class="bi bi-chevron-@(isCollapsed ? "down" : "right") me-2"></i></span>
+     <span style="margin-right: 8px;"> <i class="bi bi-chevron-@(isCollapsed ? "down" : "right") me-2"></i></span>
 
 
      @field.Label

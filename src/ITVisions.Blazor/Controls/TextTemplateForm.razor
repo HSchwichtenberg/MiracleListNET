@@ -104,7 +104,7 @@
       @foreach (var option in field.Options)
       {
        var isSelected = field.ValueString == option;
-       <button type="button" class="btn @(isSelected ? "btn-warning" : "btn-outline-secondary")" 
+         <button type="button" class="btn btn-outline-secondary"
                style="min-width: 40px;"
                @onclick="@(() => { field.ValueString = option; NotifyValuesChanged(); })">
         @if (isSelected)

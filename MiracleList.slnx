@@ -1,0 +1,77 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Backend/">
+    <Project Path="src/BL/BL.csproj" />
+    <Project Path="src/BO/BO.csproj" />
+    <Project Path="src/DA/DA.csproj" />
+    <Project Path="src/ITVRazorPagesRCL/ITVRazorPagesClassLibrary.csproj" />
+    <Project Path="src/ITVTagHelper/ITVTagHelper.csproj" />
+    <Project Path="src/MiracleList_Backend/MiracleList_Backend.csproj" />
+  </Folder>
+  <Folder Name="/Blazor Apps Head Projects/">
+    <Project Path="src/MiracleList_BD/MiracleList_BD.csproj" />
+    <Project Path="src/MiracleList_BM/MiracleList_BM.csproj">
+      <Platform Solution="Debug|Any CPU" Project="x64" />
+      <Build Solution="*|ARM64" Project="false" />
+      <Build Solution="*|x64" Project="false" />
+      <Deploy Solution="*|Any CPU" />
+      <Deploy Solution="*|x86" />
+    </Project>
+    <Project Path="src/MiracleList_BS/MiracleList_BS.csproj" />
+    <Project Path="src/MiracleList_BU.Client/MiracleList_BU.Client.csproj" />
+    <Project Path="src/MiracleList_BU/MiracleList_BU.csproj" />
+    <Project Path="src/MiracleList_BW/MiracleList_BW.csproj" />
+  </Folder>
+  <Folder Name="/Blazor Apps Shared Code/">
+    <Project Path="src/ITVisions.Blazor/ITVisions.Blazor.csproj" />
+    <Project Path="src/MiracleListAPI_Proxy/MiracleListAPI_Proxy.csproj" />
+    <Project Path="src/MiracleList_Interfaces/MiracleList_Interfaces.csproj" />
+    <Project Path="src/MLBlazorRCL/MLBlazorRCL.csproj" />
+    <Project Path="src/SamplesRCL/SamplesRCL.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="global.json" />
+    <File Path="nuget.config" />
+    <File Path="README.md" />
+    <File Path="Rules.ruleset" />
+  </Folder>
+  <Folder Name="/Solution Items/DevOps Build/">
+    <File Path="DevOps_Build/AssemblyVersionUpdate.ps1" />
+    <File Path="DevOps_Build/Build.yaml" />
+    <File Path="DevOps_Build/MiracleListBackend-CI.json" />
+    <File Path="DevOps_Build/MiracleListClient-CI.json" />
+    <File Path="DevOps_Build/publishSCA.ps1" />
+    <File Path="DevOps_Build/run-xunittests.ps1" />
+  </Folder>
+  <Folder Name="/Solution Items/DevOps Release/">
+    <File Path="DevOps_Release/CreateAzureRessources.ps1" />
+    <File Path="DevOps_Release/EFTools-Migration.ps1" />
+    <File Path="DevOps_Release/MiracleList-APITests.postman_collection.json" />
+    <File Path="DevOps_Release/MiracleList-APITests.postman_environment.dev.json" />
+    <File Path="DevOps_Release/MiracleList-APITests.postman_environment.json" />
+    <File Path="DevOps_Release/MiracleList_DEV.postman_collection.json" />
+    <File Path="DevOps_Release/Postman-Test.ps1" />
+  </Folder>
+  <Folder Name="/Solution Items/LIBs/">
+    <File Path="ProjectPackages/ITV.EFCoreUtil.8.0.0.nupkg" />
+    <File Path="ProjectPackages/ITVisions.Util.10.3.14.nupkg" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Test/BlazorTests/BlazorTests.csproj" />
+    <Project Path="Test/PlaywrightTests/PlaywrightTests.csproj" />
+    <Project Path="Test/SeleniumTests/SeleniumTests.csproj" />
+    <Project Path="test/UnitTests/UnitTests.csproj" />
+    <Project Path="Test/WebserviceTests/WebserviceTests.csproj" />
+  </Folder>
+  <Folder Name="/Tools/">
+    <Project Path="src/EFCTools/EFCTools.csproj" />
+  </Folder>
+</Solution>

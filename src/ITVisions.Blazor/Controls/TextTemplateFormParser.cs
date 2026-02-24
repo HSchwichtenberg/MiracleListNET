@@ -159,7 +159,7 @@ public static class TextTemplateFormParser
   fieldCounter++;
 
   // Prüfe auf verschiedene Feldtypen
-  if (fieldDef.Contains("O "))
+  if (fieldDef.Contains("* "))
   {
    ParseRadioButtonsOrCheckbox(key, currentSection, label, fieldDef, isRequired, defaultValue, tooltipNote, formFields);
   }
@@ -211,7 +211,7 @@ public static class TextTemplateFormParser
   {
    ParseText(key, currentSection, label, isRequired, defaultValue, tooltipNote, formFields);
   }
-  else if (fieldDef.Contains(","))
+  else if (fieldDef.Contains("|"))
   {
    ParseSelect(key, currentSection, label, fieldDef, isRequired, defaultValue, tooltipNote, formFields);
   }
@@ -219,7 +219,7 @@ public static class TextTemplateFormParser
 
  private static void ParseRadioButtonsOrCheckbox(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, string tooltipNote, FormFieldList formFields)
  {
-  var optionParts = fieldDef.Split(new[] { "O " }, StringSplitOptions.RemoveEmptyEntries);
+  var optionParts = fieldDef.Split(new[] { "* " }, StringSplitOptions.RemoveEmptyEntries);
   var options = optionParts
    .Select(o => o.Trim())
    .Where(o => !string.IsNullOrWhiteSpace(o))
@@ -243,7 +243,9 @@ public static class TextTemplateFormParser
  private static void ParseMultiselect(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, string tooltipNote, FormFieldList formFields)
  {
   var optionsString = System.Text.RegularExpressions.Regex.Replace(fieldDef, "\\[Multiselect\\]", "", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
-  var options = optionsString.Split(',')
+
+  // Verwende Pipe als Trennzeichen
+  var options = optionsString.Split('|')
    .Select(o => o.Trim())
    .Where(o => !string.IsNullOrWhiteSpace(o))
    .ToList();
@@ -428,7 +430,8 @@ public static class TextTemplateFormParser
 
  private static void ParseSelect(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, string tooltipNote, FormFieldList formFields)
  {
-  var options = fieldDef.Split(',')
+  // Verwende Pipe als Trennzeichen
+  var options = fieldDef.Split('|')
    .Select(o => o.Trim())
    .Where(o => !string.IsNullOrWhiteSpace(o))
    .ToList();

@@ -47,6 +47,10 @@
        {
         <span style="margin-left:5px" title="Pflichtfeld" class="text-danger">*</span>
        }
+       @if (!string.IsNullOrEmpty(field.Note))
+       {
+         <span class="info-icon" style="margin-left:5px;" data-tooltip="@field.Note">ℹ️</span>
+       }
       </label>
      }
 

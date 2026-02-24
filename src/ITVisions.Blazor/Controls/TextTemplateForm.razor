@@ -181,7 +181,12 @@
     }
     else if (field.Type == FieldType.Phone)
     {
-     <input type="tel" class="form-control" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
+     <input type="tel" class="form-control" 
+            @bind="field.ValueString" 
+            @bind:after="NotifyValuesChanged" 
+            pattern="[0-9\s\-\+\(\)\/]+" 
+            title="Nur Zahlen und Sonderzeichen (+, -, /, Leerzeichen, Klammern) erlaubt"
+            required="@field.Required" />
     }
     </div>
     }

@@ -43,7 +43,8 @@ public static class TextTemplateFormParser
    }
    else
    {
-   
+    // Zeilen ohne - oder + werden wie optionale Felder behandelt
+    ParseFieldWithPrefix("-" + line, currentSection, ref fieldCounter, formFields);
    }
   }
 

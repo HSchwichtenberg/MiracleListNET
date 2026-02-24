@@ -7,9 +7,9 @@
  z-index: 10;
 }
 
-.info-icon:hover {
- opacity: 0.8;
-}
+ .info-icon:hover {
+  z-index: 9999;
+ }
 
 .info-icon::after {
  content: attr(data-tooltip);

@@ -175,9 +175,9 @@ public static class TextTemplateFormParser
   {
    ParseRange(key, currentSection, label, fieldDef, isRequired, defaultValue, tooltipNote, formFields);
   }
-  else if (fieldDef.Contains("[Textarea]", StringComparison.OrdinalIgnoreCase))
+  else if (fieldDef.Contains("[Textarea]", StringComparison.OrdinalIgnoreCase) || fieldDef.Contains("[Textarea:", StringComparison.OrdinalIgnoreCase))
   {
-   ParseTextArea(key, currentSection, label, isRequired, defaultValue, tooltipNote, formFields);
+   ParseTextArea(key, currentSection, label, fieldDef, isRequired, defaultValue, tooltipNote, formFields);
   }
   else if (fieldDef.Contains("[Number]", StringComparison.OrdinalIgnoreCase))
   {
@@ -295,8 +295,16 @@ public static class TextTemplateFormParser
   });
  }
 
- private static void ParseTextArea(string key, string currentSection, string label, bool isRequired, string defaultValue, string tooltipNote, FormFieldList formFields)
+ private static void ParseTextArea(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, string tooltipNote, FormFieldList formFields)
  {
+  // Extrahiere Zeilenzahl aus [Textarea:8]
+  var rows = 4; // Standard: 4 Zeilen
+  var match = System.Text.RegularExpressions.Regex.Match(fieldDef, @"\[Textarea:(\d+)\]", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+  if (match.Success && int.TryParse(match.Groups[1].Value, out int rowCount))
+  {
+   rows = rowCount;
+  }
+
   formFields.Add(new FormField
   {
    Key = key,
@@ -304,7 +312,8 @@ public static class TextTemplateFormParser
    Type = FieldType.TextArea,
    Required = isRequired,
    Value = defaultValue,
-   Note = tooltipNote
+   Note = tooltipNote,
+   Options = new List<string> { rows.ToString() }
   });
  }
 

@@ -147,7 +147,8 @@
     }
     else if (field.Type == FieldType.TextArea)
     {
-     <textarea class="form-control" rows="4" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required"></textarea>
+     var rows = field.Options?.Count > 0 && int.TryParse(field.Options[0], out int r) ? r : 4;
+     <textarea class="form-control" rows="@rows" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required"></textarea>
     }
     else if (field.Type == FieldType.Number)
     {

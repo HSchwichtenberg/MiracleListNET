@@ -430,11 +430,19 @@ public static class TextTemplateFormParser
 
  private static void ParseSelect(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, string tooltipNote, FormFieldList formFields)
  {
+  var trimmedFieldDef = fieldDef.Trim();
+  var allowEmpty = trimmedFieldDef.StartsWith("|");
+
   // Verwende Pipe als Trennzeichen
   var options = fieldDef.Split('|')
    .Select(o => o.Trim())
-   .Where(o => !string.IsNullOrWhiteSpace(o))
    .ToList();
+
+  // Wenn nicht allowEmpty, entferne leere Einträge
+  if (!allowEmpty)
+  {
+    options = options.Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
+  }
 
   formFields.Add(new FormField
   {

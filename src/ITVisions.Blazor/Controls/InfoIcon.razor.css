@@ -4,6 +4,7 @@
  color: #0d6efd;
  position: relative;
  display: inline-block;
+ z-index: 10;
 }
 
 .info-icon:hover {
@@ -55,4 +56,3 @@
  opacity: 1;
  visibility: visible;
 }
-

@@ -108,7 +108,7 @@
     }
     else if (field.Type == FieldType.Select)
     {
-     <select class="form-select" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required">
+     <select class="@GetFieldCssClass(field, "form-select")" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required">
       <option value="">Bitte wählen...</option>
       @foreach (var option in field.Options)
       {
@@ -171,16 +171,16 @@
     }
     else if (field.Type == FieldType.Text)
     {
-     <input type="text" class="form-control" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
+     <input type="text" class="@GetFieldCssClass(field, "form-control")" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
     }
     else if (field.Type == FieldType.TextArea)
     {
      var rows = field.Options?.Count > 0 && int.TryParse(field.Options[0], out int r) ? r : 4;
-     <textarea class="form-control" rows="@rows" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required"></textarea>
+     <textarea class="@GetFieldCssClass(field, "form-control")" rows="@rows" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required"></textarea>
     }
     else if (field.Type == FieldType.Number)
     {
-     <input type="number" class="form-control" 
+     <input type="number" class="@GetFieldCssClass(field, "form-control")" 
             @bind="field.ValueString" 
             @bind:after="NotifyValuesChanged" 
             min="@field.Min" 
@@ -189,27 +189,27 @@
     }
     else if (field.Type == FieldType.Date)
     {
-     <input type="date" class="form-control" @bind="field.ValueDateTime" @bind:after="NotifyValuesChanged" required="@field.Required" />
+     <input type="date" class="@GetFieldCssClass(field, "form-control")" @bind="field.ValueDateTime" @bind:after="NotifyValuesChanged" required="@field.Required" />
     }
     else if (field.Type == FieldType.Time)
     {
-       <input type="time" class="form-control" @bind="field.ValueDateTime" @bind:after="NotifyValuesChanged" required="@field.Required" />
+       <input type="time" class="@GetFieldCssClass(field, "form-control")" @bind="field.ValueDateTime" @bind:after="NotifyValuesChanged" required="@field.Required" />
     }
     else if (field.Type == FieldType.Email)
     {
-     <input type="email" class="form-control" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
+     <input type="email" class="@GetFieldCssClass(field, "form-control")" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
     }
     else if (field.Type == FieldType.Password)
     {
-     <input type="password" class="form-control" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
+     <input type="password" class="@GetFieldCssClass(field, "form-control")" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
     }
     else if (field.Type == FieldType.Url)
     {
-     <input type="url" class="form-control" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
+     <input type="url" class="@GetFieldCssClass(field, "form-control")" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
     }
     else if (field.Type == FieldType.Phone)
     {
-     <input type="tel" class="form-control" 
+     <input type="tel" class="@GetFieldCssClass(field, "form-control")" 
             @bind="field.ValueString" 
             @bind:after="NotifyValuesChanged" 
             pattern="[0-9\s\-\+\(\)\/]+" 
@@ -279,6 +279,7 @@
  private HashSet<string> CollapsedSections { get; set; } = new();
  private List<FormPage> Pages { get; set; } = new();
  private int CurrentPageIndex { get; set; } = 0;
+ private HashSet<string> InvalidFieldKeys { get; set; } = new();
 
  private class FormPage
  {
@@ -374,6 +375,7 @@
    }
 
    ValidationErrorMessage = ""; // Fehlermeldung zurücksetzen
+   InvalidFieldKeys.Clear(); // Fehlerhafte Felder zurücksetzen
    CurrentPageIndex++;
    CollapsedSections.Clear(); // Zurücksetzen der eingeklappten Sektionen
    StateHasChanged();
@@ -385,6 +387,7 @@
   if (CurrentPageIndex > 0)
   {
    ValidationErrorMessage = ""; // Fehlermeldung zurücksetzen beim Zurückgehen
+   InvalidFieldKeys.Clear(); // Fehlerhafte Felder zurücksetzen
    CurrentPageIndex--;
    CollapsedSections.Clear(); // Zurücksetzen der eingeklappten Sektionen
    StateHasChanged();
@@ -430,6 +433,7 @@
  private bool ValidateCurrentPage()
  {
   ValidationErrorMessage = "";
+  InvalidFieldKeys.Clear();
 
   if (Pages.Count == 0 || CurrentPageIndex >= Pages.Count)
    return true;
@@ -446,6 +450,7 @@
    if (field.Required && isEmpty)
    {
     missingFields.Add(field.Label);
+    InvalidFieldKeys.Add(field.Key);
     continue;
    }
 
@@ -456,6 +461,7 @@
     if (!isValid)
     {
      invalidFields.Add(field.Label);
+     InvalidFieldKeys.Add(field.Key);
     }
    }
   }
@@ -503,25 +509,61 @@
   }
  }
 
+ private string GetFieldCssClass(FormField field, string baseClass)
+ {
+  var cssClass = baseClass;
+  if (InvalidFieldKeys.Contains(field.Key))
+  {
+   cssClass += " is-invalid";
+  }
+  return cssClass;
+ }
+
  private async Task OnSubmit()
  {
-  // Validierung aller Pflichtfelder beim finalen Submit
+  // Validierung aller Pflichtfelder und Formate beim finalen Submit
   ValidationErrorMessage = "";
+  InvalidFieldKeys.Clear();
   var missingFields = new List<string>();
+  var invalidFields = new List<string>();
 
-  foreach (var field in FormFields.Where(f => f.Required && f.Type != FieldType.Headline && f.Type != FieldType.Chapter))
+  foreach (var field in FormFields.Where(f => f.Type != FieldType.Headline && f.Type != FieldType.Chapter))
   {
    var isEmpty = string.IsNullOrWhiteSpace(field.ValueString);
 
-   if (isEmpty)
+   // Prüfe Pflichtfelder
+   if (field.Required && isEmpty)
    {
     missingFields.Add(field.Label);
+    InvalidFieldKeys.Add(field.Key);
+    continue;
+   }
+
+   // Prüfe Format-Validierung für gefüllte Felder
+   if (!isEmpty)
+   {
+    var isValid = ValidateFieldFormat(field);
+    if (!isValid)
+    {
+     invalidFields.Add(field.Label);
+     InvalidFieldKeys.Add(field.Key);
+    }
    }
   }
 
+  var errors = new List<string>();
   if (missingFields.Any())
   {
-   ValidationErrorMessage = $"Bitte füllen Sie folgende Pflichtfelder aus: {string.Join(", ", missingFields)}";
+   errors.Add($"Bitte füllen Sie folgende Pflichtfelder aus: {string.Join(", ", missingFields)}");
+  }
+  if (invalidFields.Any())
+  {
+   errors.Add($"Folgende Felder haben ein ungültiges Format: {string.Join(", ", invalidFields)}");
+  }
+
+  if (errors.Any())
+  {
+   ValidationErrorMessage = string.Join("<br>", errors);
    StateHasChanged();
    return;
   }

@@ -17,28 +17,42 @@
  }
 
  <EditForm Model="this" OnValidSubmit="OnSubmit">
-  @{
-   string currentHeadlineKey = null;
-  }
-  @foreach (var field in FormFields)
+
+  @* Seiten-Navigation anzeigen, wenn mehrere Seiten vorhanden sind *@
+  @if (Pages.Count > 1)
   {
-   @if (field.Type == FieldType.Headline)
-   {
-    currentHeadlineKey = field.Key;
-    var isCollapsed = CollapsedSections.Contains(field.Key);
-    <h4 class="headline" @onclick="@(() => ToggleSection(field.Key))" style="cursor: pointer; user-select: none;">
-     <span style="margin-right: 8px;"> <i class="bi bi-chevron-@(isCollapsed ? "down" : "right") me-2"></i></span>
+   <div class="page-header mb-4">
+    <h3>Seite @(CurrentPageIndex + 1) von @Pages.Count: @Pages[CurrentPageIndex].PageName</h3>
+    <hr />
+   </div>
+  }
 
+  @* Aktuelle Seite rendern *@
+  @if (Pages.Count > 0 && CurrentPageIndex < Pages.Count)
+  {
+   var currentPage = Pages[CurrentPageIndex];
 
-     @field.Label
-    </h4>
-   }
-   else
+   @* Felder der aktuellen Seite *@
+   @foreach (var field in currentPage.Fields)
    {
-    var shouldShow = string.IsNullOrEmpty(currentHeadlineKey) || !CollapsedSections.Contains(currentHeadlineKey);
-    @if (shouldShow)
+    @* Headline innerhalb der Seite *@
+    @if (field.Type == FieldType.Headline)
     {
-     <div class="form-group">
+     var isCollapsed = CollapsedSections.Contains(field.Key);
+     <h4 class="headline" @onclick="@(() => ToggleSection(field.Key))" style="cursor: pointer; user-select: none;">
+      <i class="bi bi-chevron-@(isCollapsed ? "down" : "right") me-2"></i>
+      @field.Label
+     </h4>
+    }
+    else
+    {
+     @* Prüfe ob das Feld angezeigt werden soll (nicht eingeklappt) *@
+     var parentHeadline = GetParentHeadline(field, currentPage.Fields);
+     var shouldShow = parentHeadline == null || !CollapsedSections.Contains(parentHeadline.Key);
+
+     @if (shouldShow)
+     {
+      <div class="form-group">
       @if (!string.IsNullOrEmpty(field.Label))
       {
       <label class="fw-bold">
@@ -188,15 +202,45 @@
             title="Nur Zahlen und Sonderzeichen (+, -, /, Leerzeichen, Klammern) erlaubt"
             required="@field.Required" />
     }
-    </div>
+      </div>
+     }
     }
    }
   }
 
-  @if (ShowSubmitButton)
-  {
-   <ITVButton type="submit" class="btn btn-primary mt-2">@SubmitButtonText</ITVButton>
-  }
+  @* Navigation und Submit Buttons *@
+  <div class="d-flex align-items-center mt-4 pt-3 border-top">
+   @if (Pages.Count > 1)
+   {
+    @if (CurrentPageIndex > 0)
+    {
+     <button type="button" class="btn btn-secondary me-2" @onclick="PreviousPage" disabled="@(CurrentPageIndex == 0)">
+      <i class="bi bi-arrow-left"></i> Vorherige Seite
+     </button>
+    }
+    @if (CurrentPageIndex < Pages.Count - 1)
+    {
+     <button type="button" class="btn btn-primary me-2" @onclick="NextPage">
+      Nächste Seite <i class="bi bi-arrow-right"></i>
+     </button>
+    }
+    else if (ShowSubmitButton)
+    {
+     <ITVButton type="submit" class="btn btn-primary me-2">
+      <i class="bi bi-check-circle"></i> @SubmitButtonText
+     </ITVButton>
+    }
+   }
+   else if (ShowSubmitButton)
+   {
+    <div class="ms-auto">
+     <ITVButton type="submit" class="btn btn-primary">
+      <i class="bi bi-check-circle"></i> @SubmitButtonText
+     </ITVButton>
+    </div>
+   }
+  
+  </div>
  </EditForm>
 }
 
@@ -219,12 +263,108 @@
  private FormFieldList FormFields { get; set; } = new();
  private string ValidationErrorMessage { get; set; } = "";
  private HashSet<string> CollapsedSections { get; set; } = new();
+ private List<FormPage> Pages { get; set; } = new();
+ private int CurrentPageIndex { get; set; } = 0;
+
+ private class FormPage
+ {
+  public string PageName { get; set; }
+  public FormField ChapterField { get; set; }
+  public List<FormField> Fields { get; set; } = new();
+ }
 
  protected override void OnParametersSet()
  {
   if (!string.IsNullOrEmpty(Template))
   {
    FormFields = TextTemplateFormParser.Parse(Template);
+   BuildPages();
+  }
+ }
+
+ private void BuildPages()
+ {
+  Pages.Clear();
+  CurrentPageIndex = 0;
+
+  FormPage currentPage = null;
+
+  foreach (var field in FormFields)
+  {
+   if (field.Type == FieldType.Chapter)
+   {
+    // Neue Seite für jedes Chapter beginnen
+    currentPage = new FormPage
+    {
+     PageName = field.Label,
+     ChapterField = field
+    };
+    Pages.Add(currentPage);
+   }
+   else
+   {
+    // Wenn noch keine Seite existiert, erstelle eine Standard-Seite
+    if (currentPage == null)
+    {
+     currentPage = new FormPage
+     {
+      PageName = "Formular",
+      ChapterField = null
+     };
+     Pages.Add(currentPage);
+    }
+
+    // Füge Feld zur aktuellen Seite hinzu (auch Headlines)
+    currentPage.Fields.Add(field);
+   }
+  }
+
+  // Wenn keine Seiten erstellt wurden, erstelle eine Standard-Seite
+  if (Pages.Count == 0)
+  {
+   Pages.Add(new FormPage
+   {
+    PageName = "Formular",
+    ChapterField = null,
+    Fields = FormFields.Where(f => f.Type != FieldType.Chapter).ToList()
+   });
+  }
+ }
+
+ private FormField GetParentHeadline(FormField field, List<FormField> fieldsInPage)
+ {
+  // Finde die letzte Headline vor diesem Feld
+  var fieldIndex = fieldsInPage.IndexOf(field);
+  if (fieldIndex == -1) return null;
+
+  for (int i = fieldIndex - 1; i >= 0; i--)
+  {
+   if (fieldsInPage[i].Type == FieldType.Headline)
+   {
+    return fieldsInPage[i];
+   }
+  }
+
+  return null;
+ }
+
+ private void NextPage()
+ {
+  if (CurrentPageIndex < Pages.Count - 1)
+  {
+   CurrentPageIndex++;
+   CollapsedSections.Clear(); // Zurücksetzen der eingeklappten Sektionen
+   StateHasChanged();
+  }
+ }
+
+ private void PreviousPage()
+ {
+  if (CurrentPageIndex > 0)
+  {
+   CurrentPageIndex--;
+   CollapsedSections.Clear(); // Zurücksetzen der eingeklappten Sektionen
+   StateHasChanged();
   }
  }
 

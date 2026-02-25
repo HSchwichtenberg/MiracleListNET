@@ -29,6 +29,13 @@ public static class TextTemplateFormParser
   {
    if (string.IsNullOrWhiteSpace(line)) continue;
 
+   // Chapter mit ##
+   if (line.StartsWith("##"))
+   {
+    currentSection = ParseChapter(line, ref fieldCounter, formFields);
+    continue;
+   }
+
    // Headline mit #
    if (line.StartsWith("#"))
    {
@@ -49,6 +56,21 @@ public static class TextTemplateFormParser
   }
 
   return formFields;
+ }
+
+ /// <summary>
+ /// Chapter auswerten (##)
+ /// </summary>
+ private static string ParseChapter(string line, ref int fieldCounter, FormFieldList formFields)
+ {
+  var chapterText = line.TrimStart('#').Trim();
+  formFields.Add(new FormField
+  {
+   Key = $"chapter_{fieldCounter++}",
+   Label = chapterText,
+   Type = FieldType.Chapter
+  });
+  return chapterText;
  }
 
  /// <summary>

@@ -9,12 +9,6 @@
 
 @if (!string.IsNullOrWhiteSpace(Template) && FormFields != null && FormFields.Any())
 {
- @if (!string.IsNullOrEmpty(ValidationErrorMessage))
- {
-  <div class="alert alert-danger" role="alert">
-   @((MarkupString)ValidationErrorMessage)
-  </div>
- }
 
  <EditForm Model="this" OnValidSubmit="OnSubmit">
 
@@ -222,8 +216,18 @@
    }
   }
 
+  <div class="mt-4 pt-3 border-top">
+
+ @if (!string.IsNullOrEmpty(ValidationErrorMessage))
+ {
+  <div class="alert alert-danger" role="alert">
+   @((MarkupString)ValidationErrorMessage)
+  </div>
+ }
+
+
   @* Navigation und Submit Buttons *@
-  <div class="d-flex align-items-center mt-4 pt-3 border-top">
+  <div class="d-flex align-items-center">
    @if (Pages.Count > 1)
    {
     @if (CurrentPageIndex > 0)
@@ -254,6 +258,7 @@
     </div>
    }
   
+  </div>  
   </div>
  </EditForm>
 }

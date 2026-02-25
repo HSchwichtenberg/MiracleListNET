@@ -12,7 +12,7 @@
  @if (!string.IsNullOrEmpty(ValidationErrorMessage))
  {
   <div class="alert alert-danger" role="alert">
-   @ValidationErrorMessage
+   @((MarkupString)ValidationErrorMessage)
   </div>
  }
 
@@ -436,24 +436,71 @@
 
   var currentPage = Pages[CurrentPageIndex];
   var missingFields = new List<string>();
+  var invalidFields = new List<string>();
 
-  foreach (var field in currentPage.Fields.Where(f => f.Required && f.Type != FieldType.Headline && f.Type != FieldType.Chapter))
+  foreach (var field in currentPage.Fields.Where(f => f.Type != FieldType.Headline && f.Type != FieldType.Chapter))
   {
    var isEmpty = string.IsNullOrWhiteSpace(field.ValueString);
 
-   if (isEmpty)
+   // Prüfe Pflichtfelder
+   if (field.Required && isEmpty)
    {
     missingFields.Add(field.Label);
+    continue;
+   }
+
+   // Prüfe Format-Validierung für gefüllte Felder
+   if (!isEmpty)
+   {
+    var isValid = ValidateFieldFormat(field);
+    if (!isValid)
+    {
+     invalidFields.Add(field.Label);
+    }
    }
   }
 
+  var errors = new List<string>();
   if (missingFields.Any())
   {
-   ValidationErrorMessage = $"Bitte füllen Sie folgende Pflichtfelder aus: {string.Join(", ", missingFields)}";
+   errors.Add($"Bitte füllen Sie folgende Pflichtfelder aus: {string.Join(", ", missingFields)}");
+  }
+  if (invalidFields.Any())
+  {
+   errors.Add($"Folgende Felder haben ein ungültiges Format: {string.Join(", ", invalidFields)}");
+  }
+
+  if (errors.Any())
+  {
+   ValidationErrorMessage = string.Join("<br>", errors);
    return false;
   }
 
   return true;
+ }
+
+ private bool ValidateFieldFormat(FormField field)
+ {
+  if (string.IsNullOrWhiteSpace(field.ValueString))
+   return true;
+
+  switch (field.Type)
+  {
+   case FieldType.Email:
+    return System.Text.RegularExpressions.Regex.IsMatch(field.ValueString, 
+     @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+
+   case FieldType.Phone:
+    return System.Text.RegularExpressions.Regex.IsMatch(field.ValueString, 
+     @"^[0-9\s\-\+\(\)\/]+$");
+
+   case FieldType.Url:
+    return Uri.TryCreate(field.ValueString, UriKind.Absolute, out var uriResult) 
+     && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+   default:
+    return true;
+  }
  }
 
  private async Task OnSubmit()

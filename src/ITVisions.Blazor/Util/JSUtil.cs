@@ -1,16 +1,12 @@
 ﻿#pragma warning disable 1998
 
-using Blazored.LocalStorage;
+using System;
+using System.ComponentModel;
+using System.Threading.Tasks;
 using Blazored.SessionStorage;
-using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Microsoft.JSInterop;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace ITVisions.Blazor
 {
@@ -117,7 +113,7 @@ namespace ITVisions.Blazor
    {
     if (value == null) await Util.RemoveCookie(Key);
     else await Util.SetCookie(Key, value);
-  }
+   }
    catch (Exception ex)
    {
     Util.Log("Error writing " + Key + " to Cookie: " + ex.Message, LogType.warn);

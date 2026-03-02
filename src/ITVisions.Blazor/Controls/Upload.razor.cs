@@ -4,10 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ITVisions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.JSInterop;
 
 namespace ITVisions.Blazor.Controls;
 
@@ -109,11 +107,11 @@ public partial class Upload
   if (filesToUpload.Count == 1)
   {
    string commentPath = System.IO.Path.Combine(Path, filesToUpload[0].Name + ".comment");
-   if (File.Exists(commentPath)) { 
+   if (File.Exists(commentPath))
+   {
     this.comment = File.ReadAllText(commentPath);
     // Wenn this.comment "Hochgeladen von " enthält, entferne das und alles, was danach kommt
 
-   
    }
   }
 
@@ -246,7 +244,6 @@ public partial class Upload
   {
    await Util.Alert("Fehler beim Upload:\n" + ex.Message);
   }
-
  }
 
  void InsertTag(string tagText)

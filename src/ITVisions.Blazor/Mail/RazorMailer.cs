@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Http;
@@ -54,8 +53,15 @@ where T : Microsoft.AspNetCore.Components.IComponent
    //var name = "Dr. Holger Schwichtenberg";
    //CUI.Print("Parameter 'Name' = " + name);
    //Dictionary<string, object> pdic = new Dictionary<string, object>() { { "Name", name } };
-   var pv = ParameterView.FromDictionary(parameter);
-   //or var pv = ParameterView.Empty;
+   ParameterView pv;
+   if (parameter != null)
+   {
+    pv = ParameterView.FromDictionary(parameter);
+   }
+   else
+   {
+    pv = ParameterView.Empty;
+   }
 
    var output = await htmlRenderer.RenderComponentAsync<T>(pv);
 
@@ -136,5 +142,4 @@ where T : Microsoft.AspNetCore.Components.IComponent
   #endregion
   return html;
  }
-
 }

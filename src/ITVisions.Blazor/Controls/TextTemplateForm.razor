@@ -4,10 +4,10 @@
 <Debug>
  @Template
 
- @FormFields.Count
+ @FormElements.Count
 </Debug>
 
-@if (!string.IsNullOrWhiteSpace(Template) && FormFields != null && FormFields.Any())
+@if (!string.IsNullOrWhiteSpace(Template) && FormElements != null && FormElements.Any())
 {
 
  <EditForm Model="this" OnValidSubmit="OnSubmit">
@@ -41,10 +41,10 @@
    var currentPage = Pages[CurrentPageIndex];
 
    @* Felder der aktuellen Seite *@
-   @foreach (var field in currentPage.Fields)
+   @foreach (FormElement field in currentPage.Fields)
    {
     @* Headline innerhalb der Seite *@
-    @if (field.Type == FieldType.Headline)
+    @if (field.Type == FormElementType.Headline)
     {
      var isCollapsed = CollapsedSections.Contains(field.Key);
      <h4 class="headline" @onclick="@(() => ToggleSection(field.Key))" style="cursor: pointer; user-select: none;">
@@ -53,7 +53,7 @@
      </h4>
     }
     @* Info-Text (Markdown) *@
-    else if (field.Type == FieldType.Info)
+    else if (field.Type == FormElementType.Info)
     {
      <div class="mb-3">
       @((MarkupString)RenderMarkdown(field.Label))
@@ -84,7 +84,7 @@
       </label>
      }
 
-     @if (field.Type == FieldType.RadioButtons)
+     @if (field.Type == FormElementType.RadioButtons)
     {
      <div class="d-flex gap-3">
       @foreach (var option in field.Options)
@@ -98,7 +98,7 @@
       }
      </div>
     }
-    else if (field.Type == FieldType.CheckBox)
+    else if (field.Type == FormElementType.CheckBox)
     {
      <div class="form-check">
       <input class="form-check-input" type="checkbox" id="@field.Key" 
@@ -107,7 +107,7 @@
       <label class="form-check-label" for="@field.Key">@field.Options[0]</label>
      </div>
     }
-    else if (field.Type == FieldType.Select)
+    else if (field.Type == FormElementType.Select)
     {
      <select class="@GetFieldCssClass(field, "form-select")" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required">
       <option value="">Bitte wählen...</option>
@@ -117,7 +117,7 @@
       }
      </select>
     }
-    else if (field.Type == FieldType.Multiselect)
+    else if (field.Type == FormElementType.Multiselect)
     {
      <div class="d-flex flex-column gap-2">
       @foreach (var option in field.Options)
@@ -132,7 +132,7 @@
       }
      </div>
     }
-    else if (field.Type == FieldType.Rating)
+    else if (field.Type == FormElementType.Rating)
     {
      <div class="d-flex gap-2 align-items-center">
       @foreach (var option in field.Options)
@@ -158,7 +158,7 @@
       }
      </div>
     }
-    else if (field.Type == FieldType.Range)
+    else if (field.Type == FormElementType.Range)
     {
      <div class="d-flex gap-3 align-items-center">
       <input type="range" class="form-range" style="flex: 1;" 
@@ -170,16 +170,16 @@
       <span class="badge bg-primary" style="min-width: 50px;">@field.ValueString</span>
      </div>
     }
-    else if (field.Type == FieldType.Text)
+    else if (field.Type == FormElementType.Text)
     {
      <input type="text" class="@GetFieldCssClass(field, "form-control")" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
     }
-    else if (field.Type == FieldType.TextArea)
+    else if (field.Type == FormElementType.TextArea)
     {
      var rows = field.Options?.Count > 0 && int.TryParse(field.Options[0], out int r) ? r : 4;
      <textarea class="@GetFieldCssClass(field, "form-control")" rows="@rows" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required"></textarea>
     }
-    else if (field.Type == FieldType.Number)
+    else if (field.Type == FormElementType.Number)
     {
      <input type="number" class="@GetFieldCssClass(field, "form-control")" 
             @bind="field.ValueString" 
@@ -188,27 +188,27 @@
             max="@field.Max" 
             required="@field.Required" />
     }
-    else if (field.Type == FieldType.Date)
+    else if (field.Type == FormElementType.Date)
     {
      <input type="date" class="@GetFieldCssClass(field, "form-control")" @bind="field.ValueDateTime" @bind:after="NotifyValuesChanged" required="@field.Required" />
     }
-    else if (field.Type == FieldType.Time)
+    else if (field.Type == FormElementType.Time)
     {
        <input type="time" class="@GetFieldCssClass(field, "form-control")" @bind="field.ValueDateTime" @bind:after="NotifyValuesChanged" required="@field.Required" />
     }
-    else if (field.Type == FieldType.Email)
+    else if (field.Type == FormElementType.Email)
     {
      <input type="email" class="@GetFieldCssClass(field, "form-control")" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
     }
-    else if (field.Type == FieldType.Password)
+    else if (field.Type == FormElementType.Password)
     {
      <input type="password" class="@GetFieldCssClass(field, "form-control")" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
     }
-    else if (field.Type == FieldType.Url)
+    else if (field.Type == FormElementType.Url)
     {
      <input type="url" class="@GetFieldCssClass(field, "form-control")" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" />
     }
-    else if (field.Type == FieldType.Phone)
+    else if (field.Type == FormElementType.Phone)
     {
      <input type="tel" class="@GetFieldCssClass(field, "form-control")" 
             @bind="field.ValueString" 
@@ -275,10 +275,10 @@
  public string Template { get; set; }
 
  [Parameter]
- public EventCallback<FormFieldList> OnValuesChanged { get; set; }
+ public EventCallback<FormElementList> OnValuesChanged { get; set; }
 
   [Parameter]
- public EventCallback<FormFieldList> OnSubmited { get; set; }
+ public EventCallback<FormElementList> OnSubmited { get; set; }
 
  [Parameter]
  public bool ShowSubmitButton { get; set; } = true;
@@ -286,7 +286,7 @@
  [Parameter]
  public string SubmitButtonText { get; set; } = "Absenden";
 
- private FormFieldList FormFields { get; set; } = new();
+ private FormElementList FormElements { get; set; } = new();
  private string ValidationErrorMessage { get; set; } = "";
  private HashSet<string> CollapsedSections { get; set; } = new();
  private List<FormPage> Pages { get; set; } = new();
@@ -296,15 +296,15 @@
  private class FormPage
  {
   public string PageName { get; set; }
-  public FormField ChapterField { get; set; }
-  public List<FormField> Fields { get; set; } = new();
+  public FormElement ChapterField { get; set; }
+  public List<FormElement> Fields { get; set; } = new();
  }
 
  protected override void OnParametersSet()
  {
   if (!string.IsNullOrEmpty(Template))
   {
-   FormFields = TextTemplateFormParser.Parse(Template);
+   FormElements = TextTemplateFormParser.Parse(Template);
    BuildPages();
   }
  }
@@ -316,9 +316,9 @@
 
   FormPage currentPage = null;
 
-  foreach (var field in FormFields)
+  foreach (var field in FormElements)
   {
-   if (field.Type == FieldType.Chapter)
+   if (field.Type == FormElementType.Chapter)
    {
     // Neue Seite für jedes Chapter beginnen
     currentPage = new FormPage
@@ -353,12 +353,12 @@
    {
     PageName = "Formular",
     ChapterField = null,
-    Fields = FormFields.Where(f => f.Type != FieldType.Chapter).ToList()
+    Fields = FormElements.Where(f => f.Type != FormElementType.Chapter).ToList()
    });
   }
  }
 
- private FormField GetParentHeadline(FormField field, List<FormField> fieldsInPage)
+ private FormElement GetParentHeadline(FormElement field, List<FormElement> fieldsInPage)
  {
   // Finde die letzte Headline vor diesem Feld
   var fieldIndex = fieldsInPage.IndexOf(field);
@@ -366,7 +366,7 @@
 
   for (int i = fieldIndex - 1; i >= 0; i--)
   {
-   if (fieldsInPage[i].Type == FieldType.Headline)
+   if (fieldsInPage[i].Type == FormElementType.Headline)
    {
     return fieldsInPage[i];
    }
@@ -420,10 +420,10 @@
 
  private async void NotifyValuesChanged()
  {
-  await OnValuesChanged.InvokeAsync(FormFields);
+  await OnValuesChanged.InvokeAsync(FormElements);
  }
 
- private void HandleMultiselectChange(FormField field, string option, bool isChecked)
+ private void HandleMultiselectChange(FormElement field, string option, bool isChecked)
  {
   var selectedValues = string.IsNullOrEmpty(field.ValueString)
    ? new List<string>()
@@ -454,7 +454,7 @@
   var missingFields = new List<string>();
   var invalidFields = new List<string>();
 
-  foreach (var field in currentPage.Fields.Where(f => f.Type != FieldType.Headline && f.Type != FieldType.Chapter && f.Type != FieldType.Info))
+  foreach (var field in currentPage.Fields.Where(f => f.Type != FormElementType.Headline && f.Type != FormElementType.Chapter && f.Type != FormElementType.Info))
   {
    var isEmpty = string.IsNullOrWhiteSpace(field.ValueString);
 
@@ -497,26 +497,26 @@
   return true;
  }
 
- private bool ValidateFieldFormat(FormField field)
+ private bool ValidateFieldFormat(FormElement field)
  {
   if (string.IsNullOrWhiteSpace(field.ValueString))
    return true;
 
   switch (field.Type)
   {
-   case FieldType.Email:
+   case FormElementType.Email:
     return System.Text.RegularExpressions.Regex.IsMatch(field.ValueString, 
      @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
 
-   case FieldType.Phone:
+   case FormElementType.Phone:
     return System.Text.RegularExpressions.Regex.IsMatch(field.ValueString, 
      @"^[0-9\s\-\+\(\)\/]+$");
 
-   case FieldType.Url:
+   case FormElementType.Url:
     return Uri.TryCreate(field.ValueString, UriKind.Absolute, out var uriResult) 
      && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
 
-   case FieldType.Number:
+   case FormElementType.Number:
     if (!int.TryParse(field.ValueString, out int numberValue))
      return false;
 
@@ -533,7 +533,7 @@
   }
  }
 
- private string GetFieldCssClass(FormField field, string baseClass)
+ private string GetFieldCssClass(FormElement field, string baseClass)
  {
   var cssClass = baseClass;
   if (InvalidFieldKeys.Contains(field.Key))
@@ -551,7 +551,7 @@
   var missingFields = new List<string>();
   var invalidFields = new List<string>();
 
-  foreach (var field in FormFields.Where(f => f.Type != FieldType.Headline && f.Type != FieldType.Chapter && f.Type != FieldType.Info))
+  foreach (var field in FormElements.Where(f => f.Type != FormElementType.Headline && f.Type != FormElementType.Chapter && f.Type != FormElementType.Info))
   {
    var isEmpty = string.IsNullOrWhiteSpace(field.ValueString);
 
@@ -592,13 +592,13 @@
    return;
   }
 
-  await OnValuesChanged.InvokeAsync(FormFields);
-  await OnSubmited.InvokeAsync(FormFields);
+  await OnValuesChanged.InvokeAsync(FormElements);
+  await OnSubmited.InvokeAsync(FormElements);
  }
 
- public FormFieldList GetFormFields()
+ public FormElementList GetFormElements()
  {
-  return FormFields;
+  return FormElements;
  }
 
  private string RenderMarkdown(string text)

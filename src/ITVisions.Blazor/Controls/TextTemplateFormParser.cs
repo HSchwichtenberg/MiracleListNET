@@ -6,9 +6,8 @@ namespace ITVisions.Blazor.Controls;
 
 public static class TextTemplateFormParser
 {
-
  /// <summary>
- /// Parsen eines Texttemplates in eine strukturierte Liste von FormElement-Objekten, die verschiedene Feldtypen und Optionen unterstützen.
+ /// Parsen eines Texttemplates in eine strukturierte Liste von FormElement-Objekten, die verschiedene Elementtypen und Optionen unterstützen.
  /// </summary>
  public static FormElementList Parse(string template)
  {
@@ -504,7 +503,6 @@ public static class TextTemplateFormParser
     }
    }
   }
-
   return options;
  }
 
@@ -522,7 +520,6 @@ public static class TextTemplateFormParser
     max = maxVal;
    }
   }
-
   return (min, max);
  }
 }

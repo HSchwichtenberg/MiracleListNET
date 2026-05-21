@@ -52,6 +52,13 @@
       @field.Label
      </h4>
     }
+    @* Info-Text (Markdown) *@
+    else if (field.Type == FieldType.Info)
+    {
+     <div class="mb-3">
+      @((MarkupString)RenderMarkdown(field.Label))
+     </div>
+    }
     else
     {
      @* Prüfe ob das Feld angezeigt werden soll (nicht eingeklappt) *@
@@ -447,7 +454,7 @@
   var missingFields = new List<string>();
   var invalidFields = new List<string>();
 
-  foreach (var field in currentPage.Fields.Where(f => f.Type != FieldType.Headline && f.Type != FieldType.Chapter))
+  foreach (var field in currentPage.Fields.Where(f => f.Type != FieldType.Headline && f.Type != FieldType.Chapter && f.Type != FieldType.Info))
   {
    var isEmpty = string.IsNullOrWhiteSpace(field.ValueString);
 
@@ -532,7 +539,7 @@
   var missingFields = new List<string>();
   var invalidFields = new List<string>();
 
-  foreach (var field in FormFields.Where(f => f.Type != FieldType.Headline && f.Type != FieldType.Chapter))
+  foreach (var field in FormFields.Where(f => f.Type != FieldType.Headline && f.Type != FieldType.Chapter && f.Type != FieldType.Info))
   {
    var isEmpty = string.IsNullOrWhiteSpace(field.ValueString);
 
@@ -580,6 +587,32 @@
  public FormFieldList GetFormFields()
  {
   return FormFields;
+ }
+
+ private string RenderMarkdown(string text)
+ {
+  if (string.IsNullOrWhiteSpace(text))
+   return text;
+
+  // Einfache Markdown-Konvertierung
+  var html = text;
+
+  // **Bold**
+  html = System.Text.RegularExpressions.Regex.Replace(html, @"\*\*(.*?)\*\*", "<strong>$1</strong>");
+
+  // *Italic*
+  html = System.Text.RegularExpressions.Regex.Replace(html, @"\*(.*?)\*", "<em>$1</em>");
+
+  // [Link](url)
+  html = System.Text.RegularExpressions.Regex.Replace(html, @"\[(.*?)\]\((.*?)\)", "<a href=\"$2\" target=\"_blank\">$1</a>");
+
+  // `Code`
+  html = System.Text.RegularExpressions.Regex.Replace(html, @"`(.*?)`", "<code>$1</code>");
+
+  // Line breaks
+  html = html.Replace("\n", "<br>");
+
+  return html;
  }
 
 }

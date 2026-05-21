@@ -50,8 +50,8 @@ public static class TextTemplateFormParser
    }
    else
    {
-    // Zeilen ohne - oder + werden wie optionale Felder behandelt
-    ParseFieldWithPrefix("-" + line, currentSection, ref fieldCounter, formFields);
+    // Zeilen ohne - oder + werden als Info-Text (Markdown) behandelt
+    ParseInfoLine(line, ref fieldCounter, formFields);
    }
   }
 
@@ -86,6 +86,19 @@ public static class TextTemplateFormParser
    Type = FieldType.Headline
   });
   return headlineText;
+ }
+
+ /// <summary>
+ /// Info-Zeile (Markdown-Text ohne Eingabefeld) auswerten
+ /// </summary>
+ private static void ParseInfoLine(string line, ref int fieldCounter, FormFieldList formFields)
+ {
+  formFields.Add(new FormField
+  {
+   Key = $"info_{fieldCounter++}",
+   Label = line.Trim(),
+   Type = FieldType.Info
+  });
  }
 
  /// <summary>

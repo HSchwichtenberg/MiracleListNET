@@ -485,7 +485,7 @@
   }
   if (invalidFields.Any())
   {
-   errors.Add($"Folgende Felder haben ein ungültiges Format: {string.Join(", ", invalidFields)}");
+   errors.Add($"Folgende Felder haben ein ungültigen Wert: {string.Join(", ", invalidFields)}");
   }
 
   if (errors.Any())
@@ -515,6 +515,18 @@
    case FieldType.Url:
     return Uri.TryCreate(field.ValueString, UriKind.Absolute, out var uriResult) 
      && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+   case FieldType.Number:
+    if (!int.TryParse(field.ValueString, out int numberValue))
+     return false;
+
+    if (field.Min.HasValue && numberValue < field.Min.Value)
+     return false;
+
+    if (field.Max.HasValue && numberValue > field.Max.Value)
+     return false;
+
+    return true;
 
    default:
     return true;

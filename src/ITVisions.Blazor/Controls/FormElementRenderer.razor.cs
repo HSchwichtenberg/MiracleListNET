@@ -228,61 +228,79 @@ public partial class FormElementRenderer
 
  #region ----------------- Validierung
 
+ /// <summary>
+ /// Absenden mit vorherige Validierung
+ /// </summary>
+ private async Task OnSubmit()
+ {
+  if (!ValidateFieldSet(FormElements))
+  {
+   StateHasChanged();
+   return;
+  }
+
+  await OnValuesChanged.InvokeAsync(FormElements);
+  await OnSubmited.InvokeAsync(FormElements);
+ }
+
+ /// <summary>
+ /// Validierung beim Seitenwechel
+ /// </summary>
  private bool ValidateCurrentPage()
+ {
+  if (Pages.Count == 0 || CurrentPageIndex >= Pages.Count)
+   return true;
+
+  return ValidateFieldSet(Pages[CurrentPageIndex].Fields);
+ }
+
+ /// <summary>
+ /// Valiedert eine Liste von Eingabefeldern
+ /// </summary>
+ private bool ValidateFieldSet(IEnumerable<FormElement> elements)
  {
   ValidationErrorMessage = "";
   InvalidFieldKeys.Clear();
 
-  if (Pages.Count == 0 || CurrentPageIndex >= Pages.Count)
-   return true;
-
-  var currentPage = Pages[CurrentPageIndex];
   var missingFields = new List<string>();
   var invalidFields = new List<string>();
 
-  foreach (var field in currentPage.Fields.Where(f => f.Type != FormElementType.Headline && f.Type != FormElementType.Chapter && f.Type != FormElementType.Info))
+  var validatableElements = elements.Where(f => f.Type != FormElementType.Headline && f.Type != FormElementType.Chapter && f.Type != FormElementType.Info);
+  foreach (var field in validatableElements)
   {
-   var isEmpty = string.IsNullOrWhiteSpace(field.ValueString);
-
-   // Prüfe Pflichtfelder
-   if (field.Required && isEmpty)
-   {
-    missingFields.Add(field.Label);
-    InvalidFieldKeys.Add(field.Key);
-    continue;
-   }
-
-   // Prüfe Format-Validierung für gefüllte Felder
-   if (!isEmpty)
-   {
-    var isValid = ValidateFieldFormat(field);
-    if (!isValid)
-    {
-     invalidFields.Add(field.Label);
-     InvalidFieldKeys.Add(field.Key);
-    }
-   }
+   ValidateField(field, missingFields, invalidFields);
   }
 
-  var errors = new List<string>();
-  if (missingFields.Any())
-  {
-   errors.Add($"Bitte füllen Sie folgende Pflichtfelder aus: {string.Join(", ", missingFields)}");
-  }
-  if (invalidFields.Any())
-  {
-   errors.Add($"Folgende Felder haben ein ungültigen Wert: {string.Join(", ", invalidFields)}");
-  }
-
-  if (errors.Any())
-  {
-   ValidationErrorMessage = string.Join("<br>", errors);
-   return false;
-  }
-
-  return true;
+  ValidationErrorMessage = BuildValidationErrorMessage(missingFields, invalidFields);
+  return string.IsNullOrEmpty(ValidationErrorMessage);
  }
 
+ /// <summary>
+ /// Valiedert ein einzelnes Eingabefeld
+ /// </summary>
+ private void ValidateField(FormElement field, List<string> missingFields, List<string> invalidFields)
+ {
+  var isEmpty = string.IsNullOrWhiteSpace(field.ValueString);
+
+  // Pflichtfeld?
+  if (field.Required && isEmpty)
+  {
+   missingFields.Add(field.Label);
+   InvalidFieldKeys.Add(field.Key);
+   return;
+  }
+
+  // Inhalt OK?
+  if (!isEmpty && !ValidateFieldFormat(field))
+  {
+   invalidFields.Add(field.Label);
+   InvalidFieldKeys.Add(field.Key);
+  }
+ }
+
+ /// <summary>
+ /// Validierung Inhalt eines Eingabefeldes
+ /// </summary>
  private bool ValidateFieldFormat(FormElement field)
  {
   if (string.IsNullOrWhiteSpace(field.ValueString))
@@ -319,58 +337,26 @@ public partial class FormElementRenderer
   }
  }
 
- private async Task OnSubmit()
+ /// <summary>
+ /// Fehlermeldung erzeugen
+ /// </summary>
+ private static string BuildValidationErrorMessage(List<string> missingFields, List<string> invalidFields)
  {
-  // Validierung aller Pflichtfelder und Formate beim finalen Submit
-  ValidationErrorMessage = "";
-  InvalidFieldKeys.Clear();
-  var missingFields = new List<string>();
-  var invalidFields = new List<string>();
-
-  foreach (var field in FormElements.Where(f => f.Type != FormElementType.Headline && f.Type != FormElementType.Chapter && f.Type != FormElementType.Info))
-  {
-   var isEmpty = string.IsNullOrWhiteSpace(field.ValueString);
-
-   // Prüfe Pflichtfelder
-   if (field.Required && isEmpty)
-   {
-    missingFields.Add(field.Label);
-    InvalidFieldKeys.Add(field.Key);
-    continue;
-   }
-
-   // Prüfe Format-Validierung für gefüllte Felder
-   if (!isEmpty)
-   {
-    var isValid = ValidateFieldFormat(field);
-    if (!isValid)
-    {
-     invalidFields.Add(field.Label);
-     InvalidFieldKeys.Add(field.Key);
-    }
-   }
-  }
-
   var errors = new List<string>();
+
   if (missingFields.Any())
   {
    errors.Add($"Bitte füllen Sie folgende Pflichtfelder aus: {string.Join(", ", missingFields)}");
   }
+
   if (invalidFields.Any())
   {
    errors.Add($"Folgende Felder haben ein ungültiges Format: {string.Join(", ", invalidFields)}");
   }
 
-  if (errors.Any())
-  {
-   ValidationErrorMessage = string.Join("<br>", errors);
-   StateHasChanged();
-   return;
-  }
-
-  await OnValuesChanged.InvokeAsync(FormElements);
-  await OnSubmited.InvokeAsync(FormElements);
+  return string.Join("<br>", errors);
  }
+
  #endregion
 
 }

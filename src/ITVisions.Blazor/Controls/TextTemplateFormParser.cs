@@ -43,7 +43,7 @@ public static class TextTemplateFormParser
    // Zeile mit Feld (- oder +)
    if (line.StartsWith("-") || line.StartsWith("+"))
    {
-    ParseFieldWithPrefix(line, currentSection, ref fieldCounter, FormElements);
+    ParseField(line, currentSection, ref fieldCounter, FormElements);
    }
    else
    {
@@ -101,7 +101,7 @@ public static class TextTemplateFormParser
  /// <summary>
  /// Feld auswerten
  /// </summary>
- private static void ParseFieldWithPrefix(string line, string currentSection, ref int fieldCounter, FormElementList FormElements)
+ private static void ParseField(string line, string currentSection, ref int fieldCounter, FormElementList FormElements)
  {
   var isRequired = line.StartsWith("+");
   var fieldLine = line.TrimStart('-', '+').Trim();

@@ -52,13 +52,6 @@
       @field.Label
      </h4>
     }
-    @* Info-Text (Markdown) *@
-    else if (field.Type == FormElementType.Info)
-    {
-     <div class="mb-3">
-      @((MarkupString) ITVisions.Web.HTMLUtil.MarkDownToHTML(field.Label))
-     </div>
-    }
     else
     {
      @* Prüfe ob das Feld angezeigt werden soll (nicht eingeklappt) *@
@@ -67,147 +60,158 @@
 
      @if (shouldShow)
      {
-      <div class="form-group">
-       @if (!string.IsNullOrEmpty(field.Label))
-       {
-        <label class="fw-bold">
-         @field.Label
-         @if (field.Required)
-         {
-          <span style="margin-left:5px" title="Pflichtfeld" class="text-danger">*</span>
-         }
-         @if (!string.IsNullOrEmpty(field.Note))
-         {
-          <InfoIcon Icon="ℹ️" Text="@field.Note" />
+      if (field.Type == FormElementType.Info)
+      {
+       @* ---- Info-Text (in Markdown) *@
+       <div class="mb-3">
+        @((MarkupString)ITVisions.Web.HTMLUtil.MarkDownToHTML(field.Label))
+       </div>
+      }
+      else
+      {
+       @* ---- Eingabefeld *@
+       <div class="form-group">
+        @if (!string.IsNullOrEmpty(field.Label))
+        {
+         <label class="fw-bold">
+          @field.Label
+          @if (field.Required)
+          {
+           <span style="margin-left:5px" title="Pflichtfeld" class="text-danger">*</span>
+          }
+          @if (!string.IsNullOrEmpty(field.Note))
+          {
+           <InfoIcon Icon="ℹ️" Text="@field.Note" />
 
-         }
-        </label>
-       }
+          }
+         </label>
+        }
 
-       @if (field.Type == FormElementType.RadioButtons)
-       {
-        <div class="d-flex gap-3">
-         @foreach (var option in field.Options)
-         {
-          <div class="form-check">
-           <input class="form-check-input" type="radio" name="@field.Key" id="@($"{field.Key}_{option}")"
-                  value="@option" @onchange="@(e => { field.ValueString = option; NotifyValuesChanged(); })"
-                  checked="@(field.ValueString == option)" />
-           <label class="form-check-label" for="@($"{field.Key}_{option}")">@option</label>
-          </div>
-         }
-        </div>
-       }
-       else if (field.Type == FormElementType.CheckBox)
-       {
-        <div class="form-check">
-         <input class="form-check-input" type="checkbox" id="@field.Key"
-                checked="@(!string.IsNullOrEmpty(field.ValueString))"
-                @onchange="@(e => { field.ValueString = ((bool)e.Value) ? field.Options[0] : ""; NotifyValuesChanged(); })" />
-         <label class="form-check-label" for="@field.Key">@field.Options[0]</label>
-        </div>
-       }
-       else if (field.Type == FormElementType.Select)
-       {
-        <select class="@GetFieldCssClass(field, "form-select")" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required">
-         <option value="">Bitte wählen...</option>
-         @foreach (var option in field.Options)
-         {
-          <option value="@option">@option</option>
-         }
-        </select>
-       }
-       else if (field.Type == FormElementType.Multiselect)
-       {
-        <div class="d-flex flex-column gap-2">
-         @foreach (var option in field.Options)
-         {
-          var isSelected = field.ValueString?.Split('|').Select(v => v.Trim()).Contains(option) ?? false;
-          <div class="form-check">
-           <input class="form-check-input" type="checkbox" id="@($"{field.Key}_{option}")"
-                  checked="@isSelected"
-                  @onchange="@(e => HandleMultiselectChange(field, option, (bool)e.Value))" />
-           <label class="form-check-label" for="@($"{field.Key}_{option}")">@option</label>
-          </div>
-         }
-        </div>
-       }
-       else if (field.Type == FormElementType.Rating)
-       {
-        <div class="d-flex gap-2 align-items-center">
-         @foreach (var option in field.Options)
-         {
-          var isSelected = field.ValueString == option;
-          <button type="button" class="btn btn-outline-secondary"
-                  style="min-width: 40px;"
-                  @onclick="@(() => { field.ValueString = option; NotifyValuesChanged(); })">
-           @if (isSelected)
-           {
-            <span>★</span>
-           }
-           else
-           {
-            <span>☆</span>
-           }
-           @option
-          </button>
-         }
-         @if (!string.IsNullOrEmpty(field.ValueString))
-         {
-          <button type="button" class="btn btn-sm btn-link" @onclick="@(() => { field.ValueString = ""; NotifyValuesChanged(); })">Zurücksetzen</button>
-         }
-        </div>
-       }
-       else if (field.Type == FormElementType.Range)
-       {
-        <div class="d-flex gap-3 align-items-center">
-         <input type="range" class="form-range" style="flex: 1;"
-                @bind="field.ValueString"
-                @bind:after="NotifyValuesChanged"
-                min="@field.Min"
-                max="@field.Max"
-                required="@field.Required" />
-         <span class="badge bg-primary" style="min-width: 50px;">@field.ValueString</span>
-        </div>
-       }
-       else if (field.Type == FormElementType.Text)
-       {
+        @if (field.Type == FormElementType.RadioButtons)
+        {
+         <div class="d-flex gap-3">
+          @foreach (var option in field.Options)
+          {
+           <div class="form-check">
+            <input class="form-check-input" type="radio" name="@field.Key" id="@($"{field.Key}_{option}")"
+            value="@option" @onchange="@(e => { field.ValueString = option; NotifyValuesChanged(); })"
+            checked="@(field.ValueString == option)" />
+            <label class="form-check-label" for="@($"{field.Key}_{option}")">@option</label>
+           </div>
+          }
+         </div>
+        }
+        else if (field.Type == FormElementType.CheckBox)
+        {
+         <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="@field.Key"
+          checked="@(!string.IsNullOrEmpty(field.ValueString))"
+          @onchange="@(e => { field.ValueString = ((bool)e.Value) ? field.Options[0] : ""; NotifyValuesChanged(); })" />
+          <label class="form-check-label" for="@field.Key">@field.Options[0]</label>
+         </div>
+        }
+        else if (field.Type == FormElementType.Select)
+        {
+         <select class="@GetFieldCssClass(field, "form-select")" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required">
+          <option value="">Bitte wählen...</option>
+          @foreach (var option in field.Options)
+          {
+           <option value="@option">@option</option>
+          }
+         </select>
+        }
+        else if (field.Type == FormElementType.Multiselect)
+        {
+         <div class="d-flex flex-column gap-2">
+          @foreach (var option in field.Options)
+          {
+           var isSelected = field.ValueString?.Split('|').Select(v => v.Trim()).Contains(option) ?? false;
+           <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="@($"{field.Key}_{option}")"
+            checked="@isSelected"
+            @onchange="@(e => HandleMultiselectChange(field, option, (bool)e.Value))" />
+            <label class="form-check-label" for="@($"{field.Key}_{option}")">@option</label>
+           </div>
+          }
+         </div>
+        }
+        else if (field.Type == FormElementType.Rating)
+        {
+         <div class="d-flex gap-2 align-items-center">
+          @foreach (var option in field.Options)
+          {
+           var isSelected = field.ValueString == option;
+           <button type="button" class="btn btn-outline-secondary"
+           style="min-width: 40px;"
+           @onclick="@(() => { field.ValueString = option; NotifyValuesChanged(); })">
+            @if (isSelected)
+            {
+             <span>★</span>
+            }
+            else
+            {
+             <span>☆</span>
+            }
+            @option
+           </button>
+          }
+          @if (!string.IsNullOrEmpty(field.ValueString))
+          {
+           <button type="button" class="btn btn-sm btn-link" @onclick="@(() => { field.ValueString = ""; NotifyValuesChanged(); })">Zurücksetzen</button>
+          }
+         </div>
+        }
+        else if (field.Type == FormElementType.Range)
+        {
+         <div class="d-flex gap-3 align-items-center">
+          <input type="range" class="form-range" style="flex: 1;"
+          @bind="field.ValueString"
+          @bind:after="NotifyValuesChanged"
+          min="@field.Min"
+          max="@field.Max"
+          required="@field.Required" />
+          <span class="badge bg-primary" style="min-width: 50px;">@field.ValueString</span>
+         </div>
+        }
+        else if (field.Type == FormElementType.Text)
+        {
          @RenderInput(field, "text")
-       }
-       else if (field.Type == FormElementType.TextArea)
-       {
-        var rows = field.Options?.Count > 0 && int.TryParse(field.Options[0], out int r) ? r : 4;
-        <textarea class="@GetFieldCssClass(field, "form-control")" rows="@rows" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required"></textarea>
-       }
-       else if (field.Type == FormElementType.Number)
-       {
+        }
+        else if (field.Type == FormElementType.TextArea)
+        {
+         var rows = field.Options?.Count > 0 && int.TryParse(field.Options[0], out int r) ? r : 4;
+         <textarea class="@GetFieldCssClass(field, "form-control")" rows="@rows" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required"></textarea>
+        }
+        else if (field.Type == FormElementType.Number)
+        {
          @RenderInput(field, "number", null, null, field.Min, field.Max)
-       }
-       else if (field.Type == FormElementType.Date)
-       {
+        }
+        else if (field.Type == FormElementType.Date)
+        {
          @RenderInput(field, "date")
-       }
-       else if (field.Type == FormElementType.Time)
-       {
+        }
+        else if (field.Type == FormElementType.Time)
+        {
          @RenderInput(field, "time")
-       }
-       else if (field.Type == FormElementType.Email)
-       {
+        }
+        else if (field.Type == FormElementType.Email)
+        {
          @RenderInput(field, "email")
-       }
-       else if (field.Type == FormElementType.Password)
-       {
+        }
+        else if (field.Type == FormElementType.Password)
+        {
          @RenderInput(field, "password")
-       }
-       else if (field.Type == FormElementType.Url)
-       {
+        }
+        else if (field.Type == FormElementType.Url)
+        {
          @RenderInput(field, "url")
-       }
-       else if (field.Type == FormElementType.Phone)
-       {
+        }
+        else if (field.Type == FormElementType.Phone)
+        {
          @RenderInput(field, "tel", @"[0-9\s\-\+\(\)\/]+", "Nur Zahlen und Sonderzeichen (+, -, /, Leerzeichen, Klammern) erlaubt")
-       }
-      </div>
+        }
+       </div>
+      }
      }
     }
    }

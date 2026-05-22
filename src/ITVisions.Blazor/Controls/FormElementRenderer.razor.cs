@@ -46,6 +46,7 @@ public partial class FormElementRenderer
   }
  }
 
+ #region ----------------- Rendering
  private void BuildPages()
  {
   Pages.Clear();
@@ -143,6 +144,50 @@ public partial class FormElementRenderer
   }
  }
 
+ private RenderFragment RenderInput(FormElement field, string inputType, string pattern = null, string title = null, int? min = null, int? max = null) => builder =>
+ {
+  builder.OpenElement(0, "input");
+  builder.AddAttribute(1, "type", inputType);
+  builder.AddAttribute(2, "class", GetFieldCssClass(field, "form-control"));
+  builder.AddAttribute(3, "value", BindConverter.FormatValue(field.ValueString));
+  if (!string.IsNullOrWhiteSpace(pattern))
+  {
+   builder.AddAttribute(4, "pattern", pattern);
+  }
+  if (!string.IsNullOrWhiteSpace(title))
+  {
+   builder.AddAttribute(5, "title", title);
+  }
+  if (min.HasValue)
+  {
+   builder.AddAttribute(6, "min", min.Value);
+  }
+  if (max.HasValue)
+  {
+   builder.AddAttribute(7, "max", max.Value);
+  }
+  builder.AddAttribute(8, "required", field.Required);
+  builder.AddAttribute(9, "onchange", EventCallback.Factory.CreateBinder<string>(this, async value =>
+  {
+   field.ValueString = value;
+   await OnValuesChanged.InvokeAsync(FormElements);
+  }, field.ValueString));
+  builder.SetUpdatesAttributeName("value");
+  builder.CloseElement();
+ };
+
+ private string GetFieldCssClass(FormElement field, string baseClass)
+ {
+  var cssClass = baseClass;
+  if (InvalidFieldKeys.Contains(field.Key))
+  {
+   cssClass += " is-invalid";
+  }
+  return cssClass;
+ }
+ #endregion
+
+ #region ----------------- Steuerelementverhalten
  private void ToggleSection(string sectionKey)
  {
   if (CollapsedSections.Contains(sectionKey))
@@ -178,6 +223,10 @@ public partial class FormElementRenderer
   field.ValueString = string.Join("| ", selectedValues);
   NotifyValuesChanged();
  }
+
+ #endregion
+
+ #region ----------------- Validierung
 
  private bool ValidateCurrentPage()
  {
@@ -270,16 +319,6 @@ public partial class FormElementRenderer
   }
  }
 
- private string GetFieldCssClass(FormElement field, string baseClass)
- {
-  var cssClass = baseClass;
-  if (InvalidFieldKeys.Contains(field.Key))
-  {
-   cssClass += " is-invalid";
-  }
-  return cssClass;
- }
-
  private async Task OnSubmit()
  {
   // Validierung aller Pflichtfelder und Formate beim finalen Submit
@@ -332,35 +371,6 @@ public partial class FormElementRenderer
   await OnValuesChanged.InvokeAsync(FormElements);
   await OnSubmited.InvokeAsync(FormElements);
  }
+ #endregion
 
- public FormElementList GetFormElements()
- {
-  return FormElements;
- }
-
- private string RenderMarkdown(string text)
- {
-  if (string.IsNullOrWhiteSpace(text))
-   return text;
-
-  // Einfache Markdown-Konvertierung
-  var html = text;
-
-  // **Bold**
-  html = System.Text.RegularExpressions.Regex.Replace(html, @"\*\*(.*?)\*\*", "<strong>$1</strong>");
-
-  // *Italic*
-  html = System.Text.RegularExpressions.Regex.Replace(html, @"\*(.*?)\*", "<em>$1</em>");
-
-  // [Link](url)
-  html = System.Text.RegularExpressions.Regex.Replace(html, @"\[(.*?)\]\((.*?)\)", "<a href=\"$2\" target=\"_blank\">$1</a>");
-
-  // `Code`
-  html = System.Text.RegularExpressions.Regex.Replace(html, @"`(.*?)`", "<code>$1</code>");
-
-  // Line breaks
-  html = html.Replace("\n", "<br>");
-
-  return html;
- }
 }

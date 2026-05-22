@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace ITVisions.Blazor.Controls;
 
-public partial class TextTemplateForm
+public partial class FormElementRenderer
 {
  [Parameter]
  public string Template { get; set; }

@@ -99,157 +99,260 @@ public static class TextTemplateFormParser
  }
 
  /// <summary>
- /// Feld auswerten
+ /// Ein Eingabefeld auswerten
  /// </summary>
  private static void ParseField(string line, string currentSection, ref int fieldCounter, FormElementList FormElements)
  {
-  var isRequired = line.StartsWith("+");
-  var fieldLine = line.TrimStart('-', '+').Trim();
-  var parts = fieldLine.Split(':', 2);
-
-  string label;
-  string fieldDef;
-  string tooltipNote = null;
-
-  // Wenn nur Feldname ohne ":", dann als [Text] behandeln
-  if (parts.Length == 1)
-  {
-   label = parts[0].Trim();
-   fieldDef = "[Text]";
-  }
-  else if (parts.Length == 2)
-  {
-   label = parts[0].Trim();
-   fieldDef = parts[1].Trim();
-  }
-  else
+  ParseFieldContext parseContext = CreateParseFieldContext(line, currentSection, FormElements);
+  if (parseContext == null)
   {
    return;
   }
 
-  // Prüfe ZUERST auf Standardwert im Label (für Felder ohne Doppelpunkt OHNE Tooltip)
-  string defaultValue = null;
-  if (parts.Length == 1 && label.Contains(" = "))
-  {
-   var defaultParts = label.Split(new[] { " = " }, StringSplitOptions.None);
-   if (defaultParts.Length >= 2)
-   {
-    label = defaultParts[0].Trim();
-    defaultValue = string.Join(" = ", defaultParts.Skip(1)).Trim().Trim('"');
-   }
-  }
-
-  // Prüfe auf Tooltip-Note in geschweiften Klammern
-  if (label.Contains("{") && label.Contains("}"))
-  {
-   var startIndex = label.IndexOf('{');
-   var endIndex = label.IndexOf('}');
-   if (endIndex > startIndex)
-   {
-    tooltipNote = label.Substring(startIndex + 1, endIndex - startIndex - 1).Trim();
-    var labelRemainder = label.Substring(endIndex + 1).Trim();
-    label = label.Substring(0, startIndex).Trim();
-
-    // Überschreibe defaultValue wenn nach Tooltip noch ein = kommt
-    if (labelRemainder.Contains(" = "))
-    {
-     var defaultParts = labelRemainder.Split(new[] { " = " }, StringSplitOptions.None);
-     if (defaultParts.Length >= 2)
-     {
-      defaultValue = string.Join(" = ", defaultParts.Skip(1)).Trim().Trim('"');
-     }
-    }
-   }
-  }
-
-  // Prüfe auf Standardwert (= wert am Ende) im fieldDef
-  if (fieldDef.Contains(" = "))
-  {
-   var defaultParts = fieldDef.Split(new[] { " = " }, StringSplitOptions.None);
-   if (defaultParts.Length == 2)
-   {
-    fieldDef = defaultParts[0].Trim();
-    defaultValue = defaultParts[1].Trim().Trim('"');
-   }
-  }
-
-  // Falls Key bereits vergeben ist, hänge GUID an
-  if (FormElements.Any(f => f.Label == label))
-  {
-   label = $"{label}_!DOPPELT!_{Guid.NewGuid():N}";
-  }
-
-  var baseKey = $"{currentSection}_{label}".Replace(" ", "_").Replace(":", "");
-  var key = baseKey;
-
-  // Falls Key bereits vergeben ist, hänge GUID an
-  if (FormElements.Any(f => f.Key == key))
-  {
-   key = $"{baseKey}_{Guid.NewGuid():N}";
-  }
-
   fieldCounter++;
 
-  // Prüfe auf verschiedene Feldtypen
+  var key = parseContext.Key;
+  var label = parseContext.Label;
+  var fieldDef = parseContext.FieldDefinition;
+  var isRequired = parseContext.IsRequired;
+  var defaultValue = parseContext.DefaultValue;
+  var tooltipNote = parseContext.TooltipNote;
+
   if (fieldDef.Contains("* "))
   {
-   ParseRadioButtonsOrCheckbox(key, currentSection, label, fieldDef, isRequired, defaultValue, tooltipNote, FormElements);
+   ParseCheckboxOrRadioButtons(key, currentSection, label, fieldDef, isRequired, defaultValue, tooltipNote, FormElements);
+   return;
   }
-  else if (fieldDef.Contains("[Multiselect]", StringComparison.OrdinalIgnoreCase))
+
+  if (fieldDef.Contains("[Multiselect]", StringComparison.OrdinalIgnoreCase))
   {
    ParseMultiselect(key, currentSection, label, fieldDef, isRequired, defaultValue, tooltipNote, FormElements);
+   return;
   }
-  else if (fieldDef.Contains("[Rating]", StringComparison.OrdinalIgnoreCase))
+
+  if (fieldDef.Contains("[Rating]", StringComparison.OrdinalIgnoreCase))
   {
    ParseRating(key, currentSection, label, fieldDef, isRequired, defaultValue, tooltipNote, FormElements);
+   return;
   }
-  else if (fieldDef.Contains("[Range]", StringComparison.OrdinalIgnoreCase))
+
+  if (fieldDef.Contains("[Range]", StringComparison.OrdinalIgnoreCase))
   {
    ParseRange(key, currentSection, label, fieldDef, isRequired, defaultValue, tooltipNote, FormElements);
+   return;
   }
-  else if (fieldDef.Contains("[Textarea]", StringComparison.OrdinalIgnoreCase) || fieldDef.Contains("[Textarea:", StringComparison.OrdinalIgnoreCase))
+
+  if (fieldDef.Contains("[Textarea]", StringComparison.OrdinalIgnoreCase) || fieldDef.Contains("[Textarea:", StringComparison.OrdinalIgnoreCase))
   {
    ParseTextArea(key, currentSection, label, fieldDef, isRequired, defaultValue, tooltipNote, FormElements);
+   return;
   }
-  else if (fieldDef.Contains("[Number]", StringComparison.OrdinalIgnoreCase))
+
+  if (fieldDef.Contains("[Number]", StringComparison.OrdinalIgnoreCase))
   {
    ParseNumber(key, currentSection, label, fieldDef, isRequired, defaultValue, tooltipNote, FormElements);
+   return;
   }
-  else if (fieldDef.Contains("[Date]", StringComparison.OrdinalIgnoreCase))
+
+  if (fieldDef.Contains("[Date]", StringComparison.OrdinalIgnoreCase))
   {
    ParseDate(key, currentSection, label, isRequired, defaultValue, tooltipNote, FormElements);
+   return;
   }
-  else if (fieldDef.Contains("[Time]", StringComparison.OrdinalIgnoreCase))
+
+  if (fieldDef.Contains("[Time]", StringComparison.OrdinalIgnoreCase))
   {
    ParseTime(key, currentSection, label, isRequired, defaultValue, tooltipNote, FormElements);
+   return;
   }
-  else if (fieldDef.Contains("[Email]", StringComparison.OrdinalIgnoreCase))
+
+  if (fieldDef.Contains("[Email]", StringComparison.OrdinalIgnoreCase))
   {
    ParseEmail(key, currentSection, label, isRequired, defaultValue, tooltipNote, FormElements);
+   return;
   }
-  else if (fieldDef.Contains("[Password]", StringComparison.OrdinalIgnoreCase))
+
+  if (fieldDef.Contains("[Password]", StringComparison.OrdinalIgnoreCase))
   {
    ParsePassword(key, currentSection, label, isRequired, defaultValue, tooltipNote, FormElements);
+   return;
   }
-  else if (fieldDef.Contains("[Url]", StringComparison.OrdinalIgnoreCase))
+
+  if (fieldDef.Contains("[Url]", StringComparison.OrdinalIgnoreCase))
   {
    ParseUrl(key, currentSection, label, isRequired, defaultValue, tooltipNote, FormElements);
+   return;
   }
-  else if (fieldDef.Contains("[Phone]", StringComparison.OrdinalIgnoreCase))
+
+  if (fieldDef.Contains("[Phone]", StringComparison.OrdinalIgnoreCase))
   {
    ParsePhone(key, currentSection, label, isRequired, defaultValue, tooltipNote, FormElements);
+   return;
   }
-  else if (fieldDef.Contains("___") || fieldDef.Contains("[Text]", StringComparison.OrdinalIgnoreCase))
+
+  if (fieldDef.Contains("___") || fieldDef.Contains("[Text]", StringComparison.OrdinalIgnoreCase))
   {
    ParseText(key, currentSection, label, isRequired, defaultValue, tooltipNote, FormElements);
+   return;
   }
-  else if (fieldDef.Contains("|"))
+
+  if (fieldDef.Contains("|"))
   {
    ParseSelect(key, currentSection, label, fieldDef, isRequired, defaultValue, tooltipNote, FormElements);
   }
  }
 
- private static void ParseRadioButtonsOrCheckbox(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, string tooltipNote, FormElementList FormElements)
+ private static ParseFieldContext CreateParseFieldContext(string line, string currentSection, FormElementList FormElements)
+ {
+  var isRequired = line.StartsWith("+");
+  var fieldLine = line.TrimStart('-', '+').Trim();
+  var parts = fieldLine.Split(':', 2);
+
+  if (!TryGetLabelAndFieldDefinition(parts, out var label, out var fieldDef))
+  {
+   return null;
+  }
+
+  var defaultValue = ExtractDefaultValueFromLabel(parts, ref label);
+  var tooltipNote = ExtractTooltipNote(ref label, ref defaultValue);
+  ExtractDefaultValueFromFieldDefinition(ref fieldDef, ref defaultValue);
+  label = EnsureUniqueLabel(label, FormElements);
+  var key = CreateUniqueKey(currentSection, label, FormElements);
+
+  return new ParseFieldContext
+  {
+   CurrentSection = currentSection,
+   Key = key,
+   Label = label,
+   FieldDefinition = fieldDef,
+   IsRequired = isRequired,
+   DefaultValue = defaultValue,
+   TooltipNote = tooltipNote
+  };
+ }
+
+ private static bool TryGetLabelAndFieldDefinition(string[] parts, out string label, out string fieldDef)
+ {
+  label = null;
+  fieldDef = null;
+
+  if (parts.Length == 1)
+  {
+   label = parts[0].Trim();
+   fieldDef = "[Text]";
+   return true;
+  }
+
+  if (parts.Length == 2)
+  {
+   label = parts[0].Trim();
+   fieldDef = parts[1].Trim();
+   return true;
+  }
+
+  return false;
+ }
+
+ private static string ExtractDefaultValueFromLabel(string[] parts, ref string label)
+ {
+  if (parts.Length != 1 || !label.Contains(" = "))
+  {
+   return null;
+  }
+
+  var defaultParts = label.Split(new[] { " = " }, StringSplitOptions.None);
+  if (defaultParts.Length < 2)
+  {
+   return null;
+  }
+
+  label = defaultParts[0].Trim();
+  return string.Join(" = ", defaultParts.Skip(1)).Trim().Trim('"');
+ }
+
+ private static string ExtractTooltipNote(ref string label, ref string defaultValue)
+ {
+  if (!label.Contains("{") || !label.Contains("}"))
+  {
+   return null;
+  }
+
+  var startIndex = label.IndexOf('{');
+  var endIndex = label.IndexOf('}');
+  if (endIndex <= startIndex)
+  {
+   return null;
+  }
+
+  var tooltipNote = label.Substring(startIndex + 1, endIndex - startIndex - 1).Trim();
+  var labelRemainder = label.Substring(endIndex + 1).Trim();
+  label = label.Substring(0, startIndex).Trim();
+
+  if (labelRemainder.Contains(" = "))
+  {
+   var defaultParts = labelRemainder.Split(new[] { " = " }, StringSplitOptions.None);
+   if (defaultParts.Length >= 2)
+   {
+    defaultValue = string.Join(" = ", defaultParts.Skip(1)).Trim().Trim('"');
+   }
+  }
+
+  return tooltipNote;
+ }
+
+ private static void ExtractDefaultValueFromFieldDefinition(ref string fieldDef, ref string defaultValue)
+ {
+  if (!fieldDef.Contains(" = "))
+  {
+   return;
+  }
+
+  var defaultParts = fieldDef.Split(new[] { " = " }, StringSplitOptions.None);
+  if (defaultParts.Length != 2)
+  {
+   return;
+  }
+
+  fieldDef = defaultParts[0].Trim();
+  defaultValue = defaultParts[1].Trim().Trim('"');
+ }
+
+ private static string EnsureUniqueLabel(string label, FormElementList FormElements)
+ {
+  if (!FormElements.Any(f => f.Label == label))
+  {
+   return label;
+  }
+
+  return $"{label}_!DOPPELT!_{Guid.NewGuid():N}";
+ }
+
+ /// <summary>
+ /// Eindeutiger Schlüssel pro Feld aus dem Kapitelnamen und dem Label (wenn diese nicht eindeutig sind, wird zusätzlich eine GUID eingefügt in die ID) erzeugen
+ /// </summary>
+ private static string CreateUniqueKey(string currentSection, string label, FormElementList FormElements)
+ {
+  var baseKey = $"{currentSection}_{label}".Replace(" ", "_").Replace(":", "");
+  if (!FormElements.Any(f => f.Key == baseKey))
+  {
+   return baseKey;
+  }
+
+  return $"{baseKey}_{Guid.NewGuid():N}";
+ }
+
+ private sealed class ParseFieldContext
+ {
+  public string CurrentSection { get; set; }
+  public string Key { get; set; }
+  public string Label { get; set; }
+  public string FieldDefinition { get; set; }
+  public bool IsRequired { get; set; }
+  public string DefaultValue { get; set; }
+  public string TooltipNote { get; set; }
+ }
+
+ private static void ParseCheckboxOrRadioButtons(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, string tooltipNote, FormElementList FormElements)
  {
   var optionParts = fieldDef.Split(new[] { "* " }, StringSplitOptions.RemoveEmptyEntries);
   var options = optionParts

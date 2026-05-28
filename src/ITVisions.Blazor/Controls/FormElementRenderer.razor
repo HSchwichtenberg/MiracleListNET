@@ -1,13 +1,12 @@
 ﻿@using ITVisions.Blazor.Controls
 @using ITVisions
+@using ITVisions.Metadata
 
 <Debug>
- @Template
-
- @FormElements.Count
+ FormElements=@FormElements.Count Pages=@Pages.Count
 </Debug>
 
-@if (!string.IsNullOrWhiteSpace(Template) && FormElements != null && FormElements.Any())
+@if (FormElements != null && FormElements.Any())
 {
 
  <EditForm Model="this" OnValidSubmit="OnSubmit">
@@ -262,4 +261,46 @@
    </div>
   </div>
  </EditForm>
+
+ @* Debug-Ausgabe *@
+ <Debug>
+ <div class="card">
+  <div class="card-header">
+   <h5>Debug: FormElements (@FormElements?.Count Elemente)</h5>
+  </div>
+  <div class="card-body">
+   <small>
+    @if (FormElements != null)
+    {
+     <table class="table table-sm table-striped">
+      <thead>
+       <tr>
+        <th>Key</th>
+        <th>Label</th>
+        <th>Type</th>
+        <th>Value</th>
+        <th>Required</th>
+        <th>Regex</th>
+        <th>Options</th>
+       </tr>
+      </thead>
+      <tbody>
+       @foreach (var element in FormElements)
+       {
+        <tr>
+         <td><code>@element.Key</code></td>
+         <td>@element.Label</td>
+         <td><span class="badge bg-secondary">@element.Type</span></td>
+         <td>@element.Value</td>
+         <td>@(element.Required ? "✓" : "")</td>
+         <td><code>@element.Regex</code></td>
+         <td>@(element.Options?.Any() == true ? string.Join(", ", element.Options) : "")</td>
+        </tr>
+       }
+      </tbody>
+     </table>
+    }
+   </small>
+  </div>
+ </div></Debug>
 }

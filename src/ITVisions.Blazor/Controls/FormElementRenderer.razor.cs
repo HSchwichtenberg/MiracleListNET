@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ITVisions.Metadata;
 using Microsoft.AspNetCore.Components;
-
 namespace ITVisions.Blazor.Controls;
 
 public partial class FormElementRenderer
@@ -15,7 +15,7 @@ public partial class FormElementRenderer
  public EventCallback<FormElementList> OnValuesChanged { get; set; }
 
  [Parameter]
- public EventCallback<FormElementList> OnSubmited { get; set; }
+ public EventCallback<FormElementList> OnSubmitted { get; set; }
 
  [Parameter]
  public bool ShowSubmitButton { get; set; } = true;
@@ -23,7 +23,8 @@ public partial class FormElementRenderer
  [Parameter]
  public string SubmitButtonText { get; set; } = "Absenden";
 
- private FormElementList FormElements { get; set; } = new();
+ [Parameter]
+ public FormElementList FormElements { get; set; } = new();
  private string ValidationErrorMessage { get; set; } = "";
  private HashSet<string> CollapsedSections { get; set; } = new();
  private List<FormPage> Pages { get; set; } = new();
@@ -42,6 +43,11 @@ public partial class FormElementRenderer
   if (!string.IsNullOrEmpty(Template))
   {
    FormElements = TextTemplateFormParser.Parse(Template);
+   BuildPages();
+  }
+  else if (FormElements != null && FormElements.Any())
+  {
+   // Wenn FormElements direkt übergeben wurden (ohne Template)
    BuildPages();
   }
  }
@@ -240,7 +246,7 @@ public partial class FormElementRenderer
   }
 
   await OnValuesChanged.InvokeAsync(FormElements);
-  await OnSubmited.InvokeAsync(FormElements);
+  await OnSubmitted.InvokeAsync(FormElements);
  }
 
  /// <summary>

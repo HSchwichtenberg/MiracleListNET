@@ -306,6 +306,19 @@ public partial class FormElementRenderer
   if (string.IsNullOrWhiteSpace(field.ValueString))
    return true;
 
+  // Regex-Validierung (wenn vorhanden)
+  if (!string.IsNullOrWhiteSpace(field.Regex))
+  {
+   try
+   {
+    return System.Text.RegularExpressions.Regex.IsMatch(field.ValueString, field.Regex);
+   }
+   catch (System.Text.RegularExpressions.RegexParseException)
+   {
+    // Ungültiger Regex-Pattern -> ignorieren und mit anderen Validierungen fortfahren
+   }
+  }
+
   switch (field.Type)
   {
    case FormElementType.Email:

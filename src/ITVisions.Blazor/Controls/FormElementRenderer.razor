@@ -175,7 +175,7 @@
         }
         else if (field.Type == FormElementType.Text)
         {
-         @RenderInput(field, "text")
+         @RenderInput(field, "text", field.Regex)
         }
         else if (field.Type == FormElementType.TextArea)
         {

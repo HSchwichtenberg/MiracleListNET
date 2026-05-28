@@ -117,6 +117,7 @@ public static class TextTemplateFormParser
   var isRequired = parseContext.IsRequired;
   var defaultValue = parseContext.DefaultValue;
   var tooltipNote = parseContext.TooltipNote;
+  var regexPattern = parseContext.RegexPattern;
 
   if (fieldDef.Contains("* "))
   {
@@ -192,7 +193,7 @@ public static class TextTemplateFormParser
 
   if (fieldDef.Contains("___") || fieldDef.Contains("[Text]", StringComparison.OrdinalIgnoreCase))
   {
-   ParseText(key, currentSection, label, isRequired, defaultValue, tooltipNote, FormElements);
+   ParseText(key, currentSection, label, isRequired, defaultValue, tooltipNote, regexPattern, FormElements);
    return;
   }
 
@@ -202,6 +203,9 @@ public static class TextTemplateFormParser
   }
  }
 
+ /// <summary>
+ /// Zusatzinformationen aus der Zeile extrahieren (z.B. ob das Feld erforderlich ist, Standardwert, Tooltip-Notiz, Regex-Pattern) und Kontext für die weitere Verarbeitung erstellen
+ /// </summary>
  private static ParseFieldContext CreateParseFieldContext(string line, string currentSection, FormElementList FormElements)
  {
   var isRequired = line.StartsWith("+");
@@ -215,6 +219,7 @@ public static class TextTemplateFormParser
 
   var defaultValue = ExtractDefaultValueFromLabel(parts, ref label);
   var tooltipNote = ExtractTooltipNote(ref label, ref defaultValue);
+  var regexPattern = ExtractRegexPattern(ref fieldDef);
   ExtractDefaultValueFromFieldDefinition(ref fieldDef, ref defaultValue);
   label = EnsureUniqueLabel(label, FormElements);
   var key = CreateUniqueKey(currentSection, label, FormElements);
@@ -227,7 +232,8 @@ public static class TextTemplateFormParser
    FieldDefinition = fieldDef,
    IsRequired = isRequired,
    DefaultValue = defaultValue,
-   TooltipNote = tooltipNote
+   TooltipNote = tooltipNote,
+   RegexPattern = regexPattern
   };
  }
 
@@ -300,6 +306,38 @@ public static class TextTemplateFormParser
   return tooltipNote;
  }
 
+ private static string ExtractRegexPattern(ref string fieldDef)
+ {
+  if (string.IsNullOrWhiteSpace(fieldDef))
+  {
+   return null;
+  }
+
+  var trimmedFieldDef = fieldDef.Trim();
+
+  // Suche nach Anführungszeichen am Ende der Felddefinition
+  var lastQuoteIndex = trimmedFieldDef.LastIndexOf('"');
+  if (lastQuoteIndex <= 0)
+  {
+   return null;
+  }
+
+  // Suche nach dem öffnenden Anführungszeichen
+  var firstQuoteIndex = trimmedFieldDef.LastIndexOf('"', lastQuoteIndex - 1);
+  if (firstQuoteIndex < 0)
+  {
+   return null;
+  }
+
+  // Extrahiere den Regex-Pattern
+  var regexPattern = trimmedFieldDef.Substring(firstQuoteIndex + 1, lastQuoteIndex - firstQuoteIndex - 1);
+
+  // Entferne den Regex-Teil aus der Felddefinition
+  fieldDef = trimmedFieldDef.Substring(0, firstQuoteIndex).Trim();
+
+  return regexPattern;
+ }
+
  private static void ExtractDefaultValueFromFieldDefinition(ref string fieldDef, ref string defaultValue)
  {
   if (!fieldDef.Contains(" = "))
@@ -350,6 +388,7 @@ public static class TextTemplateFormParser
   public bool IsRequired { get; set; }
   public string DefaultValue { get; set; }
   public string TooltipNote { get; set; }
+  public string RegexPattern { get; set; }
  }
 
  private static void ParseCheckboxOrRadioButtons(string key, string currentSection, string label, string fieldDef, bool isRequired, string defaultValue, string tooltipNote, FormElementList FormElements)
@@ -550,7 +589,7 @@ public static class TextTemplateFormParser
   });
  }
 
- private static void ParseText(string key, string currentSection, string label, bool isRequired, string defaultValue, string tooltipNote, FormElementList FormElements)
+ private static void ParseText(string key, string currentSection, string label, bool isRequired, string defaultValue, string tooltipNote, string regexPattern, FormElementList FormElements)
  {
   FormElements.Add(new FormElement
   {
@@ -559,7 +598,8 @@ public static class TextTemplateFormParser
    Type = FormElementType.Text,
    Required = isRequired,
    Value = defaultValue,
-   Note = tooltipNote
+   Note = tooltipNote,
+   Regex = regexPattern
   });
  }
 

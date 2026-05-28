@@ -229,7 +229,7 @@ public partial class FormElementRenderer
  #region ----------------- Validierung
 
  /// <summary>
- /// Absenden mit vorherige Validierung
+ /// Absenden mit vorheriger Validierung
  /// </summary>
  private async Task OnSubmit()
  {

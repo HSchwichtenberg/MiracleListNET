@@ -288,6 +288,18 @@ public partial class FormElementRenderer
  private void ValidateField(FormElement field, List<string> missingFields, List<string> invalidFields)
  {
   var isEmpty = string.IsNullOrWhiteSpace(field.ValueString);
+  if (field.Type == FormElementType.Date)
+  {
+   // ist leer, wenn 1.1.0001 oder ungültiges Datum
+   if (isEmpty || !DateTime.TryParse(field.ValueString, out DateTime dateValue) || dateValue == DateTime.MinValue)
+   {
+    isEmpty = true;
+   }
+   else
+   {
+    isEmpty = false;
+   }
+  }
 
   // Pflichtfeld?
   if (field.Required && isEmpty)

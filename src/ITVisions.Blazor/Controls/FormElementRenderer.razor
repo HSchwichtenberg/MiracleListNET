@@ -1,6 +1,5 @@
 ﻿@using ITVisions.Blazor.Controls
 @using ITVisions
-@using ITVisions.Metadata
 
 <Debug>
  FormElements=@FormElements.Count Pages=@Pages.Count
@@ -116,18 +115,27 @@
       processedIndices.Add(j);
      }
 
-     @* Rendere Feldgruppe horizontal *@
+     @* Eingabefelder erzeugen *@
      if (groupFields.Any())
      {
-      @if (!isAutoGroup)
+      var baseColSize = GetOptimalColumnSize(groupFields.Count);
+      var usedColumns = baseColSize * (groupFields.Count - 1);
+      var lastColSize = 12 - usedColumns;
+
+      @if (!isAutoGroup) 
       {
+       @* Gruppe mit Legende *@
        <fieldset class="group-fieldset mb-3">
         <legend class="group-legend">@field.Group</legend>
         <div class="row g-3">
-         @foreach (var groupField in groupFields)
+         @for (int idx = 0; idx < groupFields.Count; idx++)
          {
-          <div class="col-sm-@(12 / groupFields.Count) col-12">
-           @RenderSingleField(groupField)
+          var groupField = groupFields[idx];
+          var isLast = idx == groupFields.Count - 1;
+          var colSize = isLast ? lastColSize : baseColSize;
+
+          <div class="col-sm-@colSize col-12">
+           @RenderEditableFormElement(groupField)
           </div>
          }
         </div>
@@ -135,12 +143,17 @@
       }
       else
       {
+       @* Gruppe ohne Legende *@
        <div class="mb-3">
         <div class="row g-3">
-         @foreach (var groupField in groupFields)
+         @for (int idx = 0; idx < groupFields.Count; idx++)
          {
-          <div class="col-sm-@(12 / groupFields.Count) col-12">
-           @RenderSingleField(groupField)
+          var groupField = groupFields[idx];
+          var isLast = idx == groupFields.Count - 1;
+          var colSize = isLast ? lastColSize : baseColSize;
+
+          <div class="col-sm-@colSize col-12">
+           @RenderEditableFormElement(groupField)
           </div>
          }
         </div>
@@ -152,7 +165,7 @@
     {
      @* Einzelfeld ohne Gruppe *@
      <div class="form-group">
-      @RenderSingleField(field)
+      @RenderEditableFormElement(field)
      </div>
      processedIndices.Add(i);
     }

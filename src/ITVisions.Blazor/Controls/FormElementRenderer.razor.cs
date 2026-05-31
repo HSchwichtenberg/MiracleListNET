@@ -142,71 +142,13 @@ public partial class FormElementRenderer
   }
  }
 
- private RenderFragment RenderInput(FormElement field, string inputType, string pattern = null, string title = null, int? min = null, int? max = null) => builder =>
- {
-  builder.OpenElement(0, "input");
-  builder.AddAttribute(1, "type", inputType);
-  builder.AddAttribute(2, "class", GetFieldCssClass(field, "form-control"));
-  builder.AddAttribute(3, "value", BindConverter.FormatValue(field.ValueString));
-  if (!string.IsNullOrWhiteSpace(pattern))
-  {
-   builder.AddAttribute(4, "pattern", pattern);
-  }
-  if (!string.IsNullOrWhiteSpace(title))
-  {
-   builder.AddAttribute(5, "title", title);
-  }
-  if (min.HasValue)
-  {
-   builder.AddAttribute(6, "min", min.Value);
-  }
-  if (max.HasValue)
-  {
-   builder.AddAttribute(7, "max", max.Value);
-  }
-  builder.AddAttribute(8, "required", field.Required);
-  builder.AddAttribute(9, "disabled", field.ReadOnly);
-  builder.AddAttribute(10, "onchange", EventCallback.Factory.CreateBinder<string>(this, async value =>
-  {
-   field.ValueString = value;
-   await OnValuesChanged.InvokeAsync(FormElements);
-  }, field.ValueString));
-  builder.SetUpdatesAttributeName("value");
-  builder.CloseElement();
- };
-
  /// <summary>
- /// Rendert ein einzelnes Feld (für normales Rendering und Gruppen-Rendering)
+ /// Rendert ein einzelnes FormElement 
  /// </summary>
- private RenderFragment RenderSingleField(FormElement field) => builder =>
+ private RenderFragment RenderEditableFormElement(FormElement field) => builder =>
  {
-  // Label
-  if (!string.IsNullOrEmpty(field.Label))
-  {
-   builder.OpenElement(0, "label");
-   builder.AddAttribute(1, "class", "fw-bold");
-   builder.AddContent(2, field.Label);
-
-   if (field.Required)
-   {
-    builder.OpenElement(3, "span");
-    builder.AddAttribute(4, "style", "margin-left:5px");
-    builder.AddAttribute(5, "title", "Pflichtfeld");
-    builder.AddAttribute(6, "class", "text-danger");
-    builder.AddContent(7, "*");
-    builder.CloseElement();
-   }
-
-   if (!string.IsNullOrEmpty(field.Note))
-   {
-    builder.OpenComponent<InfoIcon>(8);
-    builder.AddAttribute(9, "Icon", "ℹ️");
-    builder.AddAttribute(10, "Text", field.Note);
-    builder.CloseComponent();
-   }
-
-   builder.CloseElement(); // label
-  }
+  // Label mit Required-Stern und Info-Icon
+  builder.AddContent(0, RenderLabel(field));
 
   // Eingabe-Element basierend auf Typ
   switch (field.Type)
@@ -216,61 +158,41 @@ public partial class FormElementRenderer
     builder.AddAttribute(12, "class", "d-flex gap-3");
     foreach (var option in field.Options)
     {
-     builder.OpenElement(13, "div");
-     builder.AddAttribute(14, "class", "form-check");
-
-     builder.OpenElement(15, "input");
-     builder.AddAttribute(16, "class", "form-check-input");
-     builder.AddAttribute(17, "type", "radio");
-     builder.AddAttribute(18, "name", field.Key);
-     builder.AddAttribute(19, "id", $"{field.Key}_{option}");
-     builder.AddAttribute(20, "value", option);
-     builder.AddAttribute(21, "checked", field.ValueString == option);
-     builder.AddAttribute(22, "disabled", field.ReadOnly);
-     builder.AddAttribute(23, "onchange", EventCallback.Factory.Create(this, () =>
-     {
-      field.ValueString = option;
-      NotifyValuesChanged();
-     }));
-     builder.CloseElement();
-
-     builder.OpenElement(24, "label");
-     builder.AddAttribute(25, "class", "form-check-label");
-     builder.AddAttribute(26, "for", $"{field.Key}_{option}");
-     builder.AddContent(27, option);
-     builder.CloseElement();
-
-     builder.CloseElement(); // form-check div
+     var currentOption = option;
+     builder.AddContent(13, RenderFormCheckItem(
+      inputType: "radio",
+      fieldKey: field.Key,
+      optionId: $"{field.Key}_{option}",
+      optionLabel: option,
+      isChecked: field.ValueString == option,
+      isDisabled: field.ReadOnly,
+      onChange: EventCallback.Factory.Create(this, () =>
+      {
+       field.ValueString = currentOption;
+       NotifyValuesChanged();
+      }),
+      nameAttribute: field.Key
+     ));
     }
     builder.CloseElement(); // d-flex div
     break;
 
    case FormElementType.CheckBox:
-    builder.OpenElement(28, "div");
-    builder.AddAttribute(29, "class", "form-check");
-
-    builder.OpenElement(30, "input");
-    builder.AddAttribute(31, "class", "form-check-input");
-    builder.AddAttribute(32, "type", "checkbox");
-    builder.AddAttribute(33, "id", field.Key);
-    builder.AddAttribute(34, "checked", !string.IsNullOrEmpty(field.ValueString));
-    builder.AddAttribute(35, "disabled", field.ReadOnly);
-    builder.AddAttribute(36, "onchange", EventCallback.Factory.Create<ChangeEventArgs>(this, e =>
-    {
-     var checkboxLabel = field.Options?.Count > 0 ? field.Options[0] : field.Label;
-     field.ValueString = ((bool)e.Value) ? checkboxLabel : "";
-     NotifyValuesChanged();
-    }));
-    builder.CloseElement();
-
-    builder.OpenElement(37, "label");
-    builder.AddAttribute(38, "class", "form-check-label");
-    builder.AddAttribute(39, "for", field.Key);
-    var labelText = field.Options?.Count > 0 ? field.Options[0] : field.Label;
-    builder.AddContent(40, labelText);
-    builder.CloseElement();
-
-    builder.CloseElement(); // form-check div
+    var checkboxLabel = field.Options?.Count > 0 ? field.Options[0] : field.Label;
+    builder.AddContent(28, RenderFormCheckItem(
+     inputType: "checkbox",
+     fieldKey: field.Key,
+     optionId: field.Key,
+     optionLabel: checkboxLabel,
+     isChecked: !string.IsNullOrEmpty(field.ValueString),
+     isDisabled: field.ReadOnly,
+     onChange: EventCallback.Factory.Create<ChangeEventArgs>(this, e =>
+     {
+      var label = field.Options?.Count > 0 ? field.Options[0] : field.Label;
+      field.ValueString = ((bool)e.Value) ? label : "";
+      NotifyValuesChanged();
+     })
+    ));
     break;
 
    case FormElementType.Select:
@@ -308,32 +230,21 @@ public partial class FormElementRenderer
     foreach (var option in field.Options)
     {
      var isSelected = field.ValueString?.Split('|').Select(v => v.Trim()).Contains(option) ?? false;
-
-     builder.OpenElement(55, "div");
-     builder.AddAttribute(56, "class", "form-check");
-
-     builder.OpenElement(57, "input");
-     builder.AddAttribute(58, "class", "form-check-input");
-     builder.AddAttribute(59, "type", "checkbox");
-     builder.AddAttribute(60, "id", $"{field.Key}_{option}");
-     builder.AddAttribute(61, "checked", isSelected);
-     builder.AddAttribute(62, "disabled", field.ReadOnly);
      var currentOption = option;
-     builder.AddAttribute(63, "onchange", EventCallback.Factory.Create<ChangeEventArgs>(this, e =>
-     {
-      HandleMultiselectChange(field, currentOption, (bool)e.Value);
-     }));
-     builder.CloseElement();
-
-     builder.OpenElement(64, "label");
-     builder.AddAttribute(65, "class", "form-check-label");
-     builder.AddAttribute(66, "for", $"{field.Key}_{option}");
-     builder.AddContent(67, option);
-     builder.CloseElement();
-
-     builder.CloseElement(); // form-check div
+     builder.AddContent(55, RenderFormCheckItem(
+      inputType: "checkbox",
+      fieldKey: field.Key,
+      optionId: $"{field.Key}_{option}",
+      optionLabel: option,
+      isChecked: isSelected,
+      isDisabled: field.ReadOnly,
+      onChange: EventCallback.Factory.Create<ChangeEventArgs>(this, e =>
+      {
+       HandleMultiselectChange(field, currentOption, (bool)e.Value);
+      })
+     ));
     }
-    builder.CloseElement(); // d-flex div
+    builder.CloseElement(); // d-flex flex-column div
     break;
 
    case FormElementType.Rating:
@@ -456,6 +367,101 @@ public partial class FormElementRenderer
   }
  };
 
+ private RenderFragment RenderInput(FormElement field, string inputType, string pattern = null, string title = null, int? min = null, int? max = null) => builder =>
+ {
+  builder.OpenElement(0, "input");
+  builder.AddAttribute(1, "type", inputType);
+  builder.AddAttribute(2, "class", GetFieldCssClass(field, "form-control"));
+  builder.AddAttribute(3, "value", BindConverter.FormatValue(field.ValueString));
+  if (!string.IsNullOrWhiteSpace(pattern))
+  {
+   builder.AddAttribute(4, "pattern", pattern);
+  }
+  if (!string.IsNullOrWhiteSpace(title))
+  {
+   builder.AddAttribute(5, "title", title);
+  }
+  if (min.HasValue)
+  {
+   builder.AddAttribute(6, "min", min.Value);
+  }
+  if (max.HasValue)
+  {
+   builder.AddAttribute(7, "max", max.Value);
+  }
+  builder.AddAttribute(8, "required", field.Required);
+  builder.AddAttribute(9, "disabled", field.ReadOnly);
+  builder.AddAttribute(10, "onchange", EventCallback.Factory.CreateBinder<string>(this, async value =>
+  {
+   field.ValueString = value;
+   await OnValuesChanged.InvokeAsync(FormElements);
+  }, field.ValueString));
+  builder.SetUpdatesAttributeName("value");
+  builder.CloseElement();
+ };
+
+ /// <summary>
+ /// Rendert ein form-check Item (Radio-Button oder Checkbox) mit Input und Label
+ /// </summary>
+ private RenderFragment RenderFormCheckItem(string inputType, string fieldKey, string optionId, string optionLabel, bool isChecked, bool isDisabled, object onChange, string nameAttribute = null) => builder =>
+ {
+  builder.OpenElement(0, "div");
+  builder.AddAttribute(1, "class", "form-check");
+
+  builder.OpenElement(2, "input");
+  builder.AddAttribute(3, "class", "form-check-input");
+  builder.AddAttribute(4, "type", inputType);
+  if (!string.IsNullOrEmpty(nameAttribute))
+  {
+   builder.AddAttribute(5, "name", nameAttribute);
+  }
+  builder.AddAttribute(6, "id", optionId);
+  builder.AddAttribute(7, "checked", isChecked);
+  builder.AddAttribute(8, "disabled", isDisabled);
+  builder.AddAttribute(9, "onchange", onChange);
+  builder.CloseElement();
+
+  builder.OpenElement(10, "label");
+  builder.AddAttribute(11, "class", "form-check-label");
+  builder.AddAttribute(12, "for", optionId);
+  builder.AddContent(13, optionLabel);
+  builder.CloseElement();
+
+  builder.CloseElement(); // form-check div
+ };
+
+ /// <summary>
+ /// Rendert das Label eines Felds mit Required-Stern und Info-Icon
+ /// </summary>
+ private RenderFragment RenderLabel(FormElement field) => builder =>
+ {
+  if (!string.IsNullOrEmpty(field.Label))
+  {
+   builder.OpenElement(0, "label");
+   builder.AddAttribute(1, "class", "fw-bold");
+   builder.AddContent(2, field.Label);
+
+   if (field.Required)
+   {
+    builder.OpenElement(3, "span");
+    builder.AddAttribute(4, "style", "margin-left:5px");
+    builder.AddAttribute(5, "title", "Pflichtfeld");
+    builder.AddAttribute(6, "class", "text-danger");
+    builder.AddContent(7, "*");
+    builder.CloseElement();
+   }
+
+   if (!string.IsNullOrEmpty(field.Note))
+   {
+    builder.OpenComponent<InfoIcon>(8);
+    builder.AddAttribute(9, "Icon", "ℹ️");
+    builder.AddAttribute(10, "Text", field.Note);
+    builder.CloseComponent();
+   }
+
+   builder.CloseElement(); // label
+  }
+ };
 
  private string GetFieldCssClass(FormElement field, string baseClass)
  {
@@ -661,6 +667,24 @@ public partial class FormElementRenderer
   }
 
   return string.Join("<br>", errors);
+ }
+
+ /// <summary>
+ /// Berechnet optimale Bootstrap-Spaltenbreite für Gruppenfeldanzahl
+ /// Zielt darauf ab, möglichst alle 12 Grid-Spalten zu nutzen
+ /// </summary>
+ private static int GetOptimalColumnSize(int fieldCount)
+ {
+  return fieldCount switch
+  {
+   1 => 12,  // 1 Feld: volle Breite
+   2 => 6,   // 2 Felder: je 6 Spalten = 12
+   3 => 4,   // 3 Felder: je 4 Spalten = 12
+   4 => 3,   // 4 Felder: je 3 Spalten = 12
+   5 => 2,   // 5 Felder: je 2 Spalten = 10 (besser als 12/5=2 mit nur 10)
+   6 => 2,   // 6 Felder: je 2 Spalten = 12
+   _ => 1    // 7+ Felder: je 1 Spalte (12 von 12 ab 12 Feldern)
+  };
  }
 
  #endregion

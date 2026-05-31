@@ -165,7 +165,7 @@ public partial class FormElementRenderer
       optionId: $"{field.Key}_{option}",
       optionLabel: option,
       isChecked: field.ValueString == option,
-      isDisabled: field.ReadOnly,
+      isDisabled: field.Disabled,
       onChange: EventCallback.Factory.Create(this, () =>
       {
        field.ValueString = currentOption;
@@ -185,7 +185,7 @@ public partial class FormElementRenderer
      optionId: field.Key,
      optionLabel: checkboxLabel,
      isChecked: !string.IsNullOrEmpty(field.ValueString),
-     isDisabled: field.ReadOnly,
+     isDisabled: field.Disabled,
      onChange: EventCallback.Factory.Create<ChangeEventArgs>(this, e =>
      {
       var label = field.Options?.Count > 0 ? field.Options[0] : field.Label;
@@ -200,7 +200,7 @@ public partial class FormElementRenderer
     builder.AddAttribute(42, "class", GetFieldCssClass(field, "form-select"));
     builder.AddAttribute(43, "value", field.ValueString);
     builder.AddAttribute(44, "required", field.Required);
-    builder.AddAttribute(45, "disabled", field.ReadOnly);
+    builder.AddAttribute(45, "disabled", field.Disabled);
     builder.AddAttribute(46, "onchange", EventCallback.Factory.CreateBinder<string>(this, async value =>
     {
      field.ValueString = value;
@@ -237,7 +237,7 @@ public partial class FormElementRenderer
       optionId: $"{field.Key}_{option}",
       optionLabel: option,
       isChecked: isSelected,
-      isDisabled: field.ReadOnly,
+      isDisabled: field.Disabled,
       onChange: EventCallback.Factory.Create<ChangeEventArgs>(this, e =>
       {
        HandleMultiselectChange(field, currentOption, (bool)e.Value);
@@ -257,7 +257,7 @@ public partial class FormElementRenderer
      builder.AddAttribute(71, "type", "button");
      builder.AddAttribute(72, "class", "btn btn-outline-secondary");
      builder.AddAttribute(73, "style", "min-width: 40px;");
-     builder.AddAttribute(74, "disabled", field.ReadOnly);
+     builder.AddAttribute(74, "disabled", field.Disabled);
      var currentOption = option;
      builder.AddAttribute(75, "onclick", EventCallback.Factory.Create(this, () =>
      {
@@ -273,7 +273,7 @@ public partial class FormElementRenderer
      builder.OpenElement(78, "button");
      builder.AddAttribute(79, "type", "button");
      builder.AddAttribute(80, "class", "btn btn-sm btn-link");
-     builder.AddAttribute(81, "disabled", field.ReadOnly);
+     builder.AddAttribute(81, "disabled", field.Disabled);
      builder.AddAttribute(82, "onclick", EventCallback.Factory.Create(this, () =>
      {
       field.ValueString = "";
@@ -297,7 +297,7 @@ public partial class FormElementRenderer
     builder.AddAttribute(91, "min", field.Min);
     builder.AddAttribute(92, "max", field.Max);
     builder.AddAttribute(93, "required", field.Required);
-    builder.AddAttribute(94, "disabled", field.ReadOnly);
+    builder.AddAttribute(94, "disabled", field.Disabled);
     builder.AddAttribute(95, "onchange", EventCallback.Factory.CreateBinder<string>(this, async value =>
     {
      field.ValueString = value;
@@ -322,8 +322,8 @@ public partial class FormElementRenderer
     builder.AddAttribute(102, "rows", rows);
     builder.AddAttribute(103, "value", field.ValueString);
     builder.AddAttribute(104, "required", field.Required);
-    builder.AddAttribute(105, "readonly", field.ReadOnly);
-    builder.AddAttribute(106, "disabled", field.ReadOnly);
+    builder.AddAttribute(105, "readonly", field.Disabled);
+    builder.AddAttribute(106, "disabled", field.Disabled);
     builder.AddAttribute(107, "onchange", EventCallback.Factory.CreateBinder<string>(this, async value =>
     {
      field.ValueString = value;
@@ -390,7 +390,7 @@ public partial class FormElementRenderer
    builder.AddAttribute(7, "max", max.Value);
   }
   builder.AddAttribute(8, "required", field.Required);
-  builder.AddAttribute(9, "disabled", field.ReadOnly);
+  builder.AddAttribute(9, "disabled", field.Disabled);
   builder.AddAttribute(10, "onchange", EventCallback.Factory.CreateBinder<string>(this, async value =>
   {
    field.ValueString = value;

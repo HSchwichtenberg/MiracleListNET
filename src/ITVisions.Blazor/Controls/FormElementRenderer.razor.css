@@ -94,3 +94,22 @@ button:disabled {
  cursor: not-allowed;
  background-color: #e9ecef !important;
 }
+
+/* Gruppen-Label für horizontale Feldgruppen */
+.group-label {
+ display: block;
+ color: #495057;
+ font-size: 1.05rem;
+ padding-bottom: 0.5rem;
+ border-bottom: 1px solid #dee2e6;
+ margin-bottom: 0.75rem;
+}
+
+.form-group {
+ margin-bottom: 1.5rem;
+}
+
+/* Bessere Darstellung für horizontale Feldgruppen */
+.row.g-3 .form-group {
+ margin-bottom: 0;
+}

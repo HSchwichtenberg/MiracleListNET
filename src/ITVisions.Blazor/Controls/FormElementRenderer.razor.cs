@@ -2,14 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ITVisions.Metadata;
 using Microsoft.AspNetCore.Components;
 namespace ITVisions.Blazor.Controls;
 
 public partial class FormElementRenderer
 {
- [Parameter]
- public string Template { get; set; }
 
  [Parameter]
  public EventCallback<FormElementList> OnValuesChanged { get; set; }
@@ -40,12 +37,7 @@ public partial class FormElementRenderer
 
  protected override void OnParametersSet()
  {
-  if (!string.IsNullOrEmpty(Template))
-  {
-   FormElements = MarkdownFormDSLParser.Parse(Template);
-   BuildPages();
-  }
-  else if (FormElements != null && FormElements.Any())
+  if (FormElements != null && FormElements.Any())
   {
    // Wenn FormElements direkt übergeben wurden (ohne Template)
    BuildPages();
@@ -182,6 +174,288 @@ public partial class FormElementRenderer
   builder.SetUpdatesAttributeName("value");
   builder.CloseElement();
  };
+
+ /// <summary>
+ /// Rendert ein einzelnes Feld (für normales Rendering und Gruppen-Rendering)
+ /// </summary>
+ private RenderFragment RenderSingleField(FormElement field) => builder =>
+ {
+  // Label
+  if (!string.IsNullOrEmpty(field.Label))
+  {
+   builder.OpenElement(0, "label");
+   builder.AddAttribute(1, "class", "fw-bold");
+   builder.AddContent(2, field.Label);
+
+   if (field.Required)
+   {
+    builder.OpenElement(3, "span");
+    builder.AddAttribute(4, "style", "margin-left:5px");
+    builder.AddAttribute(5, "title", "Pflichtfeld");
+    builder.AddAttribute(6, "class", "text-danger");
+    builder.AddContent(7, "*");
+    builder.CloseElement();
+   }
+
+   if (!string.IsNullOrEmpty(field.Note))
+   {
+    builder.OpenComponent<InfoIcon>(8);
+    builder.AddAttribute(9, "Icon", "ℹ️");
+    builder.AddAttribute(10, "Text", field.Note);
+    builder.CloseComponent();
+   }
+
+   builder.CloseElement(); // label
+  }
+
+  // Eingabe-Element basierend auf Typ
+  switch (field.Type)
+  {
+   case FormElementType.RadioButtons:
+    builder.OpenElement(11, "div");
+    builder.AddAttribute(12, "class", "d-flex gap-3");
+    foreach (var option in field.Options)
+    {
+     builder.OpenElement(13, "div");
+     builder.AddAttribute(14, "class", "form-check");
+
+     builder.OpenElement(15, "input");
+     builder.AddAttribute(16, "class", "form-check-input");
+     builder.AddAttribute(17, "type", "radio");
+     builder.AddAttribute(18, "name", field.Key);
+     builder.AddAttribute(19, "id", $"{field.Key}_{option}");
+     builder.AddAttribute(20, "value", option);
+     builder.AddAttribute(21, "checked", field.ValueString == option);
+     builder.AddAttribute(22, "disabled", field.ReadOnly);
+     builder.AddAttribute(23, "onchange", EventCallback.Factory.Create(this, () =>
+     {
+      field.ValueString = option;
+      NotifyValuesChanged();
+     }));
+     builder.CloseElement();
+
+     builder.OpenElement(24, "label");
+     builder.AddAttribute(25, "class", "form-check-label");
+     builder.AddAttribute(26, "for", $"{field.Key}_{option}");
+     builder.AddContent(27, option);
+     builder.CloseElement();
+
+     builder.CloseElement(); // form-check div
+    }
+    builder.CloseElement(); // d-flex div
+    break;
+
+   case FormElementType.CheckBox:
+    builder.OpenElement(28, "div");
+    builder.AddAttribute(29, "class", "form-check");
+
+    builder.OpenElement(30, "input");
+    builder.AddAttribute(31, "class", "form-check-input");
+    builder.AddAttribute(32, "type", "checkbox");
+    builder.AddAttribute(33, "id", field.Key);
+    builder.AddAttribute(34, "checked", !string.IsNullOrEmpty(field.ValueString));
+    builder.AddAttribute(35, "disabled", field.ReadOnly);
+    builder.AddAttribute(36, "onchange", EventCallback.Factory.Create<ChangeEventArgs>(this, e =>
+    {
+     var checkboxLabel = field.Options?.Count > 0 ? field.Options[0] : field.Label;
+     field.ValueString = ((bool)e.Value) ? checkboxLabel : "";
+     NotifyValuesChanged();
+    }));
+    builder.CloseElement();
+
+    builder.OpenElement(37, "label");
+    builder.AddAttribute(38, "class", "form-check-label");
+    builder.AddAttribute(39, "for", field.Key);
+    var labelText = field.Options?.Count > 0 ? field.Options[0] : field.Label;
+    builder.AddContent(40, labelText);
+    builder.CloseElement();
+
+    builder.CloseElement(); // form-check div
+    break;
+
+   case FormElementType.Select:
+    builder.OpenElement(41, "select");
+    builder.AddAttribute(42, "class", GetFieldCssClass(field, "form-select"));
+    builder.AddAttribute(43, "value", field.ValueString);
+    builder.AddAttribute(44, "required", field.Required);
+    builder.AddAttribute(45, "disabled", field.ReadOnly);
+    builder.AddAttribute(46, "onchange", EventCallback.Factory.CreateBinder<string>(this, async value =>
+    {
+     field.ValueString = value;
+     await OnValuesChanged.InvokeAsync(FormElements);
+    }, field.ValueString));
+    builder.SetUpdatesAttributeName("value");
+
+    builder.OpenElement(47, "option");
+    builder.AddAttribute(48, "value", "");
+    builder.AddContent(49, "Bitte wählen...");
+    builder.CloseElement();
+
+    foreach (var option in field.Options)
+    {
+     builder.OpenElement(50, "option");
+     builder.AddAttribute(51, "value", option);
+     builder.AddContent(52, option);
+     builder.CloseElement();
+    }
+
+    builder.CloseElement(); // select
+    break;
+
+   case FormElementType.Multiselect:
+    builder.OpenElement(53, "div");
+    builder.AddAttribute(54, "class", "d-flex flex-column gap-2");
+    foreach (var option in field.Options)
+    {
+     var isSelected = field.ValueString?.Split('|').Select(v => v.Trim()).Contains(option) ?? false;
+
+     builder.OpenElement(55, "div");
+     builder.AddAttribute(56, "class", "form-check");
+
+     builder.OpenElement(57, "input");
+     builder.AddAttribute(58, "class", "form-check-input");
+     builder.AddAttribute(59, "type", "checkbox");
+     builder.AddAttribute(60, "id", $"{field.Key}_{option}");
+     builder.AddAttribute(61, "checked", isSelected);
+     builder.AddAttribute(62, "disabled", field.ReadOnly);
+     var currentOption = option;
+     builder.AddAttribute(63, "onchange", EventCallback.Factory.Create<ChangeEventArgs>(this, e =>
+     {
+      HandleMultiselectChange(field, currentOption, (bool)e.Value);
+     }));
+     builder.CloseElement();
+
+     builder.OpenElement(64, "label");
+     builder.AddAttribute(65, "class", "form-check-label");
+     builder.AddAttribute(66, "for", $"{field.Key}_{option}");
+     builder.AddContent(67, option);
+     builder.CloseElement();
+
+     builder.CloseElement(); // form-check div
+    }
+    builder.CloseElement(); // d-flex div
+    break;
+
+   case FormElementType.Rating:
+    builder.OpenElement(68, "div");
+    builder.AddAttribute(69, "class", "d-flex gap-2 align-items-center");
+    foreach (var option in field.Options)
+    {
+     var isSelected = field.ValueString == option;
+     builder.OpenElement(70, "button");
+     builder.AddAttribute(71, "type", "button");
+     builder.AddAttribute(72, "class", "btn btn-outline-secondary");
+     builder.AddAttribute(73, "style", "min-width: 40px;");
+     builder.AddAttribute(74, "disabled", field.ReadOnly);
+     var currentOption = option;
+     builder.AddAttribute(75, "onclick", EventCallback.Factory.Create(this, () =>
+     {
+      field.ValueString = currentOption;
+      NotifyValuesChanged();
+     }));
+     builder.AddContent(76, isSelected ? "★" : "☆");
+     builder.AddContent(77, option);
+     builder.CloseElement();
+    }
+    if (!string.IsNullOrEmpty(field.ValueString))
+    {
+     builder.OpenElement(78, "button");
+     builder.AddAttribute(79, "type", "button");
+     builder.AddAttribute(80, "class", "btn btn-sm btn-link");
+     builder.AddAttribute(81, "disabled", field.ReadOnly);
+     builder.AddAttribute(82, "onclick", EventCallback.Factory.Create(this, () =>
+     {
+      field.ValueString = "";
+      NotifyValuesChanged();
+     }));
+     builder.AddContent(83, "Zurücksetzen");
+     builder.CloseElement();
+    }
+    builder.CloseElement(); // d-flex div
+    break;
+
+   case FormElementType.Range:
+    builder.OpenElement(84, "div");
+    builder.AddAttribute(85, "class", "d-flex gap-3 align-items-center");
+
+    builder.OpenElement(86, "input");
+    builder.AddAttribute(87, "type", "range");
+    builder.AddAttribute(88, "class", "form-range");
+    builder.AddAttribute(89, "style", "flex: 1;");
+    builder.AddAttribute(90, "value", field.ValueString);
+    builder.AddAttribute(91, "min", field.Min);
+    builder.AddAttribute(92, "max", field.Max);
+    builder.AddAttribute(93, "required", field.Required);
+    builder.AddAttribute(94, "disabled", field.ReadOnly);
+    builder.AddAttribute(95, "onchange", EventCallback.Factory.CreateBinder<string>(this, async value =>
+    {
+     field.ValueString = value;
+     await OnValuesChanged.InvokeAsync(FormElements);
+    }, field.ValueString));
+    builder.SetUpdatesAttributeName("value");
+    builder.CloseElement();
+
+    builder.OpenElement(96, "span");
+    builder.AddAttribute(97, "class", "badge bg-primary");
+    builder.AddAttribute(98, "style", "min-width: 50px;");
+    builder.AddContent(99, field.ValueString);
+    builder.CloseElement();
+
+    builder.CloseElement(); // d-flex div
+    break;
+
+   case FormElementType.TextArea:
+    var rows = field.Options?.Count > 0 && int.TryParse(field.Options[0], out int r) ? r : 4;
+    builder.OpenElement(100, "textarea");
+    builder.AddAttribute(101, "class", GetFieldCssClass(field, "form-control"));
+    builder.AddAttribute(102, "rows", rows);
+    builder.AddAttribute(103, "value", field.ValueString);
+    builder.AddAttribute(104, "required", field.Required);
+    builder.AddAttribute(105, "readonly", field.ReadOnly);
+    builder.AddAttribute(106, "disabled", field.ReadOnly);
+    builder.AddAttribute(107, "onchange", EventCallback.Factory.CreateBinder<string>(this, async value =>
+    {
+     field.ValueString = value;
+     await OnValuesChanged.InvokeAsync(FormElements);
+    }, field.ValueString));
+    builder.SetUpdatesAttributeName("value");
+    builder.CloseElement();
+    break;
+
+   case FormElementType.Text:
+    builder.AddContent(108, RenderInput(field, "text", field.Regex));
+    break;
+
+   case FormElementType.Number:
+    builder.AddContent(109, RenderInput(field, "number", null, null, field.Min, field.Max));
+    break;
+
+   case FormElementType.Date:
+    builder.AddContent(110, RenderInput(field, "date"));
+    break;
+
+   case FormElementType.Time:
+    builder.AddContent(111, RenderInput(field, "time"));
+    break;
+
+   case FormElementType.Email:
+    builder.AddContent(112, RenderInput(field, "email"));
+    break;
+
+   case FormElementType.Password:
+    builder.AddContent(113, RenderInput(field, "password"));
+    break;
+
+   case FormElementType.Phone:
+    builder.AddContent(114, RenderInput(field, "tel", @"[0-9\s\-\+\(\)\/]+", "Nur Zahlen und Sonderzeichen (+, -, /, Leerzeichen, Klammern) erlaubt"));
+    break;
+
+   case FormElementType.Url:
+    builder.AddContent(115, RenderInput(field, "url"));
+    break;
+  }
+ };
+
 
  private string GetFieldCssClass(FormElement field, string baseClass)
  {

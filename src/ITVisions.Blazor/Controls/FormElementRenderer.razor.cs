@@ -251,7 +251,7 @@ public partial class FormElementRenderer
  }
 
  /// <summary>
- /// Validierung beim Seitenwechel
+ /// Validierung beim Seitenwechsel
  /// </summary>
  private bool ValidateCurrentPage()
  {
@@ -262,7 +262,7 @@ public partial class FormElementRenderer
  }
 
  /// <summary>
- /// Valiedert eine Liste von Eingabefeldern
+ /// Validiert eine Liste von Eingabefeldern
  /// </summary>
  private bool ValidateFieldSet(IEnumerable<FormElement> elements)
  {
@@ -283,7 +283,7 @@ public partial class FormElementRenderer
  }
 
  /// <summary>
- /// Valiedert ein einzelnes Eingabefeld
+ /// Validiert ein einzelnes Eingabefeld
  /// </summary>
  private void ValidateField(FormElement field, List<string> missingFields, List<string> invalidFields)
  {

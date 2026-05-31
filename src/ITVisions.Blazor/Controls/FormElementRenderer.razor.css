@@ -95,7 +95,38 @@ button:disabled {
  background-color: #e9ecef !important;
 }
 
-/* Gruppen-Label für horizontale Feldgruppen */
+/* Gruppen als Fieldset mit Legend - Rahmen um Felder, Name oben im Rahmen */
+.group-fieldset {
+ border: 2px solid #0d6efd;
+ border-radius: 8px;
+ padding: 1.5rem 1rem 1rem 1rem;
+ margin-bottom: 1.5rem;
+}
+
+.group-legend {
+ color: #0d6efd;
+ font-size: 1.1rem;
+ font-weight: 600;
+ padding: 0 0.75rem;
+ width: auto;
+ margin-bottom: 0;
+ float: none;
+}
+
+/* Alte Gruppen-Titel-Klasse - kann entfernt werden, falls nicht mehr verwendet */
+.group-title {
+ display: block;
+ color: #0d6efd;
+ font-size: 1.1rem;
+ font-weight: 600;
+ padding: 0.5rem 0.75rem;
+ background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+ border-left: 4px solid #0d6efd;
+ border-radius: 4px;
+ margin-bottom: 1rem;
+ box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
 .group-label {
  display: block;
  color: #495057;

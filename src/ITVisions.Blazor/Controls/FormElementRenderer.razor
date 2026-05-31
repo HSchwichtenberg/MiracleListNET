@@ -85,7 +85,7 @@
     {
      // Sammle alle Felder mit derselben Gruppe
      var groupFields = new List<FormElement>();
-     var isAutoGroup = field.Group.Contains("__auto_group_") || field.Group.StartsWith("auto_group_");
+     var isAutoGroup = field.Group.Contains(FormElement.AutoGroupPrefix);
 
      for (int j = i; j < currentPage.Fields.Count; j++)
      {
@@ -119,20 +119,33 @@
      @* Rendere Feldgruppe horizontal *@
      if (groupFields.Any())
      {
-      <div class="mb-3">
-       @if (!isAutoGroup)
-       {
-        <label class="fw-bold group-label mb-2">@field.Group</label>
-       }
-       <div class="row g-3">
-        @foreach (var groupField in groupFields)
-        {
-         <div class="col-sm-@(12 / groupFields.Count) col-12">
-          @RenderSingleField(groupField)
-         </div>
-        }
+      @if (!isAutoGroup)
+      {
+       <fieldset class="group-fieldset mb-3">
+        <legend class="group-legend">@field.Group</legend>
+        <div class="row g-3">
+         @foreach (var groupField in groupFields)
+         {
+          <div class="col-sm-@(12 / groupFields.Count) col-12">
+           @RenderSingleField(groupField)
+          </div>
+         }
+        </div>
+       </fieldset>
+      }
+      else
+      {
+       <div class="mb-3">
+        <div class="row g-3">
+         @foreach (var groupField in groupFields)
+         {
+          <div class="col-sm-@(12 / groupFields.Count) col-12">
+           @RenderSingleField(groupField)
+          </div>
+         }
+        </div>
        </div>
-      </div>
+      }
      }
     }
     else
@@ -207,6 +220,7 @@
         <tr>
          <th>Key</th>
          <th>Label</th>
+         <th>Group</th>
          <th>Type</th>
          <th>Value</th>
          <th>Required</th>
@@ -220,6 +234,7 @@
          <tr>
           <td><code>@element.Key</code></td>
           <td>@element.Label</td>
+          <td>@element.Group</td>
           <td><span class="badge bg-secondary">@element.Type</span></td>
           <td>@element.Value</td>
           <td>@(element.Required ? "✓" : "")</td>

@@ -42,7 +42,7 @@ public partial class FormElementRenderer
  {
   if (!string.IsNullOrEmpty(Template))
   {
-   FormElements = TextTemplateFormParser.Parse(Template);
+   FormElements = MarkdownFormDSLParser.Parse(Template);
    BuildPages();
   }
   else if (FormElements != null && FormElements.Any())
@@ -173,7 +173,8 @@ public partial class FormElementRenderer
    builder.AddAttribute(7, "max", max.Value);
   }
   builder.AddAttribute(8, "required", field.Required);
-  builder.AddAttribute(9, "onchange", EventCallback.Factory.CreateBinder<string>(this, async value =>
+  builder.AddAttribute(9, "disabled", field.ReadOnly);
+  builder.AddAttribute(10, "onchange", EventCallback.Factory.CreateBinder<string>(this, async value =>
   {
    field.ValueString = value;
    await OnValuesChanged.InvokeAsync(FormElements);

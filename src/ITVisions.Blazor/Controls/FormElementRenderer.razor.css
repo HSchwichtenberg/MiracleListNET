@@ -83,3 +83,14 @@
  opacity: 1;
  visibility: visible;
 }
+
+/* ReadOnly/Disabled Felder - ausgegraut */
+input:disabled,
+textarea:disabled,
+select:disabled,
+.form-check-input:disabled ~ .form-check-label,
+button:disabled {
+ opacity: 0.6;
+ cursor: not-allowed;
+ background-color: #e9ecef !important;
+}

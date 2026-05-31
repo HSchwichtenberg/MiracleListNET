@@ -94,7 +94,7 @@
            <div class="form-check">
             <input class="form-check-input" type="radio" name="@field.Key" id="@($"{field.Key}_{option}")"
             value="@option" @onchange="@(e => { field.ValueString = option; NotifyValuesChanged(); })"
-            checked="@(field.ValueString == option)" />
+            checked="@(field.ValueString == option)" disabled="@field.ReadOnly" />
             <label class="form-check-label" for="@($"{field.Key}_{option}")">@option</label>
            </div>
           }
@@ -105,13 +105,13 @@
          <div class="form-check">
           <input class="form-check-input" type="checkbox" id="@field.Key"
           checked="@(!string.IsNullOrEmpty(field.ValueString))"
-          @onchange="@(e => { field.ValueString = ((bool)e.Value) ? field.Options[0] : ""; NotifyValuesChanged(); })" />
+          @onchange="@(e => { field.ValueString = ((bool)e.Value) ? field.Options[0] : ""; NotifyValuesChanged(); })" disabled="@field.ReadOnly" />
           <label class="form-check-label" for="@field.Key">@field.Options[0]</label>
          </div>
         }
         else if (field.Type == FormElementType.Select)
         {
-         <select class="@GetFieldCssClass(field, "form-select")" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required">
+         <select class="@GetFieldCssClass(field, "form-select")" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" disabled="@field.ReadOnly">
           <option value="">Bitte wählen...</option>
           @foreach (var option in field.Options)
           {
@@ -128,7 +128,7 @@
            <div class="form-check">
             <input class="form-check-input" type="checkbox" id="@($"{field.Key}_{option}")"
             checked="@isSelected"
-            @onchange="@(e => HandleMultiselectChange(field, option, (bool)e.Value))" />
+            @onchange="@(e => HandleMultiselectChange(field, option, (bool)e.Value))" disabled="@field.ReadOnly" />
             <label class="form-check-label" for="@($"{field.Key}_{option}")">@option</label>
            </div>
           }
@@ -142,7 +142,7 @@
            var isSelected = field.ValueString == option;
            <button type="button" class="btn btn-outline-secondary"
            style="min-width: 40px;"
-           @onclick="@(() => { field.ValueString = option; NotifyValuesChanged(); })">
+           @onclick="@(() => { field.ValueString = option; NotifyValuesChanged(); })" disabled="@field.ReadOnly">
             @if (isSelected)
             {
              <span>★</span>
@@ -156,7 +156,7 @@
           }
           @if (!string.IsNullOrEmpty(field.ValueString))
           {
-           <button type="button" class="btn btn-sm btn-link" @onclick="@(() => { field.ValueString = ""; NotifyValuesChanged(); })">Zurücksetzen</button>
+           <button type="button" class="btn btn-sm btn-link" @onclick="@(() => { field.ValueString = ""; NotifyValuesChanged(); })" disabled="@field.ReadOnly">Zurücksetzen</button>
           }
          </div>
         }
@@ -168,7 +168,7 @@
           @bind:after="NotifyValuesChanged"
           min="@field.Min"
           max="@field.Max"
-          required="@field.Required" />
+          required="@field.Required" disabled="@field.ReadOnly" />
           <span class="badge bg-primary" style="min-width: 50px;">@field.ValueString</span>
          </div>
         }
@@ -179,7 +179,7 @@
         else if (field.Type == FormElementType.TextArea)
         {
          var rows = field.Options?.Count > 0 && int.TryParse(field.Options[0], out int r) ? r : 4;
-         <textarea class="@GetFieldCssClass(field, "form-control")" rows="@rows" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required"></textarea>
+         <textarea class="@GetFieldCssClass(field, "form-control")" rows="@rows" @bind="field.ValueString" @bind:after="NotifyValuesChanged" required="@field.Required" readonly="@field.ReadOnly" disabled="@field.ReadOnly"></textarea>
         }
         else if (field.Type == FormElementType.Number)
         {

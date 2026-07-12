@@ -14,7 +14,6 @@
  }
 </style>
 
-
 <h2>Entry Form (@this.GetType().FullName)</h2>
 <EditForm EditContext="@editContext"
           OnValidSubmit="@Save"
@@ -55,9 +54,9 @@
    </div>
 
    <div class="form-group">
-    <label for="C_JobTitle">Job Title/Primary Role</label>
+    <label for="C_JobTitle">Job Title</label>
     <InputSelect id="C_JobTitle" @bind-Value="person.JobTitle" class="form-control">
-     @foreach (var s in Enum.GetValues(typeof(JobTitle)).Cast<JobTitle>().ToList())
+     @foreach (var s in Enum.GetValues<JobTitle>()) // oder: Enum.GetValues(typeof(JobTitle)))
      {
       <option value="@s">@s (@((int)s))</option>
      }
@@ -67,7 +66,7 @@
    <div class="form-group">
     <label for="C_OtherRoles">Other Roles</label>
     <InputSelect id="C_OtherRoles" @bind-Value="person.OtherRoles" class="form-control">
-     @foreach (object s in System.Enum.GetValues(typeof(JobTitle)))
+     @foreach (var s in Enum.GetValues<JobTitle>()) // oder: Enum.GetValues(typeof(JobTitle)))
      {
       <option value="@s">@s (@((int)s))</option>
      }
@@ -78,8 +77,6 @@
     <label for="C_Note">Notes</label>
     <InputTextArea id="C_Note" @bind-Value="person.Notes" class="form-control" placeholder="Any note" rows="5" />
    </div>
-
-
 
    <button type="submit" class="btn btn-primary">Speichern</button>
 
@@ -113,11 +110,9 @@
 
 </EditForm>
 
-
 <hr />
 
 <h2>Weiteres Formular mit richtigen und falschen Beispielen</h2>
-
 
 <EditForm EditContext="@editContext">
 
@@ -131,7 +126,15 @@
  @* <InputTextArea @bind-value="Nachricht">Dies ist ein Vorgabetext an der falschen Stelle.</InputTextArea> *@
  @* Richtig *@
  <InputTextArea @bind-Value="Nachricht"></InputTextArea>
- 
+<h3>Type bei InputNumber</h3>
+
+<h5>InputNumber ohne type</h5>
+<InputNumber min="1" max="10" step="1" @bind-Value="Zahl" />
+<h5>InputNumber type="range"</h5>
+<InputNumber type="range" min="1" max="10" step="1" @bind-Value="Zahl" />
+<h5>InputNumber type="text" (wie InputText, min und max ohne Wirkung)</h5>
+<InputNumber type="text" min="1" max="10" step="1" @bind-Value="Zahl" />
+
 </EditForm>
 
 @code {
@@ -140,6 +143,7 @@
  private Person person { get; set; } = new Person();
  private string Output { get; set; }
  private string OutputError { get; set; }
+ short Zahl { get; set; } = 5;
 
  protected override void OnInitialized()
  {
@@ -147,7 +151,8 @@
   // for easier testing, just some test data
   person = new Person()
    {
-    Name = "Dr. Holger Schwichtenberg",
+    Name = "Schwichtenberg",
+    DayOfBirth = new DateTime(1965, 1, 1),
     JobTitle = JobTitle.Softwarearchitect,
     OtherRoles = new JobTitle[] { JobTitle.Trainer, JobTitle.Consultant, JobTitle.Author, JobTitle.Developer },
     Children = 2,

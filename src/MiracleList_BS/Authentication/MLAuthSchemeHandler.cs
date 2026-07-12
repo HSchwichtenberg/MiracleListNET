@@ -19,7 +19,7 @@ public class MLAuthSchemeHandler : AuthenticationHandler<MLAuthSchemeOptions>
  public MLAuthSchemeHandler(
      IOptionsMonitor<MLAuthSchemeOptions> options,
      ILoggerFactory logger,
-     UrlEncoder encoder, IHttpContextAccessor httpContextAccessor) 
+     UrlEncoder encoder, IHttpContextAccessor httpContextAccessor)
      : base(options, logger, encoder)
  {
   HttpContextAccessor = httpContextAccessor;

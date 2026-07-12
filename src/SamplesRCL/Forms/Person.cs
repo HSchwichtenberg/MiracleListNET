@@ -32,17 +32,4 @@ public class Person
 
  public JobTitle JobTitle { get; set; }
  public JobTitle[] OtherRoles { get; set; }
-
- /// <summary>
- /// Problem: Blazor kann nicht an Enum-Zahlwert binden, nur an Zeichenkette
- /// Falls Bindung an Zahlwert erwünscht: Property-Wrapper für ID von JobTitle
- /// </summary>
- public string JobTitle_IDString
- {
-  get => ((int)this.JobTitle).ToString();
-  set
-  {
-   this.JobTitle = (JobTitle)Enum.Parse(typeof(JobTitle), value);
-  }
- }
 }

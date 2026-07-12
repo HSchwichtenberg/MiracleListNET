@@ -7,7 +7,6 @@
 @inject BlazorUtil Util
 @inject IJSRuntime JSRuntime
 @inject NavigationManager  NavigationManager
-@using PeterLeslieMorris.Blazor.Validation.Extensions
 
 <style>
  .validation-message {
@@ -19,7 +18,7 @@
 
  <h2>@this.GetType().FullName using InputTextRow.razor</h2>
  <EditForm EditContext="@editContext"
-           OnSubmit="@SubmitForm">
+           OnSubmit="SubmitForm">
   @*Model="@person"*@
   <DataAnnotationsValidator />
   @*OnValidSubmit="@Save"*@
@@ -27,11 +26,7 @@
 
   <div class="col-xs-6">
 
-
-   @*No Validation in Sub Component: https://stackoverflow.com/questions/60519482/blazor-editform-validation-not-working-when-using-child-component*@
-
    <InputTextRow Label="Name" @bind-Value="@person.Name" Placeholder="Enter name" />
-
 
    @*<div class="form-group">
      <label for="C_Name">Name</label>
@@ -65,11 +60,11 @@
 
    <div class="form-group">
     <label for="C_JobTitle">Job Title</label>
-    <InputSelect id="C_JobTitle" @bind-Value="person.JobTitle_IDString" class="form-control">
-     @foreach (var s in Enum.GetValues(typeof(JobTitle)).Cast<JobTitle>().ToList())
-{
-<option value="@((int)s)">@s.ToString() (@((int)s))</option>
-}
+    <InputSelect id="C_JobTitle" @bind-Value="person.JobTitle" class="form-control">
+     @foreach (var s in Enum.GetValues<JobTitle>())
+        {
+        <option value="@s">@s.ToString() (@((int)s))</option>
+        }
     </InputSelect>
    </div>
 
@@ -79,8 +74,7 @@
    </div>
 
    <button type="submit" class="btn btn-primary">Speichern</button>
-
-  </div>
+   </div>
 
   @*Spalte 2*@
   <div class="col-xs-6">
@@ -130,8 +124,16 @@
  void SubmitForm(EditContext editContext)
  {
   Util.Log("SubmitForm");
-  var b = editContext.ValidateObjectTree();
+  var b = editContext.Validate();
   Util.Log("Valid", b);
+  if (b)
+  {
+   Save();
+  }
+  else
+  {
+   ShowValidationError();
+  }
  }
 
  private void Save()

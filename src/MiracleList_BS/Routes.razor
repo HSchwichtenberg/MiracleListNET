@@ -1,18 +1,17 @@
 ﻿@inject NavigationManager NavigationManager
 
-<Router 
- AppAssembly="@typeof(_Imports).Assembly" 
- AdditionalAssemblies="new[] { typeof(MLBlazorRCL.Login.Login).Assembly, typeof(Samples.SamplesList).Assembly }"
- NotFoundPage="typeof(MLBlazorRCL.NotFound)">
+<Router AppAssembly="@typeof(_Imports).Assembly"
+        AdditionalAssemblies="new[] { typeof(MLBlazorRCL.Login.Login).Assembly, typeof(Samples.SamplesList).Assembly }"
+        NotFoundPage="typeof(MLBlazorRCL.NotFound)">
 
  <Navigating>
   <div class="spinner">
-     <div class="rect1"></div>
-     <div class="rect2"></div>
-     <div class="rect3"></div>
-     <div class="rect4"></div>
-     <div class="rect5"></div>
-    </div>
+   <div class="rect1"></div>
+   <div class="rect2"></div>
+   <div class="rect3"></div>
+   <div class="rect4"></div>
+   <div class="rect5"></div>
+  </div>
   <h2 style="text-align:center">Loading...</h2>
  </Navigating>
 
@@ -31,24 +30,26 @@
    </Authorizing>
 
    <NotAuthorized>
-    @code {
-     [Inject] NavigationManager Navigation { get; set; }
+@code {
+ [Inject] NavigationManager Navigation { get; set; }
 
-     protected override void OnAfterRender(bool firstRender)
-     {
-      if (firstRender)
-      {
-       // Navigation erst NACH dem Renderzyklus
-       _ = InvokeAsync(() => Navigation.NavigateTo("/"));
-      }
-     }
-    }
-   </NotAuthorized>
+ protected override void OnAfterRender(bool firstRender)
+ {
+  if (firstRender)
+  {
+   // Navigation erst NACH dem Renderzyklus
+   var currentUri = Navigation.Uri;
+   if (currentUri.Contains("/samples", System.StringComparison.InvariantCultureIgnoreCase)) return; // hierzu braucht man keine Anmeldung!
+   _ = InvokeAsync(() => Navigation.NavigateTo("/"));
+  }
+ }
+}
+</NotAuthorized>
 
-  </AuthorizeRouteView>
-  <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+</AuthorizeRouteView>
+<FocusOnNavigate RouteData="@routeData" Selector="h1" />
 
- </Found>
+</Found>
 
 @* Vor .NET 10.0: <NotFound>
   <PageTitle>Not found</PageTitle>

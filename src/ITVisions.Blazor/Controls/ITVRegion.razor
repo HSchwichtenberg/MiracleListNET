@@ -15,6 +15,8 @@
  public RenderFragment? Content { get; set; } = null;
 
  [Parameter]
+ public bool IsPreOpen { get; set; } = false;
+
  public bool IsOpen { get; set; } = false;
 
  [Parameter]
@@ -32,7 +34,6 @@
  [Parameter]
  public bool SmallHeader { get; set; }
 
-
  static int count { get; set; }
  public int CountID { get; set; }
 
@@ -40,7 +41,12 @@
  {
   count++;
   this.CountID = count;
-  Util.Log(count);
+ }
+
+ protected override void OnParametersSet()
+ {
+  IsOpen = IsPreOpen;
+  // if (IsPreOpen) Util.Log("Region #" + count + ":" + IsPreOpen + "/" + IsOpen);
  }
 
  private async Task ToggleAccordion()
@@ -51,9 +57,11 @@
 
 }
 
+
+
 @if (!String.IsNullOrEmpty(ID))
 {
- <a id="@ID"></a>
+ <a id="@ID.ToLower()"></a>
 }
 
 <div class="accordion-item">

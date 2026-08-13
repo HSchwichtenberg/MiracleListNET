@@ -34,6 +34,9 @@ namespace ITVisions.Blazor.Services
    this.logger.LogInformation($"{nameof(Services.CircuitListCircuitHandler)}.ctor");
   }
 
+  /// <summary>
+  /// einmalig pro Circuit
+  /// </summary>
   public override async Task OnCircuitOpenedAsync(Circuit circuit, CancellationToken cancellationToken)
   {
    logger.LogInformation($"{nameof(CircuitListCircuitHandler)}.{nameof(OnCircuitOpenedAsync)}: {circuit.Id}");
@@ -60,17 +63,9 @@ namespace ITVisions.Blazor.Services
    await base.OnCircuitOpenedAsync(circuit, cancellationToken);
   }
 
-  public override Task OnConnectionDownAsync(Circuit circuit, CancellationToken cancellationToken)
-  {
-   logger.LogInformation($"{nameof(CircuitListCircuitHandler)}.{nameof(OnConnectionDownAsync)}: {circuit.Id}");
-
-   var myC = CircuitSet.FirstOrDefault(x => x.Circuit.Id == circuit.Id);
-   myC.CircuitState = CircuitState.ConnectionDown;
-   myC.LastStateChanged = DateTime.Now;
-
-   return base.OnConnectionDownAsync(circuit, cancellationToken);
-  }
-
+  /// <summary>
+  /// Nach OnCircuitOpenedAsync() und bei jedem Reconnect!
+  /// </summary>
   public override Task OnConnectionUpAsync(Circuit circuit, CancellationToken cancellationToken)
   {
    logger.LogInformation($"{nameof(CircuitListCircuitHandler)}.{nameof(OnConnectionUpAsync)}: {circuit.Id}");
@@ -82,6 +77,23 @@ namespace ITVisions.Blazor.Services
    return base.OnConnectionUpAsync(circuit, cancellationToken);
   }
 
+  /// <summary>
+  /// bei jedem Verbindungsverlust
+  /// </summary>
+  public override Task OnConnectionDownAsync(Circuit circuit, CancellationToken cancellationToken)
+  {
+   logger.LogInformation($"{nameof(CircuitListCircuitHandler)}.{nameof(OnConnectionDownAsync)}: {circuit.Id}");
+
+   var myC = CircuitSet.FirstOrDefault(x => x.Circuit.Id == circuit.Id);
+   myC.CircuitState = CircuitState.ConnectionDown;
+   myC.LastStateChanged = DateTime.Now;
+
+   return base.OnConnectionDownAsync(circuit, cancellationToken);
+  }
+
+  /// <summary>
+  /// einmalig pro Circuit
+  /// </summary>
   public override async Task OnCircuitClosedAsync(Circuit circuit, CancellationToken cancellationToken)
   {
    logger.LogInformation($"{nameof(CircuitListCircuitHandler)}.{nameof(OnCircuitClosedAsync)}: {circuit.Id}");
@@ -92,6 +104,5 @@ namespace ITVisions.Blazor.Services
 
    await base.OnCircuitClosedAsync(circuit, cancellationToken);
   }
-
  }
 }

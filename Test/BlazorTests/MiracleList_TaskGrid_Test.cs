@@ -2,24 +2,19 @@ using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using Blazored.LocalStorage;
 using BlazorTests.Mocks;
-using Bunit;
 using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MiracleList;
 using MLBlazorRCL.Others;
 using Telerik.JustMock;
-using Telerik.JustMock.Helpers;
 using Web;
-using Xunit;
 
 // Testen der BD-Lösung
 //using Pages = BD.Web.Pages;
@@ -28,15 +23,17 @@ using Xunit;
 
 namespace MiracleListTests;
 
-public class MiracleTaskGridTest : BunitContext {
+public class MiracleTaskGridTest : BunitContext
+{
  string UriBefore = "http://myserver/Login";
 
- TestStore store = new TestStore(); 
+ TestStore store = new TestStore();
 
  /// <summary>
  /// Setup the test: DI of mocking classes
  /// </summary>
- public MiracleTaskGridTest() {
+ public MiracleTaskGridTest()
+ {
   Services.AddSingleton<IWebHostEnvironment>(new MockWebHostEnvironment());
   Services.AddSingleton<NavigationManager>(new MockNavigationManager(UriBefore));
   //jsMock = Services.AddMockJSRuntime(JSRuntimeMockMode.Loose); // loose is default
@@ -49,7 +46,7 @@ public class MiracleTaskGridTest : BunitContext {
   // Mocking des Proxies mit Teststore
   IMiracleListProxy mockProxy = Mock.Create<IMiracleListProxy>();
   Mock.Arrange(() => mockProxy.CategorySetAsync(Arg.IsAny<string>())).Returns(Task.FromResult(store.Data));
-  Mock.Arrange(() => mockProxy.TaskSetAsync(Arg.IsAny<int>(), Arg.IsAny<string>())).Returns((int cat) => Task.FromResult(store.Data.FirstOrDefault(x=>x.CategoryID == cat).TaskSet));
+  Mock.Arrange(() => mockProxy.TaskSetAsync(Arg.IsAny<int>(), Arg.IsAny<string>())).Returns((int cat) => Task.FromResult(store.Data.FirstOrDefault(x => x.CategoryID == cat).TaskSet));
 
   // var x = mockProxy.CategorySetAsync("").Result;
 
@@ -62,28 +59,31 @@ public class MiracleTaskGridTest : BunitContext {
   DA.Context.ConnectionString = ""; // In Memory-DB!
  }
 
- private IRenderedComponent<TaskGrid> Prepare() {
-
+ private IRenderedComponent<TaskGrid> Prepare()
+ {
   // Razor-Komponente laden
-  var cut = Render<TaskGrid>();
+  var cut = Render<TaskGrid>(parameters => parameters
+      .Add(p => p.CategoryID, 1));
   Console.WriteLine(cut.Markup); // für Test-Debugging
   // Prüfung, ob alle erwarteten Aufgaben geladen
-  Assert.Equal("All Tasks View: 15 Tasks", cut.Find("h3").TextContent);
+  Assert.Equal("Alle Aufgaben: 5 Tasks", cut.Find("h3").TextContent.Trim());
   return cut;
  }
 
  [Fact]
- public void FormatAndContent() {
+ public void FormatAndContent()
+ {
   IRenderedComponent<TaskGrid> cut = Prepare();
 
   // Tabelleninhalt suchen
   var tbody = cut.Find("tbody");
   Assert.NotNull(tbody);
-  Assert.Equal(10, tbody.Children.Count());    // 10 Zeilen?
+  Assert.Equal(5, tbody.Children.Count());    // 10 Zeilen?
 
-  foreach (IElement row in tbody.Children) {
-   //Importance-Spalte
-   var spalteImportance = row.Children[3];
+  foreach (IElement row in tbody.Children)
+  {
+   //Importance-Spalte: 5. Spalte!
+   var spalteImportance = row.Children[4];
    //Gerenderte HTML-Struktur ist: <td style = "width:5%" ><span class="rz-cell-data" title=""><span class="badge badge-important" title="Wichtigkeit: A">A</span>
    var inhalt3 = spalteImportance.GetElementsByTagName("span")[0].GetElementsByTagName("span")[0];
    // Importance-Spalte: Prüfung Inhalt und Layout
@@ -91,7 +91,7 @@ public class MiracleTaskGridTest : BunitContext {
    Assert.True(inhalt3.TextContent.Contains("A") || inhalt3.TextContent.Contains("B") || inhalt3.TextContent.Contains("C"));
 
    // Due-Spalte
-   var spalteDue = row.Children[4];
+   var spalteDue = row.Children[5];
    var inhaltDue = spalteDue.GetElementsByTagName("div")[0];
    // Due-Spalte: Prüfung Inhalt
    Assert.Contains("Due", inhaltDue.TextContent);
@@ -102,7 +102,8 @@ public class MiracleTaskGridTest : BunitContext {
  }
 
  [Fact]
- public void EditTitle() {
+ public void EditTitle()
+ {
   IRenderedComponent<TaskGrid> cut = Prepare();
   var tbody = cut.Find("tbody");
 

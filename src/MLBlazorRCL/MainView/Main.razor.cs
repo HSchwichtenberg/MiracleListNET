@@ -16,7 +16,7 @@ using MiracleList_Backend.Hubs;
 
 namespace MLBlazorRCL.MainView;
 
-enum TaskFilter {  Alle, Offene, Erledigte}
+enum TaskFilter { Alle, Offene, Erledigte }
 
 public partial class Main : IAsyncDisposable
 {
@@ -189,7 +189,7 @@ public partial class Main : IAsyncDisposable
  public async Task ShowCategorySet()
  {
   // Lade Daten vom Backend
-  categorySet = await Proxy.CategorySetAsync(AppState.Token);
+  categorySet = (await Proxy.CategorySetAsync(AppState.Token));
   Util.Log("Loaded Categories: " + categorySet.Count);
 
   #region Wähle aktuelle Kategorie
@@ -365,7 +365,8 @@ public partial class Main : IAsyncDisposable
    await Proxy.DeleteCategoryAsync(categoryID, AppState.Token);
    await ShowCategorySet();
   },
-  async () => { 
+  async () =>
+  {
    await Proxy.CreateCategoryAsync(cat.Name, AppState.Token);
    await ShowCategorySet();
   });

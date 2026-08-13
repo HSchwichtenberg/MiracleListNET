@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using BlazorContextMenu;
 using BlazorContextMenu.Services;
@@ -10,8 +9,6 @@ using BlazorTests.Mocks;
 using BO;
 using ITVisions;
 using ITVisions.Blazor;
-using ITVisions.Reflection;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -21,7 +18,6 @@ using MiracleList;
 using MLBlazorRCL.MainView;
 using Telerik.JustMock;
 using Telerik.JustMock.Helpers;
-using Web;
 using Xunit.Abstractions;
 
 // Testen der BD-Lösung
@@ -78,7 +74,6 @@ public class MiracleList_MainView_Test : BunitContext
   this.Services.AddSingleton(mockProxy);
   //this.Services.AddScoped<IAppState, AppState>();
 
-
   #endregion
 
   // neuer Benutzer mit Standardkategorien
@@ -107,10 +102,20 @@ public class MiracleList_MainView_Test : BunitContext
   }
   ).ReturnsAsync((int categoryID) => categorySet.FirstOrDefault(x => x.CategoryID == categoryID).TaskSet);
 
-  mockProxy.Arrange(x => x.CreateCategoryAsync(Arg.IsAny<string>(), Arg.IsAny<string>())).IgnoreArguments().DoInstead((string name) =>
-  {
-   categorySet.Add(new Category() { CategoryID = categorySet.Max(x => x.CategoryID) + 1, Name = name });
-  });
+  mockProxy
+      .Arrange(x => x.CreateCategoryAsync(
+          Arg.IsAny<string>(),
+          Arg.IsAny<string>()))
+      .ReturnsAsync((string name, string description) =>
+      {
+       var cat = new Category
+       {
+        CategoryID = categorySet.Max(x => x.CategoryID) + 1,
+        Name = name
+       };
+
+       return cat;
+      });
 
   mockProxy.Arrange(x => x.CreateTaskAsync(Arg.IsAny<BO.Task>(), Arg.IsAny<string>())).DoInstead((BO.Task t) =>
   {

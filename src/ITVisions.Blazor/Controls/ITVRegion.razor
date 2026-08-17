@@ -15,8 +15,9 @@
  public RenderFragment? Content { get; set; } = null;
 
  [Parameter]
- public bool IsPreOpen { get; set; } = false;
+ public bool OpenInitially { get; set; } = false;
 
+ [Parameter]
  public bool IsOpen { get; set; } = false;
 
  [Parameter]
@@ -45,8 +46,8 @@
 
  protected override void OnParametersSet()
  {
-  IsOpen = IsPreOpen;
-  // if (IsPreOpen) Util.Log("Region #" + count + ":" + IsPreOpen + "/" + IsOpen);
+  IsOpen = OpenInitially;
+  // if (OpenInitially) Util.Log("Region #" + count + ":" + OpenInitially + "/" + IsOpen);
  }
 
  private async Task ToggleAccordion()
@@ -54,10 +55,7 @@
   IsOpen = !IsOpen;
   await IsOpenChanged.InvokeAsync(IsOpen);
  }
-
 }
-
-
 
 @if (!String.IsNullOrEmpty(ID))
 {

@@ -46,7 +46,7 @@
 
  protected override void OnParametersSet()
  {
-  IsOpen = OpenInitially;
+  IsOpen = OpenInitially || IsOpen;
   // if (OpenInitially) Util.Log("Region #" + count + ":" + OpenInitially + "/" + IsOpen);
  }
 

@@ -105,7 +105,7 @@ Support für Multi-Threading: @MultiThreadingEnabled
      else // bei nicht aktiviertem Multi-Threading!
      {
       this.StateHasChanged(); 
-      await Task.Delay(1);
+      await Task.Delay(1); // WICHTIG bei Blazor WebAssembly bei nicht aktiviertem Multi-Threading! Sonst sieht man keine Zwischenergebnisse!!!
      }
     }
     else if (Util.IsBlazorServer || Util.IsHybrid)

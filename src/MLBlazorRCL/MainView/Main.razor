@@ -30,7 +30,8 @@
     {
      <li @key="c" class="list-group-item hover" title="Task Category #@c.CategoryID" style="Background-color:@(this.category != null && c.CategoryID == this.category.CategoryID ? "#E0EEFA" : "white")"
          @onclick="() => ShowTaskSet(c)"
-         ondragover="event.preventDefault();" @ondrop="(e) => DropTaskToCategory(e, c)">
+         @ondragover:preventDefault
+         @ondrop="(e) => DropTaskToCategory(e, c)">
       @c.Name
 
       <span id="Remove" style="float:right;" class="close" title="Remove Category #@c.CategoryID" @onclick="() => RemoveCategory(c)">x</span>

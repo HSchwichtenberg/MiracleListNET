@@ -1,0 +1,95 @@
+﻿@page "/Samples/Countdown_PeriodicTimer"
+@using System.Threading;
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+@implements IDisposable
+
+<h3>Countdown mit System.Threading.PeriodicTimer</h3>
+
+@* Als Zeitgeber kommt die neuere .NET-Klasse System.Threading.PeriodicTimer zum Einsatz, bei der man mit WaitForNextTickAsync() wartet anstelle des Callback-Modells der Klasse System.Threading.Timer. Vorteil von PeriodicTimer ist, dass der Aktionscode nur einmal ausgeführt wird, während es bei der älteren Timer-Klasse zu Race Conditions kommen kann, wenn die Aktionsausführung so lange dauert, dass der Zeitgeber erneut gefeuert wird. *@
+
+<div class="countdown-container">
+ <div class="countdown-controls">
+  @if (ptimer == null)
+  {
+   <button @onclick="Start" class="btn btn-default" disabled="@(ptimer != null)">Start Countdown</button>
+  }
+  else
+  {
+   <button @onclick="End" class="btn btn-danger" disabled="@(ptimer == null)">Countdown abbrechen</button>
+  }
+  <span class="countdown-ausgabe">@Ausgabe</span>
+ </div>
+
+ <div class="countdown-number @(Count <= 0 ? "boom" : "")">
+  @Count
+ </div>
+
+</div>
+
+@code {
+ private int Count { get; set; } = 10;
+ private string Ausgabe { get; set; } = "";
+
+ System.Threading.PeriodicTimer ptimer; // Außerhalb wegen GC!
+ CancellationTokenSource? cts;
+
+ async Task Start()
+ {
+
+  ptimer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+  cts = new CancellationTokenSource();
+
+  try
+  {
+   while (await ptimer.WaitForNextTickAsync(cts.Token))
+   {
+    await InvokeAsync(() =>
+    {
+     Schritt();
+    });
+   }
+  }
+  catch (OperationCanceledException)
+  {
+  }
+ }
+
+ void Schritt()
+ {
+  // Calling StateHasChanged() from an arbitrary thread is not safe!!!
+  this.InvokeAsync(
+    () =>
+    {
+     if (Count == 0)
+     {
+      End();
+     }
+     else
+     {
+      Count--;
+      Util.Log(Count);
+     }
+     // Manuelles UI-Update notwendig!
+     this.StateHasChanged();
+    });
+ }
+
+ void End()
+ {
+  cts.Cancel();
+  Ausgabe = "";
+  ptimer.Dispose();
+  ptimer = null;
+ }
+
+ public void Dispose()
+ {
+  // wichtig, damit Timer nicht weiterläuft, wenn die Komponente schon nicht mehr lebt
+  if (ptimer != null)
+  {
+   ptimer.Dispose();
+   ptimer = null;
+  }
+ }
+}

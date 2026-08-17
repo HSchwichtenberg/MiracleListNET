@@ -1,0 +1,190 @@
+.countdown-container {
+    position: fixed;
+    inset: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    background: radial-gradient(circle at center, #1a1a2e 0%, #0d0d1a 100%);
+    color: white;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.countdown-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 2;
+}
+
+.countdown-ausgabe {
+    font-size: 1.2rem;
+}
+
+.countdown-number {
+    position: relative;
+    font-size: 22vw;
+    font-weight: 900;
+    line-height: 1;
+    font-family: "Segoe UI", sans-serif;
+    color: #00e5ff;
+    text-shadow: 0 0 20px #00e5ff, 0 0 60px #00e5ff88;
+    transition: transform 0.15s ease-out, color 0.15s ease-out;
+    user-select: none;
+}
+
+/* Bombastischer Effekt, wenn der Countdown bei 0 ankommt */
+.countdown-number.boom {
+    color: #ff1744;
+    animation: boom-pulse 0.9s ease-in-out infinite,
+               boom-shake 0.4s ease-in-out infinite,
+               boom-glow 1.2s ease-in-out infinite;
+}
+
+/* Explosionseffekt: Schockwellen-Ringe, die vom Zentrum nach außen laufen */
+.countdown-number.boom::before,
+.countdown-number.boom::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10vw;
+    height: 10vw;
+    border-radius: 50%;
+    border: 0.6vw solid #ffea00;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+    animation: explosion-shockwave 0.9s ease-out infinite;
+}
+
+.countdown-number.boom::after {
+    border-color: #ff1744;
+    animation-delay: 0.3s;
+}
+
+@keyframes explosion-shockwave {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 1;
+        border-width: 1vw;
+    }
+
+    80% {
+        opacity: 0.4;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(6);
+        opacity: 0;
+        border-width: 0;
+    }
+}
+
+/* Explosion-Partikel/Funken, die sternförmig auseinanderfliegen */
+.countdown-container::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: transparent;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.countdown-container:has(.countdown-number.boom)::after {
+    background: #ffea00;
+    box-shadow: 0 0 12px 4px #ffea00, 0 0 24px 8px #ff1744;
+    animation: explosion-particles 1s ease-out infinite;
+}
+
+@keyframes explosion-particles {
+    0% {
+        box-shadow:
+            0 0 12px 4px #ffea00,
+            0 0 0 0 #ff1744,
+            0 0 0 0 #ff1744,
+            0 0 0 0 #ff1744,
+            0 0 0 0 #ff1744,
+            0 0 0 0 #ff1744,
+            0 0 0 0 #ff1744,
+            0 0 0 0 #ff1744;
+        opacity: 1;
+    }
+
+    100% {
+        box-shadow:
+            0 0 2px 1px #ffea0000,
+            22vw -22vw 0 4px #ff1744,
+            -22vw -22vw 0 4px #ffea00,
+            22vw 22vw 0 4px #ffea00,
+            -22vw 22vw 0 4px #ff1744,
+            0 -30vw 0 4px #ff9100,
+            0 30vw 0 4px #ff9100,
+            30vw 0 0 4px #ff1744;
+        opacity: 0;
+    }
+}
+
+@keyframes boom-pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.4);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes boom-shake {
+    0%, 100% {
+        transform: translate(0, 0) scale(1.2);
+    }
+
+    25% {
+        transform: translate(-1.5vw, 1vw) scale(1.3);
+    }
+
+    50% {
+        transform: translate(1.5vw, -1vw) scale(1.2);
+    }
+
+    75% {
+        transform: translate(-1vw, -1.5vw) scale(1.3);
+    }
+}
+
+@keyframes boom-glow {
+    0%, 100% {
+        text-shadow: 0 0 30px #ff1744, 0 0 90px #ff174488, 0 0 160px #ffea0055;
+    }
+
+    50% {
+        text-shadow: 0 0 60px #ffea00, 0 0 140px #ff1744cc, 0 0 220px #ff1744;
+    }
+}
+
+/* Bildschirmfüllendes Blitzen im Hintergrund, sobald boom aktiv ist */
+.countdown-container:has(.countdown-number.boom) {
+    animation: boom-flash 0.5s ease-in-out infinite;
+}
+
+@keyframes boom-flash {
+    0%, 100% {
+        background: radial-gradient(circle at center, #1a1a2e 0%, #0d0d1a 100%);
+    }
+
+    50% {
+        background: radial-gradient(circle at center, #4a0d0d 0%, #1a1a2e 100%);
+    }
+}

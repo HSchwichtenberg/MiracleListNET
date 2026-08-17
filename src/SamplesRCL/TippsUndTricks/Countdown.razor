@@ -5,11 +5,25 @@
 @implements IDisposable
 
 <h3>Countdown</h3>
+<div class="countdown-container">
 
-<button @onclick="Start" class="btn btn-default" disabled="@(timer != null)">Start Countdown</button>
-@Ausgabe
-<br />
-@Count
+    <div class="countdown-controls">
+     @if(timer ==null)
+     {
+        <button @onclick="Start" class="btn btn-default" disabled="@(timer != null)">Start Countdown</button>
+     }
+     else
+  {
+   <button @onclick="End" class="btn btn-danger" disabled="@(timer == null)">Countdown abbrechen</button>
+  }
+  <span class="countdown-ausgabe">@Ausgabe</span>
+    </div>
+
+    <div class="countdown-number @(Count <= 0 ? "boom" : "")">
+        @Count
+    </div>
+
+</div>
 
 @code {
  private int Count { get; set; } = 10;
@@ -20,8 +34,9 @@
  {
   if (timer == null)
   {
+   Count = 10;
    timer = new Timer(new TimerCallback(_ => Schritt()), null, 1000, 1000);
-   Ausgabe = "Timer gestartet...";
+   Ausgabe = "Countdown läuft...";
   }
  }
 
@@ -31,18 +46,33 @@
   this.InvokeAsync(
     () =>
     {
-     if (Count <= 0) { Ausgabe = "Die Zeit ist um!"; return; }
-     Count--;
-     Util.Log(Count);
+     if (Count == 0) 
+     {
+      End();
+     }
+     else
+     {
+      Count--;
+      Util.Log(Count);
+     }
      // Call to StateHasChanged() is necessary because otherwise
      // Blazor would not recognize the state change and not refresh the UI
      this.StateHasChanged();
     });
  }
 
+ void End()
+ {
+  Ausgabe = "";
+  timer.Dispose();
+  timer = null;
+ }
+
  public void Dispose()
  {
   // wichtig, damit Timer nicht weiterläuft, wenn die Komponente schon nicht mehr lebt
-  if (timer != null) timer.Dispose();
+  if (timer != null) { 
+   timer.Dispose(); 
+   timer = null; }
  }
 }

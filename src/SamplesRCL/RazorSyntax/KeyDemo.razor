@@ -1,0 +1,76 @@
+﻿@page "/samples/keydemo"
+@using ITVisions.Blazor.Controls
+
+
+<h1>Demo für die Notwendigkeit des Einsatzes von @@key</h1>
+<div class="row">
+
+ <span class="col-md-4">
+  <h3>ohne @@key: Der Kommentar bleibt beim Wechsel gleich :-(</h3>
+
+  <button class="btn btn-default" @onclick="SwitchPerson">
+   Person wechseln
+  </button>
+
+  <p>Person: @CurrentPerson.Id @CurrentPerson.Name</p>
+
+  <input placeholder="Kommentar eingeben" class="form-control" />
+
+ </span>
+
+ <span class="col-md-4">
+  <h3>mit @@key</h3>
+
+  <button class="btn btn-default" @onclick="SwitchPerson">
+   Person wechseln
+  </button>
+
+  <p>Person: @CurrentPerson.Id @CurrentPerson.Name</p>
+
+  <input @key="CurrentPerson.Id"
+         placeholder="Kommentar eingeben"
+         class="form-control" @bind="CurrentPerson.Comment" />
+
+ </span>
+
+</div>
+<hr />
+<ITVRegion>
+ <Head>
+  Warum ist hier @@key notwendig?
+ </Head>
+ <Content>
+ Ohne @@key erkennt Blazor beim Rendern weiterhin dasselbe &lt;input&gt;-Element an derselben Position im Render Tree. Deshalb wird das vorhandene DOM-Element wiederverwendet. Ein vom Benutzer direkt in das Eingabefeld eingegebener Wert gehört zum Zustand dieses DOM-Elements und bleibt erhalten – auch wenn CurrentPerson inzwischen auf eine andere Person zeigt.
+
+ Mit @@key="CurrentPerson.Id" verknüpfst man die Identität des Eingabefeldes mit der Identität der aktuellen Person. Wechselt beispielsweise CurrentPerson.Id von 1 auf 2, ändert sich auch der Key. Blazor erkennt dadurch, dass das bisherige Element nicht mehr zu diesem Renderdurchlauf gehört. Das alte &lt;input&gt; wird entfernt und ein neues erzeugt. Browserseitiger Zustand wie der bisher eingegebene Text wird dadurch ebenfalls verworfen.
+ </Content>
+</ITVRegion>
+
+
+@code {
+ public string Comment { get; set; }
+ public record Person(int Id, string Name)
+ {
+  public string Comment { get; set; }
+ }
+
+ List<Person> people = [new(1, "Anna"), new(2, "Berta"), new(3, "Caesar")];
+
+ private Person CurrentPerson;
+
+ protected override void OnInitialized()
+ {
+  CurrentPerson = people[0];
+ }
+
+ private void SwitchPerson()
+ {
+  CurrentPerson = CurrentPerson.Id < people.Count 
+        ? people[CurrentPerson.Id]
+        : people[0];
+     
+  Util.Log(nameof(SwitchPerson) + "->" + CurrentPerson.Id);
+ }
+
+
+}

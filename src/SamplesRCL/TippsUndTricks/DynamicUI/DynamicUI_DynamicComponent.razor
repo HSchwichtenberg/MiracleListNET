@@ -1,10 +1,6 @@
 ﻿@page "/Samples/DynamicUI_DynamicComponent"
-@using Samples.TippsUndTricks.DynamicUI
-@code {
 
-}
-
-<h1>Blazor 6: Dynamisches/Metadatengetriebenes UI</h1>
+<h1>Dynamisches/Metadatengetriebenes UI mit Dynamic Component</h1>
 <hr />
 
 <div class="row">
@@ -29,27 +25,24 @@
  <div class="col-md-6" style="background-color:aliceblue">
   @if (type != null)
   {
-   // DEMO 80: DynamicComponent
    <DynamicComponent Type="@type" Parameters="@parameter" />
-   <button class="btn btn-success" @onclick="()=>this.StateHasChanged()">OK</button>
+   <button class="btn btn-success" @onclick="() => this.StateHasChanged()">OK</button>
   }
  </div>
 
 </div>
 
-    @code {
-     string ControlType = "Text";
-     System.Type type = null;
-     State State { get; set; } = new State() { Value = "42" };
+@code {
+ string ControlType = "Text";
+ System.Type type = null;
+ State State { get; set; } = new State() { Value = "42" };
+ Dictionary<string, object> parameter;
 
-     Dictionary<string, object> parameter;
-
-     // DEMO 81: DynamicComponent befüttern
-     void Render(ChangeEventArgs e)
-     {
-      if (e != null) ControlType = e.Value.ToString();
+ void Render(ChangeEventArgs e)
+ {
+  if (e != null) ControlType = e.Value.ToString();
   var fulltypeName = "Samples.TippsUndTricks.DynamicUI.Controls." + ControlType.Replace(" ", "_");
-      type = System.Type.GetType(fulltypeName);
-      parameter = new Dictionary<string, object> { { "State", State } };
-     }
-    }
+  type = System.Type.GetType(fulltypeName);
+  parameter = new Dictionary<string, object> { { "State", State } };
+ }
+}

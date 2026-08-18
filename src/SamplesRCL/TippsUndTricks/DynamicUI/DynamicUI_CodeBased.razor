@@ -1,10 +1,14 @@
 ﻿@page "/Samples/DynamicUI_CodeBased"
 @inject ITVisions.Blazor.BlazorUtil Util
 
+
+<h1>Dynamisches/Metadatengetriebenes UI mit Code</h1>
+<hr />
+
 <div class="row">
 
- <div class="col-xs-4">
-  <h3>Dynamic Controls: Create new controls</h3>
+ <div class="col-xs-6">
+  <h3>Create new controls</h3>
   <hr />
   Type of new control:
   <select @bind="SelectedControlType" class="form-control">
@@ -64,7 +68,6 @@
      __builder.AddAttribute(3, "value", BindConverter.FormatValue(this.Data, culture: global::System.Globalization.CultureInfo.InvariantCulture));
      __builder.AddAttribute(4, "onchange", EventCallback.Factory.CreateBinder(this, __value => this.Data = __value, this.Data, culture: global::System.Globalization.CultureInfo.InvariantCulture));
      __builder.SetUpdatesAttributeName("value");
-
      __builder.CloseElement();
     };
    }
@@ -85,7 +88,7 @@
   }
 
  </div>
- <div class="col-xs-4">
+ <div class="col-xs-6">
  <h4>Controls created at runtime</h4>
  <table class="table table-bordered table-condensed">
   <tbody>

@@ -5,7 +5,7 @@
 <h1>Demo für die Notwendigkeit des Einsatzes von @@key</h1>
 <div class="row">
 
- <span class="col-md-4">
+ <span class="col-md-6">
   <h3>ohne @@key: Der Kommentar bleibt beim Wechsel gleich :-(</h3>
 
   <button class="btn btn-default" @onclick="SwitchPerson">
@@ -18,7 +18,7 @@
 
  </span>
 
- <span class="col-md-4">
+ <span class="col-md-6">
   <h3>mit @@key</h3>
 
   <button class="btn btn-default" @onclick="SwitchPerson">
@@ -42,7 +42,7 @@
  <Content>
  Ohne @@key erkennt Blazor beim Rendern weiterhin dasselbe &lt;input&gt;-Element an derselben Position im Render Tree. Deshalb wird das vorhandene DOM-Element wiederverwendet. Ein vom Benutzer direkt in das Eingabefeld eingegebener Wert gehört zum Zustand dieses DOM-Elements und bleibt erhalten – auch wenn CurrentPerson inzwischen auf eine andere Person zeigt.
 
- Mit @@key="CurrentPerson.Id" verknüpfst man die Identität des Eingabefeldes mit der Identität der aktuellen Person. Wechselt beispielsweise CurrentPerson.Id von 1 auf 2, ändert sich auch der Key. Blazor erkennt dadurch, dass das bisherige Element nicht mehr zu diesem Renderdurchlauf gehört. Das alte &lt;input&gt; wird entfernt und ein neues erzeugt. Browserseitiger Zustand wie der bisher eingegebene Text wird dadurch ebenfalls verworfen.
+  Mit @@key="CurrentPerson.Id" (auch möglich: @@key="CurrentPerson") verknüpft man die Identität des Eingabefeldes mit der Identität der aktuellen Person. Wechselt beispielsweise CurrentPerson.Id von 1 auf 2, ändert sich auch der Key. Blazor erkennt dadurch, dass das bisherige Element nicht mehr zu diesem Renderdurchlauf gehört. Das alte &lt;input&gt; wird entfernt und ein neues erzeugt. Browserseitiger Zustand wie der bisher eingegebene Text wird dadurch ebenfalls verworfen.
  </Content>
 </ITVRegion>
 

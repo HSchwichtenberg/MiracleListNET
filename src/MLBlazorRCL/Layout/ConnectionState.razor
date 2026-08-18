@@ -35,12 +35,12 @@
    var ok = await Run();
    if (ok) 
    {
-    Util.Log("Connections OK -> Connection Check Interval Seconds = " + ConnectionCheckIntervalSecondsMax);
+    // Util.Log("Connections OK -> Connection Check Interval Seconds = " + ConnectionCheckIntervalSecondsMax);
     periodicTimer.Period = TimeSpan.FromSeconds(ConnectionCheckIntervalSecondsMax);
    }
    else 
    {
-    Util.Warn("Connections Not OK -> Connection Check Interval Seconds = " + ConnectionCheckIntervalSecondsMin);
+    // Util.Warn("Connections Not OK -> Connection Check Interval Seconds = " + ConnectionCheckIntervalSecondsMin);
     periodicTimer.Period = TimeSpan.FromSeconds(ConnectionCheckIntervalSecondsMin);
    }
   }

@@ -1,8 +1,6 @@
-using ITVisions;
-using ITVisions.Blazor;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Components;
 using System.ComponentModel.DataAnnotations;
+using ITVisions;
 using Web;
 
 namespace Samples.Forms
@@ -12,9 +10,6 @@ namespace Samples.Forms
   private Person person { get; set; } = new Person();
   private string Output { get; set; }
   private string OutputError { get; set; }
-
-  [Inject]
-  BlazorUtil Util { get; set; }
 
   protected override void OnInitialized()
   {
@@ -58,8 +53,8 @@ namespace Samples.Forms
     {
      foreach (var member in ve.MemberNames)
      {
-      alertMessage += $"{member}: { ve.ErrorMessage}\n";
-      OutputError += $"<li>{member}: { ve.ErrorMessage}</li>";
+      alertMessage += $"{member}: {ve.ErrorMessage}\n";
+      OutputError += $"<li>{member}: {ve.ErrorMessage}</li>";
      }
     }
     OutputError += "</ul>";

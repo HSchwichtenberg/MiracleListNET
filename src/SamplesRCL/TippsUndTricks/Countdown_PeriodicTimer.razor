@@ -32,7 +32,7 @@
  private string Ausgabe { get; set; } = "";
 
  System.Threading.PeriodicTimer ptimer; // Außerhalb wegen GC!
- CancellationTokenSource? cts;
+ CancellationTokenSource cts;
 
  async Task Start()
  {

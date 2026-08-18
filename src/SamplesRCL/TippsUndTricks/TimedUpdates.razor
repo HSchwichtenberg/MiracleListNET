@@ -11,9 +11,6 @@
   Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("de-de");
  }
 
- [Inject]
- public BlazorUtil Util { get; set; } = null;
-
  Timer timer;
  const int UpdateIntervallSekunden = 1;
  protected override void OnInitialized()

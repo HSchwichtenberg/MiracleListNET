@@ -1,11 +1,6 @@
 #pragma warning disable 1998
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using ITVisions.Blazor;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
 
 namespace Samples.Routing
 {
@@ -42,8 +37,6 @@ namespace Samples.Routing
   #endregion
 
   #region Reaktionen auf Benutzerinteraktionen
-
-
 
   #endregion
  }

@@ -7,12 +7,8 @@
 @inject IJSRuntime jsRuntime
 @inject NavigationManager nav
 
-
-@using ITVisions.Blazor
-
 <h3>RoutingDemo</h3>
 <p>@nav.GetType().FullName</p>
-
 
 <style>
  a.active {
@@ -130,8 +126,6 @@
  ConfirmExternalNavigation="!AllowNavigation" />
 
 @code {
- [Inject]
- public BlazorUtil Util { get; set; } = null;
  [Inject]
  public IJSRuntime JSRuntime { get; set; } = null;
  [Inject]

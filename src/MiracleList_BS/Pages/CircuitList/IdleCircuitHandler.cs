@@ -45,7 +45,11 @@ public sealed class IdleCircuitHandler : CircuitHandler, IDisposable
   {
    timer.Stop();
    timer.Start();
-   if (showNextActivity) { util.Log(DateTime.Now.ToString() + ": Benutzer war aktiv :-) " + context.Circuit.Id); showNextActivity = false; }
+   if (showNextActivity)
+   {
+    //util.Log(DateTime.Now.ToString() + ": Benutzer war aktiv :-) " + context.Circuit.Id); 
+    showNextActivity = false;
+   }
    else showNextActivity = true;
    return next(context);
   };

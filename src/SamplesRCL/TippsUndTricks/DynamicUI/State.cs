@@ -1,5 +1,5 @@
 ﻿using ITVisions;
-namespace Samples.NET6;
+namespace Samples.TippsUndTricks.DynamicUI;
 
 public class State
 {

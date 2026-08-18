@@ -1,5 +1,5 @@
-﻿@page "/Samples/Dynamic"
-@using Samples.NET6
+﻿@page "/Samples/DynamicUI_DynamicComponent"
+@using Samples.TippsUndTricks.DynamicUI
 @code {
 
 }
@@ -48,7 +48,7 @@
      void Render(ChangeEventArgs e)
      {
       if (e != null) ControlType = e.Value.ToString();
-  var fulltypeName = "Samples.Komponenteneinbettung.DynamicComponent.Controls." + ControlType.Replace(" ", "_");
+  var fulltypeName = "Samples.TippsUndTricks.DynamicUI.Controls." + ControlType.Replace(" ", "_");
       type = System.Type.GetType(fulltypeName);
       parameter = new Dictionary<string, object> { { "State", State } };
      }

@@ -1,4 +1,4 @@
-﻿@page "/Samples/DynamicControls"
+﻿@page "/Samples/DynamicUI_CodeBased"
 @inject ITVisions.Blazor.BlazorUtil Util
 
 <div class="row">
@@ -14,7 +14,7 @@
    <option>button</option>
   </select>
 
-  <button @onclick="Create" class="btn btn-primary">Add Control</button>
+<button @onclick="Create" class="btn btn-primary">Add Control</button> <button class="btn btn-info" @onclick="() => this.StateHasChanged()">StateHasChanged()</button>
 
 
   @code {
@@ -55,8 +55,7 @@
      {
       __builder.AddAttribute(2, "class", "btn btn-default");
       this.Data = "Click me!";
-      __builder.AddAttribute(12, "onclick", EventCallback.Factory.Create<Microsoft.AspNetCore.Components.Web.MouseEventArgs>(this, Callback
-             ));
+      __builder.AddAttribute(12, "onclick", EventCallback.Factory.Create<Microsoft.AspNetCore.Components.Web.MouseEventArgs>(this, Callback));
      }
      else
      {
@@ -85,71 +84,28 @@
    protected RenderFragment DynamicFragment;
   }
 
-
-  <hr />
-  <h4>Controls created at runtime</h4>
-  <table class="table table-bordered table-condensed">
-   <tbody>
-    @foreach (var c in controls)
-    {
-     <tr><td width="100px">@c.Type</td><td>@c.Render()</td></tr>
-    }
-   </tbody>
-  </table>
-
-  <hr />
-  <h4>Data from controls created at runtime</h4>
-  <table class="table table-bordered table-condensed">
-   <tbody>
-    @foreach (var c in controls)
-    {
-     <tr><td width="100px">@c.Type</td><td>@c.Data</td></tr>
-    }
-   </tbody>
-  </table>
  </div>
  <div class="col-xs-4">
-  <h3>Dynamic Controls: Update controls</h3>
-  <hr />
-  Anzahl der Elemente:
-  <input type="number" @bind="NumberOfElements" class="form-control" />
-
-
-  <select @bind="SelectedElement" class="form-control">
-   @foreach (var e in Elements)
+ <h4>Controls created at runtime</h4>
+ <table class="table table-bordered table-condensed">
+  <tbody>
+   @foreach (var c in controls)
    {
-    <option>@e</option>
+    <tr><td width="100px">@c.Type</td><td>@c.Render()</td></tr>
    }
+  </tbody>
+ </table>
 
-  </select>
-
-  <p>Gewähltes Element: @SelectedElement</p>
-
-  @code
-  {
-   public int _NumberOfElements;
-
-   public int NumberOfElements
+ <hr />
+ <h4>Data from controls created at runtime</h4>
+ <table class="table table-bordered table-condensed">
+  <tbody>
+   @foreach (var c in controls)
    {
-    get { return _NumberOfElements; }
-    set
-    {
-     _NumberOfElements = value;
-
-     Elements.Clear();
-     for (int i = 1; i <= _NumberOfElements; i++)
-     {
-      Elements.Add("Element " + i);
-     }
-
-    }
+    <tr><td width="100px">@c.Type</td><td>@c.Data</td></tr>
    }
-
-   public string SelectedElement { get; set; }
-
-   public List<string> Elements { get; set; } = new();
-
-  }
+  </tbody>
+ </table>
 
  </div>
 </div>

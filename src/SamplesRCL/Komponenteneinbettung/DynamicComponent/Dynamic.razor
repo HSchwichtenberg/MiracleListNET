@@ -1,4 +1,4 @@
-﻿@page "/Dynamic"
+﻿@page "/Samples/Dynamic"
 @using Samples.NET6
 @code {
 
@@ -9,7 +9,7 @@
 
 <div class="row">
  @*Spalte 1*@
- <div class="col">
+ <div class="col-md-6">
   <div class="card">
    <div class="card-body">
     <div class="card-title">Was soll gerendert werden?</div>
@@ -26,7 +26,7 @@
  </div>
 
  @*Spalte 2*@
- <div class="col" style="background-color:aliceblue">
+ <div class="col-md-6" style="background-color:aliceblue">
   @if (type != null)
   {
    // DEMO 80: DynamicComponent
@@ -40,7 +40,7 @@
     @code {
      string ControlType = "Text";
      System.Type type = null;
-     State State { get; set; } = new State() { Value = 42 };
+     State State { get; set; } = new State() { Value = "42" };
 
      Dictionary<string, object> parameter;
 
@@ -48,7 +48,7 @@
      void Render(ChangeEventArgs e)
      {
       if (e != null) ControlType = e.Value.ToString();
-      var fulltypeName = "NET6BW.Pages.Controls." + ControlType.Replace(" ", "_");
+  var fulltypeName = "Samples.Komponenteneinbettung.DynamicComponent.Controls." + ControlType.Replace(" ", "_");
       type = System.Type.GetType(fulltypeName);
       parameter = new Dictionary<string, object> { { "State", State } };
      }

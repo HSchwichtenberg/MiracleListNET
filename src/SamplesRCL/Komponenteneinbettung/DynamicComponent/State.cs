@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿using ITVisions;
 namespace Samples.NET6;
 
 public class State
 {
- public int Value { get; set; }
+ public string Value { get; set; }
+
+ public int ValueInt
+ {
+  get { return Value.ToInt32(0); }
+  set { Value = value.ToString(); }
+ }
 }

@@ -1,0 +1,10 @@
+﻿@using Samples.NET6
+Bitte geben Sie viel Text ein: 
+<textarea @bind="State.Value" class="form-control" />
+
+@code
+{
+ [Parameter]
+ public State State { get; set; }
+
+}

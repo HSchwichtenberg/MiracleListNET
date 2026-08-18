@@ -1,0 +1,17 @@
+﻿@using Samples.NET6
+
+Bitte wählen Sie:
+<select @bind="State.Value" class="form-control">
+
+ @for (int i = State.ValueInt - 5; i <= State.ValueInt + 5; i++)
+{
+ <option>@i</option>
+}
+</select>
+
+@code
+{
+ [Parameter]
+ public State State { get; set; }
+
+}

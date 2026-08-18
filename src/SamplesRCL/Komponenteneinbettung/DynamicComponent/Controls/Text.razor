@@ -1,0 +1,10 @@
+﻿@using Samples.NET6
+Bitte geben Sie Text ein:
+<input type="text" @bind="State.Value" class="form-control"/>
+
+@code
+{
+ [Parameter]
+ public State State { get; set; }
+
+}

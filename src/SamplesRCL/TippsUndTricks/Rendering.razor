@@ -1,6 +1,7 @@
 ﻿@page "/Samples/Rendering"
 @using System.Threading;
 @using ITVisions.Blazor
+@using ITVisions.Blazor.Controls
 @inject BlazorUtil Util
 
 <h1>Rendering in @(Util.IsWebAssembly ? "Blazor WebAssembly" : "Blazor Server")</h1>
@@ -8,21 +9,22 @@
 <h3>Einstellungen</h3>
 
 <br />
-<input type="number" @bind="Dauer" /> Sekunden
+<input type="number" @bind="Dauer" class="form-control" style="width:100px" /> Sekunden
 <br />
-<input type="checkbox" @bind="shouldRender" /> ShouldRender? --> ohne dies sieht man gar keine UI-Updates
+<input type="checkbox" @bind="shouldRender" class="form-check-input" /> ShouldRender? --> ohne dies sieht man gar keine UI-Updates (außer dem Animated GIF in der Schaltfläche)
 <br />
-<input type="checkbox" @bind="useTask" /> Use Task?
+<input type="checkbox" @bind="useTask" class="form-check-input" /> Use Task?
 <br />
-<input type="checkbox" @bind="useInvokeAsync" /> Use InvokeAsync?
+<input type="checkbox" @bind="callStateHasChanged" class="form-check-input" /> StateHasChanged?
 <br />
-<input type="checkbox" @bind="callStateHasChanged" /> StateHasChanged? --> ohne dies Absturz in Blazor Server ("The current thread is not associated with the Dispatcher.")
+<input type="checkbox" @bind="useInvokeAsync" class="form-check-input" /> Use InvokeAsync? --> ohne dies Absturz in Blazor Server ("The current thread is not associated with the Dispatcher.")
+
 <br />
-<input type="number" @bind="delay" /> ms Verzögerung nach dem StateHasChanges() --> in Blazor WebAssembly blockiert das UI
+<input type="number" @bind="delay" class="form-control" style="width:100px" /> ms Verzögerung nach dem StateHasChanges() --> in Blazor WebAssembly blockiert das UI
 
 <h3>Ausgaben</h3>
 
-<button @onclick="Start">Start</button>
+<ITVButton @onclick="Start" AnimationSeconds="100" class="btn btn-info">Start</ITVButton>
 
 <hr />
 Verbleibende Sekunden: @VerbleibendeSekunden
@@ -34,7 +36,7 @@ Verbleibende Sekunden: @VerbleibendeSekunden
 @DetectChangeDetection
 
 @code {
- private int Dauer { get; set; } = 5;
+ private byte Dauer { get; set; } = 3;
  private string Ausgabe { get; set; } = "";
  private string EndeZeit { get; set; } = "";
  private bool shouldRender = true;
@@ -58,17 +60,12 @@ Verbleibende Sekunden: @VerbleibendeSekunden
 
  public async void Start()
  {
-  //for (int i = 0; i < 100; i++)
-  //{
-  // Ausgabe += $"{i:0000} {DateTime.Now.ToString()}<br>";
-  //}
-  //return;
-
   count = 0;
   VerbleibendeSekunden = Dauer;
   EndeZeit = "";
   DateTime startTime = DateTime.Now;
   DateTime? letzteLogAusgabe = null;
+
   while ((DateTime.Now - startTime).TotalSeconds < Dauer)
   {
    if (letzteLogAusgabe == null || (DateTime.Now - letzteLogAusgabe.Value).TotalSeconds >= 1)
@@ -78,9 +75,9 @@ Verbleibende Sekunden: @VerbleibendeSekunden
     Util.Log("Verbleibende Sekunden: " + VerbleibendeSekunden);
    }
 
-   if (!useTask)
+   if (!useTask) // ohne eigenen Task
    {
-    Print();
+    Aktion();
     if (callStateHasChanged) this.StateHasChanged();
     if (delay > 0) await Task.Delay(delay);
    }
@@ -88,30 +85,38 @@ Verbleibende Sekunden: @VerbleibendeSekunden
    { // eigenen Task verwenden
     await Task.Run(async () =>
     {
-     Print();
-     if (useInvokeAsync)
-     {
-      await this.InvokeAsync(
-             async () =>
-             {
-              if (callStateHasChanged) this.StateHasChanged();
-             });
-     }
-     else
-     {
-      if (callStateHasChanged) this.StateHasChanged();
-     }
+     Aktion();
+     await Render();
      if (delay > 0) await Task.Delay(delay);
     });
    }
   } // end while
   EndeZeit = "Beendet um " + DateTime.Now;
+  await Render();
  } // end start
 
- void Print()
+ void Aktion()
  {
   count++;
   if (count % 10 == 0) Ausgabe = "";
-  Ausgabe += $"{count:0000} {DateTime.Now.ToString()}<br>";
+  string text = $"{count:0000} {DateTime.Now.ToString()} in Thread #{Thread.CurrentThread.ManagedThreadId}";
+  Ausgabe += text + "<br>";
+  Util.Log(text);
+ }
+
+ async Task Render()
+ {
+  if (useInvokeAsync)
+  {
+   await this.InvokeAsync(
+          async () =>
+          {
+           if (callStateHasChanged) this.StateHasChanged();
+          });
+  }
+  else
+  {
+   if (callStateHasChanged) this.StateHasChanged();
+  }
  }
 }

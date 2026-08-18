@@ -1,0 +1,14 @@
+﻿<h3>@Person.Id @Person.Name</h3>
+
+Kommentar in dem Person-Objekt:
+<input class="form-control" @bind="@Person.Comment" />
+
+Kommentar in der Komponente:
+<input class="form-control" @bind="@Comment" />
+
+@code {
+ [Parameter, EditorRequired]
+ public KeyDemo.Person Person { get; set; } = default!;
+
+ private string Comment = "";
+}

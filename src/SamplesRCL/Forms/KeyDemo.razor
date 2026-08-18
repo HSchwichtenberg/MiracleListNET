@@ -1,0 +1,159 @@
+﻿@page "/samples/keydemo"
+@using ITVisions.Blazor.Controls
+@using Samples.Interop
+
+
+<h1>Demo für die Notwendigkeit des Einsatzes von @@key</h1>
+<div class="row">
+ @* ------ Spalte 1 *@
+ <span class="col-md-6">
+  <h3>ohne @@key: Der zweite Kommentar bleibt beim Wechsel gleich :-(</h3>
+
+  <button class="btn btn-default" @onclick="SwitchPerson">
+   Person wechseln
+  </button>
+
+  <KeyDemo_PersonEditor Person="CurrentPerson" />
+
+ </span>
+
+ @* ------ Spalte 2 *@
+ <span class="col-md-6">
+  <h3>mit @@key: Auch der zweite Kommentar ändert sich beim Wechsel :-)</h3>
+
+  <button class="btn btn-default" @onclick="SwitchPerson">
+   Person wechseln
+  </button>
+
+  <KeyDemo_PersonEditor Person="CurrentPerson" @key="CurrentPerson.Id" />
+
+ </span>
+
+</div>
+
+<hr />
+<ITVRegion>
+ <Head>
+  Warum ist hier @@key notwendig?
+ </Head>
+ <Content>
+  Ohne @@key erkennt Blazor beim Rendern weiterhin dasselbe &lt;input&gt;-Element an derselben Position im Render Tree. Deshalb wird das vorhandene DOM-Element wiederverwendet. Ein vom Benutzer direkt in das Eingabefeld eingegebener Wert gehört zum Zustand dieses DOM-Elements und bleibt erhalten – auch wenn CurrentPerson inzwischen auf eine andere Person zeigt.
+
+  Mit @@key="CurrentPerson.Id" (auch möglich: @@key="CurrentPerson") verknüpft man die Identität des Eingabefeldes mit der Identität der aktuellen Person. Wechselt beispielsweise CurrentPerson.Id von 1 auf 2, ändert sich auch der Key. Blazor erkennt dadurch, dass das bisherige Element nicht mehr zu diesem Renderdurchlauf gehört. Das alte &lt;input&gt; wird entfernt und ein neues erzeugt. Browserseitiger Zustand wie der bisher eingegebene Text wird dadurch ebenfalls verworfen.
+ </Content>
+</ITVRegion>
+
+
+<button class="btn btn-success" @onclick="AddPerson">
+ Person ergänzen
+</button>
+
+<div class="row">
+ @* ------ Spalte 1 *@
+ <div class="col-md-6">
+  <h3>ohne @@key:</h3>
+
+  <ul>
+  @foreach (var p in people)
+  {
+    <li>@p.Id: @p.Name @p.Comment</li>
+   }
+  </ul>
+ </div>
+
+ @* ------ Spalte 2 *@
+ <div class="col-md-6">
+  <h3>mit @@key</h3>
+
+  <ul>
+   @foreach (var p in people)
+   {
+    <li @key="p.Id">@p.Id: @p.Name @p.Comment</li>
+   }
+  </ul>
+ </div>
+
+</div>
+
+<button class="btn btn-success" @onclick="AddNumber">
+ Zahl ergänzen
+</button>
+
+<div class="row">
+ @* ------ Spalte 1 *@
+ <div class="col-md-6">
+  <h3>ohne @@key:</h3>
+
+  <ul>
+   @foreach (var n in numbers)
+   {
+    <li>@n</li>
+   }
+  </ul>
+ </div>
+
+ @* ------ Spalte 2 *@
+ <div class="col-md-6">
+  <h3>mit @@key</h3>
+
+  <ul>
+   @foreach (var n in numbers)
+   {
+    <li @key="n">@n</li>
+   }
+  </ul>
+ </div>
+
+</div>
+
+
+
+@code {
+
+ private RenderFragment PersonEditor(Person person) => @<div style="margin-bottom:10px">
+  <strong>@person.Name</strong>
+
+  <input @bind="Comment" />
+ </div>
+ ;
+
+ public List<string> Comments { get; set; } = ["", "", ""];
+ public string Comment { get; set; }
+
+ public List<int> numbers = [0,1,2];
+
+ public record Person(int Id, string Name)
+ {
+  public string Comment { get; set; }
+ }
+
+ List<Person> people = [new(1, "Anna"), new(2, "Berta"), new(3, "Caesar")];
+
+ private Person CurrentPerson;
+
+ protected override void OnInitialized()
+ {
+  CurrentPerson = people[0];
+ }
+
+ private void SwitchPerson()
+ {
+  CurrentPerson = CurrentPerson.Id < people.Count
+        ? people[CurrentPerson.Id]
+        : people[0];
+
+  Util.Log(nameof(SwitchPerson) + "->" + CurrentPerson.Id);
+ }
+
+ private void AddPerson()
+ {
+  people.Add(new Person(people.Max(x=>x.Id+1), "unbekannt"));
+ }
+
+ private void AddNumber()
+ {
+  numbers.Add(numbers.Max()+1);
+ }
+
+
+}

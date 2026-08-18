@@ -1,7 +1,5 @@
 ﻿@page "/samples/keydemo"
 @using ITVisions.Blazor.Controls
-@using Samples.Interop
-
 
 <h1>Demo für die Notwendigkeit des Einsatzes von @@key</h1>
 <div class="row">
@@ -12,9 +10,7 @@
   <button class="btn btn-default" @onclick="SwitchPerson">
    Person wechseln
   </button>
-
   <KeyDemo_PersonEditor Person="CurrentPerson" />
-
  </span>
 
  @* ------ Spalte 2 *@
@@ -24,11 +20,8 @@
   <button class="btn btn-default" @onclick="SwitchPerson">
    Person wechseln
   </button>
-
   <KeyDemo_PersonEditor Person="CurrentPerson" @key="CurrentPerson.Id" />
-
  </span>
-
 </div>
 
 <hr />
@@ -42,7 +35,6 @@
   Mit @@key="CurrentPerson.Id" (auch möglich: @@key="CurrentPerson") verknüpft man die Identität des Eingabefeldes mit der Identität der aktuellen Person. Wechselt beispielsweise CurrentPerson.Id von 1 auf 2, ändert sich auch der Key. Blazor erkennt dadurch, dass das bisherige Element nicht mehr zu diesem Renderdurchlauf gehört. Das alte &lt;input&gt; wird entfernt und ein neues erzeugt. Browserseitiger Zustand wie der bisher eingegebene Text wird dadurch ebenfalls verworfen.
  </Content>
 </ITVRegion>
-
 
 <button class="btn btn-success" @onclick="AddPerson">
  Person ergänzen
@@ -76,7 +68,7 @@
 </div>
 
 <button class="btn btn-success" @onclick="AddNumber">
- Zahl ergänzen
+ Zahl an Zufallsposition ergänzen
 </button>
 
 <div class="row">
@@ -103,13 +95,10 @@
    }
   </ul>
  </div>
-
 </div>
 
 
-
 @code {
-
  private RenderFragment PersonEditor(Person person) => @<div style="margin-bottom:10px">
   <strong>@person.Name</strong>
 
@@ -152,8 +141,7 @@
 
  private void AddNumber()
  {
-  numbers.Add(numbers.Max()+1);
+  int index = Random.Shared.Next(numbers.Count + 1);
+  numbers.Insert(index, numbers.Max() + 1);
  }
-
-
 }

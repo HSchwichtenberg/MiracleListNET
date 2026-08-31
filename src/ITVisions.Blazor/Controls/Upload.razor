@@ -83,9 +83,11 @@
     </div>
    }
 
-   if (this.filesToUpload != null && this.filesToUpload.Count > 0)
+   // Snapshot in eine lokale Variable ziehen, dann ist die Lambda gegen Nebenläufigkeit geschützt (vorher: prüfte filesToUpload != null && Count > 0, aber der <ITVButton>-Inhalt in Zeile 88 ist eine RenderFragment-Lambda (__builder3 => ...), die erst später vom Renderer ausgeführt wird. Zu dem Zeitpunkt kann filesToUpload bereits durch einen asynchronen Vorgang (Upload abgeschlossen, InputFile-Reset, OnChange) auf null gesetzt worden sein — und drinnen greifst du mit this.filesToUpload.Count (ohne ?.) darauf zu → NullReferenceException)
+   var files = this.filesToUpload;
+   if (files != null && files.Count > 0)
    {
-    <ITVButton class="btn btn-primary">@(TextGenerator.TextGen.SingularPlural(this.filesToUpload?.Count ?? 1, "Datei", this.filesToUpload.Count + " Dateien") + " nun hochladen")</ITVButton >
+    <ITVButton class="btn btn-primary">@(TextGenerator.TextGen.SingularPlural(files.Count, "Datei", files.Count + " Dateien") + " nun hochladen")</ITVButton>
    }
   }
  }

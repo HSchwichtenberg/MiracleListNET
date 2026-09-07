@@ -1,5 +1,6 @@
 ﻿@inject BlazorUtil util
 
+@ShowAnimation
 <button disabled="@ShowAnimation" data-toggle="tooltip" data-placement="bottom" @attributes="AdditionalAttributes" @onclick="Run">
  @if (ShowAnimation)
  {
@@ -41,47 +42,31 @@
 
  bool ShowAnimation = false;
  bool Working = false;
- bool MinDone = false;
- System.Timers.Timer t;
 
  public async Task Run()
  {
-  ShowAnimation = false;
-  MinDone = false;
+  // Start animation
+  ShowAnimation = true;
   Working = true;
   await UIUpdate();
 
-  #region Animation (soll min. x Sekunden laufen)
-  if (AnimationSeconds > 0)
+  Task minDelay = AnimationSeconds > 0 ? Task.Delay(TimeSpan.FromSeconds(AnimationSeconds)) : Task.CompletedTask;
+
+  async Task ActionRunner()
   {
-   ShowAnimation = true;
-   await UIUpdate();
-
-   t = new System.Timers.Timer(new TimeSpan(0, 0, AnimationSeconds));
-   t.AutoReset = false;
-
-   t.Elapsed += async (s, e) =>
-   {
-    MinDone = true;
-    if (!Working)
-    {
-     ShowAnimation = false;
-     await UIUpdate();
-    }
-    t.Close();
-   };
-   t.Start();
+   Util.Log("TTTButton: Run() gestartet: " + onClick);
+   // hier startet die Aktion!
+   await onClick.InvokeAsync();
   }
-  #endregion
 
-  #region Button-Aktion mit Fehlerabfangen
   try
   {
-   await onClick.InvokeAsync();
-   await UIUpdate();
+   // Die Animation läuft so lange, wie die Aktion läuft, und mindestens AnimationSeconds.
+   await Task.WhenAll(ActionRunner(), minDelay);
   }
   catch (Exception ex)
   {
+   // Bei Fehler die Animation sofort beenden
    ShowAnimation = false;
    await UIUpdate();
 
@@ -91,19 +76,17 @@
    }
    else // Host hat keine Fehlerbehandlung definiert
    {
-    ShowAnimation = false;
-    await this.InvokeAsync(this.StateHasChanged);
-    util.Error(ex.ToString()); 
+    util.Error(ex.ToString());
     await util.Alert(ex.GetFullMessage());
    }
-  }
-  #endregion
-  Working = false;
 
-  if (MinDone)
-  {
-   ShowAnimation = false;
+   Working = false;
+   return;
   }
+
+  // Completed: stop animation
+  Working = false;
+  ShowAnimation = false;
   await UIUpdate();
  }
 

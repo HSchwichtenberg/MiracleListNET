@@ -1,5 +1,5 @@
 ﻿@page "/Samples_BS/Demo_ITVRegion"
-<h3>Test</h3>
+<h3>Nutzung der eigenen Komponente &lt;ITVRegion&gt;</h3>
 
 @code {
  @code {
@@ -8,16 +8,23 @@
  }
 }
 
-Region ist auf: @region1Open
+Region ist auf: @region1Open<br>
+
+Die Region ist von außen per Checkbox steuerbar:
+<input type="checkbox" @bind="region1Open" />
 
 <ITVRegion @bind-IsOpen="region1Open">
  <Head>
-  Head
+  Das ist die
+  <i>Überschrift</i>
  </Head>
  <Content>
-  Content
+  Hier ist der Inhalt
+  <ul>
+   <li>Punkt 1</li>
+   <li>Punkt 2</li>
+  </ul>
  </Content>
-
 </ITVRegion>
 
 Region ist auf: @region2Open

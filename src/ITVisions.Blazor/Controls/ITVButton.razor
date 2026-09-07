@@ -44,12 +44,6 @@
  bool MinDone = false;
  System.Timers.Timer t;
 
- public async Task UIUpdate()
- {
-  await this.InvokeAsync(this.StateHasChanged);
-  await Task.Delay(1);
- }
-
  public async Task Run()
  {
   ShowAnimation = false;
@@ -111,6 +105,15 @@
    ShowAnimation = false;
   }
   await UIUpdate();
+ }
+
+ /// <summary>
+ /// Erzwingt neues Rendern
+ /// </summary>
+ public async Task UIUpdate()
+ {
+  await this.InvokeAsync(this.StateHasChanged);
+  await Task.Delay(1);
  }
 
 }

@@ -1,0 +1,32 @@
+﻿@page "/Samples_BS/Demo_ITVRegion"
+<h3>Test</h3>
+
+@code {
+ @code {
+  bool region1Open;
+  bool region2Open = true;
+ }
+}
+
+Region ist auf: @region1Open
+
+<ITVRegion @bind-IsOpen="region1Open">
+ <Head>
+  Head
+ </Head>
+ <Content>
+  Content
+ </Content>
+
+</ITVRegion>
+
+Region ist auf: @region2Open
+<ITVRegion @bind-IsOpen="region2Open">
+ <Head>
+  Head
+ </Head>
+ <Content>
+  Content
+ </Content>
+
+</ITVRegion>

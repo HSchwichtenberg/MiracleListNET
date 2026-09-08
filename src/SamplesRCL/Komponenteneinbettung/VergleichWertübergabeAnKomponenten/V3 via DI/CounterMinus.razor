@@ -20,8 +20,8 @@
  // [CascadingParameter]
  // public CounterState CounterState { get; set; }
 
- [Parameter]
- public EventCallback CounterStateChanged { get; set; }
+ // [Parameter]
+ // public EventCallback CounterStateChanged { get; set; }
 
  protected override void OnInitialized()
  {
@@ -38,7 +38,7 @@
   Util.Log("UIUpdate in CounterMinus");
   await InvokeAsync(StateHasChanged);
   await Task.Delay(1);
-  await CounterStateChanged.InvokeAsync();
+  // await CounterStateChanged.InvokeAsync();
  }
  
  void DecrementCount()

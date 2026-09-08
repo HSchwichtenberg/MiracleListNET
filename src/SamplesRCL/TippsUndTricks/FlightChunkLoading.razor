@@ -1,0 +1,71 @@
+﻿@page "/Samples/FlightChunkLoading"
+@using System.Net.Http.Json
+@inherits TTTComponentBase
+
+<h3>FlightChunkLoading (Demo für Einsatz von ShouldRender)</h3>
+
+Anzahl Flüge: @NumberOfFlights
+<button class="btn btn-danger" @onclick="Start">Start</button>
+<InputCheckbox @bind-Value="UseShouldRender" /> mit Einsatz von ShouldRender
+
+<hr />
+
+@if(Flights != null)
+{
+ @foreach (Flight f in Flights.OrderByDescending(f => f.FlightNo))
+ {
+  <div>@f.FlightNo - @f.Departure to @f.Destination</div>
+ }
+}
+
+
+@code {
+ class Flight
+ {
+  public int FlightNo { get; set;}
+  public string Departure { get; set; }
+  public string Destination { get; set; }
+ }
+
+ bool UseShouldRender = false;
+ long ChunkSize = 20;
+ long NumberOfFlights = -1;
+ string baseURI = "https://worldwidewingsbackend.azurewebsites.net";
+ HttpClient HttpClient = new HttpClient();
+
+ protected override async Task OnParametersSetAsync()
+ {
+  NumberOfFlights = await HttpClient.GetFromJsonAsync<long>(baseURI + "/api/flight/count");
+ }
+
+ List<Flight> AllFlights = new();
+ List<Flight> Flights = new();
+
+ async Task Start()
+ {
+  long chunks = NumberOfFlights / ChunkSize;
+
+  for (int chunk = 0; chunk < chunks; chunk++)
+  {
+   if (UseShouldRender)  this.AllowRendering = false;
+   await Load(chunk, ChunkSize);
+   if (UseShouldRender) this.AllowRendering = true;
+
+   await UIUpdate();
+   await Log($"Chunk {chunk} loaded with {Flights.Count} flights.");
+
+  }
+  await Log("All chunks loaded.");
+
+ }
+
+ async Task Load(long chunk, long ChunkSize)
+ {
+  Flights = null;
+  await UIUpdate();
+  long start = chunk * ChunkSize;
+  Flights = await HttpClient.GetFromJsonAsync<List<Flight>>(baseURI + $"/api/flight/%20/%20/{start}/{ChunkSize}");
+  AllFlights.AddRange(Flights);
+ }
+
+ }

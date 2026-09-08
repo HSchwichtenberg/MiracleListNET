@@ -1,6 +1,6 @@
 ﻿@page "/Samples/FlightChunkLoading"
 @using System.Net.Http.Json
-@inherits TTTComponentBase
+@inherits ITVComponentBase
 
 <h3>FlightChunkLoading (Demo für Einsatz von ShouldRender)</h3>
 
@@ -17,7 +17,6 @@ Anzahl Flüge: @NumberOfFlights
   <div>@f.FlightNo - @f.Departure to @f.Destination</div>
  }
 }
-
 
 @code {
  class Flight
@@ -47,9 +46,9 @@ Anzahl Flüge: @NumberOfFlights
 
   for (int chunk = 0; chunk < chunks; chunk++)
   {
-   if (UseShouldRender)  this.AllowRendering = false;
+   if (UseShouldRender) this.SuspendRendering();
    await Load(chunk, ChunkSize);
-   if (UseShouldRender) this.AllowRendering = true;
+   if (UseShouldRender) this.ResumeRendering();
 
    await UIUpdate();
    await Log($"Chunk {chunk} loaded with {Flights.Count} flights.");

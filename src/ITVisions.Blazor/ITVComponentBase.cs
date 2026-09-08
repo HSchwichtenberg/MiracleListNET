@@ -5,9 +5,11 @@ using Microsoft.JSInterop;
 
 namespace ITVisions.Blazor;
 
-public class TTTComponentBase : ComponentBase
+/// <summary>
+/// Eigene Basisklasse für Razor Components mit Hilfsfunktionen
+/// </summary>
+public class ITVComponentBase : ComponentBase
 {
-
  [Inject]
  IJSRuntime JS { get; set; }
 
@@ -46,7 +48,17 @@ public class TTTComponentBase : ComponentBase
   await Task.Delay(1);
  }
 
- public bool AllowRendering = true;
+ public void SuspendRendering()
+ {
+  this.AllowRendering = false;
+ }
+
+ public void ResumeRendering()
+ {
+  this.AllowRendering = true;
+ }
+
+ bool AllowRendering = true;
 
  protected override bool ShouldRender()
  {

@@ -1,0 +1,30 @@
+﻿@page "/samples/CounterHostV2"
+
+@* https://localhost:5001/samples/CounterHostV2 *@
+
+<h3>CounterHost (Datenweitergabe via Cascading Value/Cascading Parameter)</h3>
+
+<div class="row">
+
+ <CascadingValue Value="@CounterState">
+  <div class="col-md-3">
+   <CounterPlus CounterStateChanged="() => this.StateHasChanged()" />
+  </div>
+
+  <div class="col-md-3">
+   <CounterMinus CounterStateChanged="() => this.StateHasChanged()" />
+  </div>
+ </CascadingValue>
+
+ <div class="col-md-3">
+  Host hat Wert: @CounterState.CurrentCount
+ </div>
+
+</div>
+
+@code
+{
+ //int currentCount = 42;
+
+ CounterState CounterState = new() { CurrentCount = 42 };
+}

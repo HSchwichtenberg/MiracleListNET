@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using MiracleList;
 using MLBlazorRCL.MainView;
+using Samples.Komponenteneinbettung.VergleichWertübergabeAnKomponenten;
 
 namespace Web;
 
@@ -115,7 +116,7 @@ Console.WriteLine("WASM Multi-Threading ist aktiv!");
   // Für Session-State-Demo
   services.AddScoped<TypedSessionState>();
   services.AddScoped<GenericSessionState>();
-
+  services.AddScoped<CounterState>();
   #endregion
 
   #region DI für sonstige Hilfsbibliotheken

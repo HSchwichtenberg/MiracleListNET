@@ -16,6 +16,7 @@ using Microsoft.Extensions.Hosting;
 using MiracleList;
 using MiracleList_Backend.Hubs;
 using MLBlazorRCL.MainView;
+using Samples.Komponenteneinbettung.VergleichWertübergabeAnKomponenten;
 using Web.Data;
 using Web.Pages.CircuitList;
 
@@ -199,6 +200,7 @@ public class Program
   // Für Session-State-Demo
   services.AddScoped<TypedSessionState>();
   services.AddScoped<GenericSessionState>();
+  services.AddScoped<CounterState>();
 
   // für Nutzung HTTPContext
   services.AddHttpContextAccessor();

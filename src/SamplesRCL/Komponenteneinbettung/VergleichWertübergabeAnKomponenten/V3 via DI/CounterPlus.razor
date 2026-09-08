@@ -1,0 +1,48 @@
+﻿@inject CounterState CounterState
+@implements IDisposable
+
+<div style="background-color:lightgreen;padding:10px">
+ <h3>Plus</h3>
+
+ <p>Zählerstand: @CounterState.CurrentCount</p>
+
+ <button class="btn btn-primary" @onclick="IncrementCount">+</button>
+</div>
+@code
+{
+ // int CurrentCount = 0;
+ // [Parameter]
+ // public int CurrentCount { get; set; } = 0;
+
+ // [Parameter]
+ // public CounterState CounterState { get; set; }
+
+ // [CascadingParameter]
+ // public CounterState CounterState { get; set; }
+
+ [Parameter]
+ public EventCallback CounterStateChanged { get; set; }
+
+ protected override void OnInitialized()
+ {
+  CounterState.OnChange += UIUpdate;
+ }
+
+ public void Dispose()
+ {
+  CounterState.OnChange -= UIUpdate;
+ }
+
+ public async void UIUpdate()
+ {
+  Util.Log("UIUpdate in CounterPlus");
+  await InvokeAsync(StateHasChanged);
+  await Task.Delay(1);
+  await CounterStateChanged.InvokeAsync();
+ }
+
+ async Task IncrementCount()
+ {
+  CounterState.CurrentCount++;
+ }
+}

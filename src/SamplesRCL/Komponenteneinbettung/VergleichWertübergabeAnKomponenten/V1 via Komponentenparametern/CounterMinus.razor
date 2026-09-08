@@ -1,0 +1,25 @@
+﻿<div style="background-color:lightpink;padding:10px">
+<h3>Minus</h3>
+
+ <p>Zählerstand: @CounterState.CurrentCount</p>
+
+ <button class="btn btn-primary" @onclick="DecrementCount">-</button>
+</div>
+@code
+{
+ // int CurrentCount = 0;
+ // [Parameter]
+ // public int CurrentCount { get; set; } = 0;
+
+ [Parameter]
+ public CounterState CounterState { get; set; }
+
+ [Parameter]
+ public EventCallback CounterStateChanged { get; set; }
+
+ void DecrementCount()
+ {
+  CounterState.CurrentCount--;
+  CounterStateChanged.InvokeAsync();
+ }
+}

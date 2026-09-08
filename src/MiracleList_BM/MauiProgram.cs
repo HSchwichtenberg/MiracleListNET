@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using MiracleList;
 using MLBlazorRCL.MainView;
+using Samples.Komponenteneinbettung.VergleichWertübergabeAnKomponenten;
 using Web;
 
 namespace BM;
@@ -72,6 +73,7 @@ public static class MauiProgram
   // Für Session state
   services.AddScoped<TypedSessionState>();
   services.AddScoped<GenericSessionState>();
+  services.AddScoped<CounterState>();
   #endregion
 
   #region Zusätzliche Komponenten, die MLBlazorRCL rendern soll

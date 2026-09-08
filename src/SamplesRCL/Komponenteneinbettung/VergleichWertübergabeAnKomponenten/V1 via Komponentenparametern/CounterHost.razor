@@ -1,0 +1,25 @@
+﻿@page "/samples/CounterHostV1"
+
+<h3>CounterHost</h3>
+
+<div class="row">
+
+ <div class="col-md-3">
+  <CounterPlus CounterState="@CounterState" CounterStateChanged="() => this.StateHasChanged()" />
+ </div>
+
+ <div class="col-md-3">
+  <CounterMinus CounterState="@CounterState" CounterStateChanged="()=>this.StateHasChanged()" />
+ </div>
+
+ <div class="col-md-3">
+  Host hat Wert: @CounterState.CurrentCount
+ </div>
+
+</div>
+
+@code
+{
+ //int currentCount = 42;
+ CounterState CounterState = new() { CurrentCount = 42 };
+}

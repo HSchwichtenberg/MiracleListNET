@@ -1,0 +1,42 @@
+﻿@page "/samples/CounterHostV3"
+
+@inject CounterState CounterState
+
+@* https://localhost:5001/samples/CounterHostV3 *@
+
+<h3>CounterHost (Datenweitergabe via DI)</h3>
+
+<div class="row">
+
+ <div class="col-md-3">
+  <CounterPlus CounterStateChanged="this.UIUpdate" />
+ </div>
+
+ <div class="col-md-3">
+  <CounterMinus CounterStateChanged="this.UIUpdate" />
+ </div>
+
+ <div class="col-md-3">
+  Host hat Wert: @CounterState.CurrentCount
+ </div>
+
+</div>
+
+@code
+{
+ //int currentCount = 42;
+
+ //  CounterState CounterState = new() { CurrentCount = 42 };
+
+ protected override void OnInitialized()
+ {
+  CounterState.CurrentCount = 42;
+ }
+
+ public async Task UIUpdate()
+ {
+  Util.Log("UIUpdate in CounterHost");
+  await InvokeAsync(StateHasChanged);
+  await Task.Delay(1);
+ }
+}

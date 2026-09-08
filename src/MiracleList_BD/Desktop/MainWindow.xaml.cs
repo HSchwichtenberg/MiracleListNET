@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Web.WebView2.Core;
 using MiracleList;
 using MLBlazorRCL.MainView;
+using Samples.Komponenteneinbettung.VergleichWertübergabeAnKomponenten;
 using Web;
 
 namespace BD.Desktop;
@@ -81,6 +82,7 @@ public partial class MainWindow : Window
   // Für Session-State-Demo
   services.AddScoped<TypedSessionState>();
   services.AddScoped<GenericSessionState>();
+  services.AddScoped<CounterState>();
 
   // für HttpClient
   services.AddScoped<System.Net.Http.HttpClient>();
@@ -181,7 +183,6 @@ public partial class MainWindow : Window
   {
 
   }
-
 
   this.C_Status.Content = $"{System.Runtime.InteropServices.RuntimeInformation.OSDescription} | {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription} | Blazor Desktop {blazoprDesktopAssemblyFileVersion} | " +
     "WebView " + CoreWebView2Environment.GetAvailableBrowserVersionString() + " | " +

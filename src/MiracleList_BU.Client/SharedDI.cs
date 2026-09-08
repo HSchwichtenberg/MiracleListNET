@@ -4,6 +4,7 @@ using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components.Authorization;
 using MiracleList;
 using MLBlazorRCL.MainView;
+using Samples.Komponenteneinbettung.VergleichWertübergabeAnKomponenten;
 
 namespace Web.Client;
 
@@ -42,6 +43,7 @@ public class SharedDI
   // Für Session-State-Demo
   services.AddScoped<TypedSessionState>();
   services.AddScoped<GenericSessionState>();
+  services.AddScoped<CounterState>();
   #endregion
 
   #region DI für sonstige Hilfsbibliotheken

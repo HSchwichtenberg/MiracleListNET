@@ -6,11 +6,11 @@
 <div class="row">
 
  <div class="col-md-3">
-  <CounterPlus CounterState="@CounterState" CounterStateChanged="() => this.StateHasChanged()" />
+  <CounterPlus CounterState="@CounterState" CounterStateChanged="() => this.UIUpdate()" />
  </div>
 
  <div class="col-md-3">
-  <CounterMinus CounterState="@CounterState" CounterStateChanged="()=>this.StateHasChanged()" />
+  <CounterMinus CounterState="@CounterState" CounterStateChanged="() => this.UIUpdate()" />
  </div>
 
  <div class="col-md-3">
@@ -24,4 +24,11 @@
 {
  //int currentCount = 42;
  CounterState CounterState = new() { CurrentCount = 42 };
+
+ public async void UIUpdate()
+ {
+  Util.Log("UIUpdate in CounterHost");
+  await InvokeAsync(StateHasChanged);
+  await Task.Delay(1);
+ }
 }

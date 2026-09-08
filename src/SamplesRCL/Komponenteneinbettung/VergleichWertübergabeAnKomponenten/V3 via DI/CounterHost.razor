@@ -24,6 +24,12 @@
 
 </div>
 
+<hr />
+@foreach (var item in CounterState.CountHistory)
+{
+ <div>@item.Key: @item.Value</div>
+}
+
 @code
 {
  //int currentCount = 42;

@@ -8,11 +8,11 @@
 
  <CascadingValue Value="@CounterState">
   <div class="col-md-3">
-   <CounterPlus CounterStateChanged="() => this.StateHasChanged()" />
+   <CounterPlus CounterStateChanged="() => this.UIUpdate()" />
   </div>
 
   <div class="col-md-3">
-   <CounterMinus CounterStateChanged="() => this.StateHasChanged()" />
+   <CounterMinus CounterStateChanged="() => this.UIUpdate()" />
   </div>
  </CascadingValue>
 
@@ -28,4 +28,11 @@
  //int currentCount = 42;
 
  CounterState CounterState = new() { CurrentCount = 42 };
+
+ public async void UIUpdate()
+ {
+  Util.Log("UIUpdate in CounterHost");
+  await InvokeAsync(StateHasChanged);
+  await Task.Delay(1);
+ }
 }

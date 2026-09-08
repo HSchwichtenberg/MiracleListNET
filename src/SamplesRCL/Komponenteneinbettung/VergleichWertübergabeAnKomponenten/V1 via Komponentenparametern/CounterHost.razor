@@ -1,6 +1,7 @@
 ﻿@page "/samples/CounterHostV1"
+@* https://localhost:5001/samples/CounterHostV1 *@
 
-<h3>CounterHost</h3>
+<h3>CounterHost (Datenweitergabe mit einzelnen Komponentenparametern)</h3>
 
 <div class="row">
 
@@ -14,6 +15,7 @@
 
  <div class="col-md-3">
   Host hat Wert: @CounterState.CurrentCount
+ <button @onclick="() => CounterState.CurrentCount = 0" class="btn btn-default">Reset</button>
  </div>
 
 </div>

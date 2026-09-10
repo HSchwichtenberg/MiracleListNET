@@ -1,4 +1,4 @@
-﻿@page "/CircuitList"
+﻿@page "/samples/CircuitList"
 @using System.Threading;
 @using System.Globalization
 @inject IJSRuntime JSRuntime
@@ -7,7 +7,7 @@
 <h3>Liste der Blazor Server-Circuits</h3>
 <div>Basis ist die Klasse CircuitListCircuitHandler, die von Microsoft.AspNetCore.Components.Server.Circuits.CircuitHandler erbt!</div>
 <div>
- Dieses Beispiel gibt es nicht für Blazor WebAssembly, da es dort keine Circuits gibt ;-)
+ Dieses Beispiel gibt es nicht für andere Blazor-Arten außer Blazor Server, da es dort jeweils keine Circuits gibt ;-)
 </div>
 
 <style>
@@ -61,7 +61,6 @@ else
   // wichtig, damit Timer nicht weiterläuft, wenn die Komponente schon nicht mehr lebt
   if (timer != null) timer.Dispose();
  }
-
 
  public async Task CalcLatency()
  {

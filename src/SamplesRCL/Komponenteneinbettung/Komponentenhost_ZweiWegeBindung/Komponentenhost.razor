@@ -1,0 +1,38 @@
+﻿@page "/Samples/Komponentenhost_ZweiWegeBindung"
+@using ITVisions.Blazor
+@inject BlazorUtil Util
+<h3>Komponentenhost</h3>
+
+<p>
+ Diese Razor Component <b>@this.GetType().FullName</b> kommt aus der DLL: <b><text>@System.Reflection.Assembly.GetExecutingAssembly().GetName().Name</text>.dll</b>!
+</p>
+
+<h4>Einbettung einer Komponente mit Zwei-Wege-Datenbindung (@@bind-Value)</h4>
+<br />
+
+<CounterPanel @bind-Value="Wert" />
+
+<p>
+ Die eingebettete Komponente liefert den Wert: @Wert
+</p>
+
+@code
+{
+ public int Wert { get; set; } = 42;
+}
+
+@code
+{
+ public string UserName { get; set; } = "test";
+ public string Password { get; set; } = "";
+}
+
+<Login @bind-UserName="UserName" @bind-Password="Password" OnLogin="Login" />
+
+@code
+{
+ async Task Login()
+ {
+  await Util.Alert("Login mit UserName=" + UserName + " und Password=" + Password); 
+ }
+}

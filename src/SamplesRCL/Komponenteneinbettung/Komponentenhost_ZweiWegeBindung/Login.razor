@@ -1,0 +1,44 @@
+﻿<div class="panel panel-default">
+ <div class="panel-heading">
+  <h4>Komponente "Login"</h4>
+ </div>
+
+ <div class="panel-body">
+  <p>
+   Diese Razor Component <b>@this.GetType().FullName</b> kommt aus der DLL: <b><text>@System.Reflection.Assembly.GetExecutingAssembly().GetName().Name</text>.dll</b>!
+  </p>
+
+  <EditForm Model="this" OnValidSubmit="LoginClick">
+   <InputText Value="UserName"
+              ValueChanged="@(async v => { UserName = v; await UserNameChanged.InvokeAsync(v); })"
+              ValueExpression="() => UserName" class="form-control" />
+
+   <InputText Value="Password" type="password"
+              ValueChanged="@(async v => { Password = v; await PasswordChanged.InvokeAsync(v); })"
+              ValueExpression="() => Password" class="form-control" />
+
+   <button class="btn btn-primary" type="submit">Login</button>
+  </EditForm>
+
+ </div>
+</div>
+
+@code {
+ [Parameter]
+ public string UserName { get; set; }
+ [Parameter]
+ public EventCallback<string> UserNameChanged { get; set; }
+
+ [Parameter]
+ public string Password { get; set; }
+ [Parameter]
+ public EventCallback<string> PasswordChanged { get; set; }
+
+ [Parameter]
+ public EventCallback OnLogin { get; set; }
+
+ async Task LoginClick()
+ {
+  await OnLogin.InvokeAsync(null);
+ }
+}

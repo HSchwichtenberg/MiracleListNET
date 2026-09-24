@@ -23,7 +23,7 @@ public class CounterState
   set { field = value; NotifyStateChanged(); }
  } = new();
 
- public event Action? OnChange;
+ public event Action OnChange;
 
  public void NotifyStateChanged() => OnChange?.Invoke();
 }

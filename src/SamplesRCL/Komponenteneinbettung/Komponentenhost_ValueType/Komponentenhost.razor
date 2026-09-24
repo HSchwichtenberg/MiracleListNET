@@ -9,6 +9,10 @@
 
 <h4>Einbettung einer Komponente mit Attribut="Wert"</h4>
 
+<p>
+ Die eingebettete Komponente liefert den Wert: @Counter
+</p>
+
 @code {
  int startwert = 40;
 }
@@ -27,9 +31,7 @@
 
 <CounterPanel StartValue="@startwert" ValueHasChanged=@NewValueArrived />
 
-<p>
- Die eingebettete Komponente liefert den Wert: @Counter
-</p>
+
 
 @code
 {

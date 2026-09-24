@@ -31,11 +31,12 @@
  }
 }
 
+@* Hier wird gerendert *@
 @ListTemplate(
- @:@{
+ @:@{ @* --> @: leitet Markup ein *@
      foreach (Typ o in Daten)
      {
-   <li>@ElementTemplate(o)</li>
+      <li>@ElementTemplate(o)</li>
      }
  }
  )

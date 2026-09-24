@@ -22,8 +22,9 @@
  public string Details { get; set; }
  public void NewValueArrived(CounterPanel.ValueHasChangedDetails value)
  {
-  counterEventData = value.Counter;
-  Details = value.Text;
-  Util.Log("Zaehler ist nun: " + counterEventData + " (" + Details + ")");
+  InvokeAsync(StateHasChanged);
+  //counterEventData = value.Counter;
+  //Details = value.Text;
+  //Util.Log("Zaehler ist nun: " + counterEventData + " (" + Details + ")");
  }
 }

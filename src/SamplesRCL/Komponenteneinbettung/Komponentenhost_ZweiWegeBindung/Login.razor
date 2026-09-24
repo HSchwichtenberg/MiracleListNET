@@ -9,13 +9,14 @@
   </p>
 
   <EditForm Model="this" OnValidSubmit="LoginClick">
-   <InputText Value="UserName"
-              ValueChanged="@(async v => { UserName = v; await UserNameChanged.InvokeAsync(v); })"
-              ValueExpression="() => UserName" class="form-control" />
+   <InputText @bind-Value="UserName"
+              @bind-Value:after="@(async () => await UserNameChanged.InvokeAsync(UserName))"
+              class="form-control" />
 
-   <InputText Value="Password" type="password"
-              ValueChanged="@(async v => { Password = v; await PasswordChanged.InvokeAsync(v); })"
-              ValueExpression="() => Password" class="form-control" />
+   <InputText @bind-Value="Password"
+              type="password"
+              @bind-Value:after="@(async () => await PasswordChanged.InvokeAsync(Password))"
+              class="form-control" />
 
    <button class="btn btn-primary" type="submit">Login</button>
   </EditForm>

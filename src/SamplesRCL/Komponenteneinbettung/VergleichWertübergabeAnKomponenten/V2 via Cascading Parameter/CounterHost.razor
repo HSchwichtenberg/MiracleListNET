@@ -1,6 +1,6 @@
 ﻿@page "/samples/CounterHostV2"
-
-@* https://localhost:5001/samples/CounterHostV2 *@
+@inherits ITVComponentBase
+@* https://localhost:5101/samples/CounterHostV2 *@
 
 <h3>CounterHost (Datenweitergabe via Cascading Value/Cascading Parameter)</h3>
 
@@ -18,7 +18,7 @@
 
  <div class="col-md-3">
   Host hat Wert: @CounterState.CurrentCount
-  <button @onclick="() => CounterState.CurrentCount = 0" class="btn btn-default">Reset</button>
+  <button @onclick="() => CounterState.CurrentCount = 0" class="btn btn-warning">Reset</button>
  </div>
 
 </div>
@@ -29,10 +29,4 @@
 
  CounterState CounterState = new() { CurrentCount = 42 };
 
- public async void UIUpdate()
- {
-  Util.Log("UIUpdate in CounterHost");
-  await InvokeAsync(StateHasChanged);
-  await Task.Delay(1);
- }
 }

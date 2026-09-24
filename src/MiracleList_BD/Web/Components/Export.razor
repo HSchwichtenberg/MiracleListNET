@@ -115,6 +115,6 @@
  async Task DoEvents()
  {
   await InvokeAsync(StateHasChanged);
-  await Task.Delay(1); // notwendig in Blazor WebAssembly und Blazor Desktop
+  await Task.Yield(); // notwendig in Blazor WebAssembly und Blazor Desktop
  }
 }

@@ -1,0 +1,48 @@
+﻿@page "/samples/CounterHostV2b"
+@using System.Net.Http.Json
+@inherits ITVComponentBase
+
+@* https://localhost:5101/samples/CounterHostV2 *@
+
+<h3>CounterHost (Datenweitergabe via Cascading Value/Cascading Parameter und Persistant State)</h3>
+
+<div class="row">
+
+ <CascadingValue Value="@CounterState">
+  <div class="col-md-3">
+   <CounterPlus CounterStateChanged="() => this.UIUpdate()" />
+  </div>
+
+  <div class="col-md-3">
+   <CounterMinus CounterStateChanged="() => this.UIUpdate()" />
+  </div>
+ </CascadingValue>
+
+ <div class="col-md-3">
+  Host hat Wert: @CounterState?.CurrentCount
+  <button @onclick="() => CounterState.CurrentCount = 0" class="btn btn-warning">Reset</button>
+ </div>
+
+</div>
+
+@code
+{
+ //int currentCount = 42;
+
+ [PersistentState]
+ public CounterState CounterState { get; set; } 
+
+ 
+ protected async override Task OnInitializedAsync()
+ {
+  System.Diagnostics.Trace.WriteLine("Rendermode: " + this.RendererInfo.Name);
+  if (CounterState == null)
+  {
+   string baseURI = "https://worldwidewingsbackend.azurewebsites.net";
+   HttpClient HttpClient = new HttpClient();
+   CounterState = new();
+   CounterState.CurrentCount = await HttpClient.GetFromJsonAsync<int>(baseURI + "/api/flight/count");
+   await Log(CounterState.CurrentCount);
+  }
+ }
+}

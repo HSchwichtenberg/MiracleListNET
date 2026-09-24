@@ -5,7 +5,7 @@
 @using System.Runtime.Versioning
 @inject BlazorUtil Util
 
-<h3>Fortschrittsanzeige ohne und mit Multi-Threading (in Blazor WebAssembly seit Version 8 möglich)</h3>
+<h3>Fortschrittsanzeige ohne und mit Multi-Threading (Multi-Threading experimentell in Blazor WebAssembly seit Version 8 möglich)</h3>
 UI-Thread-ID: @System.Threading.Thread.CurrentThread.ManagedThreadId
 <br>
 Support für Multi-Threading: @MultiThreadingEnabled
@@ -107,7 +107,7 @@ Support für Multi-Threading: @MultiThreadingEnabled
      else // bei nicht aktiviertem Multi-Threading!
      {
       this.StateHasChanged(); 
-      await Task.Delay(1); // WICHTIG bei Blazor WebAssembly bei nicht aktiviertem Multi-Threading! Sonst sieht man keine Zwischenergebnisse!!!
+      await Task.Yield(); // WICHTIG bei Blazor WebAssembly bei nicht aktiviertem Multi-Threading! Sonst sieht man keine Zwischenergebnisse!!!
      }
     }
     else if (Util.IsBlazorServer || Util.IsHybrid)

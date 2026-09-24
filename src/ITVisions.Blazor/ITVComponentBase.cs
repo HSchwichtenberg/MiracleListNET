@@ -40,12 +40,13 @@ public class ITVComponentBase : ComponentBase
 
  /// <summary>
  /// Neu-Render erzwingen, funktioniert auch in Blazor WebAssembly
+ /// Hier bewusst async void statt async Task, sonst geht Zuweisung als Eventhandler bei Action-Events nicht:  += UIUpdate;
  /// </summary>
- public async Task UIUpdate()
+ public async void UIUpdate()
  {
   await Log("UIUpdate");
   await InvokeAsync(StateHasChanged);
-  await Task.Delay(1);
+  await Task.Yield(); // für Blazor WebAssembly
  }
 
  public void SuspendRendering()

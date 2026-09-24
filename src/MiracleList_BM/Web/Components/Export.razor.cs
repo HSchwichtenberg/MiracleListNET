@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 
 namespace BM.Web.Components;
+
 public partial class Export
 {
 
@@ -113,11 +114,12 @@ public partial class Export
  async Task DoEvents()
  {
   this.StateHasChanged();
-  await Task.Delay(1); // notwendig in Blazor WebAssembly und Blazor Desktop
+  await Task.Yield(); // notwendig in Blazor WebAssembly und Blazor Desktop
  }
 #else
  public string ExportPathWord => "";
- async Task ExportWord() {
+ async Task ExportWord()
+ {
   // hier muss nix stehen, wird nie aufgerufen für andere OS, aber muss existieren!
  }
 

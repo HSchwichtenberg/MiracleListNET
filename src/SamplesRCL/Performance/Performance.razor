@@ -205,7 +205,7 @@ Dauer: @((MarkupString)Dauer)
   {
    // in Blazor Server nicht erlaubt! "The current thread is not associated with the Dispatcher. Use InvokeAsync() to switch execution to the Dispatcher when triggering rendering or component state."
    this.StateHasChanged();
-   await Task.Delay(1); // Delay ist für Blazor WebAssembly notwendig
+   await Task.Yield(); // für Blazor WebAssembly notwendig
   }
   else
   {

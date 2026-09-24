@@ -48,7 +48,7 @@ Wert: @Zahl
   {
    currentState = $"Schritt {i + 1} von {ActionsSeconds}";
    await this.InvokeAsync(StateHasChanged);
-   await Task.Delay(1);
+   await Task.Yield(); // für BW
    Util.Log(currentState);
    System.Threading.Thread.Sleep(1000);
    counter++;

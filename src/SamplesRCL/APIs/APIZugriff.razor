@@ -48,7 +48,7 @@
   if (!APITests.ContainsKey(TestName)) APITests.Add(TestName, "...");
   else APITests[TestName] = "...";
   this.StateHasChanged();
-  await Task.Delay(1);
+  await Task.Yield(); // für Blazor WebAssembly notwendig
   await Task.Run(() =>
   {
    try

@@ -37,7 +37,7 @@
  {
   Util.Log("UIUpdate in CounterPlus");
   await InvokeAsync(StateHasChanged);
-  await Task.Yield(); // für BW
+  await Task.Yield(); // für Blazor WebAssembly notwendig
   // await CounterStateChanged.InvokeAsync();
  }
 

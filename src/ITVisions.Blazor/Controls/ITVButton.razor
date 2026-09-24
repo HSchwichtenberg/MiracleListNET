@@ -94,6 +94,6 @@
  public async Task UIUpdate()
  {
   await this.InvokeAsync(this.StateHasChanged);
-  await Task.Delay(1);
+  await Task.Yield(); // für BW
  }
 }

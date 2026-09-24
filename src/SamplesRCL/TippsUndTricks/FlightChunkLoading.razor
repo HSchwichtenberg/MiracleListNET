@@ -50,7 +50,7 @@ Anzahl Flüge: @NumberOfFlights
    await Load(chunk, ChunkSize);
    if (UseShouldRender) this.ResumeRendering();
 
-   await UIUpdate();
+   UIUpdate();
    await Log($"Chunk {chunk} loaded with {Flights.Count} flights.");
 
   }
@@ -61,7 +61,7 @@ Anzahl Flüge: @NumberOfFlights
  async Task Load(long chunk, long ChunkSize)
  {
   Flights = null;
-  await UIUpdate();
+  UIUpdate();
   long start = chunk * ChunkSize;
   Flights = await HttpClient.GetFromJsonAsync<List<Flight>>(baseURI + $"/api/flight/%20/%20/{start}/{ChunkSize}");
   AllFlights.AddRange(Flights);

@@ -1,9 +1,10 @@
 ﻿@page "/samples/CounterHostV3"
 @implements IDisposable
+@inherits ITVComponentBase
 
 @inject CounterState CounterState
 
-@* https://localhost:5001/samples/CounterHostV3 *@
+@* https://localhost:5101/samples/CounterHostV3 *@
 
 <h3>CounterHost (Datenweitergabe via DI)</h3>
 
@@ -19,7 +20,7 @@
 
  <div class="col-md-3">
   Host hat Wert: @CounterState.CurrentCount
-  <button @onclick="() => CounterState.CurrentCount = 0" class="btn btn-default">Reset</button>
+  <button @onclick="() => CounterState.CurrentCount = 0" class="btn btn-warning">Reset</button>
  </div>
 
 </div>
@@ -47,10 +48,4 @@
   CounterState.OnChange -= UIUpdate;
  }
 
- public async void UIUpdate()
- {
-  Util.Log("UIUpdate in CounterHost");
-  await InvokeAsync(StateHasChanged);
-  await Task.Delay(1);
- }
 }

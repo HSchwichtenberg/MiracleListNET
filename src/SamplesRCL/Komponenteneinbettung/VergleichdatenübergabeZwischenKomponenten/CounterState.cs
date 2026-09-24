@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Samples.Komponenteneinbettung.VergleichWertübergabeAnKomponenten;
+namespace Samples.Komponenteneinbettung.VergleichdatenübergabeZwischenKomponenten;
 
 public class CounterState
 {

@@ -36,5 +36,10 @@
  <PropertyGroup>
   <Features>use-roslyn-tokenizer;$(Features)</Features>
  </PropertyGroup>
+
+ <PropertyGroup>
+  <NoWarn>1701;1702;1998;HTML00004;CS1591</NoWarn>
+  <WarningsAsErrors>$(WarningsAsErrors);RZ2012</WarningsAsErrors>  <!--fehlende Komponentenparameter sollen nicht nur Warnung sein!-->
+ </PropertyGroup>
  
 </Project>

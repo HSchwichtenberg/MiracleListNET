@@ -124,7 +124,7 @@ public partial class Main : IAsyncDisposable
    // Reaktion auf eingehende Nachricht
    AppState.HubConnection.On<string>(nameof(IMLHubV3.CategoryListUpdate), async (sender) =>
    {
-    Util.Log($"SignalR.CategoryListUpdate from {sender} (Thread #{System.Threading.Thread.CurrentThread.ManagedThreadId})");
+    Util.Log($"SignalR.CategoryListUpdate from {sender} (Thread #{Environment.CurrentManagedThreadId})");
     toastService.ShowSuccess($"Die Aufgabenliste wurde in einer anderen Anwendungsinstanz verändert.");
     await ShowCategorySet(); // Daten neu laden
     await InvokeAsync(StateHasChanged); // InvokeAsync() notwendig hier, weil die Nachricht im Hintergrund (anderer Thread) kommt
@@ -133,7 +133,7 @@ public partial class Main : IAsyncDisposable
    // Reaktion auf eingehende Nachricht
    AppState.HubConnection.On<string, BO.Category>(nameof(IMLHubV3.TaskListUpdate), async (sender, changedCategory) =>
    {
-    Util.Log($"SignalR.TaskListUpdate from {sender}: Changed Category={changedCategory.CategoryID} (Thread #{System.Threading.Thread.CurrentThread.ManagedThreadId})");
+    Util.Log($"SignalR.TaskListUpdate from {sender}: Changed Category={changedCategory.CategoryID} (Thread #{Environment.CurrentManagedThreadId})");
 
     if (changedCategory.CategoryID == this.category.CategoryID)
     {

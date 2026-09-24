@@ -1,4 +1,5 @@
 ﻿@page "/Samples/VorlagenbasierteKomponenten"
+@* https://localhost:5001/Samples/VorlagenbasierteKomponenten *@
 @using ITVisions.Blazor
 @using ITVisions.Blazor.Controls
 @inject BlazorUtil Util
@@ -97,6 +98,11 @@ Wert: @Zahl
  <u>@Name</u> ist seit <u>@(DateTime.Now.Year - ErstesMVPJahr + 1) Jahren</u> als Microsoft Most Valuable Professional (MVP) ausgezeichnet.
 </Expander>
 
+@* Möglich ist im Host der Komponente auch diese Langschreibweise, die aber unüblich ist: *@
+<Expander>
+ <ChildContent> <u>@Name</u> ist seit <u>@(DateTime.Now.Year - ErstesMVPJahr + 1) Jahren</u> als Microsoft Most Valuable Professional (MVP) ausgezeichnet.</ChildContent>
+</Expander>
+
 <h3>FlexExpander</h3>
 
 <FlexExpander>
@@ -111,7 +117,6 @@ Wert: @Zahl
   <u>@(DateTime.Now.Year - ErstesMVPJahr + 1) Jahren</u> als Microsoft Most Valuable Professional (MVP) ausgezeichnet.
  </Content>
 </FlexExpander>
-
 
 @code
 {
@@ -132,7 +137,6 @@ Wert: @Zahl
 
 @code
 {
-
  List<Website> Websites = new List<Website>() {
    new Website() { Name="DOTNET-DOKTOR", URL="www.dotnet-doktor.de"},
    new Website() { Name=".NET-Lexikon",  URL="www.dotnet-lexikon.de"},
@@ -203,94 +207,3 @@ Wert: @Zahl
  </ItemTemplate>
 
 </Repeater>
-
-
-@*
-  <h2>FlexList mit Listenartauswahl</h2>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- <select @bind="ListType">
-  <option>OL</option>
-  <option>UL</option>
-  <option>DL</option>
- </select>
-
- <FlexList @ref="FL" Daten="@Websites" Typ="Website">
-
-  <ListTemplate>
-   <ol>@context</ol>
-  </ListTemplate>
-
-  <ElementTemplate Context="w">
-   <a href="http://@w.URL">@w.Name (@w.URL)</a>
-  </ElementTemplate>
-
- </FlexList>
-
- @code
- {
- public ElementReference FL { get; set; }
- private string _ListType;
- public string ListType
- {
-  get
-  {
-   return _ListType;
-  }
-
-  set
-  {
-   _ListType = value;
-
-   var rf = new RenderFragment("@: @{ <ol></ol> }");
-
-   (FL as FlexList<Website>).ListTemplate = rf;
-  }
-
-
-  }
-
-  }*@

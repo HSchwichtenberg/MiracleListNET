@@ -3,7 +3,7 @@
 export function init(dotNet, element) {
  console.log("ITVElementsGlueCode.init");
 
- //oder Zugriff auf bestimmtes Element: var element = document.querySelector('angular-counter');
+ // oder Zugriff auf bestimmtes Element: var element = document.querySelector('angular-counter');
  element.addEventListener("changed", function (eventData) {
   // Behandlung des Ereignisses in JS
   var text = "angular-counter: Changed = " + eventData.detail;
@@ -18,7 +18,7 @@ export function init(dotNet, element) {
  });
 }
 
-/* DEMO: 17 <angular-grid> Glue Code */
+/* DEMO: <angular-grid> Glue Code: iniGrid() verdrahtet den selectedRowsChanged-Event des Angular-Grids mit dem .NET-Code (ruft .NET via invokeMethodAsync()) */
 export function initGrid(dotNet) {
  // finde das Grid
  var e = document.querySelector('angular-grid');

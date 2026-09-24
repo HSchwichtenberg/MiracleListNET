@@ -16,7 +16,7 @@ using Microsoft.Extensions.Hosting;
 using MiracleList;
 using MiracleList_Backend.Hubs;
 using MLBlazorRCL.MainView;
-using Samples.Komponenteneinbettung.VergleichWertübergabeAnKomponenten;
+using Samples.Komponenteneinbettung.VergleichdatenübergabeZwischenKomponenten;
 using Web.Data;
 using Web.Pages.CircuitList;
 

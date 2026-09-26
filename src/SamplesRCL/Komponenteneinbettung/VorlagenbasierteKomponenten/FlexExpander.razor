@@ -1,4 +1,12 @@
-﻿ <div class="panel panel-default">
+﻿@* Verwendet in https://localhost:5001/Samples/VorlagenbasierteKomponenten *@
+
+@if (ChildContent != null)
+{
+ <Expander>@ChildContent</Expander>
+}
+else
+{
+<div class="panel panel-default">
   <div class="panel-heading" @onclick="@Toggle">
    @if (Collapsed)
    {
@@ -16,9 +24,11 @@
    </div>
   }
  </div>
-
+}
 
  @code {
+ [Parameter]
+ public RenderFragment ChildContent { get; set; }
   [Parameter]
   public RenderFragment HeadlineCollapsed { get; set; }
   [Parameter]

@@ -105,18 +105,35 @@ Wert: @Zahl
 
 <h3>FlexExpander</h3>
 
+<p>Verwendung der Fragmente HeadlineCollapsed, HeadlineExpanded und Content</p>
 <FlexExpander>
  <HeadlineCollapsed>
-  <span class='glyphicon glyphicon-plus' aria-hidden="true"></span> Details anzeigen
+  <span class='glyphicon glyphicon-plus' aria-hidden="true"></span> Alle Details anzeigen
  </HeadlineCollapsed>
  <HeadlineExpanded>
-  <span class='glyphicon glyphicon-minus' aria-hidden="true"></span> Details verbergen
+  <span class='glyphicon glyphicon-minus' aria-hidden="true"></span> Alle Details verbergen
  </HeadlineExpanded>
  <Content>
   <u>@Name</u> ist seit
   <u>@(DateTime.Now.Year - ErstesMVPJahr + 1) Jahren</u> als Microsoft Most Valuable Professional (MVP) ausgezeichnet.
  </Content>
+ @* FEHLER: <Note>(C) www.IT-Visions.de</Note> *@
 </FlexExpander>
+
+<p>Verwendung von ChildContent</p>
+<FlexExpander>
+  <u>@Name</u> ist seit
+  <u>@(DateTime.Now.Year - ErstesMVPJahr + 1) Jahren</u> als Microsoft Most Valuable Professional (MVP) ausgezeichnet.
+</FlexExpander>
+
+@* <p>Mischung aus Verwendung HeadlineCollapsed und ChildContent nicht erlaubt</p>
+<FlexExpander>
+ <HeadlineCollapsed>
+  <span class='glyphicon glyphicon-plus' aria-hidden="true"></span> Alle Details anzeigen
+ </HeadlineCollapsed>
+ <u>@Name</u> ist seit
+ <u>@(DateTime.Now.Year - ErstesMVPJahr + 1) Jahren</u> als Microsoft Most Valuable Professional (MVP) ausgezeichnet.
+</FlexExpander> *@
 
 @code
 {

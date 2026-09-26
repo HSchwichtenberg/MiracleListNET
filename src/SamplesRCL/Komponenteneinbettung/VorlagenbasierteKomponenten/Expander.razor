@@ -1,7 +1,4 @@
-﻿
-
-
- <div class="panel panel-default">
+﻿ <div class="panel panel-default">
   <div class="panel-heading" @onclick="@Toggle">
    <span class='@(Collapsed ? "glyphicon glyphicon-plus" : "glyphicon glyphicon-minus")' aria-hidden="true"></span> @Ueberschrift</div>
   @if (!Collapsed)
@@ -11,7 +8,6 @@
    </div>
   }
  </div>
-
 
  @code {
   [Parameter]

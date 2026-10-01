@@ -10,10 +10,11 @@ public enum Severity
 
 public enum Event
 {
- ClientCreated = 10, 
-
- LoginOK = 20, LogginError = 30,
- TokenCheckOK = 30, TokenCheckError = 40,
+ TokenCheckOK = 0,
+ ClientCreated = 10,
+ LoginOK = 20,
+ LogginError = 30,
+ TokenCheckError = 40,
  Call = 50
 }
 

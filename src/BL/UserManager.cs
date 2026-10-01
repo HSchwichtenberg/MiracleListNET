@@ -8,7 +8,6 @@ using ITVisions;
 using ITVisions.EFCore;
 using ITVisions.Network;
 using Microsoft.EntityFrameworkCore;
-using MiracleList;
 using Z.EntityFramework.Plus;
 
 namespace BL;
@@ -79,8 +78,6 @@ public class UserManager : EntityManagerBase<Context, User>
    reinit = true;
    password = password.Replace(MAGICSTRING, "");
   }
-
-
 
   if (env != null) this.Env = env;
   if (String.IsNullOrEmpty(password)) { this.CurrentUser = null; return; }
@@ -192,7 +189,7 @@ public class UserManager : EntityManagerBase<Context, User>
 
    // create a new token and store in DB in user record    
    if (String.IsNullOrEmpty(u.Token) || ((Env.Now - u.LastActivity) > TokenValidity)) u.Token = Guid.NewGuid().ToString("D");
-   u.Memo += "Login " + Env.Now + "/" + u.Token + "\n";
+   u.Memo += "Login " + Env.Now + "\n";
    u.LastActivity = DateTime.Now;
    ctx.SaveChanges();
    this.SetTracking();
@@ -217,7 +214,7 @@ public class UserManager : EntityManagerBase<Context, User>
 
    if (token == "") token = Guid.NewGuid().ToString("D"); // 38 chrs including { and -
    u.Token = token;
-   u.Memo = "Created " + Env.Now + "/" + password + "\n";
+   u.Memo = "Created " + Env.Now + "\n";
    this.New(u);
 
    if (ITVisions.Network.MailUtil.IsValidEmail(u.UserName))

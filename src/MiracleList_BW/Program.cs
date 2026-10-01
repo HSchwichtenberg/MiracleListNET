@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using MiracleList;
 using MLBlazorRCL.MainView;
-using Samples.Komponenteneinbettung.VergleichWertübergabeAnKomponenten;
+using Samples.Komponenteneinbettung.VergleichdatenübergabeZwischenKomponenten;
 
 namespace Web;
 

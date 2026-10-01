@@ -1,0 +1,230 @@
+@page "/Samples/Flashing"
+@using System.Net.Http.Json
+@using System.Threading
+@using ITVisions.Blazor.Controls
+@inherits ITVComponentBase
+@implements IDisposable
+
+@* Szenario: Ein Flugplan wird in mehreren Schritten aktualisiert (Leeren, Laden, Sortieren, Filtern, Statistik).
+   Jeder Schritt meldet seine Änderung per StateHasChanged() an die UI, z.B. weil die Schritte auch einzeln
+   verwendet werden. Ohne ShouldRender sieht der Benutzer jeden Zwischenzustand: Die Liste verschwindet,
+   die Meldung "Keine Flüge" blitzt rot auf, Zeilen springen beim Sortieren, Zeilen verschwinden beim Filtern
+   und die Statistik springt von 0 auf den neuen Wert => Flashing!
+   Mit SuspendRendering()/ResumeRendering() (=> ShouldRender() liefert false) wird nur das Endergebnis gerendert. *@
+
+<h3>DEMO: Flashing/ShouldRender</h3>
+<form class="form-inline">
+@* ----------- Aktionen *@
+<ITVButton @onclick="RefreshByClick" class="btn btn-primary" disabled="@IsBusy">Weiter</ITVButton>
+<button @onclick="ToggleAutoRefresh" class="btn @(cts == null ? "btn-success" : "btn-danger")">
+ @(cts == null ? "Auto-Blättern starten" : "Auto-Blättern stoppen")
+</button>
+ <InputCheckbox @bind-Value="UseShouldRender" style="width:calc(1.5em + .75rem + 2px);height:calc(1.5em + .75rem + 2px);vertical-align:middle" /> ShouldRender verwenden
+&nbsp;|&nbsp; 
+
+Dauer je Schritt (ms): <InputNumber @bind-Value="StepDelay" style="width:70px" class="form-control" />
+Mindestzahl freie Plätze:
+ <InputNumber @bind-Value="MinFreeSeats" style="width:70px" class="form-control" />
+</form>
+@* ----------- Diagnose: Zähler wird bei jedem Rendern (BuildRenderTree) erhöht *@
+<div style="margin-top:10px">
+ Anzahl Renderings: <b>@(++RenderCount)</b>
+ &nbsp;|&nbsp; Aktualisierungen: <b>@RefreshCount</b>
+ &nbsp;|&nbsp; Renderings in letzter Aktualisierung: <b>@RendersInLastRefresh</b>
+</div>
+
+@* ----------- Status *@
+<div style="margin-top:10px;padding:5px;background-color:@(IsBusy ? "gold" : "lawngreen")">
+ Status: @Status
+</div>
+
+@* ----------- Liste der Flüge *@
+@if (Flights.Count == 0)
+{
+ <div style="padding:10px;background-color:red;color:white;font-weight:bold">Keine Flüge vorhanden!</div>
+}
+else
+{
+ <table class="table table-sm" style="background-color:white">
+  <thead>
+   <tr><th>FlightNo</th><th>Departure</th><th>Destination</th><th>Date</th><th>FreeSeats</th></tr>
+  </thead>
+  <tbody>
+   @foreach (Flight f in Flights)
+   {
+    <tr>
+     <td>@f.FlightNo</td>
+     <td>@f.Departure</td>
+     <td>@f.Destination</td>
+     <td>@f.FlightDate.ToString("dd.MM.yyyy HH:mm")</td>
+     <td>@f.FreeSeats</td>
+    </tr>
+   }
+  </tbody>
+ </table>
+}
+
+@* ----------- Statistik *@
+<div style="margin-top:10px">
+ Flüge: <b>@FlightCount</b> &nbsp;|&nbsp; Freie Plätze gesamt: <b>@TotalFreeSeats</b>
+</div>
+
+
+@code {
+
+ class Flight
+ {
+  public int FlightNo { get; set;}
+  public string Departure { get; set; }
+  public string Destination { get; set; }
+  public DateTime FlightDate { get; set; }
+  public short FreeSeats { get; set; }
+ }
+
+ #region --- Einstellungen
+ bool UseShouldRender = false;
+ int StepDelay = 200; // simulierte Dauer je Arbeitsschritt
+ int MinFreeSeats = 100; // simulierte Dauer je Arbeitsschritt
+ #endregion
+
+ #region --- Zustand
+ List<Flight> Flights = new();
+ string Status = "Bereit";
+ int FlightCount = 0;
+ int TotalFreeSeats = 0;
+ bool IsBusy = false;
+ int RenderCount = 0;
+ int RefreshCount = 0;
+ int RendersInLastRefresh = 0;
+ CancellationTokenSource? cts = null;
+ #endregion
+
+ #region --- Variablen für den Datenabruf
+ const string baseURI = "https://worldwidewingsbackend.azurewebsites.net";
+ HttpClient HttpClient = new HttpClient();
+ long ChunkSize = 15;
+ long NumberOfFlights = 0;
+ long Chunk = 0; // Nummer der nächsten Datenseite
+ #endregion
+
+ protected override async Task OnInitializedAsync()
+ {
+  NumberOfFlights = await HttpClient.GetFromJsonAsync<long>(baseURI + "/api/flight/count");
+  Flights = (await LoadFlights(CancellationToken.None)).Where(f => f.FreeSeats > 0).ToList();
+  CalculateStatistics();
+ }
+
+ async Task RefreshByClick()
+ {
+  await Refresh();
+ }
+
+ /// <summary>
+ /// Aktualisierung in mehreren Schritten. Jeder Schritt meldet seinen Zwischenzustand an die UI.
+ /// </summary>
+ async Task Refresh()
+ {
+  if (IsBusy) return;
+  IsBusy = true;
+  int renderCountBefore = RenderCount;
+
+  if (UseShouldRender) this.SuspendRendering(); // ShouldRender() liefert ab jetzt false
+  try
+  {
+   Status = "Liste leeren...";
+   Flights.Clear();
+   FlightCount = 0;
+   TotalFreeSeats = 0;
+   await ShowIntermediateState();
+
+   Status = "Flüge laden...";
+   Flights = await LoadFlights(cts?.Token ?? CancellationToken.None); // unsortiert
+   await ShowIntermediateState();
+
+   Status = "Sortieren...";
+   Flights = Flights.OrderBy(f => f.FlightDate).ToList();
+   await ShowIntermediateState();
+
+   Status = "Ausgebuchte Flüge ausfiltern...";
+   Flights = Flights.Where(f => f.FreeSeats > MinFreeSeats).ToList();
+   await ShowIntermediateState();
+
+   Status = "Statistik berechnen...";
+   CalculateStatistics();
+   await ShowIntermediateState();
+
+   RefreshCount++;
+   Status = $"Aktualisiert um {DateTime.Now:HH:mm:ss}";
+  }
+  finally
+  {
+   IsBusy = false;
+   if (UseShouldRender) this.ResumeRendering(); // wichtig: auch im Fehlerfall wieder freigeben!
+  }
+
+  // Endergebnis einmalig rendern (+1 = dieses abschließende Rendering)
+  RendersInLastRefresh = RenderCount - renderCountBefore + 1;
+  this.UIUpdate();
+  await Log($"Aktualisierung {RefreshCount}: {RendersInLastRefresh} Renderings (ShouldRender: {UseShouldRender})");
+ }
+
+ /// <summary>
+ /// Meldet einen Zwischenzustand an die UI und simuliert die Dauer des nächsten Arbeitsschritts.
+ /// Bei SuspendRendering() verwirft Blazor das Rendern, weil ShouldRender() false liefert.
+ /// </summary>
+ async Task ShowIntermediateState()
+ {
+  this.UIUpdate();
+  await Task.Delay(StepDelay);  // simulierte Dauer je Arbeitsschritt
+ }
+
+ void CalculateStatistics()
+ {
+  FlightCount = Flights.Count;
+  TotalFreeSeats = Flights.Sum(f => f.FreeSeats);
+ }
+
+ /// <summary>
+ /// Lädt die nächste Datenseite vom WebAPI. Bei jeder Aktualisierung wird die folgende Seite geholt,
+ /// damit sich die Daten sichtbar ändern. Am Ende geht es wieder von vorne los.
+ /// </summary>
+ async Task<List<Flight>> LoadFlights(CancellationToken token)
+ {
+  long start = NumberOfFlights > ChunkSize ? (Chunk * ChunkSize) % NumberOfFlights : 0;
+  Chunk++;
+  return await HttpClient.GetFromJsonAsync<List<Flight>>(baseURI + $"/api/flight/%20/%20/{start}/{ChunkSize}", token) ?? new();
+ }
+
+ #region --- Auto-Aktualisierung
+ async Task ToggleAutoRefresh()
+ {
+  if (cts != null)
+  {
+   cts.Cancel();
+   return;
+  }
+
+  cts = new CancellationTokenSource();
+  using var timer = new PeriodicTimer(TimeSpan.FromSeconds(3));
+  try
+  {
+   await Refresh();
+   while (await timer.WaitForNextTickAsync(cts.Token))
+   {
+    await Refresh();
+   }
+  }
+  catch (OperationCanceledException) { }
+  finally
+  {
+   cts.Dispose();
+   cts = null;
+  }
+ }
+
+ public void Dispose()
+ {
+  cts?.Cancel();
+ }
+ #endregion
+}

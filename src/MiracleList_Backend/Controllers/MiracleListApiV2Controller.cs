@@ -291,7 +291,7 @@ public class MiracleListApiV2Controller : Controller
  public void DeleteTask(int id)
  {
   Init();
-  tm.Remove(id);
+  tm.RemoveTask(id);
  }
 
  /// <summary>
@@ -303,7 +303,7 @@ public class MiracleListApiV2Controller : Controller
  public void DeleteCategory(int id)
  {
   Init();
-  cm.Remove(id);
+  cm.RemoveCategory(id);
  }
 
  /// <summary>

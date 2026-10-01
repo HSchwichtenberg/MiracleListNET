@@ -40,13 +40,11 @@
  public EventCallback<Exception> onError { get; set; }
 
  bool ShowAnimation = false;
- bool Working = false;
 
  public async Task Run()
  {
   // Start animation
   ShowAnimation = true;
-  Working = true;
   await UIUpdate();
 
   Task minDelay = AnimationSeconds > 0 ? Task.Delay(TimeSpan.FromSeconds(AnimationSeconds)) : Task.CompletedTask;
@@ -78,12 +76,10 @@
     await util.Alert(ex.GetFullMessage());
    }
 
-   Working = false;
    return;
   }
 
   // Completed: stop animation
-  Working = false;
   ShowAnimation = false;
   await UIUpdate();
  }

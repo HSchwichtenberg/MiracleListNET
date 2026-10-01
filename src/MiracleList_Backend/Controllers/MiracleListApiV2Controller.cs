@@ -334,7 +334,8 @@ public class MiracleListApiV2Controller : Controller
    var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
    if (file.Length > 0)
    {
-    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+    var fileName = SafeFileName(ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"'));
+    if (fileName == null) return BadRequest("Invalid file name");
     var fullPath = Path.Combine(pathToSave, fileName);
     var filePath = Path.Combine(folderName, fileName);
     using (var stream = new FileStream(fullPath, FileMode.Create))
@@ -355,11 +356,6 @@ public class MiracleListApiV2Controller : Controller
  }
 
  public record FileInfoDTO(string Name, string RelPath, long Length, DateTime LastWriteTime);
-
- private string GetFolder(Task t)
- {
-  return Path.Combine(Env.WebRootPath, "Uploads", um.CurrentUser.UserGUID.ToString(), t.TaskID.ToString());
- }
 
  /// <summary>
  /// Get list of files for a Task
@@ -394,7 +390,9 @@ public class MiracleListApiV2Controller : Controller
  {
   Init();
   var t = tm.GetTask(id);
-  var filepath = Path.Combine(GetFolder(t), name);
+  var safeName = SafeFileName(name);
+  if (safeName == null) return false;
+  var filepath = Path.Combine(GetFolder(t), safeName);
 
   try
   {
@@ -405,5 +403,21 @@ public class MiracleListApiV2Controller : Controller
   {
    return false;
   }
+ }
+
+ /// <summary>
+ /// TODO: Ersetzen durch neue Methode Path.CombineSafe() ab ITVisions.Util 10.11
+ /// </summary>
+ private static string SafeFileName(string name)
+ {
+  if (string.IsNullOrWhiteSpace(name)) return null;
+  var clean = Path.GetFileName(name);
+  if (string.IsNullOrWhiteSpace(clean) || clean != name || clean == "." || clean == ".." || clean.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0) return null;
+  return clean;
+ }
+
+ private string GetFolder(Task t)
+ {
+  return Path.Combine(Env.WebRootPath, "Uploads", um.CurrentUser.UserGUID.ToString(), t.TaskID.ToString());
  }
 }

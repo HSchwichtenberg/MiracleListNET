@@ -186,7 +186,6 @@ namespace MiracleList.Controllers
 
    // username and password OK
 
-
    // Set token and username in Login-Response, do not return the password!
    loginInfo.Token = u.Token;
    loginInfo.Username = u.UserName;
@@ -278,7 +277,7 @@ namespace MiracleList.Controllers
   public BO.Task CreateTask(string token, [FromBody] BO.Task t)
   {
    if (!CheckToken(token)) return null;
-   return tm.New(t);
+   return tm.CreateTask(t);
   }
 
   /// <summary>

@@ -5,11 +5,10 @@ using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Infrastructure;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using MiracleList;
 using MLBlazorRCL.MainView;
-using Samples.Komponenteneinbettung.VergleichWertübergabeAnKomponenten;
+using Samples.Komponenteneinbettung.VergleichdatenübergabeZwischenKomponenten;
 using Web;
 
 namespace BM;

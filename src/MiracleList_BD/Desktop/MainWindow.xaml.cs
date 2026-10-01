@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Reflection;
 using System.Windows;
 using BL;
@@ -18,7 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Web.WebView2.Core;
 using MiracleList;
 using MLBlazorRCL.MainView;
-using Samples.Komponenteneinbettung.VergleichWertübergabeAnKomponenten;
+using Samples.Komponenteneinbettung.VergleichdatenübergabeZwischenKomponenten;
 using Web;
 
 namespace BD.Desktop;

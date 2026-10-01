@@ -27,7 +27,7 @@
  //int currentCount = 42;
 
  [PersistentState]
- public CounterState CounterState {get; set;} = new() { CurrentCount = -1 };
+ public CounterState CounterState {get; set;}
 
  protected async override Task OnInitializedAsync()
  {
@@ -41,5 +41,4 @@
    await Log(CounterState.CurrentCount);
   }
  }
-
 }

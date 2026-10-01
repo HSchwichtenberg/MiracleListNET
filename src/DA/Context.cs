@@ -6,8 +6,6 @@ using System.Reflection;
 using BO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Configuration;
 
 namespace DA
 {
@@ -67,7 +65,7 @@ namespace DA
     else
     {
 
-     if (!String.IsNullOrEmpty(Context.ConnectionString) || Context.ConnectionString.Contains("InMemory"))
+     if (!String.IsNullOrEmpty(Context.ConnectionString) && !Context.ConnectionString.Contains("InMemory"))
      {
       if (Context.ConnectionString.Contains("Ora"))
       {
@@ -111,13 +109,10 @@ namespace DA
 
    #region Trick for pseudo entities for grouping and Views
 
-
-
    if (!IsRuntime)
    {
     builder.Ignore<UserStatistics>();
    }
-
 
    #endregion
 

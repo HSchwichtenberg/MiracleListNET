@@ -120,6 +120,8 @@ public class TaskManager : EntityManagerBase<Context, BO.Task>
  /// Change only the property Done of one task
  public BO.Task ChangeTaskDone(int taskID, bool done)
  {
+  ValidateTask(taskID);
+
   var t = this.ctx.TaskSet.Find(taskID);
   if (t == null) throw new ApplicationException("Task not found!");
   ctx.Attach(t);

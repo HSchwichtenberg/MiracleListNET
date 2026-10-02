@@ -49,7 +49,6 @@
   <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.*-*" />
   <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.*" />
   <PackageReference Include="NHibernateProfiler.Appender" Version="6.0.*" />
-  <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   <PackageReference Include="xunit.runner.visualstudio" Version="3.*">
    <PrivateAssets>all</PrivateAssets>
    <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

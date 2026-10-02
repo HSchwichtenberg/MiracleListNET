@@ -13,9 +13,9 @@
    Mit SuspendRendering()/ResumeRendering() (=> ShouldRender() liefert false) wird nur das Endergebnis gerendert. *@
 
 <h3>DEMO: Flashing/ShouldRender</h3>
-<form class="form-inline">
+<div class="form-inline">
 @* ----------- Aktionen *@
-<ITVButton @onclick="RefreshByClick" class="btn btn-primary" disabled="@IsBusy">Weiter</ITVButton>
+<ITVButton AnimationSeconds="2" @onclick="RefreshByClick" style="color:yellow" class="btn btn-primary" disabled="@IsBusy">Weiter</ITVButton>
 <button @onclick="ToggleAutoRefresh" class="btn @(cts == null ? "btn-success" : "btn-danger")">
  @(cts == null ? "Auto-Blättern starten" : "Auto-Blättern stoppen")
 </button>
@@ -25,7 +25,7 @@
 Dauer je Schritt (ms): <InputNumber @bind-Value="StepDelay" style="width:70px" class="form-control" />
 Mindestzahl freie Plätze:
  <InputNumber @bind-Value="MinFreeSeats" style="width:70px" class="form-control" />
-</form>
+</div>
 @* ----------- Diagnose: Zähler wird bei jedem Rendern (BuildRenderTree) erhöht *@
 <div style="margin-top:10px">
  Anzahl Renderings: <b>@(++RenderCount)</b>
@@ -68,7 +68,6 @@ else
 <div style="margin-top:10px">
  Flüge: <b>@FlightCount</b> &nbsp;|&nbsp; Freie Plätze gesamt: <b>@TotalFreeSeats</b>
 </div>
-
 
 @code {
 

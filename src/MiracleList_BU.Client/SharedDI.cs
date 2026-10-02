@@ -4,7 +4,7 @@ using ITVisions.Blazor;
 using Microsoft.AspNetCore.Components.Authorization;
 using MiracleList;
 using MLBlazorRCL.MainView;
-using Samples.Komponenteneinbettung.VergleichWertübergabeAnKomponenten;
+using Samples.Komponenteneinbettung.VergleichdatenübergabeZwischenKomponenten;
 
 namespace Web.Client;
 

@@ -171,7 +171,18 @@ public class UserManager : EntityManagerBase<Context, User>
  {
   this.StartTracking();
 
-  var u = ctx.UserSet.SingleOrDefault(x => x.UserName.ToLower() == name.ToLower() && x.Deactivated == null);
+  BO.User u = null;
+
+  try
+  {
+   var uq = ctx.UserSet.Where(x => x.UserName.ToLower() == name.ToLower() && x.Deactivated == null);
+
+   u = uq.SingleOrDefault();
+  }
+  catch (Exception)
+  {
+
+  }
 
   if (u != null) // username found!
   {

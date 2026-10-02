@@ -58,6 +58,7 @@
      // Call to StateHasChanged() is necessary because otherwise
      // Blazor would not recognize the state change and not refresh the UI
      this.StateHasChanged();
+     Task.Yield();
     });
  }
 

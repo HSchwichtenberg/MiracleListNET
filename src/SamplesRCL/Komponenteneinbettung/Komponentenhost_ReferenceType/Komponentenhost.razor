@@ -24,9 +24,10 @@
  {
   // Render anstoßen entweder durch:
   InvokeAsync(StateHasChanged);
+  Task.Yield();
   // oder Setzen von lokalen Variablen:
-  counterEventData = value.Counter;
-  Details = value.Text;
-  Util.Log("Zaehler ist nun: " + counterEventData + " (" + Details + ")");
+  // counterEventData = value.Counter;
+  // Details = value.Text;
+  // Util.Log("Zaehler ist nun: " + counterEventData + " (" + Details + ")");
  }
 }

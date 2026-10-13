@@ -460,20 +460,57 @@ public partial class Main : IAsyncDisposable
 
  #region Drag&Drop
  public BO.Task taskInDragAndDrop = null;
+
+ /// <summary>
+ /// Natives HTML5-Drag&Drop bricht in Blazor Hybrid (WPF-BlazorWebView nutzt ab .NET 10 WebView2CompositionControl)
+ /// sofort nach dragstart ab. Dort wird Drag&Drop daher per Maus-Ereignissen realisiert.
+ /// </summary>
+ bool IsMouseDragAndDrop => this.RendererInfo.Name == "WebView";
+ bool IsMouseDragAndDropActive => IsMouseDragAndDrop && taskInDragAndDrop != null;
+
  public void DragTask(DragEventArgs e, BO.Task task)
  {
   Util.Log("DragTask", task);
   taskInDragAndDrop = task;
  }
 
+ /// <summary>
+ /// Ereignisbehandlung: Maustaste über einer Kategorie losgelassen (Ablegen bei Drag&Drop per Maus)
+ /// </summary>
+ public async Task MouseUpOnCategory(MouseEventArgs e, BO.Category category)
+ {
+  if (!IsMouseDragAndDrop) return;
+  await DropTaskToCategory(null, category);
+ }
+
+ /// <summary>
+ /// Bricht Drag&Drop per Maus ab (Maustaste außerhalb einer Kategorie losgelassen bzw. Klick auf Kategorie)
+ /// </summary>
+ public void CancelDragTask()
+ {
+  if (IsMouseDragAndDrop) taskInDragAndDrop = null;
+ }
+
  public async Task DropTaskToCategory(DragEventArgs e, BO.Category category)
  {
   if (taskInDragAndDrop == null) return;
-  Util.Log("DropTaskToCategory", taskInDragAndDrop, category);
-  taskInDragAndDrop.CategoryID = category.CategoryID;
-  await Proxy.ChangeTaskAsync(taskInDragAndDrop, AppState.Token);
-  await ShowTaskSet(this.category);
+  var t = taskInDragAndDrop;
   taskInDragAndDrop = null;
+  if (t.CategoryID == category.CategoryID) return; // Aufgabe ist bereits in dieser Kategorie
+  Util.Log("DropTaskToCategory", t, category);
+  try
+  {
+   t.CategoryID = category.CategoryID;
+   await Proxy.ChangeTaskAsync(t, AppState.Token);
+  }
+  catch (Exception ex)
+  {
+   Util.Error("DropTaskToCategory", ex);
+   toastService.ShowError($"Aufgabe konnte nicht in Kategorie '{category.Name}' verschoben werden: {ex.Message}");
+  }
+  // Kategorien neu laden, damit die Anzahl der Aufgaben pro Kategorie stimmt
+  await ShowCategorySet();
+  await ShowTaskSet(this.category);
  }
  #endregion
 

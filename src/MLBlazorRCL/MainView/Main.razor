@@ -7,7 +7,7 @@
 @using ITVisions.TextGenerator;
 @using MLBlazorRCL.MainView
 
-<div class="row">
+<div class="row" style="@(IsMouseDragAndDropActive ? "cursor:grabbing" : "")" @onmouseup="CancelDragTask">
 
  <!-- ### Spalte 1: Kategorien-->
  @if (categorySet != null)
@@ -27,7 +27,9 @@
      <li @key="c" class="list-group-item hover" title="Task Category #@c.CategoryID" style="Background-color:@(this.category != null && c.CategoryID == this.category.CategoryID ? "#E0EEFA" : "white")"
          @onclick="() => ShowTaskSet(c)"
          @ondragover:preventDefault
-         @ondrop="(e) => DropTaskToCategory(e, c)">
+         @ondrop="(e) => DropTaskToCategory(e, c)"
+         @onmousedown="CancelDragTask"
+         @onmouseup="(e) => MouseUpOnCategory(e, c)">
       @c.Name
 
       <span id="Remove" style="float:right;" class="close" title="Remove Category #@c.CategoryID" @onclick="() => RemoveCategory(c)">x</span>

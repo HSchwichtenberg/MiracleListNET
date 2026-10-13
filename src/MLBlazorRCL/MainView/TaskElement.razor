@@ -8,7 +8,8 @@
 
 <ContextMenuTrigger MenuId="@("TaskContextMenu" + Task.CategoryID.ToString() + "_" + Task.TaskID.ToString())" Data="Task">
 
- <li class="list-group-item" @onclick="() => SetTaskActive(Task)" style="Background-color: @(Active ? "#E0EEFA" : "white")" title="Task #@Task.TaskID" draggable="true" @ondragstart="(e) => DragTask(e, Task)">
+ <li class="list-group-item" @onclick="() => SetTaskActive(Task)" style="Background-color: @(Active ? "#E0EEFA" : "white")" title="Task #@Task.TaskID" draggable="@(IsMouseDragAndDrop ? "false" : "true")" @ondragstart="(e) => DragTask(e, Task)"
+     @onmousedown="(e) => MouseDownOnTask(e, Task)" @onmousedown:preventDefault="IsMouseDragAndDrop">
 
   <span style="float: right; margin-right: 10px">
    <span id="Remove" class="close" title="Remove Task #@Task.TaskID" @onclick="() => RemoveTask(Task)" @onclick:stopPropagation>x</span>
@@ -138,6 +139,21 @@
 
  public async Task DragTask(DragEventArgs e, BO.Task task)
  {
+  await TaskDragged.InvokeAsync(task);
+ }
+
+ /// <summary>
+ /// Natives HTML5-Drag&Drop bricht in Blazor Hybrid (WPF-BlazorWebView nutzt ab .NET 10 WebView2CompositionControl)
+ /// sofort nach dragstart ab. Dort wird Drag&Drop daher per Maus-Ereignissen realisiert.
+ /// </summary>
+ bool IsMouseDragAndDrop => this.RendererInfo.Name == "WebView";
+
+ /// <summary>
+ /// Ereignisbehandlung: Maustaste auf Aufgabe gedrückt (Start von Drag&Drop per Maus)
+ /// </summary>
+ public async Task MouseDownOnTask(MouseEventArgs e, BO.Task task)
+ {
+  if (!IsMouseDragAndDrop || e.Button != 0) return; // nur linke Maustaste
   await TaskDragged.InvokeAsync(task);
  }
 

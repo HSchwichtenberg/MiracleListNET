@@ -17,6 +17,10 @@
  [Parameter]
  public string Label { get; set; }
 
+<<<<<<<<< Temporary merge branch 1
  async Task ChangeCheckboxState() { Value = !Value; await ValueChanged.InvokeAsync(Value); }
+=========
+  async Task  ChangeCheckboxState() { Value = !Value; await ValueChanged.InvokeAsync(Value); }
+>>>>>>>>> Temporary merge branch 2
 
 }

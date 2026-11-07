@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices.JavaScript;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.JSInterop;
 
 namespace Web.Samples_BW.JSInterop;

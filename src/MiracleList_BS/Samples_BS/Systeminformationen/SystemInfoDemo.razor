@@ -1,16 +1,89 @@
 ﻿@page "/Samples_BS/SysInfo"
 @using ITVisions.Blazor
-
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Features
+@inject BlazorUtil Util
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@* Achtung: Bei Blazor Server gibt es nur beim Prerendering einen echten HttpContext (die HTTP-Anfrage der Seite).
+   Im interaktiven Modus läuft die Kommunikation über die SignalR-Verbindung. HttpContext ist dann null oder der Kontext des Verbindungsaufbaus. *@
+@inject IHttpContextAccessor HttpContextAccessor
 
 <h2>Allgemeine Systeminformationen</h2>
+Aktueller Render-Modus: @this.RendererInfo.Name (interaktiv: @this.RendererInfo.IsInteractive)<br>
 @((MarkupString)Ausgabe1)
 
 <h2>Informationen über Webserver und die aktuelle HTTP-Anfrage</h2>
 @((MarkupString)Ausgabe2)
 
+@code {
+ public string Ausgabe1 { get; set; }
 
+ /// <summary>
+ /// Wird beim Prerendering aus dem HttpContext erzeugt und per Persistent Component State (seit .NET 10.0: [PersistentState])
+ /// in den interaktiven Modus übernommen, wo es keinen HttpContext der Seitenanfrage mehr gibt
+ /// </summary>
+ [PersistentState]
+ public string Ausgabe2 { get; set; }
 
-@code
-{
- // Hier wäre auch noch Code möglich, wenn man unbedingt will ;-)
+ #region Standard-Lebenszyklus-Ereignisse
+ protected override void OnInitialized()
+ {
+  Util.Log(nameof(SystemInfoDemo) + ".OnInitialized() RenderMode=" + this.RendererInfo.Name);
+
+  Ausgabe1 = (new ITVisions.EnvInfo().GetString(lineseparator: "<br>"));
+
+  if (Ausgabe2 != null)
+  {
+   Util.Log(nameof(SystemInfoDemo) + ": HttpContext-Informationen aus dem Prerendering übernommen.");
+   return;
+  }
+
+  var ctx = HttpContextAccessor.HttpContext;
+  if (ctx == null)
+  {
+   Ausgabe2 = "Es steht kein HttpContext zur Verfügung, weil die Seite nicht per HTTP-Anfrage (Prerendering), sondern per Navigation innerhalb der laufenden Blazor-Server-Anwendung (SignalR-Verbindung) aufgerufen wurde. Laden Sie die Seite neu (F5), um die Informationen zu sehen.";
+   return;
+  }
+
+  Ausgabe2 = GetHttpContextInfo(ctx);
+ }
+
+ private string GetHttpContextInfo(Microsoft.AspNetCore.Http.HttpContext ctx)
+ {
+  var ausgabe = "Erfasst im Render-Modus: " + this.RendererInfo.Name + (this.RendererInfo.IsInteractive ? " (interaktiv, HttpContext der SignalR-Verbindung)" : " (Prerendering, HttpContext der Seitenanfrage)") + "<br>";
+  ausgabe += "Quelle: " + ctx.GetType().FullName + "<br>";
+
+  ausgabe += "<h3>Gezielte Informationen</h3>";
+  ausgabe += "Browser: " + ctx.Request.Headers.UserAgent + "<br>";
+  ausgabe += "Webserver: " + (ctx.GetServerVariable("SERVER_SOFTWARE") ?? "(nicht verfügbar)") + "<br>";
+  ausgabe += "Server-URL: " + ctx.Request.Host + "<br>";
+  ausgabe += "HTTPS aktiv: " + ctx.Request.IsHttps + "<br>";
+  ausgabe += "Path (Startpunkt der Blazor-Anwendung): " + ctx.Request.Path + "<br>";
+  ausgabe += "Route (aktuelle URL des Browsers): " + NavigationManager.Uri + "<br>";
+
+  // IServerVariablesFeature gibt es nur bei IIS/HTTP.sys, nicht bei Kestrel
+  ausgabe += Abschnitt("Server Variables", () => ctx.Features.Get<IServerVariablesFeature>()?.ToNameValueString(attributeSeparator: "<br>") ?? "(nicht verfügbar bei diesem Webserver)");
+  ausgabe += Abschnitt("Connection", () => ctx.Connection.ToNameValueString(attributeSeparator: "<br>"));
+  ausgabe += Abschnitt("WebSockets", () => ctx.WebSockets.ToNameValueString(attributeSeparator: "<br>"));
+  ausgabe += Abschnitt("Request", () => ctx.Request.ToNameValueString(attributeSeparator: "<br>"));
+  ausgabe += Abschnitt("Response", () => ctx.Response.ToNameValueString(attributeSeparator: "<br>"));
+  ausgabe += Abschnitt("Cookies", () => String.Join("<br>", ctx.Request.Cookies.Select(c => c.Key + ": " + c.Value)));
+  return ausgabe;
+ }
+
+ private static string Abschnitt(string titel, Func<string> inhalt)
+ {
+  string text;
+  try
+  {
+   text = inhalt();
+  }
+  catch (Exception ex)
+  {
+   text = "Fehler: " + ex.Message;
+  }
+  return "<h3>" + titel + "</h3>" + text;
+ }
+ #endregion
 }

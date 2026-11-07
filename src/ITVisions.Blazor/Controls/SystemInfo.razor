@@ -127,7 +127,7 @@ else
   try
   {
    var proc = System.Diagnostics.Process.GetCurrentProcess();
-   usedRAM = (double)proc.PrivateMemorySize64 / 1024 / 1014;
+   usedRAM = (double)proc.PrivateMemorySize64 / 1024 / 1024;
   }
   catch (Exception ex)
   {

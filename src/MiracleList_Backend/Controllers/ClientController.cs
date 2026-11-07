@@ -29,7 +29,7 @@ public class ClientController : Controller
  }
 
  [HttpPost]
- public async Task<IActionResult> Create()
+ public  async Task <IActionResult> Create()
  {
 
   string name = HttpContext.Request.Form["C_Name"];

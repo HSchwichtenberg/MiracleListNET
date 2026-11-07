@@ -10,7 +10,7 @@
  @code
  {
 
- async Task NJSNachladen()
+  async Task  NJSNachladen()
  {
   await using (IJSObjectReference skript = await jsRuntime.InvokeAsync<IJSObjectReference>("import", "./Samples_BS/Test.razor.js"))
   {

@@ -80,7 +80,7 @@ else
   if (timer != null) timer.Dispose();
  }
 
- protected override async Task OnAfterRenderAsync(bool firstRender)
+ protected override  async Task  OnAfterRenderAsync(bool firstRender)
  {
   try
   {
@@ -106,7 +106,7 @@ else
   }
  }
 
- public async Task GCCollect()
+ public  async Task  GCCollect()
  {
   try
   {

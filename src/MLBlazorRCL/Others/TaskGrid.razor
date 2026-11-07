@@ -106,7 +106,7 @@
  [Inject]
  public MiracleList.IMiracleListProxy Proxy { get; set; } = null;
 
- protected override async Task OnParametersSetAsync()
+ protected override  async Task  OnParametersSetAsync()
  {
   // Eine oder alle (CategoryID=0) Aufgabenkategorie in Grid laden
   taskSet = await Proxy.TaskSetAsync(CategoryID, AppState.Token);
@@ -128,14 +128,14 @@
   grid.CancelEditRow(t);
  }
 
- async Task SaveRow(BO.Task t)
+  async Task  SaveRow(BO.Task t)
  {
   Util.Log("SaveRow", t);
   await Proxy.ChangeTaskAsync(t, AppState.Token);
   grid.CancelEditRow(t);
  }
 
- async void OnUpdateRow(BO.Task t)
+ async Task  OnUpdateRow(BO.Task t)
  {
   Util.Log("OnUpdateRow", t);
  }

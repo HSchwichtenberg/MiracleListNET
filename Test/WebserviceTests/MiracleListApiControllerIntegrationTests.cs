@@ -31,7 +31,7 @@ namespace WebserviceTests.Integration.WebAPI.Backend
   [Theory]
   [InlineData("/")]
   [InlineData("/Index")]
-  public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
+  public  async Task  Get_EndpointsReturnSuccessAndCorrectContentType(string url)
   {
    // Act
    var response = await _client.GetAsync(url);
@@ -42,7 +42,7 @@ namespace WebserviceTests.Integration.WebAPI.Backend
   }
 
   [Fact]
-  public async Task About_ReturnsApiVersion()
+  public  async Task  About_ReturnsApiVersion()
   {
    // Act
    var response = await _client.GetAsync("/About");
@@ -54,7 +54,7 @@ namespace WebserviceTests.Integration.WebAPI.Backend
   }
 
   [Fact]
-  public async Task Version_ReturnsVersionString()
+  public  async Task  Version_ReturnsVersionString()
   {
    // Act
    var response = await _client.GetAsync("/Version");

@@ -30,10 +30,6 @@ namespace Samples.Routing
    Util.Log("OnAfterRenderAsync(firstRender=" + firstRender + ")");
   }
 
-  public void Dispose()
-  {
-   Util.Log("Dispose()");
-  }
   #endregion
 
   #region Reaktionen auf Benutzerinteraktionen

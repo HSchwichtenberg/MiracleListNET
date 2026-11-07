@@ -89,7 +89,7 @@
 
  public bool IsSaved => _isSaved;
 
- protected override async Task OnAfterRenderAsync(bool firstRender)
+ protected override  async Task  OnAfterRenderAsync(bool firstRender)
  {
   if (!firstRender)
   {
@@ -110,7 +110,7 @@
   });
  }
 
- public async Task SaveAsync()
+ public  async Task  SaveAsync()
  {
   if (_module is null || _isSaved)
   {
@@ -136,7 +136,7 @@
   }
  }
 
- public async Task ClearAsync()
+ public  async Task  ClearAsync()
  {
   if (_module is null || _isSaved)
   {
@@ -146,7 +146,7 @@
   await _module.InvokeVoidAsync("clear", _canvas, BackgroundColor);
  }
 
- public async Task<string?> GetImageDataUrlAsync()
+ public  async Task <string?> GetImageDataUrlAsync()
  {
   if (_module is null)
   {
@@ -156,7 +156,7 @@
   return await _module.InvokeAsync<string>("getDataUrl", _canvas);
  }
 
- public async Task<bool> IsEmptyAsync()
+ public  async Task <bool> IsEmptyAsync()
  {
   if (_module is null)
   {
@@ -167,7 +167,7 @@
  }
 
  [JSInvokable]
- public async Task NotifyChanged()
+ public  async Task  NotifyChanged()
  {
   if (!OnChange.HasDelegate || _isSaved)
   {

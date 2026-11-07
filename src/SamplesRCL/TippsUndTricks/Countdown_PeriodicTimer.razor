@@ -34,7 +34,7 @@
  System.Threading.PeriodicTimer ptimer; // Außerhalb wegen GC!
  CancellationTokenSource cts;
 
- async Task Start()
+  async Task  Start()
  {
 
   ptimer = new PeriodicTimer(TimeSpan.FromSeconds(1));

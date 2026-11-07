@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using ITVisions;
 using Web;
 
@@ -29,7 +30,7 @@ namespace Samples.Forms
   /// <summary>
   /// Klick auf Button
   /// </summary>
-  private async void Submit()
+  private async Task Submit()
   {
    OutputError = "";
    Output = "";

@@ -58,7 +58,7 @@
 	private List<Assembly> lazyLoadedAssemblies =
 				new List<Assembly>();
 
-	private async Task OnNavigateAsync(NavigationContext args)
+	private  async Task  OnNavigateAsync(NavigationContext args)
 	{
 		Console.WriteLine("OnNavigateAsync: " + args.Path);
 		if (args.Path.Contains("samples", StringComparison.OrdinalIgnoreCase))

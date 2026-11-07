@@ -32,7 +32,7 @@ Anzahl Flüge: @NumberOfFlights
  string baseURI = "https://worldwidewingsbackend.azurewebsites.net";
  HttpClient HttpClient = new HttpClient();
 
- protected override async Task OnParametersSetAsync()
+ protected override  async Task  OnParametersSetAsync()
  {
   NumberOfFlights = await HttpClient.GetFromJsonAsync<long>(baseURI + "/api/flight/count");
  }
@@ -40,7 +40,7 @@ Anzahl Flüge: @NumberOfFlights
  List<Flight> AllFlights = new();
  List<Flight> Flights = new();
 
- async Task Start()
+  async Task  Start()
  {
   long chunks = NumberOfFlights / ChunkSize;
 
@@ -58,7 +58,7 @@ Anzahl Flüge: @NumberOfFlights
 
  }
 
- async Task Load(long chunk, long ChunkSize)
+  async Task  Load(long chunk, long ChunkSize)
  {
   Flights = null;
   UIUpdate();

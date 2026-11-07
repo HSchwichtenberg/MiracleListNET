@@ -89,7 +89,7 @@ namespace MiracleList.Pages
   //{
   //// alternativ: ClientArten = (new List<String>() { "Web-Client", "Desktop-Client", "Mobile Client", "Server-Anwendung" }).ToSelectListItem();
   //}
-  //public async void OnGetAsync()
+  //public async Task  OnGetAsync()
   //{
   //}
 

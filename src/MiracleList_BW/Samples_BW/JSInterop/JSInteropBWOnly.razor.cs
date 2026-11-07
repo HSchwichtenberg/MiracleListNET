@@ -23,11 +23,11 @@ partial class JSInteropBWOnly
   await script.InvokeAsync<string>("setMessageNew");
  }
 
- [JSImport("getMessage", "./JSInteropBWOnly.js")]
+ [JSImport("getMessage", "./JSInteropBWOnly")]
  internal static partial string GetMessageFromJS(string name);
 
- [JSImport("setMessageNew", "./JSInteropBWOnly.js")]
- internal static partial string SetMessageNew();
+ [JSImport("setMessageNew", "./JSInteropBWOnly")]
+ internal static partial Task SetMessageNew();
 
  [JSInvokable()]
  public static string GetMessageFromDotnetClassic(string name)
@@ -40,7 +40,6 @@ partial class JSInteropBWOnly
  {
   return "Hallo " + name + ", .NET grüßt Dich!";
  }
-
 
  [SupportedOSPlatform("browser")]
  async Task InteropBWOnly()

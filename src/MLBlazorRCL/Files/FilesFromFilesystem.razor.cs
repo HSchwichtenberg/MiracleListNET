@@ -42,7 +42,7 @@ public partial class FilesFromFilesystem
  #endregion
 
  #region Standard-Lebenszyklus-Ereignisse
- protected override async Task OnParametersSetAsync()
+ protected override  async Task  OnParametersSetAsync()
  {
 
   if (String.IsNullOrEmpty(absolutePathFilesDir)) { throw new ApplicationException("CurrentUserDirectory nicht gefunden"); }
@@ -57,20 +57,20 @@ public partial class FilesFromFilesystem
   if (di != null) files = di.GetFiles().ToList();
  }
 
- async Task DeleteFile(FileInfo f)
+  async Task  DeleteFile(FileInfo f)
  {
   if (!await Util.Confirm("Datei " + f.Name + " wirklich löschen?")) return;
   f.Delete();
   GetFiles();
  }
 
- async Task OnInputFileChange(InputFileChangeEventArgs e)
+  async Task  OnInputFileChange(InputFileChangeEventArgs e)
  {
   filesToUpload = e.GetMultipleFiles();
   //fileToUpload = e.File; // falls man nur eine Datei pro Upload zulassen will
  }
 
- async Task OnSubmit()
+  async Task  OnSubmit()
  {
   if (filesToUpload == null) return;
 

@@ -38,7 +38,7 @@ namespace ITVisions.Blazor
    return await _jsRuntime.InvokeAsync<string>("window.getScreenSize", null);
   }
 
-  public async Task<string> GetBrowserShortInfo()
+  public  async Task <string> GetBrowserShortInfo()
   {
    var data = await _jsRuntime.InvokeAsync<string[]>("Util.getBrowserInfo", null);
    var uaParser = UAParser.Parser.GetDefault();
@@ -48,7 +48,7 @@ namespace ITVisions.Blazor
    return ua.UA + " @ " + ua.OS + " (Device: " + ua.Device + ")";
   }
 
-  //public async Task<string> getBrowserShortInfo()
+  //public  async Task <string> getBrowserShortInfo()
   //{
   // if (_jsRuntime == null) return "";
   // var b = await _jsRuntime.InvokeAsync<string>("Util.getBrowserShortInfo", null);
@@ -56,7 +56,7 @@ namespace ITVisions.Blazor
   // return b;
   //}
 
-  public async Task<string> GetBrowserInfo()
+  public  async Task <string> GetBrowserInfo()
   {
    var data = await _jsRuntime.InvokeAsync<string[]>("Util.getBrowserInfo", null);
    if (data == null) return "?";
@@ -115,7 +115,7 @@ namespace ITVisions.Blazor
    }
   }
 
-  public async Task<TimeSpan> GetLatency()
+  public  async Task <TimeSpan> GetLatency()
   {
    var startTime = DateTime.UtcNow;
    var _ = await _jsRuntime.InvokeAsync<string>("toString");

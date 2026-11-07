@@ -487,7 +487,7 @@ public partial class FormElementRenderer
   }
  }
 
- private async void NotifyValuesChanged()
+ private async Task  NotifyValuesChanged()
  {
   await OnValuesChanged.InvokeAsync(FormElements);
  }
@@ -518,7 +518,7 @@ public partial class FormElementRenderer
  /// <summary>
  /// Absenden mit vorheriger Validierung
  /// </summary>
- private async Task OnSubmit()
+ private  async Task  OnSubmit()
  {
   if (!ValidateFieldSet(FormElements))
   {

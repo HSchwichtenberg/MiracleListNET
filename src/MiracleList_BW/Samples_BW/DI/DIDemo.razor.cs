@@ -36,7 +36,7 @@ namespace Web.Samples_BW.DI
    Util.Log(nameof(DI) + ".OnInitialized()");
   }
 
-  protected override async Task OnInitializedAsync()
+  protected override  async Task  OnInitializedAsync()
   {
    Util.Log(nameof(DI) + ".OnInitializedAsync()");
 
@@ -58,7 +58,7 @@ namespace Web.Samples_BW.DI
    Util.Log(nameof(DI) + ".OnParametersSet()");
   }
 
-  protected override async Task OnParametersSetAsync()
+  protected override  async Task  OnParametersSetAsync()
   {
    Util.Log(nameof(DI) + ".OnParametersSetAsync()");
   }
@@ -69,7 +69,7 @@ namespace Web.Samples_BW.DI
    // this.StateHasChanged(); // --> Endlosschleife !!! :-(
   }
 
-  protected override async Task OnAfterRenderAsync(bool firstRender)
+  protected override  async Task  OnAfterRenderAsync(bool firstRender)
   {
    Util.Log(nameof(DI) + ".OnAfterRenderAsync(firstRender=" + firstRender + ")");
   }
@@ -82,7 +82,7 @@ namespace Web.Samples_BW.DI
 
   #region Reaktionen auf Benutzerinteraktionen
 
-  public async Task AddAsync()
+  public  async Task  AddAsync()
   {
    Sum = X + Y;
    X = Sum;

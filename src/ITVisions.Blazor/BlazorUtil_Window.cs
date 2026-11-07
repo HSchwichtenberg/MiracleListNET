@@ -20,7 +20,7 @@ namespace ITVisions.Blazor
   /// </summary>
   /// <param name="text"></param>
   /// <returns></returns>
-  public async Task SetTitle(string text)
+  public  async Task  SetTitle(string text)
   {
    if (_jsRuntime == null) return;
    //Log("SetTitle " + text);

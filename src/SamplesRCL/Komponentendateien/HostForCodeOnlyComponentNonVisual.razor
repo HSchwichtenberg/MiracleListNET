@@ -35,7 +35,7 @@ Sum: @Sum
   Util.Log(nameof(HostForCodeOnlyComponentNonVisual) + ".OnInitialized()");
  }
 
- public async Task NewValue(decimal sum)
+ public  async Task  NewValue(decimal sum)
  {
   this.Sum = sum;
   Util.Log($"{DateTime.Now}: {nameof(HostForCodeOnlyComponentNonVisual)}.NewValue(). x={X} y={Y} sum={sum}");

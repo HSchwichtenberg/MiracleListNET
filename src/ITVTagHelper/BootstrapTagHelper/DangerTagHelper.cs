@@ -15,7 +15,7 @@ namespace ITVisions
    output.Attributes.Add("class", "bg-danger");
   }
 
-  public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+  public override  async Task  ProcessAsync(TagHelperContext context, TagHelperOutput output)
   {
    TagHelperContent inhalt = await output.GetChildContentAsync();
    decimal zahl;

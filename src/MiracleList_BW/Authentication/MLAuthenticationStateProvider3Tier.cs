@@ -44,7 +44,7 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
   this.ServiceProvider = ServiceProvider;
  }
 
- public async Task SetCurrentBackend(string? backendKey)
+ public  async Task  SetCurrentBackend(string? backendKey)
  {
   if (backendKey == null) { return; }
   var backend = AppState.GetBackendByKey(backendKey);
@@ -66,7 +66,7 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
  /// <summary>
  /// Login to be called by Razor Component Login.razor
  /// </summary>
- public async Task<LoginInfo> LogIn(string username, string password, string backendKey)
+ public  async Task <LoginInfo> LogIn(string username, string password, string backendKey)
  {
 
   var backend = AppState.GetBackendByKey(backendKey);
@@ -112,7 +112,7 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
  /// <summary>
  /// Logout to be called by Razor Component Login.razor
  /// </summary>
- public async Task Logout()
+ public  async Task  Logout()
  {
   blazorUtil.Log("Logout", this.CurrentLoginInfo);
   if (this.CurrentLoginInfo == null) return;
@@ -133,7 +133,7 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
  /// Called by Blazor infrastructure if AuthenticationState is unknown
  /// </summary>
  /// <returns>AuthenticationState</returns>
- public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+ public override  async Task <AuthenticationState> GetAuthenticationStateAsync()
  {
   if (CurrentLoginInfo == null)
   {
@@ -230,7 +230,7 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
   throw new NotImplementedException();
  }
 
- public async Task<BackendState> CheckBackend(string address)
+ public  async Task <BackendState> CheckBackend(string address)
  {
 
   BackendState result = new BackendState();

@@ -29,7 +29,7 @@
   gezogeneZahlen = new List<int>(); // Liste der gezogenen zurücksetzen!
   do
   {
-   int neueZahl = new Random((int)DateTime.Now.Ticks).Next(1, 50); // bei Next() ist die Untergrenze inklusiv, die Obergrenze exklusiv
+   int neueZahl = Random.Shared.Next(1, 50); // bei Next() ist die Untergrenze inklusiv, die Obergrenze exklusiv
                                                                    // Doppelte verhindern!
    if (!gezogeneZahlen.Contains(neueZahl)) gezogeneZahlen.Add(neueZahl);
   } while (gezogeneZahlen.Count < 6);

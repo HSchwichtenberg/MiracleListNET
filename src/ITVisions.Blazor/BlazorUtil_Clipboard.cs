@@ -14,7 +14,7 @@ namespace ITVisions.Blazor
  /// </summary>
  public partial class BlazorUtil
  {
-  public async Task SetClipboard(string text)
+  public  async Task  SetClipboard(string text)
   {
    if (_jsRuntime == null) return;
    await _jsRuntime.InvokeVoidAsync("window.navigator.clipboard.writeText", text);

@@ -41,7 +41,7 @@
  /// <summary>
  /// Lebenszyklusereignis: Komponente wird initialisiert
  /// </summary>
- protected override async Task OnInitializedAsync() {
+ protected override  async Task  OnInitializedAsync() {
 
   try {
    ServerUrl = "URL: " + (!String.IsNullOrEmpty(proxy.BaseUrl) ? proxy.BaseUrl : "not set");

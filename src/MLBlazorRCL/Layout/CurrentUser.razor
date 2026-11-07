@@ -23,7 +23,7 @@
 
  public string screenInfo { get; set; }
 
- protected override async Task OnAfterRenderAsync(bool firstRender)
+ protected override  async Task  OnAfterRenderAsync(bool firstRender)
  {
   if (firstRender)
   {
@@ -34,7 +34,7 @@
   }
  }
 
- async Task<string> GetLogInDateTime()
+  async Task <string> GetLogInDateTime()
  {
   var authState = await authenticationStateTask;
   var user = authState.User;

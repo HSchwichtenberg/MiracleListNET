@@ -35,7 +35,7 @@ public class MockAuthenticationStateProvider : Web.MLAuthenticationStateProvider
  /// <summary>
  /// Login to be called by Razor Component Login.razor in case of login!
  /// </summary> 
- public override async Task<LoginInfo> LogIn(string username, string password, string backend) {
+ public override  async Task <LoginInfo> LogIn(string username, string password, string backend) {
   if (String.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || password.Length <2) {
    this.currentUser = null;
   }
@@ -97,7 +97,7 @@ public class MockAuthenticationStateProvider : Web.MLAuthenticationStateProvider
   return new AuthenticationState(user);
  }
 
- public override async Task<AuthenticationState> GetAuthenticationStateAsync() {
+ public override  async Task <AuthenticationState> GetAuthenticationStateAsync() {
   if (currentUser == null) {
    blazorUtil.Log(nameof(GetAuthenticationStateAsync) + ": User not logged in!");
 

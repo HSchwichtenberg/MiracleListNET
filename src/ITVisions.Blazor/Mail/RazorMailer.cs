@@ -35,7 +35,7 @@ public class RazorMailer
   #endregion
  }
 
- public async Task<string> Render<T>(Dictionary<string, object> parameter)
+ public  async Task <string> Render<T>(Dictionary<string, object> parameter)
 where T : Microsoft.AspNetCore.Components.IComponent
  {
   #region Preparation
@@ -72,7 +72,7 @@ where T : Microsoft.AspNetCore.Components.IComponent
   #endregion
  }
 
- public async Task<string> Render(Type componentType, Dictionary<string, object> parameter)
+ public  async Task <string> Render(Type componentType, Dictionary<string, object> parameter)
 
  {
   #region Preparation
@@ -102,7 +102,7 @@ where T : Microsoft.AspNetCore.Components.IComponent
   #endregion
  }
 
- public async Task<string> Send<T>(Dictionary<string, object> parameter, string from, string to, string cc, string subject, List<string> Attachments = null, string bcc = "")
+ public  async Task <string> Send<T>(Dictionary<string, object> parameter, string from, string to, string cc, string subject, List<string> Attachments = null, string bcc = "")
 where T : Microsoft.AspNetCore.Components.IComponent
  {
   var html = await Render<T>(parameter);
@@ -110,7 +110,7 @@ where T : Microsoft.AspNetCore.Components.IComponent
   return e;
  }
 
- public async Task<string> Send(string from, string to, string cc, string subject, string html, List<string> Attachments = null, string bcc = "")
+ public  async Task <string> Send(string from, string to, string cc, string subject, string html, List<string> Attachments = null, string bcc = "")
  {
 
   // https://www.litmus.com/blog/a-guide-to-bulletproof-buttons-in-email-design

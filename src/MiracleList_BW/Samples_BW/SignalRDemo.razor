@@ -34,7 +34,7 @@
  private string _userInput;
  private string _messageInput;
 
- protected override async Task OnInitializedAsync()
+ protected override  async Task  OnInitializedAsync()
  {
   _hubConnection = new HubConnectionBuilder()
       .WithUrl("http://localhost:8889/MLHub")

@@ -18,7 +18,7 @@ public class MiracleListProxyTest
 
  public MiracleListProxy Proxy { get; }
 
- private async Task<LoginInfo> Login()
+ private  async Task <LoginInfo> Login()
  {
   string username = Guid.NewGuid().ToString();
   string password = username;
@@ -35,7 +35,7 @@ public class MiracleListProxyTest
  }
 
  [Fact]
- public async Task CategoriesWithTasks()
+ public  async Task  CategoriesWithTasks()
  {
   LoginInfo loginResult = await Login();
 
@@ -48,7 +48,7 @@ public class MiracleListProxyTest
  }
 
  [Fact]
- public async Task ChangeTask()
+ public  async Task  ChangeTask()
  {
   var neuerTitel = DateTime.Now.ToString();
   LoginInfo loginResult = await Login();

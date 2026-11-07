@@ -56,7 +56,7 @@ namespace MiracleList.CustomAuthenticationService
   /// Wenn eine authentifizierung erwartet wird, führe diesen Code aus
   /// </summary>
   /// <returns></returns>
-  protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
+  protected override  async Task <AuthenticateResult> HandleAuthenticateAsync()
   {
    // Suche Token im Header des HTTP-Requests
    var token = this.Context.Request.Headers[MLTOKENNAME];

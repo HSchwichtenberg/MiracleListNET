@@ -62,7 +62,7 @@ public partial class MainPage : ContentPage
   StatusBarUpdate();
  }
 
- private async void About_Clicked(object sender, EventArgs e)
+ private async Task  About_Clicked(object sender, EventArgs e)
  {
   await DisplayAlertAsync(".NET MAUI-Rahmenanwendung für MiracleList Blazor MAUI", new ITVisions.EnvInfo().GetString(), "OK");
  }

@@ -64,7 +64,7 @@ namespace Samples.Komponentendateien
   #endregion
 
   #region Reaktionen auf Benutzerinteraktionen
-  public async Task AddAsync()
+  public  async Task  AddAsync()
   {
    this.variable2 = 2;
    //this.variable1 = 1;

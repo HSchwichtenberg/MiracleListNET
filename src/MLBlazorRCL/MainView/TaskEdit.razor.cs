@@ -38,7 +38,7 @@ namespace MLBlazorRCL.MainView
    editContext = new(Task);
   }
 
-  public async Task OnBeforeInternalNavigation(LocationChangingContext context)
+  public  async Task  OnBeforeInternalNavigation(LocationChangingContext context)
   {
    var isConfirmed = await Util.Confirm("M chten Sie die Seite verlassen ohne zu speichern?");
 
@@ -62,7 +62,7 @@ namespace MLBlazorRCL.MainView
   #endregion Hilfsfunktionen
 
   #region Benutzeraktionen
-  protected async Task Save()
+  protected  async Task  Save()
   {
    if (this.editContext != null)
    {
@@ -75,7 +75,7 @@ namespace MLBlazorRCL.MainView
    await TaskHasChanged.InvokeAsync(true);
   }
 
-  protected async Task Cancel()
+  protected  async Task  Cancel()
   {
    Util.Log(nameof(Cancel) + ": " + Task.TaskID);
    await TaskHasChanged.InvokeAsync(false);

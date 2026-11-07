@@ -28,7 +28,7 @@
  [Parameter] // Ereignis muss so heißen wie Parameter + Changed
  public EventCallback<int> ValueChanged{ get; set;}
 
- async void Increment()
+ async Task  Increment()
  {
   Value++;
   await ValueChanged.InvokeAsync(Value);

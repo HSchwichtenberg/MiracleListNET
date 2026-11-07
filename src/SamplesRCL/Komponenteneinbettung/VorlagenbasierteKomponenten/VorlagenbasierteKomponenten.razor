@@ -43,7 +43,7 @@ Wert: @Zahl
  byte AnimationSeconds = 2;
  int counter = 41;
 
- async Task Action() // WICHTIG: Task, nicht void!!!
+  async Task  Action() // WICHTIG: Task, nicht void!!!
  {
   for (int i = 0; i < ActionsSeconds; i++)
   {
@@ -57,7 +57,7 @@ Wert: @Zahl
   }
  }
 
- async Task AktionMitFehler()
+  async Task  AktionMitFehler()
  {
   await Task.Delay(500);
   throw new ApplicationException("Etwas ist falsch gelaufen!");
@@ -157,7 +157,7 @@ Wert: @Zahl
  List<Website> Websites = new List<Website>() {
    new Website() { Name="DOTNET-DOKTOR", URL="www.dotnet-doktor.de"},
    new Website() { Name=".NET-Lexikon",  URL="www.dotnet-lexikon.de"},
-   new Website() { Name=".NET 6.0",  URL="www.dotnet7.de"}
+   new Website() { Name=".NET 10.0",  URL="www.dotnet10.de"}
   };
 }
 

@@ -23,7 +23,7 @@ namespace Web;
 public class Program
 {
  // DEMO: 01a. BW-Startcode mit DI
- public static async Task Main(string[] args)
+ public static  async Task  Main(string[] args)
  {
   Console.WriteLine("Blazor WebAssembly Main()");
   Console.WriteLine(System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription);

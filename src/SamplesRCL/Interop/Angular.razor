@@ -56,7 +56,7 @@
 
  public string ausgabeCS { get; set; }
  public bool showWarnung { get; set; }
- protected override async Task OnInitializedAsync()
+ protected override  async Task  OnInitializedAsync()
  {
   util.Log("OnInitializedAsync");
   showWarnung = util.IsWebAssembly && await util.IsHttps();
@@ -67,7 +67,7 @@
  IJSObjectReference script1;
  IJSObjectReference script2;
 
- protected override async Task OnAfterRenderAsync(bool firstRender)
+ protected override  async Task  OnAfterRenderAsync(bool firstRender)
  {
   util.Log("OnAfterRenderAsync");
 
@@ -140,7 +140,7 @@
  string GridData = "";
  string gridResultCS { get; set; }
 
- public async void LoadDataInAngularGrid()
+ public async Task  LoadDataInAngularGrid()
  {
   util.Log("Loading data...");
 

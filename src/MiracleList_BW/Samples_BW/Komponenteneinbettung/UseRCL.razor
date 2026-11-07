@@ -14,7 +14,7 @@ not supported :-(
 
 @code
 {
- public async void NewValueArrived(int value)
+ public async Task  NewValueArrived(int value)
  {
   if (value % 10 == 0) { await Util.Alert("Wert ist nun: " + value); }
  }

@@ -99,7 +99,7 @@ public class LoginModel : ComponentBase
   return shouldRender;
  }
 
- protected override async Task OnParametersSetAsync()
+ protected override  async Task  OnParametersSetAsync()
  {
   Console.WriteLine(nameof(LoginModel) + "." + (nameof(OnParametersSetAsync)));
 
@@ -116,7 +116,7 @@ public class LoginModel : ComponentBase
  /// <summary>
  /// Reaktion auf Benutzeraktion
  /// </summary>
- protected async Task Login()
+ protected  async Task  Login()
  {
   if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
   {

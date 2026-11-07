@@ -21,7 +21,7 @@
  int ConnectionCheckIntervalSecondsMin = 1;
  int ConnectionCheckIntervalSecondsMax = 30;
 
- protected override async Task OnInitializedAsync()
+ protected override  async Task  OnInitializedAsync()
  {
 
   Util.Log("ConnectionState.OnInitializedAsync");
@@ -46,7 +46,7 @@
   }
  }
 
- async Task<bool> Run()
+  async Task <bool> Run()
  {
   bool result = false;
   lastCheck = DateTime.Now;

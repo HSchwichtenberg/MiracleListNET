@@ -22,7 +22,7 @@
 @code {
  public string Nachricht { get; set; } = "Dies ist ein Beispieltext, der in der Nachricht erscheinen soll.";
 
- async void NachrichtSenden()
+ async Task  NachrichtSenden()
  {
   await util.Notification("Benachrichtigung von Blazor-Anwendung", Nachricht);
  }

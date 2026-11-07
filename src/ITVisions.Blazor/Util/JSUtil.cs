@@ -30,7 +30,7 @@ namespace ITVisions.Blazor
    this.SessionStorageService = LocalStorageService;
   }
 
-  public async Task<bool> Notification(string head, string text)
+  public  async Task <bool> Notification(string head, string text)
   {
    //Util.Log("Notification.cs", head + "/" + text);
    if (_jsRuntime == null) return false;
@@ -61,7 +61,7 @@ namespace ITVisions.Blazor
   /// <summary>
   /// Lädt Wert aus Cookie oder local Storage
   /// </summary>
-  public async Task<T> GetValueFromBrowser<T>(string key, T defaultValue = default(T))
+  public  async Task <T> GetValueFromBrowser<T>(string key, T defaultValue = default(T))
   {
    //try
    //{
@@ -93,12 +93,12 @@ namespace ITVisions.Blazor
    }
   }
 
-  public async Task RemoveValueInBrowser(string Key)
+  public  async Task  RemoveValueInBrowser(string Key)
   {
    await SetValueInBrowser(Key, null);
   }
 
-  public async Task<Boolean> IsCookieAllow()
+  public  async Task <Boolean> IsCookieAllow()
   {
    const string name = "CookieCheck";
    const int testvalue = 123;
@@ -107,7 +107,7 @@ namespace ITVisions.Blazor
    return (b == testvalue);
   }
 
-  public async Task SetValueInBrowser(string Key, object value)
+  public  async Task  SetValueInBrowser(string Key, object value)
   {
    try
    {

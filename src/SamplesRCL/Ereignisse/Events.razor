@@ -52,7 +52,7 @@ Sum: <span id="Sum">@Sum</span>
   X = Sum;
  }
 
- public async Task AddAsync()
+ public  async Task  AddAsync()
  {
   Sum = X + Y;
   Util.Log($"AddAsync(): x={X} y={Y} sum={Sum}");
@@ -115,7 +115,7 @@ function AddJS()
   Ausgabe = "Irgendein Element wurde geklickt, ich weiß aber nicht welches :-(";
  }
 
- async Task KlickB1Async()
+  async Task  KlickB1Async()
  {
   Ausgabe = "Irgendein Element wurde geklickt, ich weiß aber nicht welches :-(";
   await SaveAsync();
@@ -127,13 +127,13 @@ function AddJS()
   Ausgabe = $"Element {x} geklickt.";
  }
 
- async Task KlickB2Async(int x)
+  async Task  KlickB2Async(int x)
  {
   Ausgabe = $"Element {x} geklickt.";
   await SaveAsync();
  }
 
- async Task SaveAsync()
+  async Task  SaveAsync()
  {
   // irgendwas machen hier :-)
  }

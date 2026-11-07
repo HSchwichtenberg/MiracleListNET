@@ -33,7 +33,7 @@
   await ValueHasChanged.InvokeAsync(currentValue);
  }
 
- async void Increment()
+ async Task  Increment()
  {
   currentValue++;
   await ValueHasChanged.InvokeAsync(currentValue);

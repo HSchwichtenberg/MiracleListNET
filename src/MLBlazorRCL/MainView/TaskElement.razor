@@ -84,7 +84,7 @@
  /// Callback, wenn Benutzer Bestätigungsdialog zum Löschen einer Aufgabe betätigt hat
  /// </summary>
  [JSInvokable]
- public async Task ConfirmedRemoveTask(int taskID, bool result)
+ public  async Task  ConfirmedRemoveTask(int taskID, bool result)
  {
   Util.Log($"ConfirmedRemoveTask: #{taskID}:{result}");
   if (result == false) return;
@@ -113,31 +113,31 @@
  #endregion
 
  #region ------------ Kontextmenüaktionen
- async Task OnContextAbout(ItemClickEventArgs e)
+  async Task  OnContextAbout(ItemClickEventArgs e)
  {
   Util.Log($"Context Menu Item Clicked => Menu: {e.ContextMenuId}, MenuTarget: {e.ContextMenuTargetId}, IsCanceled: {e.IsCanceled}, MenuItem: {e.MenuItemElement}, MouseEvent: {e.MouseEvent} Data: {e.Data}");
   var t = e.Data as BO.Task;
   await Util.Alert("Task #" + t.TaskID + " was created on " + t.Created);
  }
 
- async Task OnContextEdit(ItemClickEventArgs e)
+  async Task  OnContextEdit(ItemClickEventArgs e)
  {
   await SetTaskActive(e.Data as BO.Task);
  }
 
- async Task OnContextRemove(ItemClickEventArgs e)
+  async Task  OnContextRemove(ItemClickEventArgs e)
  {
   await this.RemoveTask(e.Data as BO.Task);
  }
  #endregion
 
  #region ------------ Andere Ereignisse
- public async Task SetTaskActive(BO.Task task)
+ public  async Task  SetTaskActive(BO.Task task)
  {
   await TaskClicked.InvokeAsync(task);
  }
 
- public async Task DragTask(DragEventArgs e, BO.Task task)
+ public  async Task  DragTask(DragEventArgs e, BO.Task task)
  {
   await TaskDragged.InvokeAsync(task);
  }
@@ -151,13 +151,13 @@
  /// <summary>
  /// Ereignisbehandlung: Maustaste auf Aufgabe gedrückt (Start von Drag&Drop per Maus)
  /// </summary>
- public async Task MouseDownOnTask(MouseEventArgs e, BO.Task task)
+ public  async Task  MouseDownOnTask(MouseEventArgs e, BO.Task task)
  {
   if (!IsMouseDragAndDrop || e.Button != 0) return; // nur linke Maustaste
   await TaskDragged.InvokeAsync(task);
  }
 
- public async Task ChangeTaskDone(BO.Task t)
+ public  async Task  ChangeTaskDone(BO.Task t)
  {
   Util.Log("Change Task: " + t.TaskID + " Done: " + t.Done);
   await Proxy.ChangeTaskDoneAsync(t.TaskID, t.Done, AppState.Token);

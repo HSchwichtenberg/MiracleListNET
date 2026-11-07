@@ -58,7 +58,7 @@ Verbleibende Sekunden: @VerbleibendeSekunden
  public int VerbleibendeSekunden { get; set; }
  protected override bool ShouldRender() { return shouldRender; }
 
- public async void Start()
+ public async Task  Start()
  {
   count = 0;
   VerbleibendeSekunden = Dauer;
@@ -104,7 +104,7 @@ Verbleibende Sekunden: @VerbleibendeSekunden
   Util.Log(text);
  }
 
- async Task Render()
+  async Task  Render()
  {
   if (useInvokeAsync)
   {

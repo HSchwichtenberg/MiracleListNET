@@ -106,14 +106,14 @@ else
  long Chunk = 0; // Nummer der nächsten Datenseite
  #endregion
 
- protected override async Task OnInitializedAsync()
+ protected override  async Task  OnInitializedAsync()
  {
   NumberOfFlights = await HttpClient.GetFromJsonAsync<long>(baseURI + "/api/flight/count");
   Flights = (await LoadFlights(CancellationToken.None)).Where(f => f.FreeSeats > 0).ToList();
   CalculateStatistics();
  }
 
- async Task RefreshByClick()
+  async Task  RefreshByClick()
  {
   await Refresh();
  }
@@ -121,7 +121,7 @@ else
  /// <summary>
  /// Aktualisierung in mehreren Schritten. Jeder Schritt meldet seinen Zwischenzustand an die UI.
  /// </summary>
- async Task Refresh()
+  async Task  Refresh()
  {
   if (IsBusy) return;
   IsBusy = true;
@@ -171,7 +171,7 @@ else
  /// Meldet einen Zwischenzustand an die UI und simuliert die Dauer des nächsten Arbeitsschritts.
  /// Bei SuspendRendering() verwirft Blazor das Rendern, weil ShouldRender() false liefert.
  /// </summary>
- async Task ShowIntermediateState()
+  async Task  ShowIntermediateState()
  {
   this.UIUpdate();
   await Task.Delay(StepDelay);  // simulierte Dauer je Arbeitsschritt
@@ -187,7 +187,7 @@ else
  /// Lädt die nächste Datenseite vom WebAPI. Bei jeder Aktualisierung wird die folgende Seite geholt,
  /// damit sich die Daten sichtbar ändern. Am Ende geht es wieder von vorne los.
  /// </summary>
- async Task<List<Flight>> LoadFlights(CancellationToken token)
+  async Task <List<Flight>> LoadFlights(CancellationToken token)
  {
   long start = NumberOfFlights > ChunkSize ? (Chunk * ChunkSize) % NumberOfFlights : 0;
   Chunk++;
@@ -195,7 +195,7 @@ else
  }
 
  #region --- Auto-Aktualisierung
- async Task ToggleAutoRefresh()
+  async Task  ToggleAutoRefresh()
  {
   if (cts != null)
   {

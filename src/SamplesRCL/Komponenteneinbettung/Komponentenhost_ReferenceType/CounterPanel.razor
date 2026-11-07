@@ -30,7 +30,7 @@
   await ValueHasChanged.InvokeAsync(new ValueHasChangedDetails() { Counter = Data.Counter, Text = "Startwert" });
  }
 
- async void Increment()
+ async Task  Increment()
  {
   this.Data.Counter++;
   await ValueHasChanged.InvokeAsync(new ValueHasChangedDetails() { Counter = Data.Counter, Text = "Erhöht am " + DateTime.Now });

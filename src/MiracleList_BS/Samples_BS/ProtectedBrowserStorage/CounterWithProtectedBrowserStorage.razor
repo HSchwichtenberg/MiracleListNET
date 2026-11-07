@@ -14,13 +14,13 @@
  int? sessionCount = null;
  int? localCount = null;
 
- // protected override async Task OnInitializedAsync()
+ // protected override  async Task  OnInitializedAsync()
  // {
  //  // geht hier nicht in BS ("JavaScript interop calls cannot be issued at this time")
  //  // sessionCount = (await ProtectedSessionStorage.GetAsync<int>("count")).Value;
  // }
 
- protected override async Task OnAfterRenderAsync(bool first)
+ protected override  async Task  OnAfterRenderAsync(bool first)
  {
   if (first)
   {
@@ -30,7 +30,7 @@
   }
  }
 
- async void IncrementCount()
+ async Task  IncrementCount()
  {
   sessionCount = (sessionCount ?? 0) + 1;
   localCount = (localCount ?? 0) + 1;

@@ -36,7 +36,7 @@
 
  }
 
- async void Increment()
+ async Task  Increment()
  {
   this.ValueClass.Counter++;
   this.ValueStruct = new CounterDataStruct() { Counter = this.ValueStruct.Counter + 1 };

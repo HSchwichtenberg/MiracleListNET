@@ -42,7 +42,7 @@ public class ITVButtonTest : BunitContext
  }
 
  [Fact]
- public async Task ButtonClick()
+ public  async Task  ButtonClick()
  {
   //JSInterop.Mode = JSRuntimeMode.Loose;
   JSInterop.SetupVoid("console.error", @"BLAZOR: System.ApplicationException: Testfehler");
@@ -101,7 +101,7 @@ public class ITVButtonTest : BunitContext
  }
 
  [Fact]
- public async Task ButtonClickWithErrorHandler()
+ public  async Task  ButtonClickWithErrorHandler()
  {
   int delay = 3;
   string content = "Test<b>button</b>";
@@ -152,7 +152,7 @@ public class ITVButtonTest : BunitContext
  }
 
  [Fact]
- public async Task ButtonClickWithoutErrorHandler()
+ public  async Task  ButtonClickWithoutErrorHandler()
  {
   JSInterop.Mode = JSRuntimeMode.Strict; // Strict mode configures the implementation to throw an exception if it is invoked with a method call it has not been set up to handle explicitly. This is useful if you want to ensure that a component only performs a specific set of IJSRuntime invocations.
   JSInterop.SetupVoid("ShowAlert", @"System.ApplicationException: Testfehler"); // genau diese Parameter erwarten

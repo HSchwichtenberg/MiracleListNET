@@ -10,7 +10,7 @@
  public ElementReference rVorname { get; set; }
  public ElementReference rName { get; set; }
 
- public async void Fokus()
+ public async Task  Fokus()
  {
   await rVorname.FocusAsync(); // FocusAsync() seit Blazor 5.0
  }

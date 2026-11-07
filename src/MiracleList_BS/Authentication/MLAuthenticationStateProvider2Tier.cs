@@ -44,7 +44,7 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
  {
   var backend = AppState.GetBackendByKey(backendkey);
   if (backend == null) { return; }
-  ;
+
   Context.ConnectionString = backend;
   AppState.BackendURL = backend;
 

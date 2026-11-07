@@ -36,6 +36,7 @@ public class MLAuthSchemeHandler : AuthenticationHandler<MLAuthSchemeOptions>
   {
    return AuthenticateResult.Fail("No Access");
   }
+  // TODO: Token prüfen
 
   var claims = new[] { new Claim(ClaimTypes.Name, token) };
   var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, "ML"));

@@ -32,38 +32,38 @@ Sum: @Sum
  #region Standard-Lebenszyklus-Ereignisse
  protected override void OnInitialized()
  {
-  Util.Log(nameof(CodeBehindPartielleKlasse) + ".OnInitialized()");
+  Util.Log(nameof(MarkupFileOnlyComponent) + ".OnInitialized()");
  }
 
  protected async override Task OnInitializedAsync()
  {
-  Util.Log(nameof(CodeBehindPartielleKlasse) + ".OnInitializedAsync()");
+  Util.Log(nameof(MarkupFileOnlyComponent) + ".OnInitializedAsync()");
  }
 
  protected override void OnParametersSet()
  {
-  Util.Log(nameof(CodeBehindPartielleKlasse) + ".OnParametersSet()");
+  Util.Log(nameof(MarkupFileOnlyComponent) + ".OnParametersSet()");
  }
 
  protected async override Task OnParametersSetAsync()
  {
-  Util.Log(nameof(CodeBehindPartielleKlasse) + ".OnParametersSetAsync()");
+  Util.Log(nameof(MarkupFileOnlyComponent) + ".OnParametersSetAsync()");
  }
 
  protected override void OnAfterRender(bool firstRender)
  {
-  Util.Log(nameof(CodeBehindPartielleKlasse) + ".OnAfterRender(firstRender=" + firstRender + ")");
+  Util.Log(nameof(MarkupFileOnlyComponent) + ".OnAfterRender(firstRender=" + firstRender + ")");
   // this.StateHasChanged(); // --> Endlosschleife !!! :-(
  }
 
  protected async override Task OnAfterRenderAsync(bool firstRender)
  {
-  Util.Log(nameof(CodeBehindPartielleKlasse) + ".OnAfterRenderAsync(firstRender=" + firstRender + ")");
+  Util.Log(nameof(MarkupFileOnlyComponent) + ".OnAfterRenderAsync(firstRender=" + firstRender + ")");
  }
 
  public void Dispose()
  {
-  Util.Log(nameof(CodeBehindPartielleKlasse) + ".Dispose()");
+  Util.Log(nameof(MarkupFileOnlyComponent) + ".Dispose()");
  }
  #endregion
 
@@ -71,7 +71,7 @@ Sum: @Sum
  public async Task AddAsync()
  {
   Sum = X + Y;
-  Util.Log($"{nameof(CodeBehindPartielleKlasse)}.Add(). x={X} y={Y} sum={Sum}");
+  Util.Log($"{nameof(MarkupFileOnlyComponent)}.Add(). x={X} y={Y} sum={Sum}");
   await ValueHasChanged.InvokeAsync(Sum);
   X = Sum;
  }

@@ -27,7 +27,7 @@ namespace ITVisions.Blazor
   public string LogPrefix { get; set; } = "BLAZOR: ";
   public bool LogFailOnError { get; set; } = false;
 
-  public async void Log(string s, params object[] objects)
+  public async Task Log(string s, params object[] objects)
   {
    if (objects.Length > 0)
    {
@@ -41,7 +41,7 @@ namespace ITVisions.Blazor
    Log(s);
   }
 
-  public async void Log(object o)
+  public async Task Log(object o)
   {
    Log(ObjectToString(o));
   }
@@ -51,13 +51,13 @@ namespace ITVisions.Blazor
    Log(s, LogType.warn);
   }
 
-  public async void Warn(string s, object o = null)
+  public async Task Warn(string s, object o = null)
   {
    if (o != null) s = s + ": " + ObjectToString(o);
    Log(s, LogType.warn);
   }
 
-  public async void Error(string s, object o = null)
+  public async Task Error(string s, object o = null)
   {
    if (o != null) s = s + ": " + ObjectToString(o);
    Log(s, LogType.error);
@@ -85,12 +85,12 @@ namespace ITVisions.Blazor
    }
   }
 
-  public async void Clear()
+  public async Task Clear()
   {
    await _jsRuntime.InvokeVoidAsync("console.clear");
   }
 
-  public async void Log(string s, LogType typ = LogType.info)
+  public async Task Log(string s, LogType typ = LogType.info)
   {
    System.Diagnostics.Trace.WriteLine(s);
    s = LogPrefix + s;

@@ -218,7 +218,7 @@
   Util.Error("Fehler", 123);
  }
 
- public async void Dialoge()
+ publicasync Task Dialoge()
  {
   //await Util.Alert("Alert mit Hilfe von " + this.Util.GetType().FullName);
   //await Util.Confirm("Confirm");
@@ -226,7 +226,7 @@
   await JSRuntime.InvokeVoidAsync("alert", "Antwort war: " + antwort);
  }
 
- public async void Clipboard()
+ publicasync Task Clipboard()
  {
   string s = "Datum: " + DateTime.Now.ToLongDateString() +
   "\nUhrzeit: " + DateTime.Now.ToShortTimeString()
@@ -235,7 +235,7 @@
   await JSRuntime.InvokeVoidAsync("alert", "Text in Zwischenablage gelegt:\n\n" + s);
  }
 
- public async void SetFocus()
+ publicasync Task SetFocus()
  {
   if (!await CheckJSLoaded()) return;
   await JSRuntime.InvokeAsync<object>(
@@ -244,13 +244,13 @@
   Util.Log("DemoCallback: Input=" + this.input);
  }
 
- public async void ToggleDropdown()
+ publicasync Task ToggleDropdown()
  {
   await jsRuntime.InvokeVoidAsync("toggleDropdown", C_DropDown);
 
  }
 
- public async void SetContentInJS()
+ publicasync Task SetContentInJS()
  {
   if (!await CheckJSLoaded()) return;
   await script.InvokeAsync<object>("SetContentInJS", C_Input);
@@ -258,7 +258,7 @@
   Util.Log("DemoCallback: Input=" + this.input);
  }
 
- public async void SetContentInDOTNET()
+ publicasync Task SetContentInDOTNET()
  {
   if (!await CheckJSLoaded()) return;
   await script.InvokeAsync<object>("SetContentInDOTNET", Assembly.GetExecutingAssembly().GetName().Name, "SetContentStatic");
@@ -266,7 +266,7 @@
 
  // Alternative with Instanzmethode
  private DotNetObjectReference<Interop> objRef;
- public async void SetContentInDOTNETInstance()
+ publicasync Task SetContentInDOTNETInstance()
  {
   if (!await CheckJSLoaded()) return;
   objRef = DotNetObjectReference.Create(this);
@@ -292,7 +292,7 @@
   this.StateHasChanged();
  }
 
- public async void Copy()
+ publicasync Task Copy()
  {
   this.output = this.input.Replace("\n", "<br>");
   this.StateHasChanged();
@@ -317,7 +317,7 @@ Empty?
  bool Empty = true;
  long Bytes = 40000000;
  string OutputStreaming;
- public async void StreamToFile()
+ publicasync Task StreamToFile()
  {
   var sw = new System.Diagnostics.Stopwatch();
   sw.Start();

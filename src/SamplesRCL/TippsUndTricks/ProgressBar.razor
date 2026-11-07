@@ -123,7 +123,7 @@ Support für Multi-Threading: @MultiThreadingEnabled
   Print("Berechnung wird beendet!");
  }
 
- async void Abbrechen()
+async Task Abbrechen()
  {
   if (cts != null) cts.Cancel();
   await Util.Alert("Abgebrochen!");

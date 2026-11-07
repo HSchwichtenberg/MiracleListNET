@@ -82,13 +82,13 @@
  <input type="datetime-local" id="C_Name" @bind="Datum" class="form-control" />
 
  <h4>Bindung mit text, @@bind und @@bind:format</h4>
- <input type="text" id="C_Name" @bind="Datum" @bind:format="yyyy-MM-dd hh:mm" class="form-control" />
+ <input type="text" id="C_Name" @bind="Datum" @bind:format="yyyy-MM-dd HH:mm" class="form-control" />
 
  <h4>Bindung mit date, @@bind und @@bind:format</h4>
- <input type="date" id="C_Name" @bind="Datum" @bind:format="yyyy-MM-dd hh:mm" class="form-control" />
+ <input type="date" id="C_Name" @bind="Datum" @bind:format="yyyy-MM-dd HH:mm" class="form-control" />
 
  <h4>Bindung mit datetime-local, @@bind und @@bind:format</h4>
- <input type="datetime-local" id="C_Name" @bind="Datum" @bind:format="yyyy-MM-dd hh:mm" class="form-control" />
+ <input type="datetime-local" id="C_Name" @bind="Datum" @bind:format="yyyy-MM-dd HH:mm" class="form-control" />
 
  @code {
   public DateTime Datum { get; set; }

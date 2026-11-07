@@ -3,6 +3,7 @@
 @inject ITVisions.Blazor.BlazorUtil BlazorUtil
 @inject ILogger<CounterPersistentComponentState> Logger
 @inject PersistentComponentState ComponentState
+@implements IDisposable
 
 <PageTitle>Counter mit PersistentComponentState</PageTitle>
 
@@ -37,6 +38,11 @@
    data = LoadFromDB();
    Print("OnInitialized | Initialisiert");
   }
+ }
+
+ void Dispose()
+ {
+  persistingSubscription.Dispose();
  }
 
  protected override void OnParametersSet()

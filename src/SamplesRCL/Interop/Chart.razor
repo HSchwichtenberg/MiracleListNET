@@ -52,7 +52,7 @@
   public List<List<int>> series { get; set; } = new();
  }
 
- async void PaintLine()
+async Task PaintLine()
  {
   ShowLineChart = true;
 
@@ -80,7 +80,7 @@
   await script.InvokeVoidAsync("paintLine", data);
  }
 
- async void PaintPie()
+async Task PaintPie()
  {
   ShowLineChart = false;
   // Chartist.js erwartet die Daten so:

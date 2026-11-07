@@ -487,7 +487,7 @@ public partial class FormElementRenderer
   }
  }
 
- private async void NotifyValuesChanged()
+ privateasync Task NotifyValuesChanged()
  {
   await OnValuesChanged.InvokeAsync(FormElements);
  }

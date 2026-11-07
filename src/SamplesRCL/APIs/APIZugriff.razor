@@ -39,7 +39,7 @@
  string Ausgabe = "";
  SortedDictionary<string, string> APITests = new SortedDictionary<string, string>();
 
- async void APITest(string TestName, Func<string> apiTestFunc)
+async Task APITest(string TestName, Func<string> apiTestFunc)
  {
   Util.Log("Starte Test: " + TestName);
   Ausgabe = "Test " + TestName + " läuft...";

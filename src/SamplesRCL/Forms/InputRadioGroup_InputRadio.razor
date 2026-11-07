@@ -13,8 +13,8 @@
      @foreach (var opinion in opinions)
      {
       <div class="form-check">
-       <InputRadio class="form-check-input" id="@opinion.id" Value="@opinion.id" />
-       <label class="form-check-label" for="@opinion.id">@opinion.label</label>
+       <InputRadio class="form-check-input" id="@("blazor" + opinion.id)" Value="@opinion.id" />
+       <label class="form-check-label" for="@("blazor" + opinion.id)">@opinion.label</label>
       </div>
      }
     </InputRadioGroup>
@@ -29,8 +29,8 @@
      @foreach (var opinion in opinions)
      {
       <div class="form-check">
-       <InputRadio class="form-check-input" id="@opinion.id" Value="@opinion.id" />
-       <label class="form-check-label" for="@opinion.id">@opinion.label</label>
+       <InputRadio class="form-check-input" id="@("app" + opinion.id)" Value="@opinion.id" />
+       <label class="form-check-label" for="@("app" + opinion.id)">@opinion.label</label>
       </div>
      }
      <button type="submit" @onclick="Speichern" class="btn btn-primary">Speichern</button>

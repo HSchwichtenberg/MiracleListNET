@@ -6,6 +6,7 @@
 @page "/RoutingDemo"
 @inject IJSRuntime jsRuntime
 @inject NavigationManager nav
+@implements IDisposable
 
 <h3>RoutingDemo</h3>
 <p>@nav.GetType().FullName</p>
@@ -20,7 +21,6 @@
 <div class="row">
 
  <div class="col-xs-6">
-
 
   <div class="panel panel-default">
    <div class="panel-heading">NavLinks</div>
@@ -143,12 +143,9 @@
  public bool AllowNavigation { get; set; } = true;
  public string Ausgabe { get; set; }
 
-
  protected override void OnInitialized()
  {
   c = c ?? DateTime.Now;
-
-
   navigationManager.LocationChanged += LocationChanged;
   //var registration = navigationManager.RegisterLocationChangingHandler(async context =>
   //{
@@ -164,6 +161,12 @@
   //});
 
   PrintURLDetails("OnInitialized");
+ }
+
+ public void Dispose()
+ {
+  Util.Log("Dispose()");
+  navigationManager.LocationChanged -= LocationChanged;
  }
 
  void LocationChanged(object sender, LocationChangedEventArgs lcea)

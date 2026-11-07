@@ -37,7 +37,7 @@
  /// <summary>
  /// Nur in BD und BM: Direkter Export ins Dateisystem
  /// </summary>
- public  async Task  ExportXMLFile()
+ public async Task ExportXMLFile()
  {
   if (category == null) return;
 
@@ -69,7 +69,7 @@
  /// <summary>
  /// Nur in BD und BM auf Windows: Word-Dokumentengenerierung
  /// </summary>
- public  async Task  ExportWord()
+ public async Task ExportWord()
  {
 
   try
@@ -112,7 +112,7 @@
   }
  }
 
-  async Task  DoEvents()
+ async Task DoEvents()
  {
   await InvokeAsync(StateHasChanged);
   await Task.Yield(); // notwendig in Blazor WebAssembly und Blazor Desktop

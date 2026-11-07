@@ -199,7 +199,7 @@ Dauer: @((MarkupString)Dauer)
  string DauerAll { get; set; } = "";
  int Anzahl { get; set; } = 10000;
 
- public  async Task  DoEvents()
+ public async Task DoEvents()
  {
   if (Util.IsWebAssembly)
   {
@@ -218,7 +218,7 @@ Dauer: @((MarkupString)Dauer)
   }
  }
 
- public  async Task  StartCSAll()
+ public async Task StartCSAll()
  {
   Util.Log("StartCSAll");
   await Task.Run(async () =>
@@ -240,7 +240,7 @@ Dauer: @((MarkupString)Dauer)
   });
  }
 
- public  async Task  StartJSAll()
+ public async Task StartJSAll()
  {
   Util.Log("StartJSAll");
   await Task.Run(async () =>
@@ -259,7 +259,7 @@ Dauer: @((MarkupString)Dauer)
   });
  }
 
- public  async Task  StartCS()
+ public async Task StartCS()
  {
   Util.Log("Start... Anzahl C#-Berechnungen=" + Anzahl + "<ul>");
   this.Dauer = "Läuft...";
@@ -270,7 +270,7 @@ Dauer: @((MarkupString)Dauer)
   Util.Log("Done: " + this.Dauer);
  }
 
- public  async Task  StartJS()
+ public async Task StartJS()
  {
   Util.Log("Start... Anzahl JS-Berechnungen=" + Anzahl + "<ul>");
   this.Dauer = "Läuft...";

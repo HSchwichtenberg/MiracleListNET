@@ -66,7 +66,7 @@
 
   #region Reaktionen auf Benutzerinteraktionen
 
-  public  async Task  AddAsync()
+  public async Task AddAsync()
   {
    Sum = X + Y;
    X = Sum;

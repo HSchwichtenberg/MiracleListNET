@@ -11,7 +11,7 @@
 
  public string Ausgabe { get; set; }
 
- public  async Task  SetCookie()
+ public async Task SetCookie()
  {
   BlazorUtil.Log("SetCookie");
   await BlazorUtil.SetCookie("Cookie1", "Endlos", true);
@@ -20,7 +20,7 @@
   Ausgabe += "3 Cookies gesetzt<br>";
  }
 
- public  async Task  GetCookie()
+ public async Task GetCookie()
  {
   BlazorUtil.Log("GetCookie");
   Ausgabe += "<h3>Alle Cookies</h3>" + await BlazorUtil.GetCookiesAsString();

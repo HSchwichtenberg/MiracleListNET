@@ -14,7 +14,7 @@ public class MiracleListTests : PageTest
  string kennwort = "geheim";
 
  [TestInitialize()]
- public  async Task  Initialize()
+ public async Task Initialize()
  {
   #region Optional: Tracing starten
   await Context.Tracing.StartAsync(new()
@@ -28,7 +28,7 @@ public class MiracleListTests : PageTest
  }
 
  [TestCleanup()]
- public  async Task  Cleanup()
+ public async Task Cleanup()
  {
   // Tracing beenden und speichern in ZIP-Datei pro Test
   await Context.Tracing.StopAsync(new()
@@ -38,7 +38,7 @@ public class MiracleListTests : PageTest
  }
 
  [TestMethod]
- public  async Task  Login()
+ public async Task Login()
  {
   #region Optionale TestRunner-Konfiguration per Code
   //await using var browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
@@ -85,7 +85,7 @@ public class MiracleListTests : PageTest
  }
 
  [TestMethod]
- public  async Task  CategoryListCSSClassTest()
+ public async Task CategoryListCSSClassTest()
  {
 
   await Login();
@@ -114,7 +114,7 @@ public class MiracleListTests : PageTest
  }
 
  [TestMethod]
- public  async Task  AufgabenAnlegenUndLoeschen()
+ public async Task AufgabenAnlegenUndLoeschen()
  {
   await Login();
 
@@ -182,7 +182,7 @@ public class MiracleListTests : PageTest
  }
 
  [TestMethod]
- public  async Task  AufgabenBearbeitenInklusiveUnteraufgaben()
+ public async Task AufgabenBearbeitenInklusiveUnteraufgaben()
  {
   string aufgabenTitel = "Testaufgabe " + Guid.NewGuid();
 
@@ -237,7 +237,7 @@ public class MiracleListTests : PageTest
  /// </summary>
  /// <returns></returns>
  [TestMethod]
- public  async Task  AufgabeBearbeitenUndLoeschen()
+ public async Task AufgabeBearbeitenUndLoeschen()
  {
   string TaskName = Guid.NewGuid().ToString();
 

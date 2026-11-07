@@ -45,14 +45,14 @@ public partial class FilesFromWebservice
  #endregion
 
  #region Standard-Lebenszyklus-Ereignisse
- protected override  async Task  OnParametersSetAsync()
+ protected override async Task OnParametersSetAsync()
  {
   await GetFiles();
   cancelation = new CancellationTokenSource();
  }
  #endregion
 
-  async Task  GetFiles()
+ async Task GetFiles()
  {
   files = await Proxy.FilelistAsync(Task.TaskID, AppState.Token);
 
@@ -64,7 +64,7 @@ public partial class FilesFromWebservice
   //files = await httpResponse.Content.ReadFromJsonAsync<Dictionary<string, FileInfoDTO>>();
  }
 
-  async Task  RemoveFile(FileInfoDTO f)
+ async Task RemoveFile(FileInfoDTO f)
  {
   if (!await Util.Confirm("Datei " + f.Name + " wirklich löschen?")) return;
   await Proxy.RemoveFileAsync(Task.TaskID, f.Name, AppState.Token);
@@ -78,13 +78,13 @@ public partial class FilesFromWebservice
   await GetFiles();
  }
 
-  async Task  OnInputFileChange(InputFileChangeEventArgs e)
+ async Task OnInputFileChange(InputFileChangeEventArgs e)
  {
   filesToUpload = e.GetMultipleFiles();
   //fileToUpload = e.File; // falls man nur eine Datei pro Upload zulassen will
  }
 
-  async Task  OnSubmit()
+ async Task OnSubmit()
  {
   if (filesToUpload == null) return;
 

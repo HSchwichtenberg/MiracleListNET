@@ -43,7 +43,7 @@ Wert: @Zahl
  byte AnimationSeconds = 2;
  int counter = 41;
 
-  async Task  Action() // WICHTIG: Task, nicht void!!!
+ async Task Action() // WICHTIG: Task, nicht void!!!
  {
   for (int i = 0; i < ActionsSeconds; i++)
   {
@@ -57,7 +57,7 @@ Wert: @Zahl
   }
  }
 
-  async Task  AktionMitFehler()
+ async Task AktionMitFehler()
  {
   await Task.Delay(500);
   throw new ApplicationException("Etwas ist falsch gelaufen!");

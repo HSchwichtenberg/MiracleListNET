@@ -40,7 +40,7 @@ else
   if (timer != null) timer.Dispose();
  }
 
- protected override  async Task  OnAfterRenderAsync(bool firstRender)
+ protected override async Task OnAfterRenderAsync(bool firstRender)
  {
   if (firstRender)
   {
@@ -49,7 +49,7 @@ else
   }
  }
 
- public  async Task  CalcLatency()
+ public async Task CalcLatency()
  {
   try
   {

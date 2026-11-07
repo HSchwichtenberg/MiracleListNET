@@ -22,24 +22,24 @@
  List<DateTime> ZeitenList = new List<DateTime>();
  SortedDictionary<int, DateTime> ZeitenDic = new SortedDictionary<int, DateTime>();
 
-  async Task  KlickFehler()
+ async Task KlickFehler()
  {
   await Logik();
   throw new ApplicationException("Der Klick war ein Fehler!");
  }
 
-  async Task  KlickDebugger()
+ async Task KlickDebugger()
  {
   await Logik(0);
  }
 
  [System.Diagnostics.DebuggerHidden()]
-  async Task  KlickOK()
+ async Task KlickOK()
  {
   await Logik();
  }
 
-  async Task  Logik(int id = 123)
+ async Task Logik(int id = 123)
  {
   count++;
   Log($"{count}");

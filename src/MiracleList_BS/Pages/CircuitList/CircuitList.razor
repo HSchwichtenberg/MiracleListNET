@@ -62,7 +62,7 @@ else
   if (timer != null) timer.Dispose();
  }
 
- public  async Task  CalcLatency()
+ public async Task CalcLatency()
  {
   DateTime startTime = DateTime.UtcNow;
   var _ = await JSRuntime.InvokeAsync<string>("toString");

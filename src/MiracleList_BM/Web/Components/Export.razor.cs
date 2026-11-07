@@ -25,7 +25,7 @@ public partial class Export
  /// <summary>
  /// Nur in BD und BM: Direkter Export ins Dateisystem
  /// </summary>
- public  async Task  ExportXMLFile()
+ public async Task ExportXMLFile()
  {
   if (this.category == null) return;
 
@@ -68,7 +68,7 @@ public partial class Export
  /// <summary>
  /// Nur in BD und BM auf Windows: Word-Dokumentengenerierung
  /// </summary>
- public  async Task  ExportWord()
+ public async Task ExportWord()
  {
   try
   {
@@ -111,14 +111,14 @@ public partial class Export
 
  }
 
-  async Task  DoEvents()
+ async Task DoEvents()
  {
   this.StateHasChanged();
   await Task.Yield(); // notwendig in Blazor WebAssembly und Blazor Desktop
  }
 #else
  public string ExportPathWord => "";
-  async Task  ExportWord()
+ async Task ExportWord()
  {
   // hier muss nix stehen, wird nie aufgerufen für andere OS, aber muss existieren!
  }

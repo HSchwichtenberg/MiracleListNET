@@ -36,7 +36,7 @@ namespace ITVisions
   [HtmlAttributeName("prompt")]
   public string prompt { get; set; }
 
-  public override  async Task  ProcessAsync(TagHelperContext context, TagHelperOutput output)
+  public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
   {
    TagHelperContent inhalt = await output.GetChildContentAsync();
    output.TagName = "";

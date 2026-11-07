@@ -23,7 +23,7 @@ public class SignalRTests
  }
 
  [Fact]
- private  async Task  ChangeTask()
+ private async Task ChangeTask()
  {
   // Benutzer erstellen und Token holen
   string username = Guid.NewGuid().ToString();

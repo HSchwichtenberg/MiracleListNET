@@ -41,7 +41,7 @@
 
  bool ShowAnimation = false;
 
- public  async Task  Run()
+ public async Task Run()
  {
   // Start animation
   ShowAnimation = true;
@@ -49,7 +49,7 @@
 
   Task minDelay = AnimationSeconds > 0 ? Task.Delay(TimeSpan.FromSeconds(AnimationSeconds)) : Task.CompletedTask;
 
-   async Task  ActionRunner()
+  async Task ActionRunner()
   {
    // hier startet die Aktion!
    await onClick.InvokeAsync();
@@ -87,7 +87,7 @@
  /// <summary>
  /// Erzwingt neues Rendern
  /// </summary>
- public  async Task  UIUpdate()
+ public async Task UIUpdate()
  {
   await this.InvokeAsync(this.StateHasChanged);
   await Task.Yield(); // für BW

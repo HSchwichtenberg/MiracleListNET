@@ -40,7 +40,7 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
   JSRuntime = jSRuntime;
  }
 
- public  async Task  SetCurrentBackend(string backendkey)
+ public async Task SetCurrentBackend(string backendkey)
  {
   var backend = AppState.GetBackendByKey(backendkey);
   if (backend == null) { return; }
@@ -62,7 +62,7 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
  /// <summary>
  /// Login to be called by Razor Component Login.razor in case of login!
  /// </summary> 
- public virtual  async Task <LoginInfo> LogIn(string username, string password, string backendkey)
+ public virtual async Task<LoginInfo> LogIn(string username, string password, string backendkey)
  {
   try
   {
@@ -105,7 +105,7 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
  /// <summary>
  /// Logout to be called by Razor Component Login.razor in case of logout!
  /// </summary>
- public virtual  async Task  Logout()
+ public virtual async Task Logout()
  {
   if (currentUser == null) return;
   blazorUtil.Log("Logout");
@@ -155,7 +155,7 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
   return new AuthenticationState(user);
  }
 
- public override  async Task <AuthenticationState> GetAuthenticationStateAsync()
+ public override async Task<AuthenticationState> GetAuthenticationStateAsync()
  {
   if (currentUser == null)
   {
@@ -165,7 +165,7 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
   return CreateAuthenticationState(currentUser);
  }
 
- public  async Task <bool> CheckLocalToken()
+ public async Task<bool> CheckLocalToken()
  {
   blazorUtil.Log(nameof(CheckLocalToken));
   try
@@ -193,7 +193,7 @@ public class MLAuthenticationStateProvider2Tier : AuthenticationStateProvider, I
   return false;
  }
 
- public  async Task <BackendState> CheckBackend(string address)
+ public async Task<BackendState> CheckBackend(string address)
  {
 
   BackendState result = new BackendState();

@@ -12,7 +12,7 @@ namespace MiracleList_Backend.Hubs;
 public class MLHubV2 : Hub<IMLHubV2>
 {
  //[HubMethodName("Register")] -> nur, wenn Name der Nachricht anders als Methodennamen sein soll
- public  async Task  Register(string token)
+ public async Task Register(string token)
  {
   var u = new BL.UserManager(token);
   // Prüfe die Gültigkeit des Tokens
@@ -22,7 +22,7 @@ public class MLHubV2 : Hub<IMLHubV2>
   CUI.PrintStep("SignalR.Register: Connection " + Context.ConnectionId + " for User" + u.CurrentUser.UserName);
  }
 
- public  async Task  CategoryListUpdate(string token)
+ public async Task CategoryListUpdate(string token)
  {
   var u = new BL.UserManager(token);
   // Prüfe die Gültigkeit des Tokens
@@ -34,7 +34,7 @@ public class MLHubV2 : Hub<IMLHubV2>
   CUI.PrintStep("SignalR.CategoryListUpdate: Connection " + Context.ConnectionId + " for User" + u.CurrentUser.UserName);
  }
 
- public  async Task  TaskListUpdate(string token, int categoryID)
+ public async Task TaskListUpdate(string token, int categoryID)
  {
   var u = new BL.UserManager(token);
   // Prüfe die Gültigkeit des Tokens
@@ -49,7 +49,7 @@ public class MLHubV2 : Hub<IMLHubV2>
  /// <summary>
  /// Beim Aufbau einer Verbindung eines Clients zu diesem Hub
  /// </summary>
- public override  async Task  OnConnectedAsync()
+ public override async Task OnConnectedAsync()
  {
   var logMessage = "";
   logMessage = logMessage.AddLine(DateTime.Now.ToString() + " OnConnectedAsync: " + Context.ConnectionId.ToString() + "/" + Context.UserIdentifier);
@@ -64,7 +64,7 @@ public class MLHubV2 : Hub<IMLHubV2>
  /// <summary>
  /// Beim Beenden einer Verbindung eines Clients zu diesem Hub
  /// </summary>
- public override  async Task  OnDisconnectedAsync(Exception exception)
+ public override async Task OnDisconnectedAsync(Exception exception)
  {
   var logMessage = "";
   logMessage = logMessage.AddLine(DateTime.Now.ToString() + " OnDisconnectedAsync: " + Context.ConnectionId.ToString() + "/" + Context.UserIdentifier);

@@ -36,7 +36,7 @@ namespace ITVisions.Blazor
    return s;
   }
 
-  public  async Task  SetCookieDetails(string name, object value, int days = 1)
+  public async Task SetCookieDetails(string name, object value, int days = 1)
   {
    await _jsRuntime.InvokeVoidAsync("setCookieDetails", name, value, days);
   }

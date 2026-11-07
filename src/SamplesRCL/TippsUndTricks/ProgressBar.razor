@@ -60,7 +60,7 @@ Support für Multi-Threading: @MultiThreadingEnabled
  }
 
  // Das funktioniert NICHT, weil Blazor das Virtual DOM erst mit dem echten DOM synchronisiert, sobald der Main Thread nicht mehr blockiert ist!!!
-  async Task  StartFortschritt_Falsch()
+ async Task StartFortschritt_Falsch()
  {
   await Util.Alert("Achtung: Hier wird man keinen Fortschritt sehen, weil die Implementierung falsch ist (es fehlt this.StateHasChanged())! Der Browser wird blockieren, bis die Berechnungen fertig sind!");
   this.Fortschritt = 0;
@@ -76,7 +76,7 @@ Support für Multi-Threading: @MultiThreadingEnabled
  }
 
  // Die richtige Lösung ist, die Berechnung in einen getrennten Thread auszulagern und damit den Hauptthread freizugeben.
-  async Task  StartFortschritt_Richtig()
+ async Task StartFortschritt_Richtig()
  {
   Print("Berechnung beginnt...");
   this.Fortschritt = 0;

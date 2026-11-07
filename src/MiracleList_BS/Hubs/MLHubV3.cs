@@ -26,7 +26,7 @@ namespace MiracleList_Backend.Hubs
   }
 
   //[HubMethodName("Register")] -> nur, wenn Name der Nachricht anders als Methodennamen sein soll
-  public  async Task  Register(string userID)
+  public async Task Register(string userID)
   {
    CheckUserID(userID);
 
@@ -34,7 +34,7 @@ namespace MiracleList_Backend.Hubs
    await base.Groups.AddToGroupAsync(Context.ConnectionId, userID);
   }
 
-  public  async Task  CategoryListUpdate(string userID)
+  public async Task CategoryListUpdate(string userID)
   {
    CheckUserID(userID);
 
@@ -44,7 +44,7 @@ namespace MiracleList_Backend.Hubs
    await Clients.OthersInGroup(userID).CategoryListUpdate(Context.ConnectionId);
   }
 
-  public  async Task  TaskListUpdate(string userID, BO.Category category)
+  public async Task TaskListUpdate(string userID, BO.Category category)
   {
    if (category == null) return;
    CheckUserID(userID);
@@ -58,7 +58,7 @@ namespace MiracleList_Backend.Hubs
   /// <summary>
   /// Beim Aufbau einer Verbindung eines Clients zu diesem Hub
   /// </summary>
-  public override  async Task  OnConnectedAsync()
+  public override async Task OnConnectedAsync()
   {
    var logMessage = "";
    logMessage = logMessage.AddLine(DateTime.Now.ToString() + " OnConnectedAsync: " + Context.ConnectionId.ToString() + "/" + Context.UserIdentifier);
@@ -73,7 +73,7 @@ namespace MiracleList_Backend.Hubs
   /// <summary>
   /// Beim Beenden einer Verbindung eines Clients zu diesem Hub
   /// </summary>
-  public override  async Task  OnDisconnectedAsync(Exception exception)
+  public override async Task OnDisconnectedAsync(Exception exception)
   {
    var logMessage = "";
    logMessage = logMessage.AddLine(DateTime.Now.ToString() + " OnDisconnectedAsync: " + Context.ConnectionId.ToString() + "/" + Context.UserIdentifier);

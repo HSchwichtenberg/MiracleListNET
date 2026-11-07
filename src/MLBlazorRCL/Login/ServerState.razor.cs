@@ -25,7 +25,7 @@ public partial class ServerState(PersistentComponentState ComponentState)
 
  private PersistingComponentStateSubscription persistingSubscription;
 
- protected override  async Task  OnInitializedAsync()
+ protected override async Task OnInitializedAsync()
  {
   persistingSubscription = ComponentState.RegisterOnPersisting(PersistState);
 
@@ -50,7 +50,7 @@ public partial class ServerState(PersistentComponentState ComponentState)
   Print("ServerState.OnInitializedAsync.End");
  }
 
- protected override  async Task  OnAfterRenderAsync(bool firstRender)
+ protected override async Task OnAfterRenderAsync(bool firstRender)
  {
   if (firstRender)
   {

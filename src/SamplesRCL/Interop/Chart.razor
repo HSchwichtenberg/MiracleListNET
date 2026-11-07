@@ -33,12 +33,12 @@
  IJSObjectReference script;
  bool ShowLineChart = false;
 
- protected override  async Task  OnInitializedAsync()
+ protected override async Task OnInitializedAsync()
  {
   // hier nicht JSRuntime.InvokeAsync() bei BS möglich: "InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method."
  }
 
- protected override  async Task  OnAfterRenderAsync(bool firstRender)
+ protected override async Task OnAfterRenderAsync(bool firstRender)
  {
   if (script == null)
   {

@@ -10,7 +10,7 @@ namespace ITVisions
  {
   public int Count { get; set; }
 
-  public override  async Task  ProcessAsync(TagHelperContext context, TagHelperOutput output)
+  public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
   {
    output.TagName = null;
    for (int i = 0; i <= Count; i++)

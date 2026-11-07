@@ -20,7 +20,7 @@
 
  public string ausgabe { get; set; }
  
- protected override  async Task  OnInitializedAsync()
+ protected override async Task OnInitializedAsync()
  {
   var u = (await authenticationStateTask).User;
   ausgabe = "IsAuthenticated: " + u.Identity.IsAuthenticated + "<br>AuthenticationType: " + u.Identity.AuthenticationType + "<br>Username: " + u.Identity.Name + "<h4>Claims:</h4><table>";

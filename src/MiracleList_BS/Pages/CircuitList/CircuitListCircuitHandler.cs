@@ -37,7 +37,7 @@ namespace ITVisions.Blazor.Services
   /// <summary>
   /// einmalig pro Circuit
   /// </summary>
-  public override  async Task  OnCircuitOpenedAsync(Circuit circuit, CancellationToken cancellationToken)
+  public override async Task OnCircuitOpenedAsync(Circuit circuit, CancellationToken cancellationToken)
   {
    logger.LogInformation($"{nameof(CircuitListCircuitHandler)}.{nameof(OnCircuitOpenedAsync)}: {circuit.Id}");
 
@@ -94,7 +94,7 @@ namespace ITVisions.Blazor.Services
   /// <summary>
   /// einmalig pro Circuit
   /// </summary>
-  public override  async Task  OnCircuitClosedAsync(Circuit circuit, CancellationToken cancellationToken)
+  public override async Task OnCircuitClosedAsync(Circuit circuit, CancellationToken cancellationToken)
   {
    logger.LogInformation($"{nameof(CircuitListCircuitHandler)}.{nameof(OnCircuitClosedAsync)}: {circuit.Id}");
 

@@ -57,7 +57,7 @@
 
  IJSObjectReference skript;
 
-  async Task  LoadJS()
+ async Task LoadJS()
  {
   Console.WriteLine("Lade Interop.razor.js...");
   // Laden aus "JS behind Razor"
@@ -66,7 +66,7 @@
   Gruss = "Interop.razor.js geladen!";
  }
 
-  async Task  StartJS()
+ async Task StartJS()
  {
   if (!await CheckJSLoaded()) return;
   Console.WriteLine("Aufruf showPrompt()");
@@ -74,7 +74,7 @@
   Gruss = "Hallo " + name + "!";
  }
 
-  async Task  LoadStartJS()
+ async Task LoadStartJS()
  {
   await LoadJS();
   await StartJS();
@@ -104,7 +104,7 @@
 <br />
 
 @code {
-  async Task  LoadStartTS()
+ async Task LoadStartTS()
  {
   Console.WriteLine("Lade SamplesTS.js...");
   // Laden aus wwwRoot

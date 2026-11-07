@@ -93,7 +93,7 @@ namespace ITVisions.Blazor
    }
   }
 
-  public  async Task  RemoveValueInBrowser(string Key)
+  public async Task RemoveValueInBrowser(string Key)
   {
    await SetValueInBrowser(Key, null);
   }
@@ -107,7 +107,7 @@ namespace ITVisions.Blazor
    return (b == testvalue);
   }
 
-  public  async Task  SetValueInBrowser(string Key, object value)
+  public async Task SetValueInBrowser(string Key, object value)
   {
    try
    {

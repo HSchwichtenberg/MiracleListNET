@@ -10,7 +10,7 @@ namespace ITVisions.Blazor
  /// </summary>
  public partial class BlazorUtil
  {
-  public  async Task  RequestPermission(string head, string text)
+  public async Task RequestPermission(string head, string text)
   {
    Log("RequestPermission", head + "/" + text);
    if (_jsRuntime == null) return ;

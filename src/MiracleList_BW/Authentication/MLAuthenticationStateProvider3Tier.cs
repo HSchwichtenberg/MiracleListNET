@@ -44,7 +44,7 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
   this.ServiceProvider = ServiceProvider;
  }
 
- public  async Task  SetCurrentBackend(string? backendKey)
+ public async Task SetCurrentBackend(string? backendKey)
  {
   if (backendKey == null) { return; }
   var backend = AppState.GetBackendByKey(backendKey);
@@ -112,7 +112,7 @@ public class MLAuthenticationStateProvider3Tier : AuthenticationStateProvider, I
  /// <summary>
  /// Logout to be called by Razor Component Login.razor
  /// </summary>
- public  async Task  Logout()
+ public async Task Logout()
  {
   blazorUtil.Log("Logout", this.CurrentLoginInfo);
   if (this.CurrentLoginInfo == null) return;

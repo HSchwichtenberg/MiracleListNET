@@ -38,7 +38,7 @@
  [Parameter]
  public EventCallback OnLogin { get; set; }
 
-  async Task  LoginClick()
+ async Task LoginClick()
  {
   await OnLogin.InvokeAsync(null);
  }

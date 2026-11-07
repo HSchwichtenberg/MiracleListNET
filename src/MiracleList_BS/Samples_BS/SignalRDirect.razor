@@ -9,7 +9,7 @@
 
 @code {
 
-  async Task  MessageToAllClients()
+ async Task MessageToAllClients()
  {
   await hubContext.Clients.All.SendAsync(nameof(MLHubV3.CategoryListUpdate), "");
  }

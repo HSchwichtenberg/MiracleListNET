@@ -89,7 +89,7 @@
 
  public bool IsSaved => _isSaved;
 
- protected override  async Task  OnAfterRenderAsync(bool firstRender)
+ protected override async Task OnAfterRenderAsync(bool firstRender)
  {
   if (!firstRender)
   {
@@ -110,7 +110,7 @@
   });
  }
 
- public  async Task  SaveAsync()
+ public async Task SaveAsync()
  {
   if (_module is null || _isSaved)
   {
@@ -136,7 +136,7 @@
   }
  }
 
- public  async Task  ClearAsync()
+ public async Task ClearAsync()
  {
   if (_module is null || _isSaved)
   {
@@ -167,7 +167,7 @@
  }
 
  [JSInvokable]
- public  async Task  NotifyChanged()
+ public async Task NotifyChanged()
  {
   if (!OnChange.HasDelegate || _isSaved)
   {

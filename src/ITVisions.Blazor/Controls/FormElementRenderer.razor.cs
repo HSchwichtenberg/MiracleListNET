@@ -518,7 +518,7 @@ public partial class FormElementRenderer
  /// <summary>
  /// Absenden mit vorheriger Validierung
  /// </summary>
- private  async Task  OnSubmit()
+ private async Task OnSubmit()
  {
   if (!ValidateFieldSet(FormElements))
   {

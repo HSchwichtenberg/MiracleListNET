@@ -1,6 +1,7 @@
 ﻿@page "/Samples/MarkupFileOnlyComponent"
 @using ITVisions.Blazor
 @inject BlazorUtil Util
+@implements IDisposable
 
 <h2>Komponente nur mit .razor-Datei und Inline-Code</h2>
 X:
@@ -17,7 +18,7 @@ Sum: @Sum
  //public BlazorUtil Util { get; set; } = null;
  [Inject]
  public IJSRuntime JSRuntime { get; set; } = null;
- [Inject]
+
  public NavigationManager NavigationManager { get; set; } = null;
 
  [Parameter]
@@ -28,6 +29,12 @@ Sum: @Sum
  public EventCallback<decimal> ValueHasChanged { get; set; }
 
  public decimal Sum = 0;
+
+ // Konstruktorinjektion
+ public MarkupFileOnlyComponent(NavigationManager navigationManager)
+ {
+  this.NavigationManager = navigationManager;
+ }
 
  #region Standard-Lebenszyklus-Ereignisse
  protected override void OnInitialized()

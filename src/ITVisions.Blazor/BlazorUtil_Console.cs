@@ -87,10 +87,24 @@ namespace ITVisions.Blazor
 
   public async Task Clear()
   {
-   await _jsRuntime.InvokeVoidAsync("console.clear");
+   try
+   {
+    await _jsRuntime.InvokeVoidAsync("console.clear");
+   }
+   catch (Exception)
+   {
+    // nicht schlimm
+   }
   }
 
-  public async Task Log(string s, LogType typ = LogType.info)
+  /// <summary>
+  /// Ausgabe in Browserkonsole.
+  /// Hier bewusst async void statt Task. Der Aufrufer muss nicht warten auf Abschluss
+  /// </summary>
+  /// <param name="s">Was soll ausgegeben werden</param>
+  /// <param name="typ">info ist Standard</param>
+  /// <exception cref="ApplicationException">nur wenn LogFailOnError = true</exception>
+  public async void Log(string s, LogType typ = LogType.info)
   {
    System.Diagnostics.Trace.WriteLine(s);
    s = LogPrefix + s;

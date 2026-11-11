@@ -19,17 +19,17 @@
  <!--NuGet-->
  <ItemGroup>
 
-  <PackageReference Include="Microsoft.AspNetCore.Components" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.*-*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components" Version="11.0.*-*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="11.0.*-*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="11.0.*-*" />
   <PackageReference Include="Microsoft.Data.SqlClient" Version="6.*" />
-  <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.*-*" />
+  <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="11.0.*-*" />
+  <PackageReference Include="Microsoft.Extensions.Localization" Version="11.0.*-*" />
   <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.*">
     <PrivateAssets>all</PrivateAssets>
     <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
   </PackageReference>
-  <PackageReference Include="System.DirectoryServices" Version="10.0.*-*" />
+  <PackageReference Include="System.DirectoryServices" Version="11.0.*-*" />
   <PackageReference Include="Blazored.LocalStorage" Version="4.*" />
  </ItemGroup>
 

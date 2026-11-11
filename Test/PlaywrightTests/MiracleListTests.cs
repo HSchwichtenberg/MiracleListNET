@@ -232,7 +232,7 @@ public class MiracleListTests : PageTest
 
  /// <summary>
  /// Test wurde mit Testgenerator
- /// bin/Debug/net10.0/playwright.ps1 codegen miraclelist-bu.azurewebsites.net
+ /// bin/Debug/net11.0/playwright.ps1 codegen miraclelist-bu.azurewebsites.net
  /// erzeugt und dann angepasst
  /// </summary>
  /// <returns></returns>

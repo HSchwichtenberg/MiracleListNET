@@ -9,17 +9,17 @@
 
  <ItemGroup>
 		<!--<PackageReference Include="Devart.Data.Oracle.EFCore" Version="10.*" />-->
-  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.*-*">
+  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="11.0.*-*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="11.0.*-*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="11.0.*-*">
    <PrivateAssets>all</PrivateAssets>
    <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
   </PackageReference>
-  <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.*-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="11.0.*-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="11.0.*-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="11.0.*-*" />
   <PackageReference Include="ITVisions.Util" Version="10.*" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.*-*" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="11.0.*-*" />
 
  </ItemGroup>
 

@@ -10,7 +10,7 @@
 
     <!--Runtime + Compiler-->
     <PropertyGroup>
-        <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+        <TargetFramework>net11.0-windows10.0.19041.0</TargetFramework>
         <OutputType>WinExe</OutputType>
         <UseWPF>true</UseWPF>
         <IsShippingPackage>false</IsShippingPackage>
@@ -46,8 +46,8 @@
     <!--Nuget-Pakete-->
     <ItemGroup>
         <!--Standardreferenzen für BD-->
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="10.0.*-*" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.*-*" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="11.0.*-*" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="11.0.*-*" />
     </ItemGroup>
 
     <!--COM-Referenzen für Word-Interop-->

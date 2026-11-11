@@ -16,17 +16,17 @@
 
  <ItemGroup>
   <!--Zusätzliche Pakete von Microsoft-->
-  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="10.0.*-*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="11.0.*-*" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="11.0.*-*" />
+  <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="11.0.*-*" />
+  <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="11.0.*-*" />
   <PackageReference Include="Microsoft.Data.SqlClient" Version="6.*" />
-  <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.*-*" />
+  <PackageReference Include="Microsoft.Extensions.Localization" Version="11.0.*-*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="11.0.*-*" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="11.0.*-*" />
 
   <!--Verträgt sich nicht mit aktiviertem Multi-Threading in BW :-(-->
-  <!--<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.*-*" />-->
+  <!--<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="11.0.*-*" />-->
 
   <!--Zusätzliche Pakete von Anderen-->
   <PackageReference Include="Blazor.ContextMenu" Version="2.*" />
@@ -37,7 +37,7 @@
   <PackageReference Include="Radzen.Blazor" Version="11.2.4" />
 
   <!--Fix Pakethölle-->
-  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.*-*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="11.0.*-*" />
  </ItemGroup>
 
  <ItemGroup>

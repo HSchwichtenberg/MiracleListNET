@@ -20,7 +20,7 @@
  <!--Projekte und NuGet-Pakete-->
  <ItemGroup>
   <ProjectReference Include="..\MiracleList_BU.Client\MiracleList_BU.Client.csproj" />
-  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.*-*" />
+  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="11.0.*-*" />
  </ItemGroup>
  <ItemGroup>
    <Folder Include="Authentication\" />

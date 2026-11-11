@@ -27,10 +27,10 @@
  <ItemGroup>
   <PackageReference Include="ITVisions.Util" Version="10.*" />
   <PackageReference Include="ITV.EFCoreUtil" Version="8.*" />
-  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.*-*" />
-  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.*-*" />
+  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="11.0.*-*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="11.0.*-*" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="11.0.*-*" />
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.*-*" />
   <PackageReference Include="System.Data.SqlClient" Version="4.*" />
   <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="10.105.7" />
  </ItemGroup>

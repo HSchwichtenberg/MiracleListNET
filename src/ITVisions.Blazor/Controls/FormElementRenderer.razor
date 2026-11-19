@@ -221,9 +221,12 @@
  @* Debug-Ausgabe *@
  <Debug Enable="@Debug">
   <div class="card mt-3">
-   <div class="card-header">
-    <h5>Debug: FormElements (@FormElements?.Count Elemente)</h5>
+   @* Kopfzeile klappt die Tabelle ein und aus *@
+   <div class="card-header" @onclick="@(() => IsDebugCollapsed = !IsDebugCollapsed)" style="cursor: pointer; user-select: none;">
+    <h5 class="mb-0">@(IsDebugCollapsed ? "▸" : "▾") Debug: FormElements (@FormElements?.Count Elemente)</h5>
    </div>
+   @if (!IsDebugCollapsed)
+   {
    <div class="card-body">
     <small>
      @if (FormElements != null)
@@ -260,5 +263,6 @@
      }
     </small>
    </div>
+   }
   </div></Debug>
 }

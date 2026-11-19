@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ITVisions.Metadata;
 using Microsoft.AspNetCore.Components;
 namespace ITVisions.Blazor.Controls;
 
@@ -22,6 +23,21 @@ public partial class FormElementRenderer
 
  [Parameter]
  public bool Debug { get; set; } = false;
+
+ // Anfangszustand der Debug-Tabelle; per Klick auf die Kopfzeile ein- und ausklappbar
+ [Parameter]
+ public bool DebugCollapsed { get; set; } = true;
+
+ // Aktueller Zustand, damit ein erneutes Rendern des Elternteils das Ein-/Ausklappen nicht zurücksetzt
+ private bool IsDebugCollapsed { get; set; }
+
+ /// <summary>
+ /// Übernimmt den Anfangszustand der Debug-Tabelle aus dem Parameter
+ /// </summary>
+ protected override void OnInitialized()
+ {
+  IsDebugCollapsed = DebugCollapsed;
+ }
 
  [Parameter]
  public FormElementList FormElements { get; set; } = new();
@@ -574,160 +590,15 @@ public partial class FormElementRenderer
  }
 
  /// <summary>
- /// Validiert eine Liste von Eingabefeldern
+ /// Validiert eine Liste von Eingabefeldern mit dem gemeinsamen FormElementValidator aus ITVisions.Util
  /// </summary>
  private bool ValidateFieldSet(IEnumerable<FormElement> elements)
  {
-  ValidationErrorMessage = "";
-  InvalidFieldKeys.Clear();
-
-  var missingFields = new List<string>();
-  var invalidFields = new List<string>();
-  // Eigene Fehlermeldungen aus den ErrorMessage-Angaben der Annotationen
-  var customMessages = new List<string>();
-
-  var validatableElements = elements.Where(f => f.Type != FormElementType.Headline && f.Type != FormElementType.Chapter && f.Type != FormElementType.Info);
-  foreach (var field in validatableElements)
-  {
-   ValidateField(field, missingFields, invalidFields, customMessages);
-  }
-
-  ValidationErrorMessage = BuildValidationErrorMessage(missingFields, invalidFields, customMessages);
-  return string.IsNullOrEmpty(ValidationErrorMessage);
- }
-
- /// <summary>
- /// Validiert ein einzelnes Eingabefeld
- /// </summary>
- private void ValidateField(FormElement field, List<string> missingFields, List<string> invalidFields, List<string> customMessages)
- {
-  var isEmpty = string.IsNullOrWhiteSpace(field.ValueString);
-  if (field.Type == FormElementType.Date)
-  {
-   // ist leer, wenn 1.1.0001 oder ungültiges Datum
-   if (isEmpty || !DateTime.TryParse(field.ValueString, out DateTime dateValue) || dateValue == DateTime.MinValue)
-   {
-    isEmpty = true;
-   }
-   else
-   {
-    isEmpty = false;
-   }
-  }
-
-  // Pflichtfeld?
-  if (field.Required && isEmpty)
-  {
-   AddValidationError(field, FormElementValidation.Required, missingFields, customMessages);
-   return;
-  }
-
-  // Inhalt OK?
-  if (isEmpty)
-  {
-   return;
-  }
-  var violation = GetFormatViolation(field);
-  if (violation.HasValue)
-  {
-   AddValidationError(field, violation.Value, invalidFields, customMessages);
-  }
- }
-
- /// <summary>
- /// Merkt einen Fehler vor: mit eigener Fehlermeldung, falls für die Prüfung vorhanden, sonst mit dem Label in der Sammelmeldung
- /// </summary>
- private void AddValidationError(FormElement field, FormElementValidation kind, List<string> labelList, List<string> customMessages)
- {
-  InvalidFieldKeys.Add(field.Key);
-  if (field.ErrorMessages != null && field.ErrorMessages.TryGetValue(kind, out var message) && !string.IsNullOrWhiteSpace(message))
-  {
-   customMessages.Add(message);
-   return;
-  }
-  labelList.Add(field.Label);
- }
-
- /// <summary>
- /// Prüft den Inhalt eines Eingabefeldes und liefert die verletzte Prüfung oder null, wenn alles in Ordnung ist
- /// </summary>
- private static FormElementValidation? GetFormatViolation(FormElement field)
- {
-  var value = field.ValueString;
-  if (string.IsNullOrWhiteSpace(value))
-  {
-   return null;
-  }
-
-  // Länge aus [MinLength], [MaxLength], [StringLength]
-  if ((field.MinLength.HasValue && value.Length < field.MinLength.Value) || (field.MaxLength.HasValue && value.Length > field.MaxLength.Value))
-  {
-   return FormElementValidation.Length;
-  }
-
-  // Regex-Validierung (wenn vorhanden) ersetzt die Formatprüfung des Typs
-  if (!string.IsNullOrWhiteSpace(field.Regex))
-  {
-   try
-   {
-    return System.Text.RegularExpressions.Regex.IsMatch(value, field.Regex) ? null : FormElementValidation.Regex;
-   }
-   catch (System.Text.RegularExpressions.RegexParseException)
-   {
-    // Ungültiger Regex-Pattern -> ignorieren und mit anderen Validierungen fortfahren
-   }
-  }
-
-  switch (field.Type)
-  {
-   case FormElementType.Email:
-    return System.Text.RegularExpressions.Regex.IsMatch(value, @"^[^@\s]+@[^@\s]+\.[^@\s]+$") ? null : FormElementValidation.Format;
-
-   case FormElementType.Phone:
-    return System.Text.RegularExpressions.Regex.IsMatch(value, @"^[0-9\s\-\+\(\)\/]+$") ? null : FormElementValidation.Format;
-
-   case FormElementType.Url:
-    var isUrl = Uri.TryCreate(value, UriKind.Absolute, out var uriResult)
-     && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-    return isUrl ? null : FormElementValidation.Format;
-
-   case FormElementType.Number:
-    if (!int.TryParse(value, out int numberValue))
-    {
-     return FormElementValidation.Format;
-    }
-    if ((field.Min.HasValue && numberValue < field.Min.Value) || (field.Max.HasValue && numberValue > field.Max.Value))
-    {
-     return FormElementValidation.Range;
-    }
-    return null;
-
-   default:
-    return null;
-  }
- }
-
- /// <summary>
- /// Fehlermeldung erzeugen
- /// </summary>
- private static string BuildValidationErrorMessage(List<string> missingFields, List<string> invalidFields, List<string> customMessages)
- {
-  var errors = new List<string>();
-
-  if (missingFields.Any())
-  {
-   errors.Add($"Bitte füllen Sie folgende Pflichtfelder aus: {string.Join(", ", missingFields)}");
-  }
-
-  if (invalidFields.Any())
-  {
-   errors.Add($"Folgende Felder haben ein ungültiges Format: {string.Join(", ", invalidFields)}");
-  }
-
-  // Eigene Meldungen stammen aus dem Datenmodell und werden als MarkupString ausgegeben, daher HTML-kodieren
-  errors.AddRange(customMessages.Distinct().Select(System.Net.WebUtility.HtmlEncode));
-
-  return string.Join("<br>", errors);
+  var result = FormElementValidator.Validate(elements);
+  InvalidFieldKeys = result.InvalidFieldKeys;
+  // Meldungen enthalten Texte aus dem Datenmodell und werden als MarkupString ausgegeben, daher HTML-kodieren
+  ValidationErrorMessage = string.Join("<br>", result.GetMessages().Select(System.Net.WebUtility.HtmlEncode));
+  return result.IsValid;
  }
 
  /// <summary>

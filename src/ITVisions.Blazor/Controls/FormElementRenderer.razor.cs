@@ -323,6 +323,15 @@ public partial class FormElementRenderer
     builder.OpenElement(100, "textarea");
     builder.AddAttribute(101, "class", GetFieldCssClass(field, "form-control"));
     builder.AddAttribute(102, "rows", rows);
+    // Längenbegrenzung aus [MinLength], [MaxLength], [StringLength]
+    if (field.MinLength.HasValue)
+    {
+     builder.AddAttribute(116, "minlength", field.MinLength.Value);
+    }
+    if (field.MaxLength.HasValue)
+    {
+     builder.AddAttribute(117, "maxlength", field.MaxLength.Value);
+    }
     builder.AddAttribute(103, "value", field.ValueString);
     builder.AddAttribute(104, "required", field.Required);
     builder.AddAttribute(105, "readonly", field.Disabled);
@@ -392,9 +401,21 @@ public partial class FormElementRenderer
   {
    builder.AddAttribute(7, "max", max.Value);
   }
-  builder.AddAttribute(8, "required", field.Required);
-  builder.AddAttribute(9, "disabled", field.Disabled);
-  builder.AddAttribute(10, "onchange", EventCallback.Factory.CreateBinder<string>(this, async value =>
+  // Längenbegrenzung nur bei Texteingaben; Zahl, Datum und Uhrzeit kennen minlength/maxlength nicht
+  if (IsTextInputType(inputType))
+  {
+   if (field.MinLength.HasValue)
+   {
+    builder.AddAttribute(8, "minlength", field.MinLength.Value);
+   }
+   if (field.MaxLength.HasValue)
+   {
+    builder.AddAttribute(9, "maxlength", field.MaxLength.Value);
+   }
+  }
+  builder.AddAttribute(10, "required", field.Required);
+  builder.AddAttribute(11, "disabled", field.Disabled);
+  builder.AddAttribute(12, "onchange", EventCallback.Factory.CreateBinder<string>(this, async value =>
   {
    field.ValueString = value;
    await OnValuesChanged.InvokeAsync(FormElements);
@@ -402,6 +423,14 @@ public partial class FormElementRenderer
   builder.SetUpdatesAttributeName("value");
   builder.CloseElement();
  };
+
+ /// <summary>
+ /// Prüft, ob ein input-Typ Text aufnimmt und damit minlength/maxlength unterstützt
+ /// </summary>
+ private static bool IsTextInputType(string inputType)
+ {
+  return inputType is "text" or "email" or "password" or "tel" or "url";
+ }
 
  /// <summary>
  /// Rendert ein form-check Item (Radio-Button oder Checkbox) mit Input und Label
@@ -554,21 +583,23 @@ public partial class FormElementRenderer
 
   var missingFields = new List<string>();
   var invalidFields = new List<string>();
+  // Eigene Fehlermeldungen aus den ErrorMessage-Angaben der Annotationen
+  var customMessages = new List<string>();
 
   var validatableElements = elements.Where(f => f.Type != FormElementType.Headline && f.Type != FormElementType.Chapter && f.Type != FormElementType.Info);
   foreach (var field in validatableElements)
   {
-   ValidateField(field, missingFields, invalidFields);
+   ValidateField(field, missingFields, invalidFields, customMessages);
   }
 
-  ValidationErrorMessage = BuildValidationErrorMessage(missingFields, invalidFields);
+  ValidationErrorMessage = BuildValidationErrorMessage(missingFields, invalidFields, customMessages);
   return string.IsNullOrEmpty(ValidationErrorMessage);
  }
 
  /// <summary>
  /// Validiert ein einzelnes Eingabefeld
  /// </summary>
- private void ValidateField(FormElement field, List<string> missingFields, List<string> invalidFields)
+ private void ValidateField(FormElement field, List<string> missingFields, List<string> invalidFields, List<string> customMessages)
  {
   var isEmpty = string.IsNullOrWhiteSpace(field.ValueString);
   if (field.Type == FormElementType.Date)
@@ -587,33 +618,59 @@ public partial class FormElementRenderer
   // Pflichtfeld?
   if (field.Required && isEmpty)
   {
-   missingFields.Add(field.Label);
-   InvalidFieldKeys.Add(field.Key);
+   AddValidationError(field, FormElementValidation.Required, missingFields, customMessages);
    return;
   }
 
   // Inhalt OK?
-  if (!isEmpty && !ValidateFieldFormat(field))
+  if (isEmpty)
   {
-   invalidFields.Add(field.Label);
-   InvalidFieldKeys.Add(field.Key);
+   return;
+  }
+  var violation = GetFormatViolation(field);
+  if (violation.HasValue)
+  {
+   AddValidationError(field, violation.Value, invalidFields, customMessages);
   }
  }
 
  /// <summary>
- /// Validierung Inhalt eines Eingabefeldes
+ /// Merkt einen Fehler vor: mit eigener Fehlermeldung, falls für die Prüfung vorhanden, sonst mit dem Label in der Sammelmeldung
  /// </summary>
- private bool ValidateFieldFormat(FormElement field)
+ private void AddValidationError(FormElement field, FormElementValidation kind, List<string> labelList, List<string> customMessages)
  {
-  if (string.IsNullOrWhiteSpace(field.ValueString))
-   return true;
+  InvalidFieldKeys.Add(field.Key);
+  if (field.ErrorMessages != null && field.ErrorMessages.TryGetValue(kind, out var message) && !string.IsNullOrWhiteSpace(message))
+  {
+   customMessages.Add(message);
+   return;
+  }
+  labelList.Add(field.Label);
+ }
 
-  // Regex-Validierung (wenn vorhanden)
+ /// <summary>
+ /// Prüft den Inhalt eines Eingabefeldes und liefert die verletzte Prüfung oder null, wenn alles in Ordnung ist
+ /// </summary>
+ private static FormElementValidation? GetFormatViolation(FormElement field)
+ {
+  var value = field.ValueString;
+  if (string.IsNullOrWhiteSpace(value))
+  {
+   return null;
+  }
+
+  // Länge aus [MinLength], [MaxLength], [StringLength]
+  if ((field.MinLength.HasValue && value.Length < field.MinLength.Value) || (field.MaxLength.HasValue && value.Length > field.MaxLength.Value))
+  {
+   return FormElementValidation.Length;
+  }
+
+  // Regex-Validierung (wenn vorhanden) ersetzt die Formatprüfung des Typs
   if (!string.IsNullOrWhiteSpace(field.Regex))
   {
    try
    {
-    return System.Text.RegularExpressions.Regex.IsMatch(field.ValueString, field.Regex);
+    return System.Text.RegularExpressions.Regex.IsMatch(value, field.Regex) ? null : FormElementValidation.Regex;
    }
    catch (System.Text.RegularExpressions.RegexParseException)
    {
@@ -624,38 +681,36 @@ public partial class FormElementRenderer
   switch (field.Type)
   {
    case FormElementType.Email:
-    return System.Text.RegularExpressions.Regex.IsMatch(field.ValueString,
-     @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+    return System.Text.RegularExpressions.Regex.IsMatch(value, @"^[^@\s]+@[^@\s]+\.[^@\s]+$") ? null : FormElementValidation.Format;
 
    case FormElementType.Phone:
-    return System.Text.RegularExpressions.Regex.IsMatch(field.ValueString,
-     @"^[0-9\s\-\+\(\)\/]+$");
+    return System.Text.RegularExpressions.Regex.IsMatch(value, @"^[0-9\s\-\+\(\)\/]+$") ? null : FormElementValidation.Format;
 
    case FormElementType.Url:
-    return Uri.TryCreate(field.ValueString, UriKind.Absolute, out var uriResult)
+    var isUrl = Uri.TryCreate(value, UriKind.Absolute, out var uriResult)
      && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+    return isUrl ? null : FormElementValidation.Format;
 
    case FormElementType.Number:
-    if (!int.TryParse(field.ValueString, out int numberValue))
-     return false;
-
-    if (field.Min.HasValue && numberValue < field.Min.Value)
-     return false;
-
-    if (field.Max.HasValue && numberValue > field.Max.Value)
-     return false;
-
-    return true;
+    if (!int.TryParse(value, out int numberValue))
+    {
+     return FormElementValidation.Format;
+    }
+    if ((field.Min.HasValue && numberValue < field.Min.Value) || (field.Max.HasValue && numberValue > field.Max.Value))
+    {
+     return FormElementValidation.Range;
+    }
+    return null;
 
    default:
-    return true;
+    return null;
   }
  }
 
  /// <summary>
  /// Fehlermeldung erzeugen
  /// </summary>
- private static string BuildValidationErrorMessage(List<string> missingFields, List<string> invalidFields)
+ private static string BuildValidationErrorMessage(List<string> missingFields, List<string> invalidFields, List<string> customMessages)
  {
   var errors = new List<string>();
 
@@ -668,6 +723,9 @@ public partial class FormElementRenderer
   {
    errors.Add($"Folgende Felder haben ein ungültiges Format: {string.Join(", ", invalidFields)}");
   }
+
+  // Eigene Meldungen stammen aus dem Datenmodell und werden als MarkupString ausgegeben, daher HTML-kodieren
+  errors.AddRange(customMessages.Distinct().Select(System.Net.WebUtility.HtmlEncode));
 
   return string.Join("<br>", errors);
  }

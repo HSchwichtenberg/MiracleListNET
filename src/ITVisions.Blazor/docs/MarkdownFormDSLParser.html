@@ -146,7 +146,7 @@ footer { color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--li
 <main>
  <header>
   <a href="index.html" style="font: 500 0.88rem var(--font-mono); color: var(--accent); text-decoration: none; align-self: flex-start;">← Übersicht</a>
-  <div class="eyebrow">ITVForms · Web.Client/MarkdownFormDSLParser.cs</div>
+  <div class="eyebrow">ITVisions.Util · Metadata/MarkdownFormDSLParser.cs</div>
   <h1>Von der Textzeile zum FormElement</h1>
   <p class="lead"><code>MarkdownFormDSLParser.Parse(template)</code> liest eine Formulardefinition in einer an Markdown angelehnten Kurzschreibweise. Jede Zeile wird zu höchstens einem <code>FormElement</code>. Die fertige <code>FormElementList</code> zeigt der <code>FormElementRenderer</code> als Formular an.</p>
   <div class="hero-pair">
@@ -303,7 +303,7 @@ Group    = <span class="s">"Ihre Kinder"</span>  <span class="c">// aus "= Ihre 
   </div>
  </section>
 
- <footer>Quelle: Repository ITVForms, Datei <code>Web/Web.Client/MarkdownFormDSLParser.cs</code>, Klasse <code>MarkdownFormDSLParserV2</code>. Die Spielwiese ist eine Nachbildung in JavaScript; GUIDs für doppelte Labels werden zufällig erzeugt.</footer>
+ <footer>Quelle: Bibliothek ITVisions.Util, Projekt ITV.AppUtil, Datei <code>Metadata/MarkdownFormDSLParser.cs</code>, Klasse <code>ITVisions.Metadata.MarkdownFormDSLParser</code>. Die Spielwiese ist eine Nachbildung in JavaScript; GUIDs für doppelte Labels werden zufällig erzeugt.</footer>
 </main>
 
 <script>
@@ -599,7 +599,7 @@ Group    = <span class="s">"Ihre Kinder"</span>  <span class="c">// aus "= Ihre 
   "- Telefonnummer {Durch die Annotation [Phone] sind nur Zahlen und einige Sonderzeichen (+, -, /, Leerzeichen, Klammern), aber keine Buchstaben erlaubt.}: [Phone]",
   "- Website {Bei [URL] prüft der Browser, ob es sich um eine Webadresse handelt.}: [Url]",
   "+ Status {Die Annotation [RadioButtonList] erzwingt eine RadioButtonList ;-).}: * ledig * verheiratet * geschieden * verwitwet = ledig",
-  "+ Newsletter {Newsletter abonnieren}: * Newsletter = Newsletter",
+  "+ Newsletter {Newsletter abonnieren}: * Newsletter abonnieren = Newsletter abonnieren",
   "",
   "########### Benutzerkonto",
   "+ Kundennummer {Validierung mit regulären Ausdruck. Die Kundennummer muss im Format K-xxxx sein (z.B. K-1234)}: [Text] \"K-([0-9]{4})\"",

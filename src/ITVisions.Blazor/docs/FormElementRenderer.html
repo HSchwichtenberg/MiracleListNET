@@ -302,6 +302,9 @@ footer { color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--li
      <tr><td>Min / Max</td><td>Attribute <code>min</code> / <code>max</code> bei Number und Range</td><td>Number wird gegen die Grenzen geprüft</td></tr>
      <tr><td>Regex</td><td>Attribut <code>pattern</code> beim Typ Text</td><td>Wird bei jedem Typ vor der Formatprüfung angewendet</td></tr>
      <tr><td>Disabled</td><td>Attribut <code>disabled</code>, Feld wird ausgegraut</td><td>Keine Eingabe möglich</td></tr>
+     <tr><td>MinLength / MaxLength</td><td>Attribute <code>minlength</code> / <code>maxlength</code> bei Text, Email, Password, Phone, Url und TextArea</td><td>Zu kurze oder zu lange Eingaben gelten als ungültig</td></tr>
+     <tr><td>ErrorMessages</td><td>Eigene Meldung je Prüfung (Required, Regex, Range, Length, Format) statt des Labels in der Sammelmeldung</td><td>Ohne Eintrag gilt die Standardmeldung</td></tr>
+     <tr><td>Format</td><td>Wird nicht ausgewertet; der Parser hat den Wert bereits formatiert</td><td>–</td></tr>
      <tr><td>Group</td><td>Benachbarte Felder mit gleichem Wert stehen in einer Zeile, mit Rahmen und Legende</td><td>Enthält der Wert <code>AutoGroupPrefix</code>, entfällt die Legende</td></tr>
     </tbody>
    </table>
@@ -336,7 +339,8 @@ footer { color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--li
    </div>
    <div class="panel">
     <h3>2 · Prüfen</h3>
-    <p>„Nächste Seite“ ruft <code>ValidateCurrentPage()</code>, „Absenden“ ruft <code>ValidateFieldSet()</code> für alle Felder. Geprüft werden Pflichtfelder, <code>Regex</code> und das Format je Typ.</p>
+    <p>„Nächste Seite“ ruft <code>ValidateCurrentPage()</code>, „Absenden“ ruft <code>ValidateFieldSet()</code> für alle Felder. Geprüft werden Pflichtfelder, die Länge, <code>Regex</code> und das Format je Typ.</p>
+    <p>Hat ein Feld für die verletzte Prüfung eine eigene Meldung in <code>ErrorMessages</code>, erscheint diese statt des Labels in der Sammelmeldung.</p>
     <p>Fehlerhafte Keys landen in <code>InvalidFieldKeys</code> und erhalten die CSS-Klasse <code>is-invalid</code>.</p>
    </div>
    <div class="panel">
@@ -367,7 +371,7 @@ footer { color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--li
   Range: { f: { Key: "Bewertung2", Label: "Bewertung2 (1 bis 5)", Required: true, Min: 1, Max: 5, ValueString: "3", Note: "Bewerten Sie diese Anwendung" }, node: "n-direct", route: ["RenderEditableFormElement", "RenderLabel", "case Range: <input type=range> + Badge"] },
   Rating: { f: { Key: "Bewertung1", Label: "Bewertung1 (1 bis 5)", Options: ["1", "2", "3", "4", "5"], Note: "Bewerten Sie diese Anwendung" }, node: "n-direct", route: ["RenderEditableFormElement", "RenderLabel", "case Rating: <button> je Option"] },
   RadioButtons: { f: { Key: "Status", Label: "Status", Required: true, Options: ["ledig", "verheiratet", "geschieden", "verwitwet"], ValueString: "ledig", Note: "Die Annotation [RadioButtonList] erzwingt eine RadioButtonList ;-)." }, node: "n-check", route: ["RenderEditableFormElement", "RenderLabel", "RenderFormCheckItem(\"radio\") je Option"] },
-  CheckBox: { f: { Key: "Newsletter", Label: "Newsletter", Required: true, Options: ["Newsletter"], ValueString: "Newsletter", Note: "Newsletter abonnieren" }, node: "n-check", route: ["RenderEditableFormElement", "RenderLabel", "RenderFormCheckItem(\"checkbox\")"] },
+  CheckBox: { f: { Key: "Newsletter", Label: "Newsletter", Required: true, Options: ["Newsletter abonnieren"], ValueString: "Newsletter abonnieren", Note: "Newsletter abonnieren" }, node: "n-check", route: ["RenderEditableFormElement", "RenderLabel", "RenderFormCheckItem(\"checkbox\")"] },
   Multiselect: { f: { Key: "Hobbys", Label: "Hobbys", Required: true, Options: ["Fußball", "MTB", "Tennis", "Schwimmen", "Lesen", "Reisen"], ValueString: "MTB | Reisen", Note: "[Multiselect] sorgt für eine Mehrfachauswahl. Auch hier sind Vorgabewerte möglich." }, node: "n-check", route: ["RenderEditableFormElement", "RenderLabel", "RenderFormCheckItem(\"checkbox\") je Option"] },
   Chapter: { f: { Key: "chapter_0", Label: "Personendaten" }, node: "n2", route: ["BuildPages()", "neue FormPage mit PageName = Label", "Seitenkopf + Fortschrittsbalken"] },
   Headline: { f: { Key: "headline_1", Label: "Name der Person" }, node: "n-head", route: ["for … Fields", "<h4 @onclick=ToggleSection(Key)>", "Felder bis zur nächsten Headline ein-/ausblenden"] },

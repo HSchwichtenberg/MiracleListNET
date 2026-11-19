@@ -11,14 +11,17 @@
  }
 </style>
 
-@if (System.Diagnostics.Debugger.IsAttached)
+@if (Enable || System.Diagnostics.Debugger.IsAttached)
 {
  <span class="debug">@ChildContent</span>
 }
 
 @code
 {
- 
+
  [Parameter]
+ public bool Enable { get; set; } = false;
+
+        [Parameter]
  public RenderFragment ChildContent { get; set; }
 }

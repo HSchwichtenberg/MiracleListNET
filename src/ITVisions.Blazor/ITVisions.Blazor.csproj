@@ -64,8 +64,8 @@
 		<PackageReference Include="FluentValidation" Version="12.2.0" />
 		<PackageReference Include="HtmlSanitizer" Version="11.*" />
 		<!-- Vorübergehend ProjectReference statt NuGet-Paket, bis ITVisions.Util mit FormElementValidator veröffentlicht ist -->
-		<!--<PackageReference Include="ITVisions.Util" Version="10.12.*" />-->
-		<ProjectReference Include="..\..\..\..\..\TFS\INT\Util\ITV.AppUtil.NETStandard\ITV.AppUtil.NETStandard.csproj" />
+		<PackageReference Include="ITVisions.Util" Version="10.13.*" />
+		<!--<ProjectReference Include="..\..\..\..\..\TFS\INT\Util\ITV.AppUtil.NETStandard\ITV.AppUtil.NETStandard.csproj" />-->
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="UAParser" Version="3.1.*" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.*" />

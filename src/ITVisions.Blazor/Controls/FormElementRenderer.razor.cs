@@ -21,6 +21,9 @@ public partial class FormElementRenderer
  public string SubmitButtonText { get; set; } = "Absenden";
 
  [Parameter]
+ public bool Debug { get; set; } = false;
+
+ [Parameter]
  public FormElementList FormElements { get; set; } = new();
  private string ValidationErrorMessage { get; set; } = "";
  private HashSet<string> CollapsedSections { get; set; } = new();
@@ -487,7 +490,7 @@ public partial class FormElementRenderer
   }
  }
 
- private async Task  NotifyValuesChanged()
+ private async Task NotifyValuesChanged()
  {
   await OnValuesChanged.InvokeAsync(FormElements);
  }

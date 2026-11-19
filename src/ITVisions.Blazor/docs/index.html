@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ITVisions Formular-Pipeline</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: Startseite der Doku; Überblicksgrafik, dann drei Einstiege, dann ein durchgehendes Beispiel. Gleiche Tokens wie die drei Schaubilder */
+:root {
+ --bg: #f6f6fa;
+ --surface: #ffffff;
+ --fg: #1d1b2e;
+ --muted: #5f5c78;
+ --line: #d3d1e3;
+ --accent: #512bd4;
+ --accent-soft: #ece7fd;
+ --struct: #eef0f3;
+ --ok: #18794e;
+ --warn: #b4232c;
+ --code-bg: #f0eff7;
+ --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+ --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+ --font-mono: "IBM Plex Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+ :root:not([data-theme="light"]) {
+  --bg: #14131c; --surface: #1d1c28; --fg: #e8e6f3; --muted: #a29fbd; --line: #383650;
+  --accent: #a48bff; --accent-soft: #2c2547; --struct: #22222c; --ok: #5cc994; --warn: #ff7b84; --code-bg: #191823;
+  color-scheme: dark;
+ }
+}
+:root[data-theme="dark"] {
+ --bg: #14131c; --surface: #1d1c28; --fg: #e8e6f3; --muted: #a29fbd; --line: #383650;
+ --accent: #a48bff; --accent-soft: #2c2547; --struct: #22222c; --ok: #5cc994; --warn: #ff7b84; --code-bg: #191823;
+ color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+ background: var(--bg); color: var(--fg);
+ font: 16px/1.6 var(--font-body);
+ padding-left: max(16px, env(safe-area-inset-left, 0px));
+ padding-right: max(16px, env(safe-area-inset-right, 0px));
+ padding-block: 40px 80px;
+}
+main { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 64px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); font-weight: 700; letter-spacing: -0.02em; }
+h2 { font-size: 1.6rem; font-weight: 700; }
+h3 { font-size: 1.15rem; font-weight: 700; }
+p { margin: 0; max-width: 68ch; }
+code, pre { font-family: var(--font-mono); font-size: 0.9em; }
+:not(pre) > code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+.eyebrow { font: 500 0.78rem var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+section, header { display: flex; flex-direction: column; gap: 20px; }
+.lead { font-size: 1.15rem; color: var(--muted); }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; min-width: 0; }
+.panel-label { font: 500 0.72rem var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--code-bg); border-radius: 8px; padding: 14px 16px; line-height: 1.55; }
+.k { color: var(--accent); }
+.s { color: var(--ok); }
+.c { color: var(--muted); }
+.a { color: var(--warn); }
+
+/* Überblicksgrafik */
+.diagram-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+.diagram-wrap svg { display: block; min-width: 720px; width: 100%; height: auto; }
+.n rect { fill: var(--surface); stroke: var(--line); stroke-width: 1.5; transition: fill .2s, stroke .2s; }
+.n.core rect { fill: var(--accent-soft); stroke: var(--accent); }
+.n.struct rect { fill: var(--struct); }
+.n .t { fill: var(--fg); font: 600 14.5px var(--font-mono); }
+.n .d { fill: var(--muted); font: 400 12.5px var(--font-body); }
+.n .go { fill: var(--accent); font: 500 12px var(--font-mono); }
+a.n:hover rect, a.n:focus rect { stroke: var(--accent); stroke-width: 3; }
+a.n:focus { outline: none; }
+.e { fill: none; stroke: var(--muted); stroke-width: 1.6; }
+.e.back { stroke: var(--ok); stroke-dasharray: 6 5; }
+.ah { fill: var(--muted); }
+.ah-back { fill: var(--ok); }
+.lbl { fill: var(--muted); font: 500 12px var(--font-mono); }
+.lbl-back { fill: var(--ok); font: 500 12.5px var(--font-mono); }
+
+/* Einstiege */
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 820px) { .cards { grid-template-columns: minmax(0, 1fr); } }
+.card { display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: inherit; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; transition: border-color .2s, transform .2s; }
+.card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.card .role { font: 500 0.72rem var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.card .sig { font: 0.85rem var(--font-mono); color: var(--accent); overflow-wrap: anywhere; }
+.card p { color: var(--muted); font-size: 0.95rem; }
+.card ul { margin: 0; padding-left: 1.1em; color: var(--muted); font-size: 0.92rem; display: flex; flex-direction: column; gap: 2px; }
+.card .more { margin-top: auto; padding-top: 6px; font: 500 0.9rem var(--font-mono); color: var(--accent); }
+
+/* Ein Feld in vier Formen */
+.forms4 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .forms4 { grid-template-columns: minmax(0, 1fr); } }
+.pv { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+.pv .fw-bold { font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.pv .text-danger { color: var(--warn); }
+.pv .info-icon { cursor: help; }
+.pv .form-control { width: 100%; font: inherit; padding: 7px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--fg); }
+.pv .form-control:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.note { color: var(--muted); font-size: 0.92rem; }
+footer { color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--line); padding-top: 16px; display: flex; flex-direction: column; gap: 6px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } .card:hover { transform: none; } }
+</style>
+</head>
+<body>
+
+<main>
+ <header>
+  <div class="eyebrow">www.IT-Visions.de - Metadaten-Eingabeformulare - Dokumentation</div>
+  <h1>www.IT-Visions.de Formular-Pipeline</h1>
+  <p class="lead">Ein Formular entsteht aus einem .NET-Objekt oder einer Markdown-Vorlage. Zwei Parser übersetzen eine annotierte .NET-Klasse oder eine Markdown-Vorlage in dieselbe <code>FormElementList</code>. Der <code>FormElementRenderer</code> macht daraus ein validiertes Blazor-Formular und schreibt die Eingaben zurück.</p>
+ </header>
+
+ <section aria-labelledby="h-overview">
+  <div class="eyebrow">Überblick</div>
+  <h2 id="h-overview">Zwei Eingänge, ein Format, ein Renderer</h2>
+  <p>Die Kästen mit Pfeil führen zum jeweiligen Schaubild. Die <code>FormElementList</code> ist die gemeinsame Schnittstelle: Der Renderer weiß nicht, aus welcher Quelle sie stammt.</p>
+  <div class="diagram-wrap">
+   <svg viewBox="0 0 960 330" role="img" aria-label="Überblick: C#-Klasse und Markdown-Vorlage werden von je einem Parser in eine FormElementList übersetzt, die der FormElementRenderer als Formular anzeigt">
+    <defs>
+     <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+     <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="ah-back" d="M0,0 L10,5 L0,10 z"/></marker>
+    </defs>
+    <path class="e" d="M230 75 H274" marker-end="url(#ah)"/>
+    <path class="e" d="M230 215 H274" marker-end="url(#ah)"/>
+    <path class="e" d="M490 75 H510 V130 H534" marker-end="url(#ah)"/>
+    <path class="e" d="M490 215 H510 V160 H534" marker-end="url(#ah)"/>
+    <path class="e" d="M700 145 H744" marker-end="url(#ah)"/>
+    <path class="e" d="M845 190 V236" marker-end="url(#ah)"/>
+    <path class="e back" d="M750 270 H617 V196" marker-end="url(#ahb)"/>
+    <text class="lbl" x="242" y="64">Reflection</text>
+    <text class="lbl" x="242" y="204">Zeilen</text>
+    <text class="lbl-back" x="627" y="290">OnValuesChanged, OnSubmitted</text>
+
+    <g class="n struct"><rect x="20" y="30" width="210" height="90" rx="8"/><text class="t" x="34" y="56">C#-Klasse</text><text class="d" x="34" y="78">Properties mit [Label], [Group],</text><text class="d" x="34" y="95">[Required], [Range], [Select] …</text></g>
+    <g class="n struct"><rect x="20" y="170" width="210" height="90" rx="8"/><text class="t" x="34" y="196">Markdown-Vorlage</text><text class="d" x="34" y="218">## Kapitel, # Überschrift,</text><text class="d" x="34" y="235">+ Label {Hinweis}: [Typ]</text></g>
+
+    <a class="n" href="AnnotatedObjectParser.html" aria-label="Schaubild AnnotatedObjectParser öffnen"><rect x="278" y="30" width="212" height="90" rx="8"/><text class="t" x="292" y="56">AnnotatedObject…</text><text class="d" x="292" y="78">Parser.Parse(object obj)</text><text class="go" x="292" y="104">Schaubild →</text></a>
+    <a class="n" href="MarkdownFormDSLParser.html" aria-label="Schaubild MarkdownFormDSLParser öffnen"><rect x="278" y="170" width="212" height="90" rx="8"/><text class="t" x="292" y="196">MarkdownFormDSL…</text><text class="d" x="292" y="218">Parser.Parse(string template)</text><text class="go" x="292" y="244">Schaubild →</text></a>
+
+    <g class="n core"><rect x="538" y="100" width="162" height="90" rx="8"/><text class="t" x="552" y="126">FormElementList</text><text class="d" x="552" y="148">List&lt;FormElement&gt;</text><text class="d" x="552" y="165">aus ITVisions.Util</text></g>
+    <a class="n core" href="FormElementRenderer.html" aria-label="Schaubild FormElementRenderer öffnen"><rect x="748" y="100" width="192" height="90" rx="8"/><text class="t" x="762" y="126">FormElement…</text><text class="d" x="762" y="148">Renderer.razor</text><text class="go" x="762" y="174">Schaubild →</text></a>
+    <g class="n"><rect x="750" y="240" width="190" height="60" rx="8"/><text class="t" x="764" y="264">Formular</text><text class="d" x="764" y="284">Seiten, Gruppen, Validierung</text></g>
+   </svg>
+  </div>
+ </section>
+
+ <section aria-labelledby="h-pages">
+  <div class="eyebrow">Die Schaubilder</div>
+  <h2 id="h-pages">Drei Stationen im Detail</h2>
+  <div class="cards">
+   <a class="card" href="AnnotatedObjectParser.html">
+    <span class="role">Eingang aus C#</span>
+    <h3>Vom Property zum FormElement</h3>
+    <span class="sig">AnnotatedObjectParser.Parse(obj)</span>
+    <p>Wie Datentyp, Nullbarkeit und Annotationen eines Properties zu einem FormElement werden.</p>
+    <ul><li>Elf Prüfschritte zur Typbestimmung</li><li>Pflichtfelder aus der Nullbarkeit</li><li>14 Properties zum Durchklicken</li></ul>
+    <span class="more">Schaubild öffnen →</span>
+   </a>
+   <a class="card" href="MarkdownFormDSLParser.html">
+    <span class="role">Eingang aus Text</span>
+    <h3>Von der Textzeile zum FormElement</h3>
+    <span class="sig">MarkdownFormDSLParser.Parse(template)</span>
+    <p>Wie der Parser eine Vorlage Zeile für Zeile liest und sich Kapitel und Gruppe merkt.</p>
+    <ul><li>Live-Editor mit Ergebnis je Zeile</li><li>Spickzettel zur Syntax</li><li>Stolperstellen zum Laden</li></ul>
+    <span class="more">Schaubild öffnen →</span>
+   </a>
+   <a class="card" href="FormElementRenderer.html">
+    <span class="role">Ausgabe im Browser</span>
+    <h3>Vom FormElement zum Steuerelement</h3>
+    <span class="sig">FormElementRenderer.razor</span>
+    <p>Wie aus jedem FormElement ein HTML-Steuerelement wird und wie die Eingabe zurückfließt.</p>
+    <ul><li>Alle 18 FormElementTypes zum Ausprobieren</li><li>Spaltenrechner für Gruppen</li><li>Validierung und Absenden</li></ul>
+    <span class="more">Schaubild öffnen →</span>
+   </a>
+  </div>
+ </section>
+
+ <section aria-labelledby="h-one">
+  <div class="eyebrow">Ein durchgehendes Beispiel</div>
+  <h2 id="h-one">Ein Feld auf seinem ganzen Weg</h2>
+  <p>Alle drei Schaubilder verwenden dieselben Felder aus der Klasse <code>Fragebogen</code> in ITVForms. Hier ist das Feld <code>Email</code> in allen vier Formen.</p>
+  <div class="forms4">
+   <div class="panel">
+    <div class="panel-label">1 · C#-Property</div>
+<pre><span class="a">[Label("Email", "Die Annotation [EmailAddress] prüft, ob es sich um eine gültige E-Mail-Adresse handelt.")]</span>
+<span class="a">[Required]</span>
+<span class="a">[EmailAddress]</span>
+<span class="k">public string?</span> Email { <span class="k">get</span>; <span class="k">set</span>; }</pre>
+   </div>
+   <div class="panel">
+    <div class="panel-label">1 · oder Markdown-Zeile</div>
+<pre><span class="a">+</span> Email {<span class="s">Die Annotation [EmailAddress] prüft, ob es sich um eine gültige E-Mail-Adresse handelt.</span>}: <span class="k">[Email]</span></pre>
+    <p class="note" style="margin-top:10px"><code>+</code> macht das Feld zum Pflichtfeld, <code>{…}</code> ist der Hinweis, <code>[Email]</code> der Typ.</p>
+   </div>
+   <div class="panel">
+    <div class="panel-label">2 · FormElement</div>
+<pre>Key      = <span class="s">"Email"</span>  <span class="c">// Markdown: "Benutzerkonto_Email"</span>
+Label    = <span class="s">"Email"</span>
+Type     = FormElementType.<span class="k">Email</span>
+Required = <span class="k">true</span>
+Note     = <span class="s">"Die Annotation [EmailAddress] prüft, ob es sich um eine gültige E-Mail-Adresse handelt."</span></pre>
+   </div>
+   <div class="panel">
+    <div class="panel-label">3 · Steuerelement</div>
+<pre>&lt;label class="fw-bold"&gt;Email
+ &lt;span class="text-danger" title="Pflichtfeld"&gt;*&lt;/span&gt;
+ &lt;span class="info-icon" data-tooltip="…"&gt;ℹ️&lt;/span&gt;
+&lt;/label&gt;
+&lt;input type="email" class="form-control" required&gt;</pre>
+    <div class="pv">
+     <label class="fw-bold" for="demo-email">Email <span class="text-danger" title="Pflichtfeld">*</span><span class="info-icon" title="Die Annotation [EmailAddress] prüft, ob es sich um eine gültige E-Mail-Adresse handelt.">ℹ️</span></label>
+     <input id="demo-email" class="form-control" type="email" placeholder="name@firma.de">
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <footer>
+  <span>Quellen: <code>ITVisions.Blazor/Controls/FormElementRenderer.razor(.cs)</code> im Repository MiracleListNET, Typen <code>AnnotatedObjectParser</code> und <code>MarkdownFormDSLParser</code> sowie <code>FormElement</code>, <code>FormElementList</code> und <code>FormElementType</code> aus dem NuGet-Paket ITVisions.Util</span>
+ </footer>
+</main>
+</body>
+</html>

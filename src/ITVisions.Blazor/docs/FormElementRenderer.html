@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vom FormElement zum Steuerelement</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: eine Lesespalte, das Schaubild darf breiter werden; Abschnitte folgen dem Weg der Daten */
+:root {
+ --bg: #f6f6fa;
+ --surface: #ffffff;
+ --fg: #1d1b2e;
+ --muted: #5f5c78;
+ --line: #d3d1e3;
+ --accent: #512bd4;
+ --accent-soft: #ece7fd;
+ --struct: #eef0f3;
+ --ok: #18794e;
+ --warn: #b4232c;
+ --code-bg: #f0eff7;
+ --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+ --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+ --font-mono: "IBM Plex Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+ :root:not([data-theme="light"]) {
+  --bg: #14131c; --surface: #1d1c28; --fg: #e8e6f3; --muted: #a29fbd; --line: #383650;
+  --accent: #a48bff; --accent-soft: #2c2547; --struct: #22222c; --ok: #5cc994; --warn: #ff7b84; --code-bg: #191823;
+  color-scheme: dark;
+ }
+}
+:root[data-theme="dark"] {
+ --bg: #14131c; --surface: #1d1c28; --fg: #e8e6f3; --muted: #a29fbd; --line: #383650;
+ --accent: #a48bff; --accent-soft: #2c2547; --struct: #22222c; --ok: #5cc994; --warn: #ff7b84; --code-bg: #191823;
+ color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+ background: var(--bg); color: var(--fg);
+ font: 16px/1.6 var(--font-body);
+ padding-left: max(16px, env(safe-area-inset-left, 0px));
+ padding-right: max(16px, env(safe-area-inset-right, 0px));
+ padding-block: 40px 80px;
+}
+main { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 64px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; letter-spacing: -0.02em; }
+h2 { font-size: 1.6rem; font-weight: 700; }
+h3 { font-size: 1.1rem; font-weight: 500; }
+p { margin: 0; max-width: 68ch; }
+code, pre, .mono { font-family: var(--font-mono); font-size: 0.9em; }
+:not(pre) > code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+.eyebrow { font: 500 0.78rem var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+section { display: flex; flex-direction: column; gap: 20px; }
+.lead { font-size: 1.15rem; color: var(--muted); }
+
+/* Hero: Property links, Steuerelement rechts */
+.hero-pair { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 20px; align-items: center; margin-top: 8px; }
+.arrow-big { font: 700 2rem var(--font-display); color: var(--accent); text-align: center; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; min-width: 0; }
+.panel-label { font: 500 0.72rem var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--code-bg); border-radius: 8px; padding: 14px 16px; line-height: 1.55; }
+.k { color: var(--accent); }
+.s { color: var(--ok); }
+.c { color: var(--muted); }
+@media (max-width: 720px) {
+ .hero-pair { grid-template-columns: minmax(0, 1fr); }
+ .arrow-big { transform: rotate(90deg); }
+}
+
+/* Nachgebaute Bootstrap-Optik für die Vorschau */
+.pv { display: flex; flex-direction: column; gap: 6px; }
+.pv .fw-bold { font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.pv .text-danger { color: var(--warn); }
+.pv .info-icon { cursor: help; }
+.pv .form-control, .pv .form-select { width: 100%; font: inherit; padding: 7px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--fg); }
+.pv textarea.form-control { resize: vertical; }
+.pv .form-control:focus, .pv .form-select:focus, .pv button:focus-visible, .pv input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.pv .d-flex { display: flex; flex-wrap: wrap; }
+.pv .gap-3 { gap: 14px; } .pv .gap-2 { gap: 8px; }
+.pv .flex-column { flex-direction: column; }
+.pv .align-items-center { align-items: center; }
+.pv .form-check { display: flex; align-items: center; gap: 8px; }
+.pv .form-check-input { width: 1.25em; height: 1.25em; accent-color: var(--accent); margin: 0; }
+.pv .form-range { flex: 1; accent-color: var(--accent); min-width: 120px; }
+.pv .badge { background: var(--accent); color: var(--surface); border-radius: 5px; padding: 2px 8px; font: 500 0.85rem var(--font-mono); text-align: center; }
+.pv .btn { font: inherit; border: 1px solid var(--line); background: var(--surface); color: var(--fg); border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+.pv .btn-link { border-color: transparent; color: var(--accent); text-decoration: underline; }
+.pv h4 { font: 700 1.2rem var(--font-display); margin: 0; cursor: pointer; }
+.pv .page-title { font: 600 1.1rem var(--font-display); color: var(--muted); }
+
+/* Schaubild */
+.diagram-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+.diagram-wrap svg { display: block; min-width: 760px; width: 100%; height: auto; }
+.n rect { fill: var(--surface); stroke: var(--line); stroke-width: 1.5; transition: fill .2s, stroke .2s; }
+.n.struct rect { fill: var(--struct); }
+.n.core rect { fill: var(--accent-soft); stroke: var(--accent); }
+.n .t { fill: var(--fg); font: 600 15px var(--font-mono); }
+.n .d { fill: var(--muted); font: 400 12.5px var(--font-body); }
+.n.lit rect { stroke: var(--accent); stroke-width: 3; fill: var(--accent-soft); }
+.e { fill: none; stroke: var(--muted); stroke-width: 1.6; }
+.e.lit { stroke: var(--accent); stroke-width: 2.6; }
+.e.back { stroke: var(--ok); stroke-dasharray: 6 5; }
+.ah { fill: var(--muted); }
+.ah-back { fill: var(--ok); }
+.lbl { fill: var(--muted); font: 500 12px var(--font-mono); }
+.lbl-back { fill: var(--ok); font: 500 12.5px var(--font-mono); }
+.lane { fill: var(--muted); font: 500 11px var(--font-mono); letter-spacing: 0.08em; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 0.9rem; color: var(--muted); }
+.legend span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; border: 1.5px solid var(--line); }
+.legend .lg-core::before { background: var(--accent-soft); border-color: var(--accent); }
+.legend .lg-struct::before { background: var(--struct); }
+.legend .lg-back::before { border: 0; border-top: 2px dashed var(--ok); height: 0; width: 18px; border-radius: 0; vertical-align: 3px; }
+
+/* Explorer */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip-group { display: flex; flex-direction: column; gap: 8px; }
+.chip-group-label { font: 500 0.72rem var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.chip { font: 500 0.9rem var(--font-mono); border: 1px solid var(--line); background: var(--surface); color: var(--fg); padding: 5px 12px; border-radius: 999px; cursor: pointer; }
+.chip:hover { border-color: var(--accent); }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.chip-rows { display: flex; flex-wrap: wrap; gap: 16px 32px; }
+.explorer-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.explorer-grid .wide { grid-column: 1 / -1; }
+@media (max-width: 720px) { .explorer-grid { grid-template-columns: minmax(0, 1fr); } }
+.route { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font: 0.88rem var(--font-mono); }
+.route b { font-weight: 500; background: var(--accent-soft); color: var(--fg); border-radius: 5px; padding: 2px 8px; }
+.route i { font-style: normal; color: var(--muted); }
+.valuestate { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--line); font: 0.88rem var(--font-mono); color: var(--muted); overflow-wrap: anywhere; }
+.valuestate strong { color: var(--ok); font-weight: 500; }
+
+/* Tabelle */
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 0.95rem; }
+th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+th { font: 500 0.75rem var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--code-bg); }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-family: var(--font-mono); white-space: nowrap; color: var(--accent); }
+
+/* Spaltenrechner */
+.cols-ctrl { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.cols-ctrl input { accent-color: var(--accent); width: 220px; max-width: 100%; }
+.cols-ctrl output { font: 600 1.1rem var(--font-mono); min-width: 2ch; }
+.grid12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 4px; }
+.grid12 .cell { background: var(--accent-soft); border: 1.5px solid var(--accent); border-radius: 5px; padding: 8px 4px; text-align: center; font: 500 0.8rem var(--font-mono); overflow: hidden; white-space: nowrap; }
+.grid12 .cell.last { background: var(--surface); border-style: dashed; }
+.ruler { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 4px; font: 0.7rem var(--font-mono); color: var(--muted); text-align: center; }
+.cols-note { color: var(--muted); font-size: 0.92rem; }
+
+/* Rückweg */
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .steps { grid-template-columns: minmax(0, 1fr); } }
+.steps .panel h3 { margin-bottom: 8px; }
+.steps .panel p { font-size: 0.95rem; color: var(--muted); }
+.steps .panel p + p { margin-top: 8px; }
+footer { color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--line); padding-top: 16px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<main>
+ <header style="display:flex;flex-direction:column;gap:16px">
+  <a href="index.html" style="font: 500 0.88rem var(--font-mono); color: var(--accent); text-decoration: none; align-self: flex-start;">← Übersicht</a>
+  <div class="eyebrow">ITVisions.Blazor · Controls/FormElementRenderer</div>
+  <h1>Vom FormElement zum Steuerelement</h1>
+  <p class="lead">Der <code>FormElementRenderer</code> bekommt eine Liste von Beschreibungen und baut daraus ein vollständiges, validiertes Formular. Kein Feld ist im Markup fest verdrahtet: Die Properties jedes <code>FormElement</code> entscheiden, welches HTML-Element entsteht und wie es sich verhält.</p>
+  <div class="hero-pair">
+   <div class="panel">
+    <div class="panel-label">Eingabe: ein FormElement</div>
+<pre><span class="k">new</span> FormElement {
+ Key      = <span class="s">"Email"</span>,
+ Label    = <span class="s">"Email"</span>,
+ Type     = FormElementType.<span class="k">Email</span>,
+ Required = <span class="k">true</span>,
+ Note     = <span class="s">"Die Annotation [EmailAddress] prüft, ob es sich um eine gültige E-Mail-Adresse handelt."</span>
+}</pre>
+   </div>
+   <div class="arrow-big" aria-hidden="true">→</div>
+   <div class="panel">
+    <div class="panel-label">Ausgabe: im Browser</div>
+    <div class="pv">
+     <label class="fw-bold" for="hero-email">Email <span class="text-danger" title="Pflichtfeld">*</span><span class="info-icon" title="Die Annotation [EmailAddress] prüft, ob es sich um eine gültige E-Mail-Adresse handelt.">ℹ️</span></label>
+     <input id="hero-email" class="form-control" type="email" placeholder="name@firma.de">
+    </div>
+    <p class="cols-note" style="margin-top:12px"><code>Label</code> wird zum Label, <code>Required</code> zum Stern und zum <code>required</code>-Attribut, <code>Note</code> zum Info-Icon, <code>Type</code> zu <code>&lt;input type="email"&gt;</code>.</p>
+   </div>
+  </div>
+ </header>
+
+ <section aria-labelledby="h-pipeline">
+  <div class="eyebrow">Der Weg im Überblick</div>
+  <h2 id="h-pipeline">Sieben Stationen von der Liste bis zum DOM</h2>
+  <p>Oben steht der Parameter <code>FormElements</code>. Er wird in Seiten zerlegt, dann wird Feld für Feld sortiert: Struktur oder Eingabe, Gruppe oder Einzelfeld. Erst <code>RenderEditableFormElement</code> entscheidet anhand von <code>field.Type</code>, welcher Baustein das HTML erzeugt. Der gestrichelte Pfeil ist der Rückweg der Benutzereingabe.</p>
+  <div class="diagram-wrap">
+   <svg id="pipeline" viewBox="0 0 970 806" role="img" aria-label="Datenfluss im FormElementRenderer von FormElementList bis zum DOM und zurück">
+    <defs>
+     <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+     <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="ah-back" d="M0,0 L10,5 L0,10 z"/></marker>
+    </defs>
+
+    <!-- Kanten -->
+    <path class="e" id="e1" d="M480 76 V110" marker-end="url(#ah)"/>
+    <path class="e" id="e2" d="M480 166 V200" marker-end="url(#ah)"/>
+    <path class="e" id="e3" d="M480 256 V290" marker-end="url(#ah)"/>
+    <path class="e" id="e-stem" d="M480 346 V368"/>
+    <path class="e" id="e-head" d="M480 368 H120 V390" marker-end="url(#ah)"/>
+    <path class="e" id="e-info" d="M480 368 H352 V390" marker-end="url(#ah)"/>
+    <path class="e" id="e-gtrunk" d="M480 368 H584"/>
+    <path class="e" id="e-group" d="M584 368 V390" marker-end="url(#ah)"/>
+    <path class="e" id="e-single" d="M584 368 H816 V390" marker-end="url(#ah)"/>
+    <path class="e" id="e-g5" d="M584 454 V500" marker-end="url(#ah)"/>
+    <path class="e" id="e-s5" d="M816 454 V478 H610 V500" marker-end="url(#ah)"/>
+    <path class="e" id="e-label" d="M625 528 H660" marker-end="url(#ah)"/>
+    <path class="e" id="e-in" d="M480 556 V583 H190 V610" marker-end="url(#ah)"/>
+    <path class="e" id="e-ch" d="M480 583 V610" marker-end="url(#ah)"/>
+    <path class="e" id="e-di" d="M480 583 H770 V610" marker-end="url(#ah)"/>
+    <path class="e" id="e-in7" d="M190 680 V705 H400 V730" marker-end="url(#ah)"/>
+    <path class="e" id="e-ch7" d="M480 680 V730" marker-end="url(#ah)"/>
+    <path class="e" id="e-di7" d="M770 680 V705 H560 V730" marker-end="url(#ah)"/>
+    <path class="e back" d="M690 758 H948 V48 H632" marker-end="url(#ahb)"/>
+
+    <text class="lbl" x="492" y="98">OnParametersSet()</text>
+    <text class="lbl" x="492" y="188">Chapter ⇒ neue Seite</text>
+    <text class="lbl" x="492" y="278">CurrentPageIndex</text>
+    <text class="lbl" x="492" y="577">switch (field.Type)</text>
+    <text class="lane" x="20" y="384">FELDART</text>
+    <text class="lane" x="20" y="604">BAUSTEIN</text>
+    <text class="lbl-back" x="0" y="0" transform="translate(962 420) rotate(-90)" text-anchor="middle">Rückweg: onchange → field.ValueString → OnValuesChanged</text>
+
+    <!-- Knoten -->
+    <g class="n" id="n1"><rect x="335" y="20" width="290" height="56" rx="8"/><text class="t" x="350" y="44">FormElementList</text><text class="d" x="350" y="64">[Parameter] FormElements</text></g>
+    <g class="n" id="n2"><rect x="335" y="110" width="290" height="56" rx="8"/><text class="t" x="350" y="134">BuildPages()</text><text class="d" x="350" y="154">erzeugt List&lt;FormPage&gt;</text></g>
+    <g class="n" id="n3"><rect x="335" y="200" width="290" height="56" rx="8"/><text class="t" x="350" y="224">Pages[CurrentPageIndex]</text><text class="d" x="350" y="244">Kopf, Fortschrittsbalken, Navigation</text></g>
+    <g class="n" id="n4"><rect x="335" y="290" width="290" height="56" rx="8"/><text class="t" x="350" y="314">for … currentPage.Fields</text><text class="d" x="350" y="334">Typ und Group prüfen, Eingeklapptes überspringen</text></g>
+
+    <g class="n struct" id="n-head"><rect x="20" y="390" width="200" height="64" rx="8"/><text class="t" x="34" y="414">Headline</text><text class="d" x="34" y="434">&lt;h4&gt; klappt Abschnitt</text><text class="d" x="34" y="448">ein/aus (CollapsedSections)</text></g>
+    <g class="n struct" id="n-info"><rect x="252" y="390" width="200" height="64" rx="8"/><text class="t" x="266" y="414">Info</text><text class="d" x="266" y="434">Label als Markdown</text><text class="d" x="266" y="448">→ HTML-Text</text></g>
+    <g class="n" id="n-group"><rect x="484" y="390" width="200" height="64" rx="8"/><text class="t" x="498" y="414">Gruppe</text><text class="d" x="498" y="434">fieldset + legend,</text><text class="d" x="498" y="448">Bootstrap-Zeile col-sm-n</text></g>
+    <g class="n" id="n-single"><rect x="716" y="390" width="200" height="64" rx="8"/><text class="t" x="730" y="414">Einzelfeld</text><text class="d" x="730" y="434">&lt;div class="form-group"&gt;</text><text class="d" x="730" y="448">volle Breite</text></g>
+    <text class="lbl" x="34" y="476">fertig, kein Eingabefeld</text>
+    <text class="lbl" x="266" y="476">fertig, kein Eingabefeld</text>
+
+    <g class="n core" id="n5"><rect x="335" y="500" width="290" height="56" rx="8"/><text class="t" x="350" y="524">RenderEditableFormElement</text><text class="d" x="350" y="544">RenderFragment für genau ein Feld</text></g>
+    <g class="n" id="n-label"><rect x="660" y="500" width="240" height="56" rx="8"/><text class="t" x="674" y="524">RenderLabel()</text><text class="d" x="674" y="544">Label · * · InfoIcon (Note)</text></g>
+
+    <g class="n" id="n-input"><rect x="60" y="610" width="260" height="70" rx="8"/><text class="t" x="74" y="634">RenderInput()</text><text class="d" x="74" y="654">Text · Number · Date · Time</text><text class="d" x="74" y="670">Email · Password · Phone · Url</text></g>
+    <g class="n" id="n-check"><rect x="350" y="610" width="260" height="70" rx="8"/><text class="t" x="364" y="634">RenderFormCheckItem()</text><text class="d" x="364" y="654">RadioButtons · CheckBox</text><text class="d" x="364" y="670">Multiselect</text></g>
+    <g class="n" id="n-direct"><rect x="640" y="610" width="260" height="70" rx="8"/><text class="t" x="654" y="634">direkt im switch</text><text class="d" x="654" y="654">Select · TextArea</text><text class="d" x="654" y="670">Range · Rating</text></g>
+
+    <g class="n core" id="n7"><rect x="270" y="730" width="420" height="56" rx="8"/><text class="t" x="285" y="754">RenderTreeBuilder → DOM</text><text class="d" x="285" y="774">OpenElement / AddAttribute / CloseElement, Blazor diffed</text></g>
+   </svg>
+  </div>
+  <div class="legend"><span class="lg-core">Kern des Renderings</span><span class="lg-struct">Strukturelement, erzeugt kein Eingabefeld</span><span class="lg-back">Benutzereingabe fließt zurück</span></div>
+ </section>
+
+ <section aria-labelledby="h-explorer">
+  <div class="eyebrow">Zum Ausprobieren</div>
+  <h2 id="h-explorer">Einen FormElementType durchspielen</h2>
+  <p>Wählen Sie einen Typ. Das Schaubild oben markiert den Weg, darunter stehen das Beispiel-Objekt, die Route durch den Code, das erzeugte HTML und das funktionierende Steuerelement. Eine Eingabe in der Vorschau zeigt, was in <code>field.ValueString</code> landet. Alle Beispiele stammen aus der Klasse <code>Fragebogen</code> in ITVForms und tauchen mit denselben Werten in den Schaubildern der beiden Parser auf.</p>
+  <div class="chip-rows" id="chips"></div>
+  <div class="explorer-grid">
+   <div class="panel">
+    <div class="panel-label">FormElement</div>
+    <pre id="x-code"></pre>
+   </div>
+   <div class="panel">
+    <div class="panel-label">Vorschau</div>
+    <div class="pv" id="x-preview"></div>
+    <div class="valuestate" id="x-value"></div>
+   </div>
+   <div class="panel wide">
+    <div class="panel-label">Route durch den Code</div>
+    <div class="route" id="x-route"></div>
+   </div>
+   <div class="panel wide">
+    <div class="panel-label">Erzeugtes HTML (vereinfacht)</div>
+    <pre id="x-html"></pre>
+   </div>
+  </div>
+ </section>
+
+ <section aria-labelledby="h-props">
+  <div class="eyebrow">Property für Property</div>
+  <h2 id="h-props">Was jede Eigenschaft bewirkt</h2>
+  <p>Ein <code>FormElement</code> ist eine reine Datenklasse aus <code>ITVisions.Util</code>. Erst der Renderer gibt den Properties ihre Bedeutung auf dem Bildschirm.</p>
+  <div class="table-wrap">
+   <table>
+    <thead><tr><th>Property</th><th>Auf dem Bildschirm</th><th>Im Verhalten</th></tr></thead>
+    <tbody>
+     <tr><td>Type</td><td>Wählt den Zweig im <code>switch</code> und damit das HTML-Element</td><td>Bestimmt die Formatprüfung (Email, Phone, Url, Number, Date)</td></tr>
+     <tr><td>Label</td><td>Text im <code>&lt;label&gt;</code>; bei Chapter der Seitenname, bei Info der Markdown-Text</td><td>Taucht in der Fehlermeldung auf; CheckBox ohne Options speichert ihn als Wert</td></tr>
+     <tr><td>Key</td><td><code>id</code> und <code>name</code> von Radio und Checkbox</td><td>Schlüssel für <code>CollapsedSections</code> und <code>InvalidFieldKeys</code></td></tr>
+     <tr><td>ValueString</td><td><code>value</code> bzw. <code>checked</code> des Elements</td><td>Wird bei jeder Änderung neu gesetzt; Multiselect speichert <code>"A| B"</code></td></tr>
+     <tr><td>Required</td><td>Roter Stern im Label, Attribut <code>required</code></td><td>Leere Pflichtfelder blockieren Seitenwechsel und Absenden</td></tr>
+     <tr><td>Note</td><td><code>InfoIcon</code> mit Tooltip neben dem Label</td><td>–</td></tr>
+     <tr><td>Options</td><td>Auswahlwerte für Radio, Select, Multiselect, Rating; Zeilenzahl bei TextArea; Beschriftung der CheckBox</td><td>Rating und Radio speichern die gewählte Option</td></tr>
+     <tr><td>Min / Max</td><td>Attribute <code>min</code> / <code>max</code> bei Number und Range</td><td>Number wird gegen die Grenzen geprüft</td></tr>
+     <tr><td>Regex</td><td>Attribut <code>pattern</code> beim Typ Text</td><td>Wird bei jedem Typ vor der Formatprüfung angewendet</td></tr>
+     <tr><td>Disabled</td><td>Attribut <code>disabled</code>, Feld wird ausgegraut</td><td>Keine Eingabe möglich</td></tr>
+     <tr><td>Group</td><td>Benachbarte Felder mit gleichem Wert stehen in einer Zeile, mit Rahmen und Legende</td><td>Enthält der Wert <code>AutoGroupPrefix</code>, entfällt die Legende</td></tr>
+    </tbody>
+   </table>
+  </div>
+ </section>
+
+ <section aria-labelledby="h-cols">
+  <div class="eyebrow">Layout von Gruppen</div>
+  <h2 id="h-cols">Wie breit wird jedes Feld?</h2>
+  <p><code>GetOptimalColumnSize()</code> verteilt die 12 Spalten des Bootstrap-Rasters. Alle Felder erhalten die Grundbreite, das letzte Feld bekommt den Rest. Unter der Breite <code>sm</code> stapeln sich die Felder (<code>col-12</code>).</p>
+  <div class="panel" style="display:flex;flex-direction:column;gap:14px">
+   <div class="cols-ctrl">
+    <label for="cols-n">Felder in der Gruppe</label>
+    <input id="cols-n" type="range" min="1" max="12" value="5">
+    <output id="cols-out" for="cols-n">5</output>
+   </div>
+   <div class="grid12" id="cols-grid"></div>
+   <div class="ruler" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span></div>
+   <p class="cols-note" id="cols-note"></p>
+  </div>
+ </section>
+
+ <section aria-labelledby="h-back">
+  <div class="eyebrow">Der Rückweg</div>
+  <h2 id="h-back">Von der Eingabe zurück ins Objekt</h2>
+  <p>Der Renderer schreibt jede Änderung direkt in das übergebene <code>FormElement</code>. Die aufrufende Komponente arbeitet also immer mit derselben Liste, die sie hineingegeben hat.</p>
+  <div class="steps">
+   <div class="panel">
+    <h3>1 · Ändern</h3>
+    <p><code>onchange</code> bzw. <code>onclick</code> setzt <code>field.ValueString</code>. Textfelder nutzen <code>EventCallback.Factory.CreateBinder</code>, Radio, CheckBox, Multiselect und Rating eigene Handler.</p>
+    <p>Danach feuert <code>OnValuesChanged(FormElements)</code>.</p>
+   </div>
+   <div class="panel">
+    <h3>2 · Prüfen</h3>
+    <p>„Nächste Seite“ ruft <code>ValidateCurrentPage()</code>, „Absenden“ ruft <code>ValidateFieldSet()</code> für alle Felder. Geprüft werden Pflichtfelder, <code>Regex</code> und das Format je Typ.</p>
+    <p>Fehlerhafte Keys landen in <code>InvalidFieldKeys</code> und erhalten die CSS-Klasse <code>is-invalid</code>.</p>
+   </div>
+   <div class="panel">
+    <h3>3 · Absenden</h3>
+    <p>Ist alles gültig, feuern <code>OnValuesChanged</code> und <code>OnSubmitted</code> mit der kompletten <code>FormElementList</code>.</p>
+    <p>Per <code>AsKeyValueDic</code> oder <code>AsLabelValueDic</code> wird daraus ein Dictionary.</p>
+   </div>
+  </div>
+ </section>
+
+ <footer>Stand: Branch NET10, Dateien <code>FormElementRenderer.razor</code> und <code>FormElementRenderer.razor.cs</code>. Die Vorschauen ahmen die Bootstrap-Darstellung nach; die HTML-Ausschnitte sind gekürzt.</footer>
+</main>
+
+<script>
+(function () {
+ // Beispiel-FormElements je Typ, einheitlich aus der Klasse Fragebogen (ITVForms, BO/Fragebogen.cs)
+ const T = {
+  Text: { f: { Key: "Kundennummer", Label: "Kundennummer", Required: true, Regex: "K-([0-9]{4})", Note: "Validierung mit regulären Ausdruck. Die Kundennummer muss im Format K-xxxx sein (z.B. K-1234)" }, node: "n-input", route: ["RenderEditableFormElement", "RenderLabel", "RenderInput(field, \"text\", field.Regex)"] },
+  Number: { f: { Key: "AlterKind1", Label: "Alter des ältesten Kindes", Required: true, Min: 0, Max: 100, ValueString: "20", Note: "Zwischen 0 und 100" }, node: "n-input", route: ["RenderEditableFormElement", "RenderLabel", "RenderInput(field, \"number\", …, Min, Max)"] },
+  Date: { f: { Key: "Geburtsdatum", Label: "Geburtsdatum", Required: true }, node: "n-input", route: ["RenderEditableFormElement", "RenderLabel", "RenderInput(field, \"date\")"] },
+  Time: { f: { Key: "Geburtsuhrzeit", Label: "Geburtsuhrzeit" }, node: "n-input", route: ["RenderEditableFormElement", "RenderLabel", "RenderInput(field, \"time\")"] },
+  Email: { f: { Key: "Email", Label: "Email", Required: true, Note: "Die Annotation [EmailAddress] prüft, ob es sich um eine gültige E-Mail-Adresse handelt." }, node: "n-input", route: ["RenderEditableFormElement", "RenderLabel", "RenderInput(field, \"email\")"] },
+  Password: { f: { Key: "Kennwort", Label: "Kennwort", Required: true, Note: "[DataType(DataType.Password)] sorgt dafür, dass man bei der Eingabe nur Sternchen sieht. Es gibt keine eingebauten Regeln für die Kennwortlänge und -komplexität; man kann aber zusätzlich einen regulären Ausdruck angeben." }, node: "n-input", route: ["RenderEditableFormElement", "RenderLabel", "RenderInput(field, \"password\")"] },
+  Phone: { f: { Key: "Telefonnummer", Label: "Telefonnummer", Note: "Durch die Annotation [Phone] sind nur Zahlen und einige Sonderzeichen (+, -, /, Leerzeichen, Klammern), aber keine Buchstaben erlaubt." }, node: "n-input", route: ["RenderEditableFormElement", "RenderLabel", "RenderInput(field, \"tel\", pattern, title)"] },
+  Url: { f: { Key: "Website", Label: "Website", Note: "Bei [URL] prüft der Browser, ob es sich um eine Webadresse handelt." }, node: "n-input", route: ["RenderEditableFormElement", "RenderLabel", "RenderInput(field, \"url\")"] },
+  TextArea: { f: { Key: "Kommentar", Label: "Kommentar", Options: ["8"], Note: "Eine [DataType(DataType.MultilineText)] erzeugt ein mehrzeiliges Textfeld. Die Anzahl der Zeile legt man via [Size] fest." }, node: "n-direct", route: ["RenderEditableFormElement", "RenderLabel", "case TextArea: <textarea rows=Options[0]>"] },
+  Select: { f: { Key: "Anrede", Label: "Anrede", Options: ["Männlich", "Weiblich", "Divers"], Note: "Aufzählungstypen werden zu Auswahlfeldern." }, node: "n-direct", route: ["RenderEditableFormElement", "RenderLabel", "case Select: <select> + <option> je Option"] },
+  Range: { f: { Key: "Bewertung2", Label: "Bewertung2 (1 bis 5)", Required: true, Min: 1, Max: 5, ValueString: "3", Note: "Bewerten Sie diese Anwendung" }, node: "n-direct", route: ["RenderEditableFormElement", "RenderLabel", "case Range: <input type=range> + Badge"] },
+  Rating: { f: { Key: "Bewertung1", Label: "Bewertung1 (1 bis 5)", Options: ["1", "2", "3", "4", "5"], Note: "Bewerten Sie diese Anwendung" }, node: "n-direct", route: ["RenderEditableFormElement", "RenderLabel", "case Rating: <button> je Option"] },
+  RadioButtons: { f: { Key: "Status", Label: "Status", Required: true, Options: ["ledig", "verheiratet", "geschieden", "verwitwet"], ValueString: "ledig", Note: "Die Annotation [RadioButtonList] erzwingt eine RadioButtonList ;-)." }, node: "n-check", route: ["RenderEditableFormElement", "RenderLabel", "RenderFormCheckItem(\"radio\") je Option"] },
+  CheckBox: { f: { Key: "Newsletter", Label: "Newsletter", Required: true, Options: ["Newsletter"], ValueString: "Newsletter", Note: "Newsletter abonnieren" }, node: "n-check", route: ["RenderEditableFormElement", "RenderLabel", "RenderFormCheckItem(\"checkbox\")"] },
+  Multiselect: { f: { Key: "Hobbys", Label: "Hobbys", Required: true, Options: ["Fußball", "MTB", "Tennis", "Schwimmen", "Lesen", "Reisen"], ValueString: "MTB | Reisen", Note: "[Multiselect] sorgt für eine Mehrfachauswahl. Auch hier sind Vorgabewerte möglich." }, node: "n-check", route: ["RenderEditableFormElement", "RenderLabel", "RenderFormCheckItem(\"checkbox\") je Option"] },
+  Chapter: { f: { Key: "chapter_0", Label: "Personendaten" }, node: "n2", route: ["BuildPages()", "neue FormPage mit PageName = Label", "Seitenkopf + Fortschrittsbalken"] },
+  Headline: { f: { Key: "headline_1", Label: "Name der Person" }, node: "n-head", route: ["for … Fields", "<h4 @onclick=ToggleSection(Key)>", "Felder bis zur nächsten Headline ein-/ausblenden"] },
+  Info: { f: { Key: "PersonendatenText", Label: "Wir beginnen damit, dass wir einige **elementare Personendaten** abfragen. Damit ist nur der **Name** ein Pflichteld." }, node: "n-info", route: ["for … Fields", "HTMLUtil.MarkDownToHTML(Label)", "<div class=\"mb-3\">"] }
+ };
+ const groups = [
+  ["RenderInput", ["Text", "Number", "Date", "Time", "Email", "Password", "Phone", "Url"]],
+  ["RenderFormCheckItem", ["RadioButtons", "CheckBox", "Multiselect"]],
+  ["Direkt im switch", ["Select", "TextArea", "Range", "Rating"]],
+  ["Struktur", ["Chapter", "Headline", "Info"]]
+ ];
+ // Kanten, die je Zielknoten hervorgehoben werden
+ const pathTo = {
+  "n-input": ["e1", "e2", "e3", "e-stem", "e-gtrunk", "e-single", "e-s5", "e-label", "e-in", "e-in7"],
+  "n-check": ["e1", "e2", "e3", "e-stem", "e-gtrunk", "e-single", "e-s5", "e-label", "e-ch", "e-ch7"],
+  "n-direct": ["e1", "e2", "e3", "e-stem", "e-gtrunk", "e-single", "e-s5", "e-label", "e-di", "e-di7"],
+  "n2": ["e1"],
+  "n-head": ["e1", "e2", "e3", "e-stem", "e-head"],
+  "n-info": ["e1", "e2", "e3", "e-stem", "e-info"]
+ };
+ const nodesTo = {
+  "n-input": ["n1", "n2", "n3", "n4", "n-single", "n5", "n-label", "n-input", "n7"],
+  "n-check": ["n1", "n2", "n3", "n4", "n-single", "n5", "n-label", "n-check", "n7"],
+  "n-direct": ["n1", "n2", "n3", "n4", "n-single", "n5", "n-label", "n-direct", "n7"],
+  "n2": ["n1", "n2", "n3"],
+  "n-head": ["n1", "n2", "n3", "n4", "n-head"],
+  "n-info": ["n1", "n2", "n3", "n4", "n-info"]
+ };
+
+ const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+ function labelHtml(f, forId) {
+  if (!f.Label) return "";
+  let h = '<label class="fw-bold"' + (forId ? ' for="' + forId + '"' : "") + ">" + esc(f.Label);
+  if (f.Required) h += '<span class="text-danger" title="Pflichtfeld">*</span>';
+  if (f.Note) h += '<span class="info-icon" title="' + esc(f.Note) + '" data-tooltip="' + esc(f.Note) + '">ℹ️</span>';
+  return h + "</label>";
+ }
+ const req = f => f.Required ? " required" : "";
+ const mm = f => (f.Min != null ? ' min="' + f.Min + '"' : "") + (f.Max != null ? ' max="' + f.Max + '"' : "");
+
+ // Erzeugt dasselbe Markup wie der Renderer (vereinfacht), Basis für Code-Anzeige und Vorschau
+ function render(type, f) {
+  const id = "x-" + f.Key;
+  const v = f.ValueString || "";
+  switch (type) {
+   case "Text": return labelHtml(f, id) + '<input id="' + id + '" type="text" class="form-control" value="' + esc(v) + '" pattern="' + esc(f.Regex) + '"' + req(f) + ">";
+   case "Number": return labelHtml(f, id) + '<input id="' + id + '" type="number" class="form-control" value="' + esc(v) + '"' + mm(f) + req(f) + ">";
+   case "Phone": return labelHtml(f, id) + '<input id="' + id + '" type="tel" class="form-control" value="' + esc(v) + '" pattern="[0-9\\s\\-\\+\\(\\)\\/]+" title="Nur Zahlen und Sonderzeichen …"' + req(f) + ">";
+   case "Date": case "Time": case "Email": case "Password": case "Url": {
+    const t = { Date: "date", Time: "time", Email: "email", Password: "password", Url: "url" }[type];
+    return labelHtml(f, id) + '<input id="' + id + '" type="' + t + '" class="form-control" value="' + esc(v) + '"' + req(f) + ">";
+   }
+   case "TextArea": return labelHtml(f, id) + '<textarea id="' + id + '" class="form-control" rows="' + (parseInt(f.Options[0]) || 4) + '"' + req(f) + "></textarea>";
+   case "Select": return labelHtml(f, id) + '<select id="' + id + '" class="form-select"' + req(f) + '>\n <option value="">Bitte wählen...</option>\n' + f.Options.map(o => ' <option value="' + esc(o) + '">' + esc(o) + "</option>").join("\n") + "\n</select>";
+   case "Range": return labelHtml(f, id) + '<div class="d-flex gap-3 align-items-center">\n <input id="' + id + '" type="range" class="form-range" value="' + esc(v) + '"' + mm(f) + '>\n <span class="badge bg-primary">' + esc(v) + "</span>\n</div>";
+   case "Rating": return labelHtml(f) + '<div class="d-flex gap-2 align-items-center">\n' + f.Options.map(o => ' <button type="button" class="btn btn-outline-secondary" data-opt="' + esc(o) + '">' + (v === o ? "★" : "☆") + esc(o) + "</button>").join("\n") + (v ? '\n <button type="button" class="btn btn-sm btn-link" data-reset="1">Zurücksetzen</button>' : "") + "\n</div>";
+   case "RadioButtons": return labelHtml(f) + '<div class="d-flex gap-3">\n' + f.Options.map(o => ' <div class="form-check">\n  <input class="form-check-input" type="radio" name="' + esc(f.Key) + '" id="' + esc(f.Key + "_" + o) + '" value="' + esc(o) + '"' + (v === o ? " checked" : "") + '>\n  <label class="form-check-label" for="' + esc(f.Key + "_" + o) + '">' + esc(o) + "</label>\n </div>").join("\n") + "\n</div>";
+   case "CheckBox": return labelHtml(f) + '<div class="form-check">\n <input class="form-check-input" type="checkbox" id="' + esc(f.Key) + '"' + (v ? " checked" : "") + '>\n <label class="form-check-label" for="' + esc(f.Key) + '">' + esc(f.Options[0]) + "</label>\n</div>";
+   case "Multiselect": {
+    const sel = v ? v.split("|").map(s => s.trim()) : [];
+    return labelHtml(f) + '<div class="d-flex flex-column gap-2">\n' + f.Options.map(o => ' <div class="form-check">\n  <input class="form-check-input" type="checkbox" id="' + esc(f.Key + "_" + o) + '" value="' + esc(o) + '"' + (sel.includes(o) ? " checked" : "") + '>\n  <label class="form-check-label" for="' + esc(f.Key + "_" + o) + '">' + esc(o) + "</label>\n </div>").join("\n") + "\n</div>";
+   }
+   case "Chapter": return '<h3 class="page-title">Seite 1 von 3: ' + esc(f.Label) + '</h3>\n<div class="progress"><div class="progress-bar" style="width: 33%">33 %</div></div>';
+   case "Headline": return '<h4 class="headline" style="cursor: pointer">\n <i class="bi bi-chevron-right me-2"></i>' + esc(f.Label) + "\n</h4>";
+   case "Info": return '<div class="mb-3">\n <p>Wir beginnen damit, dass wir einige <strong>elementare Personendaten</strong> abfragen. Damit ist nur der <strong>Name</strong> ein Pflichteld.</p>\n</div>';
+  }
+ }
+
+ function codeHtml(type, f) {
+  const lines = ["<span class=\"k\">new</span> FormElement {"];
+  const keys = Object.keys(f);
+  const all = ["Key", "Label", "Type"].concat(keys.filter(k => k !== "Key" && k !== "Label"));
+  const pad = Math.max.apply(null, all.map(k => k.length));
+  all.forEach((k, i) => {
+   let val;
+   if (k === "Type") val = "FormElementType.<span class=\"k\">" + type + "</span>";
+   else if (k === "Options") val = "[" + f.Options.map(o => '<span class="s">"' + esc(o) + '"</span>').join(", ") + "]";
+   else if (typeof f[k] === "string") val = '<span class="s">"' + esc(f[k]) + '"</span>';
+   else val = '<span class="k">' + f[k] + "</span>";
+   lines.push(" " + k.padEnd(pad) + " = " + val + (i < all.length - 1 ? "," : ""));
+  });
+  lines.push("}");
+  return lines.join("\n");
+ }
+
+ let current = "Email";
+ let state = {};
+
+ function showValue() {
+  const box = document.getElementById("x-value");
+  if (["Chapter", "Headline", "Info"].includes(current)) {
+   box.innerHTML = "Strukturelement: speichert keinen Wert.";
+   return;
+  }
+  const v = state.ValueString || "";
+  box.innerHTML = 'field.ValueString = <strong>"' + esc(v) + '"</strong>';
+ }
+
+ function bindPreview() {
+  const root = document.getElementById("x-preview");
+  const f = state;
+  root.querySelectorAll("input, select, textarea").forEach(el => {
+   el.addEventListener(el.type === "text" || el.tagName === "TEXTAREA" || el.type === "email" || el.type === "password" || el.type === "tel" || el.type === "url" || el.type === "number" ? "input" : "change", () => {
+    if (current === "CheckBox") f.ValueString = el.checked ? f.Options[0] : "";
+    else if (current === "Multiselect") {
+     f.ValueString = Array.from(root.querySelectorAll("input:checked")).map(x => x.value).join("| ");
+    }
+    else f.ValueString = el.value;
+    if (current === "Range") root.querySelector(".badge").textContent = el.value;
+    showValue();
+   });
+   if (current === "Range") el.addEventListener("input", () => { root.querySelector(".badge").textContent = el.value; f.ValueString = el.value; showValue(); });
+  });
+  root.querySelectorAll("button[data-opt], button[data-reset]").forEach(b => {
+   b.addEventListener("click", () => {
+    f.ValueString = b.dataset.reset ? "" : b.dataset.opt;
+    draw(false);
+   });
+  });
+  const h4 = root.querySelector("h4");
+  if (h4) h4.addEventListener("click", () => {
+   const i = h4.querySelector("i");
+   const open = i.classList.toggle("collapsed");
+   i.textContent = open ? "▾ " : "▸ ";
+   document.getElementById("x-value").innerHTML = open ? "CollapsedSections enthält <strong>\"headline_1\"</strong>: Felder darunter werden übersprungen." : "CollapsedSections ist leer: Felder darunter werden angezeigt.";
+  });
+ }
+
+ function highlight(node) {
+  document.querySelectorAll("#pipeline .lit").forEach(el => el.classList.remove("lit"));
+  (pathTo[node] || []).forEach(id => document.getElementById(id).classList.add("lit"));
+  (nodesTo[node] || []).forEach(id => document.getElementById(id).classList.add("lit"));
+ }
+
+ function draw(reset) {
+  const def = T[current];
+  if (reset) state = JSON.parse(JSON.stringify(def.f));
+  const markup = render(current, state);
+  document.getElementById("x-code").innerHTML = codeHtml(current, def.f);
+  document.getElementById("x-html").textContent = markup;
+  let pv = markup;
+  if (current === "Headline") pv = markup.replace('<i class="bi bi-chevron-right me-2"></i>', '<i class="bi">▸ </i>');
+  if (current === "Chapter") pv = '<div class="page-title">Seite 1 von 3: ' + esc(state.Label) + '</div><div style="height:14px;background:var(--code-bg);border-radius:4px;overflow:hidden"><div style="width:33%;height:100%;background:var(--accent)"></div></div>';
+  document.getElementById("x-preview").innerHTML = pv;
+  document.getElementById("x-route").innerHTML = def.route.map(r => "<b>" + esc(r) + "</b>").join("<i>→</i>");
+  showValue();
+  bindPreview();
+  highlight(def.node);
+ }
+
+ const chipRoot = document.getElementById("chips");
+ groups.forEach(([name, types]) => {
+  const g = document.createElement("div");
+  g.className = "chip-group";
+  g.innerHTML = '<div class="chip-group-label">' + esc(name) + '</div><div class="chips"></div>';
+  types.forEach(t => {
+   const b = document.createElement("button");
+   b.type = "button"; b.className = "chip"; b.textContent = t; b.id = "chip-" + t;
+   b.setAttribute("aria-pressed", t === current ? "true" : "false");
+   b.addEventListener("click", () => {
+    current = t;
+    chipRoot.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.textContent === t ? "true" : "false"));
+    draw(true);
+   });
+   g.querySelector(".chips").appendChild(b);
+  });
+  chipRoot.appendChild(g);
+ });
+ draw(true);
+
+ // Spaltenrechner nach GetOptimalColumnSize()
+ const colSize = n => ({ 1: 12, 2: 6, 3: 4, 4: 3, 5: 2, 6: 2 })[n] || 1;
+ const slider = document.getElementById("cols-n");
+ function drawCols() {
+  const n = +slider.value;
+  document.getElementById("cols-out").textContent = n;
+  const base = colSize(n);
+  const last = 12 - base * (n - 1);
+  const grid = document.getElementById("cols-grid");
+  grid.innerHTML = "";
+  for (let i = 0; i < n; i++) {
+   const w = i === n - 1 ? last : base;
+   const c = document.createElement("div");
+   c.className = "cell" + (i === n - 1 && last !== base ? " last" : "");
+   c.style.gridColumn = "span " + w;
+   c.textContent = "col-sm-" + w;
+   grid.appendChild(c);
+  }
+  document.getElementById("cols-note").textContent = last === base
+   ? n + " × " + base + " Spalten = 12. Alle Felder sind gleich breit."
+   : (n - 1) + " × " + base + " Spalten, das letzte Feld füllt mit " + last + " Spalten auf 12 auf.";
+ }
+ slider.addEventListener("input", drawCols);
+ drawCols();
+})();
+</script>
+</body>
+</html>

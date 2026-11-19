@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vom Property zum FormElement</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: eine Lesespalte, das Schaubild darf breiter werden; gleiche Tokens wie das Renderer-Schaubild */
+:root {
+ --bg: #f6f6fa;
+ --surface: #ffffff;
+ --fg: #1d1b2e;
+ --muted: #5f5c78;
+ --line: #d3d1e3;
+ --accent: #512bd4;
+ --accent-soft: #ece7fd;
+ --struct: #eef0f3;
+ --ok: #18794e;
+ --warn: #b4232c;
+ --code-bg: #f0eff7;
+ --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+ --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+ --font-mono: "IBM Plex Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+ :root:not([data-theme="light"]) {
+  --bg: #14131c; --surface: #1d1c28; --fg: #e8e6f3; --muted: #a29fbd; --line: #383650;
+  --accent: #a48bff; --accent-soft: #2c2547; --struct: #22222c; --ok: #5cc994; --warn: #ff7b84; --code-bg: #191823;
+  color-scheme: dark;
+ }
+}
+:root[data-theme="dark"] {
+ --bg: #14131c; --surface: #1d1c28; --fg: #e8e6f3; --muted: #a29fbd; --line: #383650;
+ --accent: #a48bff; --accent-soft: #2c2547; --struct: #22222c; --ok: #5cc994; --warn: #ff7b84; --code-bg: #191823;
+ color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+ background: var(--bg); color: var(--fg);
+ font: 16px/1.6 var(--font-body);
+ padding-left: max(16px, env(safe-area-inset-left, 0px));
+ padding-right: max(16px, env(safe-area-inset-right, 0px));
+ padding-block: 40px 80px;
+}
+main { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 64px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; letter-spacing: -0.02em; }
+h2 { font-size: 1.6rem; font-weight: 700; }
+h3 { font-size: 1.1rem; font-weight: 500; }
+p { margin: 0; max-width: 68ch; }
+code, pre { font-family: var(--font-mono); font-size: 0.9em; }
+:not(pre) > code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+.eyebrow { font: 500 0.78rem var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+section, header { display: flex; flex-direction: column; gap: 20px; }
+.lead { font-size: 1.15rem; color: var(--muted); }
+.hero-pair { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 20px; align-items: center; margin-top: 8px; }
+.arrow-big { font: 700 2rem var(--font-display); color: var(--accent); text-align: center; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; min-width: 0; }
+.panel-label { font: 500 0.72rem var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--code-bg); border-radius: 8px; padding: 14px 16px; line-height: 1.55; }
+.k { color: var(--accent); }
+.s { color: var(--ok); }
+.c { color: var(--muted); }
+.a { color: var(--warn); }
+@media (max-width: 720px) {
+ .hero-pair { grid-template-columns: minmax(0, 1fr); }
+ .arrow-big { transform: rotate(90deg); }
+}
+.note { color: var(--muted); font-size: 0.92rem; }
+
+/* Schaubild */
+.diagram-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+.diagram-wrap svg { display: block; min-width: 760px; width: 100%; height: auto; }
+.n rect { fill: var(--surface); stroke: var(--line); stroke-width: 1.5; transition: fill .2s, stroke .2s; }
+.n.struct rect { fill: var(--struct); }
+.n.core rect { fill: var(--accent-soft); stroke: var(--accent); }
+.n .t { fill: var(--fg); font: 600 15px var(--font-mono); }
+.n .d { fill: var(--muted); font: 400 12.5px var(--font-body); }
+.n.lit rect { stroke: var(--accent); stroke-width: 3; fill: var(--accent-soft); }
+.step rect { fill: var(--surface); stroke: var(--line); stroke-width: 1; transition: fill .2s, stroke .2s; }
+.step .no { fill: var(--accent); font: 600 12.5px var(--font-mono); }
+.step .if { fill: var(--fg); font: 500 13px var(--font-mono); }
+.step .then { fill: var(--muted); font: 400 13px var(--font-body); }
+.step.lit rect { fill: var(--accent); stroke: var(--accent); }
+.step.lit .no, .step.lit .if, .step.lit .then { fill: var(--surface); }
+.e { fill: none; stroke: var(--muted); stroke-width: 1.6; }
+.e.lit { stroke: var(--accent); stroke-width: 2.6; }
+.e.back { stroke: var(--ok); stroke-dasharray: 6 5; }
+.ah { fill: var(--muted); }
+.ah-back { fill: var(--ok); }
+.lbl { fill: var(--muted); font: 500 12px var(--font-mono); }
+.lbl-back { fill: var(--ok); font: 500 12.5px var(--font-mono); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 0.9rem; color: var(--muted); }
+.legend span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; border: 1.5px solid var(--line); }
+.legend .lg-core::before { background: var(--accent-soft); border-color: var(--accent); }
+.legend .lg-struct::before { background: var(--struct); }
+.legend .lg-back::before { border: 0; border-top: 2px dashed var(--ok); height: 0; width: 18px; border-radius: 0; vertical-align: 3px; }
+
+/* Explorer */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font: 500 0.9rem var(--font-mono); border: 1px solid var(--line); background: var(--surface); color: var(--fg); padding: 5px 12px; border-radius: 999px; cursor: pointer; }
+.chip:hover { border-color: var(--accent); }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.explorer-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.explorer-grid .wide { grid-column: 1 / -1; }
+@media (max-width: 720px) { .explorer-grid { grid-template-columns: minmax(0, 1fr); } }
+.route { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font: 0.88rem var(--font-mono); }
+.route b { font-weight: 500; background: var(--accent-soft); color: var(--fg); border-radius: 5px; padding: 2px 8px; }
+.route i { font-style: normal; color: var(--muted); }
+.why { margin-top: 12px; color: var(--muted); font-size: 0.95rem; }
+
+/* Tabellen */
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 0.95rem; }
+th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+th { font: 500 0.75rem var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--code-bg); }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-family: var(--font-mono); white-space: nowrap; color: var(--accent); }
+.yes { color: var(--warn); font-weight: 600; }
+.no-req { color: var(--ok); font-weight: 600; }
+.cards3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .cards3 { grid-template-columns: minmax(0, 1fr); } }
+.cards3 .panel p { font-size: 0.95rem; color: var(--muted); margin-top: 8px; }
+footer { color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--line); padding-top: 16px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<main>
+ <header>
+  <a href="index.html" style="font: 500 0.88rem var(--font-mono); color: var(--accent); text-decoration: none; align-self: flex-start;">← Übersicht</a>
+  <div class="eyebrow">ITVForms · Web.Client/AnnotatedObjectParser.cs</div>
+  <h1>Vom Property zum FormElement</h1>
+  <p class="lead"><code>AnnotatedObjectParser.Parse(obj)</code> liest per Reflection alle öffentlichen Properties eines beliebigen Objekts. Aus Datentyp, Nullbarkeit und Annotationen entsteht pro Property ein <code>FormElement</code>. Die fertige <code>FormElementList</code> zeigt der <code>FormElementRenderer</code> als Formular an.</p>
+  <div class="hero-pair">
+   <div class="panel">
+    <div class="panel-label">Eingabe: ein annotiertes Property</div>
+<pre><span class="a">[Group("Ihre Kinder")]</span>
+<span class="a">[Label("Kinder", "Ihre Kinder")]</span>
+<span class="a">[Range(0, 10)]</span>
+<span class="k">public int?</span> Kinder { <span class="k">get</span>; <span class="k">set</span>; }</pre>
+   </div>
+   <div class="arrow-big" aria-hidden="true">→</div>
+   <div class="panel">
+    <div class="panel-label">Ausgabe: FormElement</div>
+<pre>Key      = <span class="s">"Kinder"</span>
+Label    = <span class="s">"Kinder"</span>
+Note     = <span class="s">"Ihre Kinder"</span>
+Group    = <span class="s">"Ihre Kinder"</span>
+Min, Max = <span class="k">0</span>, <span class="k">10</span>
+Required = <span class="k">false</span>  <span class="c">// int? ist nullable</span>
+Type     = <span class="k">Range</span>  <span class="c">// Zahl + [Range]</span></pre>
+   </div>
+  </div>
+ </header>
+
+ <section aria-labelledby="h-pipeline">
+  <div class="eyebrow">Der Weg im Überblick</div>
+  <h2 id="h-pipeline">Eine Schleife über alle Properties</h2>
+  <p>Für jedes Property laufen dieselben Schritte. Zuerst kommen Kapitel und Überschriften, dann der Ausschluss per <code>[Hidden]</code>, danach wird das eigentliche Element gebaut. Den Feldtyp bestimmt eine feste Prüfreihenfolge: Der erste Treffer gewinnt.</p>
+  <div class="diagram-wrap">
+   <svg id="pipeline" viewBox="0 0 970 1060" role="img" aria-label="Ablauf von AnnotatedObjectParser.Parse vom Objekt bis zur FormElementList">
+    <defs>
+     <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+     <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="ah-back" d="M0,0 L10,5 L0,10 z"/></marker>
+    </defs>
+
+    <path class="e" id="e1" d="M485 76 V110" marker-end="url(#ah)"/>
+    <path class="e" id="e2" d="M485 166 V200" marker-end="url(#ah)"/>
+    <path class="e" id="e3" d="M485 256 V290" marker-end="url(#ah)"/>
+    <path class="e" id="e4" d="M485 346 V400" marker-end="url(#ah)"/>
+    <path class="e" id="e5" d="M485 780 V810" marker-end="url(#ah)"/>
+    <path class="e" id="e6" d="M485 866 V900" marker-end="url(#ah)"/>
+    <path class="e" id="e7" d="M485 956 V990" marker-end="url(#ah)"/>
+    <path class="e" id="e-deco" d="M300 228 H264" marker-end="url(#ah)"/>
+    <path class="e" id="e-hidden" d="M670 228 H706" marker-end="url(#ah)"/>
+    <path class="e" id="e-ro" d="M300 318 H264" marker-end="url(#ah)"/>
+    <path class="e" id="e-attr" d="M670 318 H706" marker-end="url(#ah)"/>
+    <path class="e back" d="M300 928 H14 V183 H340 V200" marker-end="url(#ahb)"/>
+
+    <text class="lbl" x="497" y="98">GetProperties(Public | Instance)</text>
+    <text class="lbl" x="497" y="188">sortiert</text>
+    <text class="lbl" x="497" y="378">CanWrite</text>
+    <text class="lbl" x="497" y="802">Typ steht fest</text>
+    <text class="lbl-back" x="0" y="0" transform="translate(28 560) rotate(-90)" text-anchor="middle">nächstes Property</text>
+
+    <g class="n" id="n1"><rect x="300" y="20" width="370" height="56" rx="8"/><text class="t" x="316" y="44">Parse(object obj)</text><text class="d" x="316" y="64">obj == null ⇒ leere Liste</text></g>
+    <g class="n" id="n2"><rect x="300" y="110" width="370" height="56" rx="8"/><text class="t" x="316" y="134">OrderBy(Display.Order)</text><text class="d" x="316" y="154">ohne Order: int.MaxValue, also Deklarationsreihenfolge</text></g>
+    <g class="n" id="n3"><rect x="300" y="200" width="370" height="56" rx="8"/><text class="t" x="316" y="224">foreach (property)</text><text class="d" x="316" y="244">ein Durchlauf pro Property</text></g>
+    <g class="n struct" id="n-deco"><rect x="40" y="195" width="222" height="66" rx="8"/><text class="t" x="54" y="218">AddDecorative…</text><text class="d" x="54" y="238">[Chapter] ⇒ Chapter</text><text class="d" x="54" y="253">[Headline] ⇒ Headline</text></g>
+    <g class="n struct" id="n-hidden"><rect x="708" y="200" width="242" height="56" rx="8"/><text class="t" x="722" y="224">[Hidden] HideEdit</text><text class="d" x="722" y="244">Property wird übersprungen</text></g>
+
+    <g class="n core" id="n4"><rect x="300" y="290" width="370" height="56" rx="8"/><text class="t" x="316" y="314">CreateFormElement()</text><text class="d" x="316" y="334">ein FormElement pro Property</text></g>
+    <g class="n struct" id="n-ro"><rect x="40" y="290" width="222" height="56" rx="8"/><text class="t" x="54" y="314">nur Getter</text><text class="d" x="54" y="334">⇒ Info, Label = Wert</text></g>
+    <g class="n" id="n-attr"><rect x="708" y="270" width="242" height="104" rx="8"/><text class="t" x="722" y="293">Attribute lesen</text><text class="d" x="722" y="313">Label, Note, Group</text><text class="d" x="722" y="329">Required / Nullbarkeit</text><text class="d" x="722" y="345">[ReadOnly] ⇒ Disabled</text><text class="d" x="722" y="361">[RegularExpression], [Range]</text></g>
+
+    <g class="n core" id="n5"><rect x="300" y="400" width="370" height="380" rx="8"/><text class="t" x="316" y="424">DetermineFieldType()</text><text class="d" x="316" y="442">erster Treffer gewinnt</text></g>
+    <g id="steps"></g>
+
+    <g class="n" id="n6"><rect x="300" y="810" width="370" height="56" rx="8"/><text class="t" x="316" y="834">ApplySizeOptions()</text><text class="d" x="316" y="854">TextArea + [Size(y)] ⇒ Options = [y]</text></g>
+    <g class="n" id="n7"><rect x="300" y="900" width="370" height="56" rx="8"/><text class="t" x="316" y="924">Group und Order setzen</text><text class="d" x="316" y="944">Group "" ⇒ AutoGroupPrefix + Zähler</text></g>
+    <g class="n core" id="n8"><rect x="300" y="990" width="370" height="56" rx="8"/><text class="t" x="316" y="1014">FormElementList</text><text class="d" x="316" y="1034">Eingabe für den FormElementRenderer</text></g>
+   </svg>
+  </div>
+  <div class="legend"><span class="lg-core">Kern des Parsers</span><span class="lg-struct">Sonderfall: Struktur, Info oder ausgelassen</span><span class="lg-back">Schleife über die Properties</span></div>
+ </section>
+
+ <section aria-labelledby="h-explorer">
+  <div class="eyebrow">Zum Ausprobieren</div>
+  <h2 id="h-explorer">Properties aus der Klasse Fragebogen</h2>
+  <p>Wählen Sie ein Property. Das Schaubild markiert den Weg und den Prüfschritt, der den Typ festlegt. Die Beispiele stammen aus <code>BO/Fragebogen.cs</code>, nur <code>Intern</code> ist zur Veranschaulichung ergänzt. Dieselben Felder mit denselben Werten zeigen auch die Schaubilder zum Markdown-Parser und zum <code>FormElementRenderer</code>.</p>
+  <div class="chips" id="chips"></div>
+  <div class="explorer-grid">
+   <div class="panel">
+    <div class="panel-label">C#-Property</div>
+    <pre id="x-code"></pre>
+   </div>
+   <div class="panel">
+    <div class="panel-label">Ergebnis in der FormElementList</div>
+    <pre id="x-result"></pre>
+   </div>
+   <div class="panel wide">
+    <div class="panel-label">Route durch den Code</div>
+    <div class="route" id="x-route"></div>
+    <p class="why" id="x-why"></p>
+   </div>
+  </div>
+ </section>
+
+ <section aria-labelledby="h-attr">
+  <div class="eyebrow">Annotation für Annotation</div>
+  <h2 id="h-attr">Woher jede Eigenschaft kommt</h2>
+  <p>Bei mehreren Quellen steht die stärkere links. Eigene Annotationen aus <code>ITVisions</code> haben Vorrang vor den Standard-Annotationen aus <code>System.ComponentModel.DataAnnotations</code>.</p>
+  <div class="table-wrap">
+   <table>
+    <thead><tr><th>FormElement</th><th>Quelle (Priorität von links nach rechts)</th></tr></thead>
+    <tbody>
+     <tr><td>Key</td><td>Name des Properties</td></tr>
+     <tr><td>Label</td><td><code>[Label(text)]</code> &gt; <code>[Display(Name)]</code> &gt; Name des Properties</td></tr>
+     <tr><td>Note</td><td><code>[Label(…, labelDetails)]</code> bzw. <code>Details</code> &gt; <code>[Display(Description)]</code></td></tr>
+     <tr><td>Group</td><td><code>[Group(text)]</code> &gt; <code>[Display(GroupName)]</code></td></tr>
+     <tr><td>Required</td><td><code>[Required]</code> oder Typ ist nicht nullable</td></tr>
+     <tr><td>Disabled</td><td><code>[ReadOnly(true)]</code></td></tr>
+     <tr><td>Regex</td><td><code>[RegularExpression(pattern)]</code></td></tr>
+     <tr><td>Min / Max</td><td><code>[Range(min, max)]</code>, nach <code>int</code> konvertiert</td></tr>
+     <tr><td>Options</td><td>Liste aus <code>[Select]</code>, <code>[RadioButtonList]</code>, <code>[MultiSelect]</code>; bei Enums die Anzeigenamen der Werte (<code>[Label]</code> &gt; <code>[Display(Name)]</code> &gt; Name); bei <code>bool</code> das Label; bei TextArea die Zeilenzahl aus <code>[Size]</code></td></tr>
+     <tr><td>Value</td><td>Aktueller Wert des Properties; Enum als Anzeigename, Flags-Enum als <code>"MTB | Reisen"</code>, bool als Label oder <code>""</code></td></tr>
+     <tr><td>Order</td><td>Fortlaufender Zähler, auch Chapter und Headline zählen mit</td></tr>
+    </tbody>
+   </table>
+  </div>
+ </section>
+
+ <section aria-labelledby="h-req">
+  <div class="eyebrow">Pflichtfelder</div>
+  <h2 id="h-req">Nullbarkeit entscheidet mit</h2>
+  <p>Ohne <code>[Required]</code> wird ein Feld zum Pflichtfeld, wenn sein Typ keinen <code>null</code>-Wert zulässt. Bei Referenztypen liest <code>IsPropertyNullable()</code> dafür die Compiler-Attribute <code>NullableAttribute</code> und <code>NullableContextAttribute</code>. So funktioniert das auch ohne <code>NullabilityInfoContext</code> unter .NET Standard 2.0.</p>
+  <div class="table-wrap">
+   <table>
+    <thead><tr><th>Deklaration</th><th>Pflichtfeld?</th><th>Begründung</th></tr></thead>
+    <tbody>
+     <tr><td>int Bewertung2</td><td class="yes">ja</td><td>Werttyp ohne <code>Nullable&lt;T&gt;</code></td></tr>
+     <tr><td>int? Bewertung1</td><td class="no-req">nein</td><td><code>Nullable&lt;int&gt;</code></td></tr>
+     <tr><td>DateTime Geburtsdatum</td><td class="yes">ja</td><td>Werttyp, auch ohne <code>[Required]</code></td></tr>
+     <tr><td>string Nachname</td><td class="yes">ja</td><td>Mit <code>#nullable enable</code> ist <code>string</code> nicht nullable</td></tr>
+     <tr><td>string? Vorname</td><td class="no-req">nein</td><td>Nullable Referenztyp</td></tr>
+     <tr><td>string? Email + [Required]</td><td class="yes">ja</td><td><code>[Required]</code> schlägt die Nullbarkeit</td></tr>
+     <tr><td>string ohne Nullable-Kontext</td><td class="no-req">nein</td><td>Keine Metadaten vorhanden, Referenztypen gelten dann als nullable</td></tr>
+    </tbody>
+   </table>
+  </div>
+ </section>
+
+ <section aria-labelledby="h-group">
+  <div class="eyebrow">Gruppen</div>
+  <h2 id="h-group">Drei Bedeutungen von GroupName</h2>
+  <div class="cards3">
+   <div class="panel"><h3>null</h3><p>Kein <code>[Group]</code> und kein <code>GroupName</code>. Der Renderer zeigt das Feld einzeln in voller Breite.</p></div>
+   <div class="panel"><h3>"" (leer)</h3><p>Aufeinanderfolgende Properties mit leerem Namen bekommen denselben Namen <code>AutoGroupPrefix + N</code>. Sie stehen nebeneinander, ohne Rahmen und Legende. Beispiel: Anrede und Titel.</p></div>
+   <div class="panel"><h3>"Ihre Kinder"</h3><p>Benannte Gruppe. Benachbarte Felder mit gleichem Namen stehen in einer Zeile, mit Rahmen und dem Namen als Legende.</p></div>
+  </div>
+ </section>
+
+ <footer>Quelle: Repository ITVForms, Datei <code>Web/Web.Client/AnnotatedObjectParser.cs</code>, Klasse <code>AnnotatedObjectParserV2</code>. Beispiele aus <code>BO/Fragebogen.cs</code> und <code>BO/FragebogenEnums.cs</code>.</footer>
+</main>
+
+<script>
+(function () {
+ // Prüfreihenfolge in DetermineFieldType()
+ const steps = [
+  ["[MultiSelect]", "Multiselect"],
+  ["[RadioButtonList]", "RadioButtons"],
+  ["[Select]", "Select"],
+  ["bool", "CheckBox, Options = [Label]"],
+  ["[DataType(…)]", "Password, Email, Phone, Url, Date, Time, TextArea"],
+  ["[EmailAddress] [Phone] [Url]", "Email, Phone, Url"],
+  ["int, long, double …", "Range mit Min/Max, sonst Number"],
+  ["DateTime, DateOnly", "Date"],
+  ["TimeSpan, TimeOnly", "Time"],
+  ["enum", "Select, Options aus dem Enum"],
+  ["alles andere", "Text"]
+ ];
+ const ns = "http://www.w3.org/2000/svg";
+ const sg = document.getElementById("steps");
+ steps.forEach((s, i) => {
+  const y = 456 + i * 29;
+  const g = document.createElementNS(ns, "g");
+  g.setAttribute("class", "step");
+  g.setAttribute("id", "step" + (i + 1));
+  g.innerHTML = '<rect x="316" y="' + y + '" width="338" height="25" rx="5"/>' +
+   '<text class="no" x="326" y="' + (y + 17) + '">' + (i + 1) + '</text>' +
+   '<text class="if" x="350" y="' + (y + 17) + '">' + s[0].replace(/&/g, "&amp;").replace(/</g, "&lt;") + '</text>' +
+   '<text class="then" x="644" y="' + (y + 17) + '" text-anchor="end">' + s[1] + '</text>';
+  sg.appendChild(g);
+ });
+ // Der Text der langen Zeile 5 passt nicht neben die Bedingung: kürzen
+ document.querySelector("#step5 .then").textContent = "Password, Email, …, TextArea";
+ document.querySelector("#step6 .then").textContent = "gleichnamig";
+ document.querySelector("#step7 .then").textContent = "Range / Number";
+ document.querySelector("#step4 .then").textContent = "CheckBox";
+ document.querySelector("#step10 .then").textContent = "Select";
+
+ const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+ const A = s => '<span class="a">' + esc(s) + "</span>";
+ const S = s => '<span class="s">"' + esc(s) + '"</span>';
+ const K = s => '<span class="k">' + esc(s) + "</span>";
+ const C = s => '<span class="c">// ' + esc(s) + "</span>";
+
+ // Beispiele aus der Klasse Fragebogen (ITVForms, BO/Fragebogen.cs); dieselben Werte nutzen die anderen beiden Schaubilder
+ const MAIN = ["n1", "n2", "n3", "n4", "n-attr", "n5", "n6", "n7", "n8", "e1", "e2", "e3", "e4", "e5", "e6", "e7", "e-attr"];
+ const X = {
+  PersonendatenText: {
+   code: [A('[Chapter("Personendaten")]'), A('[Headline("Name der Person")]'), K("public string") + " PersonendatenText { " + K("get") + "; } =", ' ' + S("Wir beginnen damit, dass wir einige **elementare Personendaten** abfragen. Damit ist nur der **Name** ein Pflichteld.") + ";"],
+   result: ["{ Key = " + S("chapter_0") + ", Type = " + K("Chapter") + ",", "  Label = " + S("Personendaten") + " }", "{ Key = " + S("headline_1") + ", Type = " + K("Headline") + ",", "  Label = " + S("Name der Person") + " }", "{ Key = " + S("PersonendatenText") + ", Type = " + K("Info") + ",", "  Label = " + S("Wir beginnen damit, dass wir einige **elementare Personendaten** abfragen. Damit ist nur der **Name** ein Pflichteld.") + " }"],
+   lit: ["n1", "n2", "n3", "n-deco", "e-deco", "e1", "e2", "e3", "n4", "n-ro", "e-ro", "n7", "n8", "e7"],
+   route: ["AddDecorativeElements", "Chapter + Headline", "CreateFormElement", "CanWrite == false", "Info"],
+   why: "Ein Property erzeugt hier drei Elemente. Das Property hat nur einen Getter, sein Wert wird daher als Markdown-Infotext angezeigt. Chapter und Headline stehen davor, weil sie vor dem Property selbst angelegt werden."
+  },
+  Anrede: {
+   code: [A('[Display(Name = "Anrede",'), A('  Description = "Aufzählungstypen werden zu Auswahlfeldern.",'), A('  GroupName = "")]'), K("public AnredeEnum?") + " Anrede { " + K("get") + "; " + K("set") + "; }"],
+   result: ["Key      = " + S("Anrede"), "Label    = " + S("Anrede"), "Type     = " + K("Select"), "Options  = [" + S("Männlich") + ", " + S("Weiblich") + ", " + S("Divers") + "]", "Group    = " + S("_auto_group_1"), "Required = " + K("false") + "  " + C("Nullable<AnredeEnum>"), "Note     = " + S("Aufzählungstypen werden zu Auswahlfeldern.")],
+   step: 10, route: ["CreateFormElement", "DetermineFieldType", "Schritt 10: enum", "Select"],
+   why: "Die Optionen sind die Display-Namen der Enum-Werte. Der leere GroupName macht daraus eine automatische Gruppe, die Anrede und Titel nebeneinander stellt."
+  },
+  Titel: {
+   code: [A('[Display(Name = "Titel",'), A('  Description = "Hier wurden die Auswahlfelder nicht via Aufzählungstypen, sondern durch eine Annotation festgelegt.",'), A('  GroupName = "")]'), A('[Select("", "Dr.", "Prof.", "Mag.")]'), K("public string?") + " Titel { " + K("get") + "; " + K("set") + "; }"],
+   result: ["Key      = " + S("Titel"), "Label    = " + S("Titel"), "Type     = " + K("Select"), "Options  = [" + S("") + ", " + S("Dr.") + ", " + S("Prof.") + ", " + S("Mag.") + "]", "Group    = " + S("_auto_group_1") + "  " + C("wie Anrede"), "Required = " + K("false"), "Note     = " + S("Hier wurden die Auswahlfelder nicht via Aufzählungstypen, sondern durch eine Annotation festgelegt.")],
+   step: 3, route: ["CreateFormElement", "DetermineFieldType", "Schritt 3: [Select]", "Select"],
+   why: "Die Optionen stehen direkt in der Annotation. Weil das vorherige Property dieselbe leere Gruppe hatte, bleibt der Zähler gleich."
+  },
+  Nachname: {
+   code: [A('[Group("Name der Person")]'), A('[Required(ErrorMessage = "Nachname ist ein Pflichtfeld")]'), A('[Label("Nachname", "Das Property ist nicht nullable, daher ist Nachname ein Pflichtfeld.")]'), K("public string") + " Nachname { " + K("get") + "; " + K("set") + "; } = " + K("string.Empty") + ";"],
+   result: ["Key      = " + S("Nachname"), "Label    = " + S("Nachname"), "Type     = " + K("Text"), "Group    = " + S("Name der Person"), "Required = " + K("true"), "Value    = " + S(""), "Note     = " + S("Das Property ist nicht nullable, daher ist Nachname ein Pflichtfeld.")],
+   step: 11, route: ["CreateFormElement", "DetermineFieldType", "Schritt 11: Standard", "Text"],
+   why: "Kein Prüfschritt greift, also wird es ein Textfeld. Pflichtfeld ist es doppelt: durch [Required] und weil string hier nicht nullable ist."
+  },
+  Geburtsdatum: {
+   code: [A('[Display(Name = "Geburtsdatum",'), A('  GroupName = "Daten zu Ihrer Geburt")]'), A("[DataType(DataType.Date)]"), K("public DateTime") + " Geburtsdatum { " + K("get") + "; " + K("set") + "; }"],
+   result: ["Key      = " + S("Geburtsdatum"), "Label    = " + S("Geburtsdatum"), "Type     = " + K("Date"), "Group    = " + S("Daten zu Ihrer Geburt"), "Required = " + K("true") + "  " + C("Werttyp"), "Value    = " + K("DateTime.MinValue")],
+   step: 5, route: ["CreateFormElement", "DetermineFieldType", "Schritt 5: [DataType]", "Date"],
+   why: "[DataType] greift vor der Typprüfung in Schritt 8, das Ergebnis wäre ohne die Annotation aber gleich. Der Renderer behandelt DateTime.MinValue als leer, darum schlägt die Pflichtprüfung an."
+  },
+  Kinder: {
+   code: [A('[Group("Ihre Kinder")]'), A('[Label("Kinder", "Ihre Kinder")]'), A("[Range(0, 10)]"), K("public int?") + " Kinder { " + K("get") + "; " + K("set") + "; }"],
+   result: ["Key      = " + S("Kinder"), "Label    = " + S("Kinder"), "Type     = " + K("Range"), "Min, Max = " + K("0") + ", " + K("10"), "Group    = " + S("Ihre Kinder"), "Required = " + K("false"), "Note     = " + S("Ihre Kinder")],
+   step: 7, route: ["CreateFormElement", "ApplyValidationAttributes", "DetermineFieldType", "Schritt 7: Zahl", "Range"],
+   why: "Eine Zahl mit [Range] wird zum Schieberegler. Ohne [Range] wäre es ein Zahlenfeld (Number). Den Typ Rating erzeugt dieser Parser nie."
+  },
+  Hobbys: {
+   code: [A("[MultiSelect]"), A('[Label("Hobbys", "[Multiselect] sorgt für eine Mehrfachauswahl. Auch hier sind Vorgabewerte möglich.")]'), K("public HobbyEnum") + " Hobbys { " + K("get") + "; " + K("set") + "; }", "  = HobbyEnum.MTB | HobbyEnum.Reisen;"],
+   result: ["Key      = " + S("Hobbys"), "Label    = " + S("Hobbys"), "Type     = " + K("Multiselect"), "Options  = [" + S("Fußball") + ", " + S("MTB") + ", " + S("Tennis") + ",", "            " + S("Schwimmen") + ", " + S("Lesen") + ", " + S("Reisen") + "]", "Value    = " + S("MTB | Reisen"), "Required = " + K("true") + "  " + C("Enum ist Werttyp"), "Note     = " + S("[Multiselect] sorgt für eine Mehrfachauswahl. Auch hier sind Vorgabewerte möglich.")],
+   step: 1, route: ["CreateFormElement", "DetermineFieldType", "Schritt 1: [MultiSelect]", "Multiselect"],
+   why: "Die Annotation hat keine eigenen Optionen, darum kommen sie aus dem Flags-Enum. Der Wert wird zu den Namen aller gesetzten Flags."
+  },
+  Status: {
+   code: [A("[RadioButtonList]"), A('[Label("Status", "Die Annotation [RadioButtonList] erzwingt eine RadioButtonList ;-).")]'), K("public FamilienstandEnum") + " Status { " + K("get") + "; " + K("set") + "; }", "  = FamilienstandEnum.Ledig;"],
+   result: ["Key      = " + S("Status"), "Label    = " + S("Status"), "Type     = " + K("RadioButtons"), "Options  = [" + S("ledig") + ", " + S("verheiratet") + ",", "            " + S("geschieden") + ", " + S("verwitwet") + "]", "Value    = " + S("ledig"), "Required = " + K("true") + "  " + C("Enum ist Werttyp"), "Note     = " + S("Die Annotation [RadioButtonList] erzwingt eine RadioButtonList ;-).")],
+   step: 2, route: ["CreateFormElement", "DetermineFieldType", "Schritt 2: [RadioButtonList]", "RadioButtons"],
+   why: "Ohne die Annotation würde das Enum in Schritt 10 zu einer Auswahlliste. [RadioButtonList] greift vorher."
+  },
+  Newsletter: {
+   code: [A('[Label("Newsletter", "Aus einem booleschen Wert wird eine Checkbox.",'), A('  Details = "Newsletter abonnieren")]'), K("public bool") + " Newsletter { " + K("get") + "; " + K("set") + "; } = " + K("true") + ";"],
+   result: ["Key      = " + S("Newsletter"), "Label    = " + S("Newsletter"), "Type     = " + K("CheckBox"), "Options  = [" + S("Newsletter") + "]", "Value    = " + S("Newsletter") + "  " + C("true ⇒ Label"), "Required = " + K("true") + "  " + C("bool ist Werttyp"), "Note     = " + S("Newsletter abonnieren")],
+   step: 4, route: ["CreateFormElement", "DetermineFieldType", "Schritt 4: bool", "CheckBox"],
+   why: "Aus true wird der Text der Checkbox, aus false ein leerer String. Genau so speichert auch der Renderer den Zustand. Weil bool nicht nullable ist, wird die Checkbox zum Pflichtfeld und muss angehakt sein."
+  },
+  PersonID: {
+   code: [A("[ReadOnly(true)]"), A('[Label("Ihre automatisch vergebene ID", "Durch die Annotation [ReadOnly(true)] wird dieses Property im Formular nicht bearbeitbar, aber sichtbar. Es könnte z.B. als eindeutige ID für die Person dienen.")]'), K("public Guid") + " PersonID { " + K("get") + "; " + K("set") + "; }", "  = Guid.CreateVersion7();"],
+   result: ["Key      = " + S("PersonID"), "Label    = " + S("Ihre automatisch vergebene ID"), "Type     = " + K("Text"), "Disabled = " + K("true"), "Required = " + K("true") + "  " + C("Werttyp"), "Value    = " + K("Guid") + "  " + C("z. B. 019e…")],
+   step: 11, route: ["CreateFormElement", "[ReadOnly] ⇒ Disabled", "Schritt 11: Standard", "Text"],
+   why: "Guid kennt keiner der Prüfschritte, daher ein Textfeld. [ReadOnly(true)] zeigt es ausgegraut. Das Property hat einen Setter und wird deshalb nicht zum Infotext."
+  },
+  Email: {
+   code: [A('[Label("Email", "Die Annotation [EmailAddress] prüft, ob es sich um eine gültige E-Mail-Adresse handelt.")]'), A("[Required]"), A("[EmailAddress]"), K("public string?") + " Email { " + K("get") + "; " + K("set") + "; }"],
+   result: ["Key      = " + S("Email"), "Label    = " + S("Email"), "Type     = " + K("Email"), "Required = " + K("true") + "  " + C("[Required]"), "Note     = " + S("Die Annotation [EmailAddress] prüft, ob es sich um eine gültige E-Mail-Adresse handelt.")],
+   step: 6, route: ["CreateFormElement", "DetermineFieldType", "Schritt 6: [EmailAddress]", "Email"],
+   why: "Das Ergebnis ist dasselbe wie mit [DataType(DataType.EmailAddress)] in Schritt 5. Beide Wege führen zum Typ Email."
+  },
+  Kennwort: {
+   code: [A('[Label("Kennwort", "[DataType(DataType.Password)] sorgt dafür, dass man bei der Eingabe nur Sternchen sieht. Es gibt keine eingebauten Regeln für die Kennwortlänge und -komplexität; man kann aber zusätzlich einen regulären Ausdruck angeben.")]'), A("[DataType(DataType.Password)]"), A("[Required]"), K("public string?") + " Kennwort { " + K("get") + "; " + K("set") + "; }"],
+   result: ["Key      = " + S("Kennwort"), "Label    = " + S("Kennwort"), "Type     = " + K("Password"), "Required = " + K("true"), "Note     = " + S("[DataType(DataType.Password)] sorgt dafür, dass man bei der Eingabe nur Sternchen sieht. Es gibt keine eingebauten Regeln für die Kennwortlänge und -komplexität; man kann aber zusätzlich einen regulären Ausdruck angeben.")],
+   step: 5, route: ["CreateFormElement", "DetermineFieldType", "Schritt 5: [DataType]", "Password"],
+   why: "Eine Längen- oder Komplexitätsregel gibt es nicht automatisch. Dafür kann man zusätzlich [RegularExpression] angeben."
+  },
+  Kommentar: {
+   code: [A('[Headline("Freitextbewertung")]'), A('[Label("Kommentar", "Eine [DataType(DataType.MultilineText)] erzeugt ein mehrzeiliges Textfeld. Die Anzahl der Zeile legt man via [Size] fest.")]'), A("[DataType(DataType.MultilineText)]"), A("[Size(8)]"), A("[MaxLength(2000)]"), K("public string?") + " Kommentar { " + K("get") + "; " + K("set") + "; }"],
+   result: ["{ Key = " + S("headline_…") + ", Type = " + K("Headline") + ",", "  Label = " + S("Freitextbewertung") + " }", "{ Key = " + S("Kommentar") + ", Type = " + K("TextArea") + ",", "  Label = " + S("Kommentar") + ", Options = [" + S("8") + "],  " + C("Zeilen"), "  Note = " + S("Eine [DataType(DataType.MultilineText)] erzeugt ein mehrzeiliges Textfeld. Die Anzahl der Zeile legt man via [Size] fest.") + " }"],
+   step: 5, extra: ["n-deco", "e-deco"], route: ["AddDecorativeElements", "Headline", "Schritt 5: MultilineText", "TextArea", "ApplySizeOptions"],
+   why: "[Size(8)] wird erst nach der Typbestimmung ausgewertet und wirkt nur bei TextArea. [MaxLength] wertet der Parser nicht aus."
+  },
+  Intern: {
+   code: [C("Beispiel, nicht in Fragebogen.cs"), A("[Hidden]"), K("public string?") + " Intern { " + K("get") + "; " + K("set") + "; }"],
+   result: [C("kein Element")],
+   lit: ["n1", "n2", "n3", "n-hidden", "e-hidden", "e1", "e2", "n8"],
+   route: ["foreach", "IsHidden() == true", "continue"],
+   why: "Das Property erscheint nicht im Formular. Achtung: Ein [Chapter] oder [Headline] am selben Property würde trotzdem angelegt, weil diese Elemente vor der Hidden-Prüfung entstehen."
+  }
+ };
+
+ function highlight(def) {
+  document.querySelectorAll("#pipeline .lit").forEach(el => el.classList.remove("lit"));
+  let ids = def.lit ? def.lit : MAIN.concat(def.extra || []);
+  ids.forEach(id => document.getElementById(id) && document.getElementById(id).classList.add("lit"));
+  if (def.step) document.getElementById("step" + def.step).classList.add("lit");
+ }
+
+ let current = "Kinder";
+ function draw() {
+  const d = X[current];
+  document.getElementById("x-code").innerHTML = d.code.join("\n");
+  document.getElementById("x-result").innerHTML = d.result.join("\n");
+  document.getElementById("x-route").innerHTML = d.route.map(r => "<b>" + esc(r) + "</b>").join("<i>→</i>");
+  document.getElementById("x-why").textContent = d.why;
+  highlight(d);
+ }
+ const chips = document.getElementById("chips");
+ Object.keys(X).forEach(k => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "chip"; b.textContent = k;
+  b.setAttribute("aria-pressed", k === current ? "true" : "false");
+  b.addEventListener("click", () => {
+   current = k;
+   chips.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.textContent === k ? "true" : "false"));
+   draw();
+  });
+  chips.appendChild(b);
+ });
+ draw();
+})();
+</script>
+</body>
+</html>

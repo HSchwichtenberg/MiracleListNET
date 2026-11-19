@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Von der Textzeile zum FormElement</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: eine Lesespalte, Schaubild und Spielwiese dürfen breiter werden; gleiche Tokens wie das Renderer-Schaubild */
+:root {
+ --bg: #f6f6fa;
+ --surface: #ffffff;
+ --fg: #1d1b2e;
+ --muted: #5f5c78;
+ --line: #d3d1e3;
+ --accent: #512bd4;
+ --accent-soft: #ece7fd;
+ --struct: #eef0f3;
+ --ok: #18794e;
+ --warn: #b4232c;
+ --code-bg: #f0eff7;
+ --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+ --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+ --font-mono: "IBM Plex Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+ :root:not([data-theme="light"]) {
+  --bg: #14131c; --surface: #1d1c28; --fg: #e8e6f3; --muted: #a29fbd; --line: #383650;
+  --accent: #a48bff; --accent-soft: #2c2547; --struct: #22222c; --ok: #5cc994; --warn: #ff7b84; --code-bg: #191823;
+  color-scheme: dark;
+ }
+}
+:root[data-theme="dark"] {
+ --bg: #14131c; --surface: #1d1c28; --fg: #e8e6f3; --muted: #a29fbd; --line: #383650;
+ --accent: #a48bff; --accent-soft: #2c2547; --struct: #22222c; --ok: #5cc994; --warn: #ff7b84; --code-bg: #191823;
+ color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+ background: var(--bg); color: var(--fg);
+ font: 16px/1.6 var(--font-body);
+ padding-left: max(16px, env(safe-area-inset-left, 0px));
+ padding-right: max(16px, env(safe-area-inset-right, 0px));
+ padding-block: 40px 80px;
+}
+main { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 64px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; letter-spacing: -0.02em; }
+h2 { font-size: 1.6rem; font-weight: 700; }
+h3 { font-size: 1.1rem; font-weight: 500; }
+p { margin: 0; max-width: 68ch; }
+code, pre, textarea { font-family: var(--font-mono); font-size: 0.9em; }
+:not(pre) > code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+.eyebrow { font: 500 0.78rem var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+section, header { display: flex; flex-direction: column; gap: 20px; }
+.lead { font-size: 1.15rem; color: var(--muted); }
+.hero-pair { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 20px; align-items: center; margin-top: 8px; }
+.arrow-big { font: 700 2rem var(--font-display); color: var(--accent); text-align: center; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; min-width: 0; }
+.panel-label { font: 500 0.72rem var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--code-bg); border-radius: 8px; padding: 14px 16px; line-height: 1.55; }
+.k { color: var(--accent); }
+.s { color: var(--ok); }
+.c { color: var(--muted); }
+.m-req { color: var(--warn); font-weight: 600; }
+.m-note { color: var(--ok); }
+.m-def { color: var(--accent); font-weight: 600; }
+.m-type { color: var(--accent); }
+@media (max-width: 720px) {
+ .hero-pair { grid-template-columns: minmax(0, 1fr); }
+ .arrow-big { transform: rotate(90deg); }
+}
+
+/* Schaubild */
+.diagram-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+.diagram-wrap svg { display: block; min-width: 760px; width: 100%; height: auto; }
+.n rect { fill: var(--surface); stroke: var(--line); stroke-width: 1.5; transition: fill .2s, stroke .2s; }
+.n.struct rect { fill: var(--struct); }
+.n.core rect { fill: var(--accent-soft); stroke: var(--accent); }
+.n .t { fill: var(--fg); font: 600 15px var(--font-mono); }
+.n .d { fill: var(--muted); font: 400 12.5px var(--font-body); }
+.n.lit rect { stroke: var(--accent); stroke-width: 3; fill: var(--accent-soft); }
+.step rect { fill: var(--surface); stroke: var(--line); stroke-width: 1; transition: fill .2s, stroke .2s; }
+.step .no { fill: var(--accent); font: 600 12.5px var(--font-mono); }
+.step .if { fill: var(--fg); font: 500 13px var(--font-mono); }
+.step .then { fill: var(--muted); font: 400 13px var(--font-body); }
+.step.lit rect { fill: var(--accent); stroke: var(--accent); }
+.step.lit .no, .step.lit .if, .step.lit .then { fill: var(--surface); }
+.e { fill: none; stroke: var(--muted); stroke-width: 1.6; }
+.e.lit { stroke: var(--accent); stroke-width: 2.6; }
+.e.back { stroke: var(--ok); stroke-dasharray: 6 5; }
+.ah { fill: var(--muted); }
+.ah-back { fill: var(--ok); }
+.lbl { fill: var(--muted); font: 500 12px var(--font-mono); }
+.lbl-back { fill: var(--ok); font: 500 12.5px var(--font-mono); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 0.9rem; color: var(--muted); }
+.legend span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; border: 1.5px solid var(--line); }
+.legend .lg-core::before { background: var(--accent-soft); border-color: var(--accent); }
+.legend .lg-struct::before { background: var(--struct); }
+.legend .lg-back::before { border: 0; border-top: 2px dashed var(--ok); height: 0; width: 18px; border-radius: 0; vertical-align: 3px; }
+
+/* Spielwiese */
+.play { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 16px; align-items: start; }
+@media (max-width: 860px) { .play { grid-template-columns: minmax(0, 1fr); } }
+#src { width: 100%; min-height: 520px; resize: vertical; border: 1px solid var(--line); border-radius: 8px; background: var(--code-bg); color: var(--fg); padding: 12px 14px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; overflow-y: auto; tab-size: 2; }
+#src:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+.btn { font: 500 0.85rem var(--font-mono); border: 1px solid var(--line); background: var(--surface); color: var(--fg); padding: 4px 12px; border-radius: 6px; cursor: pointer; }
+.btn:hover { border-color: var(--accent); }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.count { color: var(--muted); font-size: 0.88rem; margin-left: auto; }
+.rows { display: flex; flex-direction: column; gap: 6px; max-height: 620px; overflow-y: auto; padding-right: 4px; }
+.row { display: grid; grid-template-columns: 2.4em minmax(0, 1fr); gap: 4px 10px; text-align: left; border: 1px solid var(--line); background: var(--surface); color: var(--fg); border-radius: 8px; padding: 8px 10px; cursor: pointer; font: inherit; width: 100%; }
+.row:hover { border-color: var(--accent); }
+.row[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); background: var(--accent-soft); }
+.row:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.row .ln { font: 0.8rem var(--font-mono); color: var(--muted); padding-top: 2px; font-variant-numeric: tabular-nums; }
+.row .src { font: 0.82rem var(--font-mono); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row .res { grid-column: 2; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; font-size: 0.9rem; min-width: 0; }
+.tag { font: 500 0.75rem var(--font-mono); border-radius: 4px; padding: 1px 7px; background: var(--accent); color: var(--surface); }
+.tag.struct { background: var(--struct); color: var(--fg); border: 1px solid var(--line); }
+.tag.none { background: transparent; color: var(--warn); border: 1px solid var(--warn); }
+.kv { font: 0.8rem var(--font-mono); color: var(--muted); overflow-wrap: anywhere; }
+.kv b { font-weight: 500; color: var(--fg); }
+.detail { margin-top: 16px; }
+
+/* Tabellen */
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 0.95rem; }
+th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+th { font: 500 0.75rem var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--code-bg); }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-family: var(--font-mono); white-space: nowrap; color: var(--accent); }
+.cards3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .cards3 { grid-template-columns: minmax(0, 1fr); } }
+.cards3 .panel p { font-size: 0.95rem; color: var(--muted); margin-top: 8px; }
+.cards3 pre { margin-top: 10px; font-size: 0.8rem; }
+footer { color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--line); padding-top: 16px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<main>
+ <header>
+  <a href="index.html" style="font: 500 0.88rem var(--font-mono); color: var(--accent); text-decoration: none; align-self: flex-start;">← Übersicht</a>
+  <div class="eyebrow">ITVisions.Metadata.MarkdownFormDSLParser</div>
+  <h1>Von der Textzeile zum FormElement</h1>
+  <p class="lead"><code>MarkdownFormDSLParser.Parse(template)</code> liest eine Formulardefinition in einer an Markdown angelehnten Kurzschreibweise. Jede Zeile wird zu höchstens einem <code>FormElement</code>. Die fertige <code>FormElementList</code> zeigt der <code>FormElementRenderer</code> als Formular an.</p>
+  <div class="hero-pair">
+   <div class="panel">
+    <div class="panel-label">Eingabe: eine Zeile der Vorlage</div>
+<pre><span class="m-req">+</span> Alter des ältesten Kindes {<span class="m-note">Zwischen 0 und 100</span>}: <span class="m-type">[Number] 0-100</span> <span class="m-def">= 20</span></pre>
+    <p class="c" style="margin-top:12px;font-size:0.92rem"><span class="m-req">+</span> Pflichtfeld · <span class="m-note">{…}</span> Tooltip · <span class="m-type">[Typ] Parameter</span> · <span class="m-def">= Wert</span> Vorgabewert</p>
+   </div>
+   <div class="arrow-big" aria-hidden="true">→</div>
+   <div class="panel">
+    <div class="panel-label">Ausgabe: FormElement</div>
+<pre>Key      = <span class="s">"Weitere_Personendaten_Alter_des_ältesten_Kindes"</span>
+           <span class="c">// Section + "_" + Label</span>
+Label    = <span class="s">"Alter des ältesten Kindes"</span>
+Type     = <span class="k">Number</span>
+Min, Max = <span class="k">0</span>, <span class="k">100</span>
+Value    = <span class="s">"20"</span>
+Required = <span class="k">true</span>
+Note     = <span class="s">"Zwischen 0 und 100"</span>
+Group    = <span class="s">"Ihre Kinder"</span>  <span class="c">// aus "= Ihre Kinder"</span></pre>
+   </div>
+  </div>
+ </header>
+
+ <section aria-labelledby="h-pipeline">
+  <div class="eyebrow">Der Weg im Überblick</div>
+  <h2 id="h-pipeline">Zeile für Zeile, mit Gedächtnis</h2>
+  <p>Der Parser arbeitet die Vorlage zeilenweise ab. Er merkt sich das aktuelle Kapitel bzw. die aktuelle Überschrift (für den Key) und die aktuelle Gruppe. Das erste Zeichen nach dem Trimmen entscheidet über die Art der Zeile. Eine Feldzeile durchläuft danach zwei Stufen: Zuerst werden die Zusatzangaben herausgelöst, dann bestimmt die Felddefinition den Typ.</p>
+  <div class="diagram-wrap">
+   <svg id="pipeline" viewBox="0 0 970 1270" role="img" aria-label="Ablauf von MarkdownFormDSLParser.Parse von der Vorlage bis zur FormElementList">
+    <defs>
+     <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+     <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="ah-back" d="M0,0 L10,5 L0,10 z"/></marker>
+    </defs>
+
+    <path class="e" id="e1" d="M485 76 V110" marker-end="url(#ah)"/>
+    <path class="e" id="e2" d="M485 166 V200" marker-end="url(#ah)"/>
+    <path class="e" id="e3" d="M485 256 V290" marker-end="url(#ah)"/>
+    <path class="e" id="e-stem" d="M485 346 V368"/>
+    <path class="e" id="e-tl" d="M485 368 H295"/>
+    <path class="e" id="e-hd" d="M295 368 V390" marker-end="url(#ah)"/>
+    <path class="e" id="e-ch" d="M295 368 H107 V390" marker-end="url(#ah)"/>
+    <path class="e" id="e-gr" d="M485 368 V390" marker-end="url(#ah)"/>
+    <path class="e" id="e-tr" d="M485 368 H675"/>
+    <path class="e" id="e-fd" d="M675 368 V390" marker-end="url(#ah)"/>
+    <path class="e" id="e-in" d="M675 368 H863 V390" marker-end="url(#ah)"/>
+    <path class="e" id="e-f5" d="M675 464 V482 H560 V500" marker-end="url(#ah)"/>
+    <path class="e" id="e-56" d="M485 730 V760" marker-end="url(#ah)"/>
+    <path class="e" id="e-67" d="M485 1170 V1200" marker-end="url(#ah)"/>
+    <path class="e back" d="M300 1185 H14 V183 H340 V200" marker-end="url(#ahb)"/>
+
+    <text class="lbl" x="497" y="98">Split('\n')</text>
+    <text class="lbl" x="497" y="188">Leerzeilen überspringen</text>
+    <text class="lbl" x="497" y="752">FieldDefinition</text>
+    <text class="lbl-back" x="0" y="0" transform="translate(28 700) rotate(-90)" text-anchor="middle">nächste Zeile</text>
+
+    <g class="n" id="n1"><rect x="300" y="20" width="370" height="56" rx="8"/><text class="t" x="316" y="44">Parse(string template)</text><text class="d" x="316" y="64">leer ⇒ leere Liste</text></g>
+    <g class="n" id="n2"><rect x="300" y="110" width="370" height="56" rx="8"/><text class="t" x="316" y="134">foreach (line)</text><text class="d" x="316" y="154">Zustand: currentSection, currentGroup, Zähler</text></g>
+    <g class="n" id="n3"><rect x="300" y="200" width="370" height="56" rx="8"/><text class="t" x="316" y="224">line.Trim()</text><text class="d" x="316" y="244">Einrückung zählt nur noch bei - und +</text></g>
+    <g class="n" id="n4"><rect x="300" y="290" width="370" height="56" rx="8"/><text class="t" x="316" y="314">Zeilenanfang prüfen</text><text class="d" x="316" y="334">Reihenfolge: ## vor # vor = vor - / +</text></g>
+
+    <g class="n struct" id="n-ch"><rect x="22" y="390" width="170" height="74" rx="8"/><text class="t" x="34" y="413">## Chapter</text><text class="d" x="34" y="433">Section = Text</text><text class="d" x="34" y="449">Gruppe = null</text></g>
+    <g class="n struct" id="n-hd"><rect x="210" y="390" width="170" height="74" rx="8"/><text class="t" x="222" y="413"># Headline</text><text class="d" x="222" y="433">Section = Text</text><text class="d" x="222" y="449">Gruppe = null</text></g>
+    <g class="n struct" id="n-gr"><rect x="400" y="390" width="170" height="74" rx="8"/><text class="t" x="412" y="413">= Gruppe</text><text class="d" x="412" y="433">currentGroup = Name</text><text class="d" x="412" y="449">ohne Name: Auto-Gruppe</text></g>
+    <g class="n" id="n-fd"><rect x="590" y="390" width="170" height="74" rx="8"/><text class="t" x="602" y="413">- / + Feld</text><text class="d" x="602" y="433">nicht eingerückt: neu</text><text class="d" x="602" y="449">ohne Gruppe: Auto-Gruppe</text></g>
+    <g class="n struct" id="n-in"><rect x="778" y="390" width="170" height="74" rx="8"/><text class="t" x="790" y="413">sonst: Info</text><text class="d" x="790" y="433">Label = ganze Zeile</text><text class="d" x="790" y="449">als Markdown</text></g>
+    <text class="lbl" x="34" y="484">⇒ Element, Key chapter_N</text>
+    <text class="lbl" x="222" y="484">⇒ Element, Key headline_N</text>
+    <text class="lbl" x="412" y="484">kein Element</text>
+    <text class="lbl" x="790" y="484">⇒ Element, Key info_N</text>
+
+    <g class="n core" id="n5"><rect x="300" y="500" width="370" height="230" rx="8"/><text class="t" x="316" y="524">CreateParseFieldContext()</text><text class="d" x="316" y="542">Zusatzangaben herauslösen, in dieser Reihenfolge</text></g>
+    <g id="ctx"></g>
+
+    <g class="n core" id="n6"><rect x="300" y="760" width="370" height="410" rx="8"/><text class="t" x="316" y="784">ParseField()</text><text class="d" x="316" y="802">Typ aus der Definition, erster Treffer gewinnt</text></g>
+    <g id="steps"></g>
+
+    <g class="n core" id="n7"><rect x="300" y="1200" width="370" height="56" rx="8"/><text class="t" x="316" y="1224">FormElementList</text><text class="d" x="316" y="1244">Eingabe für den FormElementRenderer</text></g>
+   </svg>
+  </div>
+  <div class="legend"><span class="lg-core">Weg einer Feldzeile</span><span class="lg-struct">Strukturzeile, ändert Zustand oder erzeugt Struktur</span><span class="lg-back">Schleife über die Zeilen</span></div>
+ </section>
+
+ <section aria-labelledby="h-play">
+  <div class="eyebrow">Zum Ausprobieren</div>
+  <h2 id="h-play">Vorlage bearbeiten, Ergebnis sofort sehen</h2>
+  <p>Links steht die Klasse <code>Fragebogen</code> aus <code>BO/Fragebogen.cs</code> in der Kurzschreibweise, mit denselben Feldern und Werten wie in den Schaubildern zum <code>AnnotatedObjectParser</code> und zum <code>FormElementRenderer</code>. Zwei Felder ergeben hier bewusst einen anderen Typ, weil es dafür keine passende Annotation gibt: Bewertung1 wird zu Rating, die Altersangaben werden zu Number. Rechts läuft eine JavaScript-Nachbildung von <code>Parse()</code> mit denselben Regeln. Ein Klick auf eine Zeile markiert ihren Weg im Schaubild und zeigt das vollständige <code>FormElement</code>.</p>
+  <div class="play">
+   <div class="panel">
+    <div class="toolbar">
+     <button type="button" class="btn" id="btn-sample">Beispiel laden</button>
+     <button type="button" class="btn" id="btn-pitfall">Stolperstellen laden</button>
+    </div>
+    <label for="src" class="panel-label" style="display:block">Formulardefinition</label>
+    <textarea id="src" spellcheck="false"></textarea>
+   </div>
+   <div class="panel">
+    <div class="toolbar"><span class="panel-label" style="margin:0">Ergebnis je Zeile</span><span class="count" id="count"></span></div>
+    <div class="rows" id="rows"></div>
+    <div class="detail">
+     <div class="panel-label">Ausgewähltes FormElement</div>
+     <pre id="detail"></pre>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <section aria-labelledby="h-syntax">
+  <div class="eyebrow">Spickzettel</div>
+  <h2 id="h-syntax">Die Syntax auf einen Blick</h2>
+  <div class="table-wrap">
+   <table>
+    <thead><tr><th>Schreibweise</th><th>Ergebnis</th></tr></thead>
+    <tbody>
+     <tr><td>## Titel</td><td>Chapter, also eine neue Seite im Renderer. Beliebig viele <code>#</code> ab zwei Stück.</td></tr>
+     <tr><td># Titel</td><td>Headline, ein- und ausklappbarer Abschnitt</td></tr>
+     <tr><td>Freier Text</td><td>Info: Die Zeile wird als Markdown angezeigt</td></tr>
+     <tr><td>= Name</td><td>Benannte Gruppe für die folgenden eingerückten Felder</td></tr>
+     <tr><td>=</td><td>Gruppe ohne Legende, Felder nebeneinander</td></tr>
+     <tr><td>- Label</td><td>Optionales Textfeld (ohne <code>:</code> gilt <code>[Text]</code>)</td></tr>
+     <tr><td>+ Label</td><td>Pflichtfeld</td></tr>
+     <tr><td>Label {Hinweis}</td><td>Tooltip am Info-Icon (<code>Note</code>)</td></tr>
+     <tr><td>Label = Wert</td><td>Vorgabewert bei Feldern ohne <code>:</code></td></tr>
+     <tr><td>: Definition = Wert</td><td>Vorgabewert hinter der Felddefinition</td></tr>
+     <tr><td>: [Text] "regex"</td><td>Regulärer Ausdruck, letztes Paar Anführungszeichen; ausgewertet bei Text und Password</td></tr>
+     <tr><td>: A | B | C</td><td>Select; beginnt die Liste mit <code>|</code>, bleibt eine leere Option erhalten</td></tr>
+     <tr><td>: * A * B</td><td>RadioButtons; mit nur einer Option eine CheckBox</td></tr>
+     <tr><td>: [Multiselect] A | B</td><td>Mehrfachauswahl</td></tr>
+     <tr><td>: [Rating] 1-5</td><td>Sternebewertung, Options 1 bis 5</td></tr>
+     <tr><td>: [Range] 0-10</td><td>Schieberegler mit Min/Max, Vorgabe ist Min</td></tr>
+     <tr><td>: [Number] 0-100</td><td>Zahlenfeld mit Min/Max, Vorgabe ist Min</td></tr>
+     <tr><td>: [Textarea:8]</td><td>Mehrzeiliges Feld mit 8 Zeilen (Standard 4)</td></tr>
+     <tr><td>: [Date] [Time] [Email] [Password] [Url] [Phone]</td><td>Gleichnamiger Typ</td></tr>
+     <tr><td>: ___</td><td>Textfeld, wie <code>[Text]</code></td></tr>
+    </tbody>
+   </table>
+  </div>
+ </section>
+
+ <section aria-labelledby="h-group">
+  <div class="eyebrow">Gruppen</div>
+  <h2 id="h-group">Einrückung entscheidet über die Gruppe</h2>
+  <div class="cards3">
+   <div class="panel"><h3>Eingerückt unter =</h3><p>Felder mit Leerzeichen vor <code>-</code> oder <code>+</code> übernehmen die aktuelle Gruppe. Sie stehen im Renderer in einer Zeile.</p>
+<pre>= Ihre Kinder
+ - Kinder: [Range] 0-10
+ + Alter des ältesten Kindes: [Number] 0-100</pre></div>
+   <div class="panel"><h3>Nicht eingerückt</h3><p>Ein <code>-</code> oder <code>+</code> ganz links beendet die Gruppe. Jedes solche Feld bekommt eine eigene Auto-Gruppe und steht damit allein in voller Breite.</p>
+<pre>+ Lebensmotto = Weniger ist mehr.
+- Telefonnummer: [Phone]</pre></div>
+   <div class="panel"><h3>Zurückgesetzt</h3><p>Jede Zeile mit <code>#</code> oder <code>##</code> setzt die Gruppe ebenfalls auf <code>null</code>. Eine Gruppe reicht also nie über eine Überschrift hinaus.</p>
+<pre># Weitere Personendaten
+ - Geburtsdatum: [Date]</pre></div>
+  </div>
+ </section>
+
+ <footer>Quelle: Repository ITVForms, Datei <code>Web/Web.Client/MarkdownFormDSLParser.cs</code>, Klasse <code>MarkdownFormDSLParserV2</code>. Die Spielwiese ist eine Nachbildung in JavaScript; GUIDs für doppelte Labels werden zufällig erzeugt.</footer>
+</main>
+
+<script>
+(function () {
+ const PREFIX = "_auto_group_";
+ const ns = "http://www.w3.org/2000/svg";
+ const escX = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+ // Teilschritte von CreateParseFieldContext()
+ const ctxSteps = [
+  ["+ am Anfang", "Required = true"],
+  ["Split am ersten :", "Label | Definition"],
+  ["Label = Wert", "Vorgabewert"],
+  ["Label {Text}", "Note"],
+  ["Definition \"…\"", "Regex"],
+  ["Definition = Wert", "Vorgabewert"],
+  ["Label, Key", "eindeutig machen"]
+ ];
+ // Prüfreihenfolge in ParseField()
+ const typeSteps = [
+  ["* ", "CheckBox / RadioButtons"],
+  ["[Multiselect]", "Multiselect"],
+  ["[Rating]", "Rating"],
+  ["[Range]", "Range"],
+  ["[Textarea] [Textarea:n]", "TextArea"],
+  ["[Number]", "Number"],
+  ["[Date]", "Date"],
+  ["[Time]", "Time"],
+  ["[Email]", "Email"],
+  ["[Password]", "Password"],
+  ["[Url]", "Url"],
+  ["[Phone]", "Phone"],
+  ["___ oder [Text]", "Text"],
+  ["enthält |", "Select"],
+  ["sonst", "kein Element!"]
+ ];
+ function drawSteps(root, list, y0, prefix) {
+  const g = document.getElementById(root);
+  list.forEach((s, i) => {
+   const y = y0 + i * 24;
+   const el = document.createElementNS(ns, "g");
+   el.setAttribute("class", "step");
+   el.setAttribute("id", prefix + (i + 1));
+   el.innerHTML = '<rect x="316" y="' + y + '" width="338" height="21" rx="5"/>' +
+    '<text class="no" x="326" y="' + (y + 15) + '">' + (i + 1) + "</text>" +
+    '<text class="if" x="350" y="' + (y + 15) + '">' + escX(s[0]) + "</text>" +
+    '<text class="then" x="644" y="' + (y + 15) + '" text-anchor="end">' + escX(s[1]) + "</text>";
+   g.appendChild(el);
+  });
+ }
+ drawSteps("ctx", ctxSteps, 556, "c");
+ drawSteps("steps", typeSteps, 814, "f");
+
+ // ---------- Nachbildung von MarkdownFormDSLParserV2.Parse ----------
+ const has = (s, sub) => s.toLowerCase().includes(sub.toLowerCase());
+ const trimQ = s => s.replace(/^"+|"+$/g, "");
+ const isInt = s => /^\s*[+-]?\d+\s*$/.test(s);
+ const guid = () => Array.from({ length: 32 }, () => "0123456789abcdef"[Math.floor(Math.random() * 16)]).join("");
+ function minMax(r) {
+  if (r.includes("-")) {
+   const p = r.split("-");
+   if (p.length === 2 && isInt(p[0]) && isInt(p[1])) return [parseInt(p[0], 10), parseInt(p[1], 10)];
+  }
+  return [null, null];
+ }
+
+ function parse(template) {
+  const out = [], trace = [];
+  if (!template) return { out, trace };
+  let section = null, group = null, fc = 0, agc = 0, ngc = 0;
+  template.split("\n").forEach((line, idx) => {
+   const t0 = { ln: idx + 1, text: line };
+   if (!line.trim()) return;
+   const tl = line.trim();
+   if (tl.startsWith("##")) {
+    const txt = tl.replace(/^#+/, "").trim();
+    out.push({ Key: "chapter_" + fc++, Label: txt, Type: "Chapter" });
+    section = txt; group = null;
+    trace.push(Object.assign(t0, { kind: "ch", el: out[out.length - 1] })); return;
+   }
+   if (tl.startsWith("#")) {
+    const txt = tl.replace(/^#+/, "").trim();
+    out.push({ Key: "headline_" + fc++, Label: txt, Type: "Headline" });
+    section = txt; group = null;
+    trace.push(Object.assign(t0, { kind: "hd", el: out[out.length - 1] })); return;
+   }
+   if (tl.startsWith("=")) {
+    let name = tl.replace(/^=+/, "").trim();
+    if (!name.trim()) name = PREFIX + ngc++;
+    group = name;
+    trace.push(Object.assign(t0, { kind: "gr", group: name })); return;
+   }
+   if (line.startsWith("-") || line.startsWith("+")) group = null;
+   if (tl.startsWith("-") || tl.startsWith("+")) {
+    let eff = group;
+    if (!eff) eff = PREFIX + agc++;
+    const r = parseField(line, section, eff, out);
+    if (r.el) { fc++; out.push(r.el); }
+    trace.push(Object.assign(t0, { kind: "fd", el: r.el, ctx: r.ctx, step: r.step, indented: !(line.startsWith("-") || line.startsWith("+")) }));
+    return;
+   }
+   out.push({ Key: "info_" + fc++, Label: tl.trim(), Type: "Info" });
+   trace.push(Object.assign(t0, { kind: "in", el: out[out.length - 1] }));
+  });
+  return { out, trace };
+ }
+
+ function parseField(line, section, grp, list) {
+  const ctx = [2];
+  const t = line.replace(/^\s+/, "");
+  const req = t.startsWith("+");
+  if (req) ctx.push(1);
+  const fl = t.replace(/^[-+]+/, "").trim();
+  const ci = fl.indexOf(":");
+  const parts = ci < 0 ? [fl] : [fl.substring(0, ci), fl.substring(ci + 1)];
+  let label = parts[0].trim();
+  let def = parts.length === 1 ? "[Text]" : parts[1].trim();
+  let dv = null, note = null, rx = null;
+  // Vorgabewert aus dem Label
+  if (parts.length === 1 && label.includes(" = ")) {
+   const dp = label.split(" = ");
+   label = dp[0].trim();
+   dv = trimQ(dp.slice(1).join(" = ").trim());
+   ctx.push(3);
+  }
+  // Tooltip
+  if (label.includes("{") && label.includes("}")) {
+   const si = label.indexOf("{"), ei = label.indexOf("}");
+   if (ei > si) {
+    note = label.substring(si + 1, ei).trim();
+    const rest = label.substring(ei + 1).trim();
+    label = label.substring(0, si).trim();
+    if (rest.includes(" = ")) { const dp = rest.split(" = "); if (dp.length >= 2) { dv = trimQ(dp.slice(1).join(" = ").trim()); ctx.push(3); } }
+    ctx.push(4);
+   }
+  }
+  // Regex
+  if (def.trim()) {
+   const td = def.trim();
+   const last = td.lastIndexOf('"');
+   if (last > 0) {
+    const first = td.lastIndexOf('"', last - 1);
+    if (first >= 0) { rx = td.substring(first + 1, last); def = td.substring(0, first).trim(); ctx.push(5); }
+   }
+  }
+  // Vorgabewert aus der Definition
+  if (def.includes(" = ")) {
+   const dp = def.split(" = ");
+   if (dp.length === 2) { def = dp[0].trim(); dv = trimQ(dp[1].trim()); ctx.push(6); }
+  }
+  if (list.some(f => f.Label === label)) { label = label + "_!DOPPELT!_" + guid(); ctx.push(7); }
+  let key = ((section == null ? "" : section) + "_" + label).split(" ").join("_").split(":").join("");
+  if (list.some(f => f.Key === key)) { key = key + "_" + guid(); ctx.push(7); }
+
+  const base = { Key: key, Label: label, Required: req, Value: dv, Note: note, Group: grp };
+  const mk = (type, extra, step) => ({ el: Object.assign({ Type: type }, base, extra || {}), ctx, step });
+  if (def.includes("* ")) {
+   const opts = def.split("* ").map(o => o.trim()).filter(o => o);
+   return mk(opts.length === 1 ? "CheckBox" : "RadioButtons", { Options: opts }, 1);
+  }
+  if (has(def, "[Multiselect]")) return mk("Multiselect", { Options: def.replace(/\[Multiselect\]/gi, "").trim().split("|").map(o => o.trim()).filter(o => o) }, 2);
+  if (has(def, "[Rating]")) {
+   const [a, b] = minMax(def.replace(/\[Rating\]/gi, "").trim());
+   const o = [];
+   if (a != null) for (let i = a; i <= b; i++) o.push(String(i));
+   return mk("Rating", { Options: o }, 3);
+  }
+  if (has(def, "[Range]")) {
+   const [a, b] = minMax(def.replace(/\[Range\]/gi, "").trim());
+   return mk("Range", { Min: a, Max: b, Value: dv ? dv : (a == null ? null : String(a)) }, 4);
+  }
+  if (has(def, "[Textarea]") || has(def, "[Textarea:")) {
+   const m = def.match(/\[Textarea:(\d+)\]/i);
+   return mk("TextArea", { Options: [String(m ? parseInt(m[1], 10) : 4)] }, 5);
+  }
+  if (has(def, "[Number]")) {
+   const [a, b] = minMax(def.replace(/\[Number\]/gi, "").trim());
+   return mk("Number", { Min: a, Max: b, Value: dv ? dv : (a == null ? null : String(a)) }, 6);
+  }
+  if (has(def, "[Date]")) return mk("Date", null, 7);
+  if (has(def, "[Time]")) return mk("Time", null, 8);
+  if (has(def, "[Email]")) return mk("Email", null, 9);
+  if (has(def, "[Password]")) return mk("Password", { Regex: rx }, 10);
+  if (has(def, "[Url]")) return mk("Url", null, 11);
+  if (has(def, "[Phone]")) return mk("Phone", null, 12);
+  if (def.includes("___") || has(def, "[Text]")) return mk("Text", { Regex: rx }, 13);
+  if (def.includes("|")) {
+   const allowEmpty = def.trim().startsWith("|");
+   let o = def.split("|").map(x => x.trim());
+   if (!allowEmpty) o = o.filter(x => x);
+   return mk("Select", { Options: o }, 14);
+  }
+  return { el: null, ctx, step: 15 };
+ }
+
+ // ---------- Darstellung ----------
+ const PATH = {
+  ch: ["n1", "n2", "n3", "n4", "e1", "e2", "e3", "e-stem", "e-tl", "e-ch", "n-ch"],
+  hd: ["n1", "n2", "n3", "n4", "e1", "e2", "e3", "e-stem", "e-tl", "e-hd", "n-hd"],
+  gr: ["n1", "n2", "n3", "n4", "e1", "e2", "e3", "e-stem", "e-gr", "n-gr"],
+  in: ["n1", "n2", "n3", "n4", "e1", "e2", "e3", "e-stem", "e-tr", "e-in", "n-in"],
+  fd: ["n1", "n2", "n3", "n4", "e1", "e2", "e3", "e-stem", "e-tr", "e-fd", "n-fd", "e-f5", "n5", "e-56", "n6"]
+ };
+ function highlight(tr) {
+  document.querySelectorAll("#pipeline .lit").forEach(el => el.classList.remove("lit"));
+  if (!tr) return;
+  PATH[tr.kind].forEach(id => document.getElementById(id).classList.add("lit"));
+  if (tr.kind !== "gr" && tr.el) ["e-67", "n7"].forEach(id => document.getElementById(id).classList.add("lit"));
+  if (tr.kind === "fd") {
+   tr.ctx.forEach(c => document.getElementById("c" + c).classList.add("lit"));
+   document.getElementById("f" + tr.step).classList.add("lit");
+  }
+ }
+ const KIND = { ch: "Chapter", hd: "Headline", gr: "Gruppe", in: "Info" };
+ function fmtEl(el) {
+  const order = ["Key", "Label", "Type", "Group", "Required", "Value", "Note", "Options", "Min", "Max", "Regex"];
+  const pad = 8;
+  return order.filter(k => el[k] !== undefined && el[k] !== null && !(k === "Required" && el[k] === false && el.Type !== undefined && ["Chapter", "Headline", "Info"].includes(el.Type))).map(k => {
+   const v = el[k];
+   let s;
+   if (Array.isArray(v)) s = "[" + v.map(o => '<span class="s">"' + escX(o) + '"</span>').join(", ") + "]";
+   else if (typeof v === "string") s = k === "Type" ? '<span class="k">' + escX(v) + "</span>" : '<span class="s">"' + escX(v) + '"</span>';
+   else s = '<span class="k">' + v + "</span>";
+   return k.padEnd(pad) + " = " + s;
+  }).join("\n");
+ }
+ let selected = null, trace = [];
+ function select(i) {
+  selected = i;
+  document.querySelectorAll("#rows .row").forEach((r, j) => r.setAttribute("aria-pressed", j === i ? "true" : "false"));
+  const tr = trace[i];
+  highlight(tr);
+  const d = document.getElementById("detail");
+  if (!tr) { d.textContent = ""; return; }
+  if (tr.kind === "gr") d.innerHTML = '<span class="c">// erzeugt kein Element, setzt nur den Zustand</span>\ncurrentGroup = <span class="s">"' + escX(tr.group) + '"</span>';
+  else if (!tr.el) d.innerHTML = '<span class="c">// Die Definition passt zu keinem Prüfschritt.\n// Die Zeile wird stillschweigend ignoriert.</span>';
+  else d.innerHTML = fmtEl(tr.el);
+ }
+ function run() {
+  const res = parse(document.getElementById("src").value);
+  trace = res.trace;
+  const rows = document.getElementById("rows");
+  rows.innerHTML = "";
+  trace.forEach((tr, i) => {
+   const b = document.createElement("button");
+   b.type = "button"; b.className = "row";
+   let tag, kv = "";
+   if (tr.kind === "fd") {
+    tag = tr.el ? '<span class="tag">' + tr.el.Type + "</span>" : '<span class="tag none">ignoriert</span>';
+    if (tr.el) {
+     kv = '<span class="kv"><b>' + escX(tr.el.Label) + "</b></span>";
+     if (tr.el.Required) kv += '<span class="kv">Pflicht</span>';
+     kv += '<span class="kv">Group ' + escX(tr.el.Group) + "</span>";
+     if (tr.el.Value) kv += '<span class="kv">= ' + escX(tr.el.Value) + "</span>";
+    }
+   } else {
+    tag = '<span class="tag struct">' + KIND[tr.kind] + "</span>";
+    kv = '<span class="kv"><b>' + escX(tr.kind === "gr" ? tr.group : tr.el.Label) + "</b></span>";
+   }
+   b.innerHTML = '<span class="ln">' + tr.ln + '</span><span class="src">' + escX(tr.text.replace(/\r$/, "")) + '</span><span class="res">' + tag + kv + "</span>";
+   b.addEventListener("click", () => select(i));
+   rows.appendChild(b);
+  });
+  const n = res.out.length, ign = trace.filter(t => t.kind === "fd" && !t.el).length;
+  document.getElementById("count").textContent = n + " FormElements" + (ign ? ", " + ign + " Zeile" + (ign > 1 ? "n" : "") + " ignoriert" : "");
+  const keep = selected != null && selected < trace.length ? selected : trace.findIndex(t => t.kind === "fd" && t.el && t.el.Type === "Number");
+  select(keep >= 0 ? keep : 0);
+ }
+
+ // Die Klasse Fragebogen (ITVForms, BO/Fragebogen.cs) in der Kurzschreibweise; dieselben Werte nutzen die anderen beiden Schaubilder
+ const SAMPLE = [
+  "########### Personendaten",
+  "# Name der Person",
+  "Wir beginnen damit, dass wir einige **elementare Personendaten** abfragen. Damit ist nur der **Name** ein Pflichteld.",
+  "= ",
+  " - Anrede {Aufzählungstypen werden zu Auswahlfeldern.}: Männlich | Weiblich | Divers",
+  " - Titel {Hier wurden die Auswahlfelder nicht via Aufzählungstypen, sondern durch eine Annotation festgelegt.}: | Dr. | Prof. | Mag.",
+  "= Name der Person",
+  " - Vorname {Aus string wird ein einfaches Textfeld.}",
+  " + Nachname {Das Property ist nicht nullable, daher ist Nachname ein Pflichtfeld.}",
+  "",
+  "# Weitere Personendaten",
+  "Bitte erlauben Sie uns, noch *etwas* mehr über Sie zu erfahren. Hierzu kommen weitere Felddatentypen zum Einsatz.",
+  "= Daten zu Ihrer Geburt",
+  " + Geburtsdatum: [Date]",
+  " - Geburtsuhrzeit: [Time]",
+  "= Ihre Kinder",
+  " - Kinder {Ihre Kinder}: [Range] 0-10",
+  " + Alter des ältesten Kindes {Zwischen 0 und 100}: [Number] 0-100 = 20",
+  " + Alter des jüngsten Kindes {Zwischen 0 und 100}: [Number] 0-100 = 10",
+  "+ Lebensmotto {Der Vorgabewert bei diesem Property wird berücksichtigt.} = Weniger ist mehr.",
+  "+ Hobbys {[Multiselect] sorgt für eine Mehrfachauswahl. Auch hier sind Vorgabewerte möglich.}: [Multiselect] Fußball | MTB | Tennis | Schwimmen | Lesen | Reisen = MTB | Reisen",
+  "- Telefonnummer {Durch die Annotation [Phone] sind nur Zahlen und einige Sonderzeichen (+, -, /, Leerzeichen, Klammern), aber keine Buchstaben erlaubt.}: [Phone]",
+  "- Website {Bei [URL] prüft der Browser, ob es sich um eine Webadresse handelt.}: [Url]",
+  "+ Status {Die Annotation [RadioButtonList] erzwingt eine RadioButtonList ;-).}: * ledig * verheiratet * geschieden * verwitwet = ledig",
+  "+ Newsletter {Newsletter abonnieren}: * Newsletter = Newsletter",
+  "",
+  "########### Benutzerkonto",
+  "+ Kundennummer {Validierung mit regulären Ausdruck. Die Kundennummer muss im Format K-xxxx sein (z.B. K-1234)}: [Text] \"K-([0-9]{4})\"",
+  "+ Email {Die Annotation [EmailAddress] prüft, ob es sich um eine gültige E-Mail-Adresse handelt.}: [Email]",
+  "+ Kennwort {[DataType(DataType.Password)] sorgt dafür, dass man bei der Eingabe nur Sternchen sieht. Es gibt keine eingebauten Regeln für die Kennwortlänge und -komplexität; man kann aber zusätzlich einen regulären Ausdruck angeben.}: [Password]",
+  "",
+  "########### Feedback",
+  "# Bewertung mit Skala",
+  "- Bewertung1 (1 bis 5) {Bewerten Sie diese Anwendung}: [Rating] 1-5",
+  "+ Bewertung2 (1 bis 5) {Bewerten Sie diese Anwendung}: [Range] 1-5 = 3",
+  "# Freitextbewertung",
+  "- Kommentar {Eine [DataType(DataType.MultilineText)] erzeugt ein mehrzeiliges Textfeld. Die Anzahl der Zeile legt man via [Size] fest.}: [Textarea:8]"
+ ].join("\n");
+ const PITFALLS = [
+  "# Stolperstellen",
+  "Lebensmotto bekommt _auto_group_0, die Gruppe unter = ebenfalls: Der Renderer stellt alle drei in eine Zeile.",
+  "+ Lebensmotto = Weniger ist mehr.",
+  "=",
+  " - Vorname",
+  " + Nachname",
+  "Ohne bekannten Typ und ohne | wird eine Zeile ignoriert (hier fehlen die Sternchen):",
+  "+ Status: ledig",
+  "Ein Doppelpunkt im Tooltip trennt bereits Label und Definition:",
+  "- Geburtsuhrzeit {Format hh:mm}: [Time]",
+  "Doppelte Labels erhalten einen GUID-Anhang:",
+  "- Telefonnummer: [Phone]",
+  "- Telefonnummer: [Phone]",
+  "Ein Vorgabewert in Anführungszeichen wird als Regex gelesen:",
+  "- Website: [Url] = \"https://example.com\""
+ ].join("\n");
+
+ const src = document.getElementById("src");
+ src.value = SAMPLE;
+ src.addEventListener("input", () => { selected = null; run(); });
+ document.getElementById("btn-sample").addEventListener("click", () => { src.value = SAMPLE; selected = null; run(); });
+ document.getElementById("btn-pitfall").addEventListener("click", () => { src.value = PITFALLS; selected = null; run(); });
+ run();
+})();
+</script>
+</body>
+</html>

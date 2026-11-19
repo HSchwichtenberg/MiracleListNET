@@ -4,7 +4,7 @@
 
 	<!--Runtime-->
 	<PropertyGroup>
-		<TargetFrameworks>net9.0;net10.0</TargetFrameworks>
+		<TargetFrameworks>net9.0;net10.0;net11.0</TargetFrameworks>
   <LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
@@ -61,8 +61,8 @@
 	<ItemGroup>
 		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
 		<PackageReference Include="Blazored.SessionStorage" Version="2.4.*" />
-		<PackageReference Include="FluentValidation" Version="12.1.1" />
-		<PackageReference Include="HtmlSanitizer" Version="9.*" />
+		<PackageReference Include="FluentValidation" Version="12.2.0" />
+		<PackageReference Include="HtmlSanitizer" Version="11.*" />
 		<PackageReference Include="ITVisions.Util" Version="10.*" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="UAParser" Version="3.1.*" />

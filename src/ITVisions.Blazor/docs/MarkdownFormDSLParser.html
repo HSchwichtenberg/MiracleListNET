@@ -45,12 +45,12 @@ body {
  padding-right: max(16px, env(safe-area-inset-right, 0px));
  padding-block: 40px 80px;
 }
-main { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 64px; }
+main { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 64px; }
 h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.15; }
 h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; letter-spacing: -0.02em; }
 h2 { font-size: 1.6rem; font-weight: 700; }
 h3 { font-size: 1.1rem; font-weight: 500; }
-p { margin: 0; max-width: 68ch; }
+p { margin: 0; max-width: 80ch; }
 code, pre, textarea { font-family: var(--font-mono); font-size: 0.9em; }
 :not(pre) > code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
 .eyebrow { font: 500 0.78rem var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
@@ -146,7 +146,7 @@ footer { color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--li
 <main>
  <header>
   <a href="index.html" style="font: 500 0.88rem var(--font-mono); color: var(--accent); text-decoration: none; align-self: flex-start;">← Übersicht</a>
-  <div class="eyebrow">ITVisions.Metadata.MarkdownFormDSLParser</div>
+  <div class="eyebrow">ITVForms · Web.Client/MarkdownFormDSLParser.cs</div>
   <h1>Von der Textzeile zum FormElement</h1>
   <p class="lead"><code>MarkdownFormDSLParser.Parse(template)</code> liest eine Formulardefinition in einer an Markdown angelehnten Kurzschreibweise. Jede Zeile wird zu höchstens einem <code>FormElement</code>. Die fertige <code>FormElementList</code> zeigt der <code>FormElementRenderer</code> als Formular an.</p>
   <div class="hero-pair">

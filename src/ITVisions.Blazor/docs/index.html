@@ -45,12 +45,12 @@ body {
  padding-right: max(16px, env(safe-area-inset-right, 0px));
  padding-block: 40px 80px;
 }
-main { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 64px; }
+main { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 64px; }
 h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.15; }
 h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); font-weight: 700; letter-spacing: -0.02em; }
 h2 { font-size: 1.6rem; font-weight: 700; }
 h3 { font-size: 1.15rem; font-weight: 700; }
-p { margin: 0; max-width: 68ch; }
+p { margin: 0; max-width: 80ch; }
 code, pre { font-family: var(--font-mono); font-size: 0.9em; }
 :not(pre) > code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
 .eyebrow { font: 500 0.78rem var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
@@ -112,9 +112,9 @@ footer { color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--li
 
 <main>
  <header>
-  <div class="eyebrow">www.IT-Visions.de - Metadaten-Eingabeformulare - Dokumentation</div>
-  <h1>www.IT-Visions.de Formular-Pipeline</h1>
-  <p class="lead">Ein Formular entsteht aus einem .NET-Objekt oder einer Markdown-Vorlage. Zwei Parser übersetzen eine annotierte .NET-Klasse oder eine Markdown-Vorlage in dieselbe <code>FormElementList</code>. Der <code>FormElementRenderer</code> macht daraus ein validiertes Blazor-Formular und schreibt die Eingaben zurück.</p>
+  <div class="eyebrow">ITVisions.Blazor · ITVForms · Dokumentation</div>
+  <h1>ITVisions Formular-Pipeline</h1>
+  <p class="lead">Ein Formular entsteht hier aus einer Beschreibung, nicht aus handgeschriebenem Markup. Zwei Parser übersetzen eine annotierte C#-Klasse oder eine Markdown-Vorlage in dieselbe <code>FormElementList</code>. Der <code>FormElementRenderer</code> macht daraus ein validiertes Blazor-Formular und schreibt die Eingaben zurück.</p>
  </header>
 
  <section aria-labelledby="h-overview">
@@ -122,24 +122,24 @@ footer { color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--li
   <h2 id="h-overview">Zwei Eingänge, ein Format, ein Renderer</h2>
   <p>Die Kästen mit Pfeil führen zum jeweiligen Schaubild. Die <code>FormElementList</code> ist die gemeinsame Schnittstelle: Der Renderer weiß nicht, aus welcher Quelle sie stammt.</p>
   <div class="diagram-wrap">
-   <svg viewBox="0 0 960 330" role="img" aria-label="Überblick: C#-Klasse und Markdown-Vorlage werden von je einem Parser in eine FormElementList übersetzt, die der FormElementRenderer als Formular anzeigt">
+   <svg viewBox="0 0 1000 330" role="img" aria-label="Überblick: C#-Klasse und Markdown-Vorlage werden von je einem Parser in eine FormElementList übersetzt, die der FormElementRenderer als Formular anzeigt">
     <defs>
      <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
      <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="ah-back" d="M0,0 L10,5 L0,10 z"/></marker>
     </defs>
-    <path class="e" d="M230 75 H274" marker-end="url(#ah)"/>
-    <path class="e" d="M230 215 H274" marker-end="url(#ah)"/>
+    <path class="e" d="M230 75 H314" marker-end="url(#ah)"/>
+    <path class="e" d="M230 215 H314" marker-end="url(#ah)"/>
+    <text class="lbl" x="272" y="64" text-anchor="middle">Reflection</text>
+    <text class="lbl" x="272" y="204" text-anchor="middle">Zeilen</text>
+    <g transform="translate(40 0)">
     <path class="e" d="M490 75 H510 V130 H534" marker-end="url(#ah)"/>
     <path class="e" d="M490 215 H510 V160 H534" marker-end="url(#ah)"/>
     <path class="e" d="M700 145 H744" marker-end="url(#ah)"/>
     <path class="e" d="M845 190 V236" marker-end="url(#ah)"/>
-    <path class="e back" d="M750 270 H617 V196" marker-end="url(#ahb)"/>
-    <text class="lbl" x="242" y="64">Reflection</text>
-    <text class="lbl" x="242" y="204">Zeilen</text>
-    <text class="lbl-back" x="627" y="290">OnValuesChanged, OnSubmitted</text>
+    <path class="e back" d="M750 290 H617 V196" marker-end="url(#ahb)"/>
+    <text class="lbl-back" x="742" y="258" text-anchor="end">OnValuesChanged</text>
+    <text class="lbl-back" x="742" y="276" text-anchor="end">OnSubmitted</text>
 
-    <g class="n struct"><rect x="20" y="30" width="210" height="90" rx="8"/><text class="t" x="34" y="56">C#-Klasse</text><text class="d" x="34" y="78">Properties mit [Label], [Group],</text><text class="d" x="34" y="95">[Required], [Range], [Select] …</text></g>
-    <g class="n struct"><rect x="20" y="170" width="210" height="90" rx="8"/><text class="t" x="34" y="196">Markdown-Vorlage</text><text class="d" x="34" y="218">## Kapitel, # Überschrift,</text><text class="d" x="34" y="235">+ Label {Hinweis}: [Typ]</text></g>
 
     <a class="n" href="AnnotatedObjectParser.html" aria-label="Schaubild AnnotatedObjectParser öffnen"><rect x="278" y="30" width="212" height="90" rx="8"/><text class="t" x="292" y="56">AnnotatedObject…</text><text class="d" x="292" y="78">Parser.Parse(object obj)</text><text class="go" x="292" y="104">Schaubild →</text></a>
     <a class="n" href="MarkdownFormDSLParser.html" aria-label="Schaubild MarkdownFormDSLParser öffnen"><rect x="278" y="170" width="212" height="90" rx="8"/><text class="t" x="292" y="196">MarkdownFormDSL…</text><text class="d" x="292" y="218">Parser.Parse(string template)</text><text class="go" x="292" y="244">Schaubild →</text></a>
@@ -147,6 +147,9 @@ footer { color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--li
     <g class="n core"><rect x="538" y="100" width="162" height="90" rx="8"/><text class="t" x="552" y="126">FormElementList</text><text class="d" x="552" y="148">List&lt;FormElement&gt;</text><text class="d" x="552" y="165">aus ITVisions.Util</text></g>
     <a class="n core" href="FormElementRenderer.html" aria-label="Schaubild FormElementRenderer öffnen"><rect x="748" y="100" width="192" height="90" rx="8"/><text class="t" x="762" y="126">FormElement…</text><text class="d" x="762" y="148">Renderer.razor</text><text class="go" x="762" y="174">Schaubild →</text></a>
     <g class="n"><rect x="750" y="240" width="190" height="60" rx="8"/><text class="t" x="764" y="264">Formular</text><text class="d" x="764" y="284">Seiten, Gruppen, Validierung</text></g>
+    </g>
+    <g class="n struct"><rect x="20" y="30" width="210" height="90" rx="8"/><text class="t" x="34" y="56">C#-Klasse</text><text class="d" x="34" y="78">Properties mit [Label], [Group],</text><text class="d" x="34" y="95">[Required], [Range], [Select] …</text></g>
+    <g class="n struct"><rect x="20" y="170" width="210" height="90" rx="8"/><text class="t" x="34" y="196">Markdown-Vorlage</text><text class="d" x="34" y="218">## Kapitel, # Überschrift,</text><text class="d" x="34" y="235">+ Label {Hinweis}: [Typ]</text></g>
    </svg>
   </div>
  </section>
@@ -223,7 +226,7 @@ Note     = <span class="s">"Die Annotation [EmailAddress] prüft, ob es sich um 
  </section>
 
  <footer>
-  <span>Quellen: <code>ITVisions.Blazor/Controls/FormElementRenderer.razor(.cs)</code> im Repository MiracleListNET, Typen <code>AnnotatedObjectParser</code> und <code>MarkdownFormDSLParser</code> sowie <code>FormElement</code>, <code>FormElementList</code> und <code>FormElementType</code> aus dem NuGet-Paket ITVisions.Util</span>
+  <span>Quellen: <code>ITVisions.Blazor/Controls/FormElementRenderer.razor(.cs)</code> im Repository MiracleListNET, <code>Web/Web.Client/AnnotatedObjectParser.cs</code> und <code>Web/Web.Client/MarkdownFormDSLParser.cs</code> im Repository ITVForms, Typen <code>FormElement</code>, <code>FormElementList</code> und <code>FormElementType</code> aus dem Paket ITVisions.Util.</span>
  </footer>
 </main>
 </body>

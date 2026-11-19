@@ -62,7 +62,8 @@
   </Folder>
   <Folder Name="/Solution Items/LIBs/">
     <File Path="ProjectPackages/ITV.EFCoreUtil.8.0.0.nupkg" />
-    <File Path="ProjectPackages/ITVisions.Util.10.9.17.nupkg" />
+    <File Path="ProjectPackages/ITVisions.Util.10.12.0.nupkg" />
+    <File Path="ProjectPackages/ITVisions.Util.10.12.1.nupkg" />
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="Test/BlazorTests/BlazorTests.csproj" />

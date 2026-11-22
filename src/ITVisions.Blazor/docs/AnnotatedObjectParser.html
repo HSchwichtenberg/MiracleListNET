@@ -212,8 +212,8 @@ Type     = <span class="k">Range</span>  <span class="c">// Zahl + [Range]</span
 
  <section aria-labelledby="h-explorer">
   <div class="eyebrow">Zum Ausprobieren</div>
-  <h2 id="h-explorer">Properties aus der Klasse Fragebogen</h2>
-  <p>Wählen Sie ein Property. Das Schaubild markiert den Weg und den Prüfschritt, der den Typ festlegt. Die Beispiele stammen aus <code>BO/Fragebogen.cs</code>, nur <code>Intern</code> ist zur Veranschaulichung ergänzt. Dieselben Felder mit denselben Werten zeigen auch die Schaubilder zum Markdown-Parser und zum <code>FormElementRenderer</code>.</p>
+  <h2 id="h-explorer">Alle Feldtypen mit Beispielen aus der Klasse Fragebogen</h2>
+  <p>Wählen Sie einen <code>FormElementType</code>. Das Schaubild markiert den Weg und den Prüfschritt, der den Typ festlegt; daneben stehen ein passendes Property und das Ergebnis. Die Beispiele stammen aus <code>BO/Fragebogen.cs</code>. Für <code>Number</code> gibt es dort kein Property, <code>Rating</code> erzeugt dieser Parser nicht, und das Beispiel zu <code>[Hidden]</code> ist zur Veranschaulichung ergänzt.</p>
   <div class="chips" id="chips"></div>
   <div class="explorer-grid">
    <div class="panel">
@@ -254,11 +254,11 @@ Type     = <span class="k">Range</span>  <span class="c">// Zahl + [Range]</span
     <thead><tr><th>Annotation</th><th>Wirkung auf das FormElement</th></tr></thead>
     <tbody>
      <tr class="grp"><td colspan="2">Beschriftung und Gruppierung</td></tr>
-     <tr><td class="ann"><span class="ic"><img src="data:image/x-icon;base64,AAABAAEAEBAQAAAABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAABAAAADEjlQA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAQAAEAAAAQABAAAQAAABAAEAABEAAAEAAQABAQAAAQABAAEAEAABAAEAAQAQAAEAAQAQABAAAQERERAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" alt="IT-Visions" title="Eigene Annotation (ITVisions.Util)"></span><code>[Label(text, labelDetails)]</code></td><td><code>Label</code> = text, <code>Note</code> = labelDetails bzw. <code>Details</code>. Vorrang vor <code>[Display]</code>. An Enum-Werten der Anzeigename der Option.</td></tr>
+     <tr><td class="ann"><span class="ic"><img src="data:image/x-icon;base64,AAABAAEAEBAQAAAABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAABAAAADEjlQA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAQAAEAAAAQABAAAQAAABAAEAABEAAAEAAQABAQAAAQABAAEAEAABAAEAAQAQAAEAAQAQABAAAQERERAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" alt="IT-Visions" title="Eigene Annotation (ITVisions.Util)"></span><code>[Label(text, details, description)]</code></td><td><code>Label</code> = text, <code>Note</code> = <code>Description</code>, sonst <code>Details</code>. Leere Angaben zählen nicht. Vorrang vor <code>[Display]</code>. An Enum-Werten der Anzeigename der Option.</td></tr>
      <tr><td class="ann"><span class="ic"><svg viewBox="0 0 18 18" role="img" aria-label=".NET"><title>Standard-Annotation (.NET)</title><rect width="18" height="18" rx="3" fill="#512BD4"/><text x="9" y="11.6" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="6.2" fill="#ffffff">.NET</text></svg></span><code>[Display(Name = …)]</code><span class="ns">System.ComponentModel.DataAnnotations</span></td><td><code>Label</code>, wenn kein <code>[Label]</code> vorhanden ist. Vorrang vor <code>[DisplayName]</code>. An Enum-Werten der Anzeigename der Option.</td></tr>
-     <tr><td class="ann"><span class="ic"><svg viewBox="0 0 18 18" role="img" aria-label=".NET"><title>Standard-Annotation (.NET)</title><rect width="18" height="18" rx="3" fill="#512BD4"/><text x="9" y="11.6" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="6.2" fill="#ffffff">.NET</text></svg></span><code>[Display(Description = …)]</code></td><td><code>Note</code>, wenn <code>[Label]</code> keine Details liefert. Vorrang vor <code>[Description]</code>.</td></tr>
+     <tr><td class="ann"><span class="ic"><svg viewBox="0 0 18 18" role="img" aria-label=".NET"><title>Standard-Annotation (.NET)</title><rect width="18" height="18" rx="3" fill="#512BD4"/><text x="9" y="11.6" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="6.2" fill="#ffffff">.NET</text></svg></span><code>[Display(Description = …)]</code></td><td><code>Note</code>, wenn weder <code>[Label]</code> noch <code>[Description]</code> einen Hinweis liefern</td></tr>
      <tr><td class="ann"><span class="ic"><svg viewBox="0 0 18 18" role="img" aria-label=".NET"><title>Standard-Annotation (.NET)</title><rect width="18" height="18" rx="3" fill="#512BD4"/><text x="9" y="11.6" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="6.2" fill="#ffffff">.NET</text></svg></span><code>[DisplayName(name)]</code><span class="ns">System.ComponentModel</span></td><td><code>Label</code>, wenn weder <code>[Label]</code> noch <code>Display.Name</code> vorhanden ist; sonst der Property-Name</td></tr>
-     <tr><td class="ann"><span class="ic"><svg viewBox="0 0 18 18" role="img" aria-label=".NET"><title>Standard-Annotation (.NET)</title><rect width="18" height="18" rx="3" fill="#512BD4"/><text x="9" y="11.6" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="6.2" fill="#ffffff">.NET</text></svg></span><code>[Description(text)]</code><span class="ns">System.ComponentModel</span></td><td><code>Note</code>, wenn weder <code>[Label]</code> noch <code>Display.Description</code> einen Hinweis liefern</td></tr>
+     <tr><td class="ann"><span class="ic"><svg viewBox="0 0 18 18" role="img" aria-label=".NET"><title>Standard-Annotation (.NET)</title><rect width="18" height="18" rx="3" fill="#512BD4"/><text x="9" y="11.6" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="6.2" fill="#ffffff">.NET</text></svg></span><code>[Description(text)]</code><span class="ns">System.ComponentModel</span></td><td><code>Note</code>, wenn <code>[Label]</code> keinen Hinweis liefert. Vorrang vor <code>Display.Description</code>.</td></tr>
      <tr><td class="ann"><span class="ic"><img src="data:image/x-icon;base64,AAABAAEAEBAQAAAABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAABAAAADEjlQA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAQAAEAAAAQABAAAQAAABAAEAABEAAAEAAQABAQAAAQABAAEAEAABAAEAAQAQAAEAAQAQABAAAQERERAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" alt="IT-Visions" title="Eigene Annotation (ITVisions.Util)"></span><code>[Group(text)]</code></td><td><code>Group</code>. Vorrang vor <code>Display.GroupName</code>. Ein leerer Text erzeugt eine Auto-Gruppe ohne Legende.</td></tr>
      <tr><td class="ann"><span class="ic"><svg viewBox="0 0 18 18" role="img" aria-label=".NET"><title>Standard-Annotation (.NET)</title><rect width="18" height="18" rx="3" fill="#512BD4"/><text x="9" y="11.6" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="6.2" fill="#ffffff">.NET</text></svg></span><code>[Display(GroupName = …)]</code></td><td><code>Group</code>, wenn kein <code>[Group]</code> vorhanden ist; <code>""</code> ergibt eine Auto-Gruppe</td></tr>
 
@@ -309,7 +309,7 @@ Type     = <span class="k">Range</span>  <span class="c">// Zahl + [Range]</span
      <tr><td class="ann"><span class="ic"><svg viewBox="0 0 18 18" role="img" aria-label=".NET"><title>Standard-Annotation (.NET)</title><rect width="18" height="18" rx="3" fill="#512BD4"/><text x="9" y="11.6" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="6.2" fill="#ffffff">.NET</text></svg></span><code>[Display(ShortName, Prompt, ResourceType)]</code></td><td>Keine Lokalisierung über Ressourcen; <code>Name</code> wird direkt gelesen. Fehlermeldungen lassen sich dagegen per <code>ErrorMessageResourceName</code> lokalisieren.</td></tr>
      <tr><td class="ann"><span class="ic"><svg viewBox="0 0 18 18" role="img" aria-label=".NET"><title>Standard-Annotation (.NET)</title><rect width="18" height="18" rx="3" fill="#512BD4"/><text x="9" y="11.6" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="6.2" fill="#ffffff">.NET</text></svg></span><code>[DisplayFormat(ConvertEmptyStringToNull, HtmlEncode)]</code></td><td>Kein Einfluss; die Werte im FormElement bleiben Zeichenketten</td></tr>
      <tr><td class="ann"><span class="ic"><svg viewBox="0 0 18 18" role="img" aria-label=".NET"><title>Standard-Annotation (.NET)</title><rect width="18" height="18" rx="3" fill="#512BD4"/><text x="9" y="11.6" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="6.2" fill="#ffffff">.NET</text></svg></span><code>[Editable]</code>, <code>[ScaffoldColumn]</code>, <code>[Key]</code></td><td>Kein Einfluss; zum Sperren dient <code>[ReadOnly(true)]</code>, zum Ausblenden <code>[Hidden]</code></td></tr>
-     <tr><td class="ann"><span class="ic"><img src="data:image/x-icon;base64,AAABAAEAEBAQAAAABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAABAAAADEjlQA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAQAAEAAAAQABAAAQAAABAAEAABEAAAEAAQABAQAAAQABAAEAEAABAAEAAQAQAAEAAQAQABAAAQERERAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" alt="IT-Visions" title="Eigene Annotation (ITVisions.Util)"></span><code>[Label]</code> und <code>[Group]</code> mit <code>iconText</code>, <code>[Group]</code> mit <code>Details</code></td><td>Kein Icon, keine Gruppen-Beschreibung im Formular</td></tr>
+     <tr><td class="ann"><span class="ic"><img src="data:image/x-icon;base64,AAABAAEAEBAQAAAABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAABAAAADEjlQA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAQAAEAAAAQABAAAQAAABAAEAABEAAAEAAQABAQAAAQABAAEAEAABAAEAAQAQAAEAAQAQABAAAQERERAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" alt="IT-Visions" title="Eigene Annotation (ITVisions.Util)"></span><code>[Group]</code> mit <code>iconText</code> und <code>Details</code></td><td>Kein Icon, keine Gruppen-Beschreibung im Formular</td></tr>
      <tr><td class="ann"><span class="ic"><img src="data:image/x-icon;base64,AAABAAEAEBAQAAAABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAABAAAADEjlQA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAQAAEAAAAQABAAAQAAABAAEAABEAAAEAAQABAQAAAQABAAEAEAABAAEAAQAQAAEAAQAQABAAAQERERAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" alt="IT-Visions" title="Eigene Annotation (ITVisions.Util)"></span><code>[Size]</code> mit <code>x</code></td><td>Nur die Zeilenzahl y wird verwendet</td></tr>
     </tbody>
    </table>
@@ -372,7 +372,7 @@ Type     = <span class="k">Range</span>  <span class="c">// Zahl + [Range]</span
   ["[MultiSelect]", "Multiselect"],
   ["[RadioButtonList]", "RadioButtons"],
   ["[Select]", "Select"],
-  ["bool", "CheckBox, Options = [Label]"],
+  ["bool", "CheckBox, Options = [Details, sonst Hinweis, sonst Label]"],
   ["[DataType(…)]", "Password, Email, Phone, Url, Date, Time, TextArea"],
   ["[EmailAddress] [Phone] [Url]", "Email, Phone, Url"],
   ["int, long, double …", "Range mit Min/Max, sonst Number"],
@@ -410,66 +410,35 @@ Type     = <span class="k">Range</span>  <span class="c">// Zahl + [Range]</span
  // Beispiele aus der Klasse Fragebogen (ITVForms, BO/Fragebogen.cs); dieselben Werte nutzen die anderen beiden Schaubilder
  const MAIN = ["n1", "n2", "n3", "n4", "n-attr", "n5", "n6", "n7", "n8", "e1", "e2", "e3", "e4", "e5", "e6", "e7", "e-attr"];
  const X = {
-  PersonendatenText: {
-   code: [A('[Chapter("Personendaten")]'), A('[Headline("Name der Person")]'), K("public string") + " PersonendatenText { " + K("get") + "; } =", ' ' + S("Wir beginnen damit, dass wir einige **elementare Personendaten** abfragen. Damit ist nur der **Name** ein Pflichteld.") + ";"],
-   result: ["{ Key = " + S("chapter_0") + ", Type = " + K("Chapter") + ",", "  Label = " + S("Personendaten") + " }", "{ Key = " + S("headline_1") + ", Type = " + K("Headline") + ",", "  Label = " + S("Name der Person") + " }", "{ Key = " + S("PersonendatenText") + ", Type = " + K("Info") + ",", "  Label = " + S("Wir beginnen damit, dass wir einige **elementare Personendaten** abfragen. Damit ist nur der **Name** ein Pflichteld.") + " }"],
-   lit: ["n1", "n2", "n3", "n-deco", "e-deco", "e1", "e2", "e3", "n4", "n-ro", "e-ro", "n7", "n8", "e7"],
-   route: ["AddDecorativeElements", "Chapter + Headline", "CreateFormElement", "CanWrite == false", "Info"],
-   why: "Ein Property erzeugt hier drei Elemente. Das Property hat nur einen Getter, sein Wert wird daher als Markdown-Infotext angezeigt. Chapter und Headline stehen davor, weil sie vor dem Property selbst angelegt werden."
-  },
-  Anrede: {
-   code: [A('[Display(Name = "Anrede",'), A('  Description = "Aufzählungstypen werden zu Auswahlfeldern.",'), A('  GroupName = "")]'), K("public AnredeEnum?") + " Anrede { " + K("get") + "; " + K("set") + "; }"],
-   result: ["Key      = " + S("Anrede"), "Label    = " + S("Anrede"), "Type     = " + K("Select"), "Options  = [" + S("Männlich") + ", " + S("Weiblich") + ", " + S("Divers") + "]", "Group    = " + S("_auto_group_1"), "Required = " + K("false") + "  " + C("Nullable<AnredeEnum>"), "Note     = " + S("Aufzählungstypen werden zu Auswahlfeldern.")],
-   step: 10, route: ["CreateFormElement", "DetermineFieldType", "Schritt 10: enum", "Select"],
-   why: "Die Optionen sind die Display-Namen der Enum-Werte. Der leere GroupName macht daraus eine automatische Gruppe, die Anrede und Titel nebeneinander stellt."
-  },
-  Titel: {
-   code: [A('[Display(Name = "Titel",'), A('  Description = "Hier wurden die Auswahlfelder nicht via Aufzählungstypen, sondern durch eine Annotation festgelegt.",'), A('  GroupName = "")]'), A('[Select("", "Dr.", "Prof.", "Mag.")]'), K("public string?") + " Titel { " + K("get") + "; " + K("set") + "; }"],
-   result: ["Key      = " + S("Titel"), "Label    = " + S("Titel"), "Type     = " + K("Select"), "Options  = [" + S("") + ", " + S("Dr.") + ", " + S("Prof.") + ", " + S("Mag.") + "]", "Group    = " + S("_auto_group_1") + "  " + C("wie Anrede"), "Required = " + K("false"), "Note     = " + S("Hier wurden die Auswahlfelder nicht via Aufzählungstypen, sondern durch eine Annotation festgelegt.")],
-   step: 3, route: ["CreateFormElement", "DetermineFieldType", "Schritt 3: [Select]", "Select"],
-   why: "Die Optionen stehen direkt in der Annotation. Weil das vorherige Property dieselbe leere Gruppe hatte, bleibt der Zähler gleich."
-  },
-  Nachname: {
+  Text: {
    code: [A('[Group("Name der Person")]'), A('[Required(ErrorMessage = "Nachname ist ein Pflichtfeld")]'), A('[Label("Nachname", "Das Property ist nicht nullable, daher ist Nachname ein Pflichtfeld.")]'), K("public string") + " Nachname { " + K("get") + "; " + K("set") + "; } = " + K("string.Empty") + ";"],
    result: ["Key      = " + S("Nachname"), "Label    = " + S("Nachname"), "Type     = " + K("Text"), "Group    = " + S("Name der Person"), "Required = " + K("true"), "Value    = " + S(""), "Note     = " + S("Das Property ist nicht nullable, daher ist Nachname ein Pflichtfeld."), "ErrorMessages = { Required: " + S("Nachname ist ein Pflichtfeld") + " }"],
    step: 11, route: ["CreateFormElement", "DetermineFieldType", "Schritt 11: Standard", "Text"],
    why: "Kein Prüfschritt greift, also wird es ein Textfeld. Pflichtfeld ist es doppelt: durch [Required] und weil string hier nicht nullable ist. Die ErrorMessage aus [Required] zeigt der Renderer statt der Sammelmeldung."
   },
-  Geburtsdatum: {
+  TextArea: {
+   code: [A('[Headline("Freitextbewertung")]'), A('[Label("Kommentar", "Eine [DataType(DataType.MultilineText)] erzeugt ein mehrzeiliges Textfeld. Die Anzahl der Zeile legt man via [Size] fest.")]'), A("[DataType(DataType.MultilineText)]"), A("[Size(8)]"), A("[MaxLength(2000)]"), K("public string?") + " Kommentar { " + K("get") + "; " + K("set") + "; }"],
+   result: ["{ Key = " + S("headline_…") + ", Type = " + K("Headline") + ",", "  Label = " + S("Freitextbewertung") + " }", "{ Key = " + S("Kommentar") + ", Type = " + K("TextArea") + ",", "  Label = " + S("Kommentar") + ", Options = [" + S("8") + "],  " + C("Zeilen"), "  MaxLength = " + K("2000") + ",", "  Note = " + S("Eine [DataType(DataType.MultilineText)] erzeugt ein mehrzeiliges Textfeld. Die Anzahl der Zeile legt man via [Size] fest.") + " }"],
+   step: 5, extra: ["n-deco", "e-deco"], route: ["AddDecorativeElements", "Headline", "Schritt 5: MultilineText", "TextArea", "ApplySizeOptions"],
+   why: "[Size(8)] wird erst nach der Typbestimmung ausgewertet und wirkt nur bei TextArea. [MaxLength(2000)] wird zu MaxLength; der Renderer setzt maxlength und prüft die Länge."
+  },
+  Number: {
+   code: [C("Beispiel, nicht in Fragebogen.cs"), A('[Label("Anzahl Geräte")]'), K("public int") + " AnzahlGeraete { " + K("get") + "; " + K("set") + "; }"],
+   result: ["Key      = " + S("AnzahlGeraete"), "Label    = " + S("Anzahl Geräte"), "Type     = " + K("Number"), "Required = " + K("true") + "  " + C("Werttyp"), "Value    = " + K("0")],
+   step: 7, route: ["CreateFormElement", "DetermineFieldType", "Schritt 7: Zahl", "Number"],
+   why: "Fragebogen.cs hat keine Zahl ohne [Range], daher dieses ergänzte Beispiel. Ohne [Range] wird eine Zahl zum Zahlenfeld, mit [Range] wäre es ein Schieberegler (Range)."
+  },
+  Date: {
    code: [A('[Display(Name = "Geburtsdatum",'), A('  GroupName = "Daten zu Ihrer Geburt")]'), A("[DataType(DataType.Date)]"), K("public DateTime") + " Geburtsdatum { " + K("get") + "; " + K("set") + "; }"],
    result: ["Key      = " + S("Geburtsdatum"), "Label    = " + S("Geburtsdatum"), "Type     = " + K("Date"), "Group    = " + S("Daten zu Ihrer Geburt"), "Required = " + K("true") + "  " + C("Werttyp"), "Value    = " + K("DateTime.MinValue")],
    step: 5, route: ["CreateFormElement", "DetermineFieldType", "Schritt 5: [DataType]", "Date"],
    why: "[DataType] greift vor der Typprüfung in Schritt 8, das Ergebnis wäre ohne die Annotation aber gleich. Der Renderer behandelt DateTime.MinValue als leer, darum schlägt die Pflichtprüfung an."
   },
-  Kinder: {
-   code: [A('[Group("Ihre Kinder")]'), A('[Label("Kinder", "Ihre Kinder")]'), A("[Range(0, 10)]"), K("public int?") + " Kinder { " + K("get") + "; " + K("set") + "; }"],
-   result: ["Key      = " + S("Kinder"), "Label    = " + S("Kinder"), "Type     = " + K("Range"), "Min, Max = " + K("0") + ", " + K("10"), "Group    = " + S("Ihre Kinder"), "Required = " + K("false"), "Note     = " + S("Ihre Kinder")],
-   step: 7, route: ["CreateFormElement", "ApplyValidationAttributes", "DetermineFieldType", "Schritt 7: Zahl", "Range"],
-   why: "Eine Zahl mit [Range] wird zum Schieberegler. Ohne [Range] wäre es ein Zahlenfeld (Number). Den Typ Rating erzeugt dieser Parser nie."
-  },
-  Hobbys: {
-   code: [A("[MultiSelect]"), A('[Label("Hobbys", "[Multiselect] sorgt für eine Mehrfachauswahl. Auch hier sind Vorgabewerte möglich.")]'), K("public HobbyEnum") + " Hobbys { " + K("get") + "; " + K("set") + "; }", "  = HobbyEnum.MTB | HobbyEnum.Reisen;"],
-   result: ["Key      = " + S("Hobbys"), "Label    = " + S("Hobbys"), "Type     = " + K("Multiselect"), "Options  = [" + S("Fußball") + ", " + S("MTB") + ", " + S("Tennis") + ",", "            " + S("Schwimmen") + ", " + S("Lesen") + ", " + S("Reisen") + "]", "Value    = " + S("MTB | Reisen"), "Required = " + K("true") + "  " + C("Enum ist Werttyp"), "Note     = " + S("[Multiselect] sorgt für eine Mehrfachauswahl. Auch hier sind Vorgabewerte möglich.")],
-   step: 1, route: ["CreateFormElement", "DetermineFieldType", "Schritt 1: [MultiSelect]", "Multiselect"],
-   why: "Die Annotation hat keine eigenen Optionen, darum kommen sie aus dem Flags-Enum. Der Wert wird zu den Namen aller gesetzten Flags."
-  },
-  Status: {
-   code: [A("[RadioButtonList]"), A('[Label("Status", "Die Annotation [RadioButtonList] erzwingt eine RadioButtonList ;-).")]'), K("public FamilienstandEnum") + " Status { " + K("get") + "; " + K("set") + "; }", "  = FamilienstandEnum.Ledig;"],
-   result: ["Key      = " + S("Status"), "Label    = " + S("Status"), "Type     = " + K("RadioButtons"), "Options  = [" + S("ledig") + ", " + S("verheiratet") + ",", "            " + S("geschieden") + ", " + S("verwitwet") + "]", "Value    = " + S("ledig"), "Required = " + K("true") + "  " + C("Enum ist Werttyp"), "Note     = " + S("Die Annotation [RadioButtonList] erzwingt eine RadioButtonList ;-).")],
-   step: 2, route: ["CreateFormElement", "DetermineFieldType", "Schritt 2: [RadioButtonList]", "RadioButtons"],
-   why: "Ohne die Annotation würde das Enum in Schritt 10 zu einer Auswahlliste. [RadioButtonList] greift vorher."
-  },
-  Newsletter: {
-   code: [A('[Label("Newsletter", "Aus einem booleschen Wert wird eine Checkbox.",'), A('  Details = "Newsletter abonnieren")]'), K("public bool") + " Newsletter { " + K("get") + "; " + K("set") + "; } = " + K("true") + ";"],
-   result: ["Key      = " + S("Newsletter"), "Label    = " + S("Newsletter"), "Type     = " + K("CheckBox"), "Options  = [" + S("Newsletter abonnieren") + "]  " + C("Hinweis, sonst Label"), "Value    = " + S("Newsletter abonnieren") + "  " + C("true ⇒ Option"), "Required = " + K("true") + "  " + C("bool ist Werttyp"), "Note     = " + S("Newsletter abonnieren")],
-   step: 4, route: ["CreateFormElement", "DetermineFieldType", "Schritt 4: bool", "CheckBox"],
-   why: "Aus true wird der Text der Checkbox, aus false ein leerer String. Genau so speichert auch der Renderer den Zustand. Weil bool nicht nullable ist, wird die Checkbox zum Pflichtfeld und muss angehakt sein."
-  },
-  PersonID: {
-   code: [A("[ReadOnly(true)]"), A('[Label("Ihre automatisch vergebene ID", "Durch die Annotation [ReadOnly(true)] wird dieses Property im Formular nicht bearbeitbar, aber sichtbar. Es könnte z.B. als eindeutige ID für die Person dienen.")]'), K("public Guid") + " PersonID { " + K("get") + "; " + K("set") + "; }", "  = Guid.CreateVersion7();"],
-   result: ["Key      = " + S("PersonID"), "Label    = " + S("Ihre automatisch vergebene ID"), "Type     = " + K("Text"), "Disabled = " + K("true"), "Required = " + K("true") + "  " + C("Werttyp"), "Value    = " + K("Guid") + "  " + C("z. B. 019e…")],
-   step: 11, route: ["CreateFormElement", "[ReadOnly] ⇒ Disabled", "Schritt 11: Standard", "Text"],
-   why: "Guid kennt keiner der Prüfschritte, daher ein Textfeld. [ReadOnly(true)] zeigt es ausgegraut. Das Property hat einen Setter und wird deshalb nicht zum Infotext."
+  Time: {
+   code: [A('[Display(Name = "Geburtsuhrzeit",'), A('  GroupName = "Daten zu Ihrer Geburt")]'), A("[DataType(DataType.Time)]"), K("public TimeSpan?") + " Geburtsuhrzeit { " + K("get") + "; " + K("set") + "; }"],
+   result: ["Key      = " + S("Geburtsuhrzeit"), "Label    = " + S("Geburtsuhrzeit"), "Type     = " + K("Time"), "Group    = " + S("Daten zu Ihrer Geburt"), "Required = " + K("false") + "  " + C("Nullable<TimeSpan>"), "Value    = " + K("null")],
+   step: 5, route: ["CreateFormElement", "DetermineFieldType", "Schritt 5: [DataType]", "Time"],
+   why: "[DataType(DataType.Time)] greift in Schritt 5. Ohne die Annotation ergäbe TimeSpan in Schritt 9 ebenfalls Time. Zusammen mit Geburtsdatum bildet das Feld die Gruppe „Daten zu Ihrer Geburt“."
   },
   Email: {
    code: [A('[Label("Email", "Die Annotation [EmailAddress] prüft, ob es sich um eine gültige E-Mail-Adresse handelt.")]'), A("[Required]"), A("[EmailAddress]"), K("public string?") + " Email { " + K("get") + "; " + K("set") + "; }"],
@@ -477,19 +446,82 @@ Type     = <span class="k">Range</span>  <span class="c">// Zahl + [Range]</span
    step: 6, route: ["CreateFormElement", "DetermineFieldType", "Schritt 6: [EmailAddress]", "Email"],
    why: "Das Ergebnis ist dasselbe wie mit [DataType(DataType.EmailAddress)] in Schritt 5. Beide Wege führen zum Typ Email."
   },
-  Kennwort: {
+  Password: {
    code: [A('[Label("Kennwort", "[DataType(DataType.Password)] sorgt dafür, dass man bei der Eingabe nur Sternchen sieht. Es gibt keine eingebauten Regeln für die Kennwortlänge und -komplexität; man kann aber zusätzlich einen regulären Ausdruck angeben.")]'), A("[DataType(DataType.Password)]"), A("[Required]"), K("public string?") + " Kennwort { " + K("get") + "; " + K("set") + "; }"],
    result: ["Key      = " + S("Kennwort"), "Label    = " + S("Kennwort"), "Type     = " + K("Password"), "Required = " + K("true"), "Note     = " + S("[DataType(DataType.Password)] sorgt dafür, dass man bei der Eingabe nur Sternchen sieht. Es gibt keine eingebauten Regeln für die Kennwortlänge und -komplexität; man kann aber zusätzlich einen regulären Ausdruck angeben.")],
    step: 5, route: ["CreateFormElement", "DetermineFieldType", "Schritt 5: [DataType]", "Password"],
    why: "Eine Längen- oder Komplexitätsregel gibt es nicht automatisch. Dafür kann man zusätzlich [RegularExpression] angeben."
   },
-  Kommentar: {
-   code: [A('[Headline("Freitextbewertung")]'), A('[Label("Kommentar", "Eine [DataType(DataType.MultilineText)] erzeugt ein mehrzeiliges Textfeld. Die Anzahl der Zeile legt man via [Size] fest.")]'), A("[DataType(DataType.MultilineText)]"), A("[Size(8)]"), A("[MaxLength(2000)]"), K("public string?") + " Kommentar { " + K("get") + "; " + K("set") + "; }"],
-   result: ["{ Key = " + S("headline_…") + ", Type = " + K("Headline") + ",", "  Label = " + S("Freitextbewertung") + " }", "{ Key = " + S("Kommentar") + ", Type = " + K("TextArea") + ",", "  Label = " + S("Kommentar") + ", Options = [" + S("8") + "],  " + C("Zeilen"), "  MaxLength = " + K("2000") + ",", "  Note = " + S("Eine [DataType(DataType.MultilineText)] erzeugt ein mehrzeiliges Textfeld. Die Anzahl der Zeile legt man via [Size] fest.") + " }"],
-   step: 5, extra: ["n-deco", "e-deco"], route: ["AddDecorativeElements", "Headline", "Schritt 5: MultilineText", "TextArea", "ApplySizeOptions"],
-   why: "[Size(8)] wird erst nach der Typbestimmung ausgewertet und wirkt nur bei TextArea. [MaxLength(2000)] wird zu MaxLength; der Renderer setzt maxlength und prüft die Länge."
+  Phone: {
+   code: [A('[Label("Telefonnummer", "Durch die Annotation [Phone] sind nur Zahlen und einige Sonderzeichen (+, -, /, Leerzeichen, Klammern), aber keine Buchstaben erlaubt.")]'), A("[Phone]"), K("public string?") + " Telefonnummer { " + K("get") + "; " + K("set") + "; }"],
+   result: ["Key      = " + S("Telefonnummer"), "Label    = " + S("Telefonnummer"), "Type     = " + K("Phone"), "Required = " + K("false"), "Note     = " + S("Durch die Annotation [Phone] sind nur Zahlen und einige Sonderzeichen (+, -, /, Leerzeichen, Klammern), aber keine Buchstaben erlaubt.")],
+   step: 6, route: ["CreateFormElement", "DetermineFieldType", "Schritt 6: [Phone]", "Phone"],
+   why: "Der Renderer erzeugt ein Telefonfeld und prüft beim Absenden, dass nur Ziffern und die genannten Sonderzeichen vorkommen. Die englische Standardmeldung von [Phone] übernimmt der Parser nicht."
   },
-  Intern: {
+  Url: {
+   code: [A('[Label("Website", "Bei [URL] prüft der Browser, ob es sich um eine Webadresse handelt.")]'), A("[Url]"), K("public string?") + " Website { " + K("get") + "; " + K("set") + "; }"],
+   result: ["Key      = " + S("Website"), "Label    = " + S("Website"), "Type     = " + K("Url"), "Required = " + K("false"), "Note     = " + S("Bei [URL] prüft der Browser, ob es sich um eine Webadresse handelt.")],
+   step: 6, route: ["CreateFormElement", "DetermineFieldType", "Schritt 6: [Url]", "Url"],
+   why: "Der Renderer prüft beim Absenden, ob eine absolute http- oder https-Adresse eingegeben wurde."
+  },
+  CheckBox: {
+   code: [A('[Label("Newsletter", "Aus einem booleschen Wert wird eine Checkbox.",'), A('  Details = "Newsletter abonnieren",'), A('  Description = "Unser Newsletter erscheint monatlich. Sie können jederzeit den Newsletter kündigen.")]'), K("public bool") + " Newsletter { " + K("get") + "; " + K("set") + "; } = " + K("true") + ";"],
+   result: ["Key      = " + S("Newsletter"), "Label    = " + S("Newsletter"), "Type     = " + K("CheckBox"), "Options  = [" + S("Newsletter abonnieren") + "]  " + C("Details, sonst Hinweis, sonst Label"), "Value    = " + S("Newsletter abonnieren") + "  " + C("true ⇒ Option"), "Required = " + K("true") + "  " + C("bool ist Werttyp"), "Note     = " + S("Unser Newsletter erscheint monatlich. Sie können jederzeit den Newsletter kündigen.")],
+   step: 4, route: ["CreateFormElement", "DetermineFieldType", "Schritt 4: bool", "CheckBox"],
+   why: "Details ist der Text neben dem Häkchen, Description der Tooltip. Das zweite Konstruktorargument setzt ebenfalls Details und wird hier vom benannten Details überschrieben. Aus true wird der Text der Checkbox, aus false ein leerer String. Weil bool nicht nullable ist, wird die Checkbox zum Pflichtfeld."
+  },
+  RadioButtons: {
+   code: [A("[RadioButtonList]"), A('[Label("Status", "Die Annotation [RadioButtonList] erzwingt eine RadioButtonList ;-).")]'), K("public FamilienstandEnum") + " Status { " + K("get") + "; " + K("set") + "; }", "  = FamilienstandEnum.Ledig;"],
+   result: ["Key      = " + S("Status"), "Label    = " + S("Status"), "Type     = " + K("RadioButtons"), "Options  = [" + S("ledig") + ", " + S("verheiratet") + ",", "            " + S("geschieden") + ", " + S("verwitwet") + "]", "Value    = " + S("ledig"), "Required = " + K("true") + "  " + C("Enum ist Werttyp"), "Note     = " + S("Die Annotation [RadioButtonList] erzwingt eine RadioButtonList ;-).")],
+   step: 2, route: ["CreateFormElement", "DetermineFieldType", "Schritt 2: [RadioButtonList]", "RadioButtons"],
+   why: "Ohne die Annotation würde das Enum in Schritt 10 zu einer Auswahlliste. [RadioButtonList] greift vorher."
+  },
+  Select: {
+   code: [A('[Display(Name = "Anrede",'), A('  Description = "Aufzählungstypen werden zu Auswahlfeldern.",'), A('  GroupName = "")]'), K("public AnredeEnum?") + " Anrede { " + K("get") + "; " + K("set") + "; }"],
+   result: ["Key      = " + S("Anrede"), "Label    = " + S("Anrede"), "Type     = " + K("Select"), "Options  = [" + S("Männlich") + ", " + S("Weiblich") + ", " + S("Divers") + "]", "Group    = " + S("_auto_group_1"), "Required = " + K("false") + "  " + C("Nullable<AnredeEnum>"), "Note     = " + S("Aufzählungstypen werden zu Auswahlfeldern.")],
+   step: 10, route: ["CreateFormElement", "DetermineFieldType", "Schritt 10: enum", "Select"],
+   why: "Die Optionen sind die Display-Namen der Enum-Werte. Der leere GroupName macht daraus eine automatische Gruppe, die Anrede und Titel nebeneinander stellt. Mit [Select(…)] lassen sich die Optionen auch direkt angeben, wie beim Property Titel."
+  },
+  Multiselect: {
+   code: [A("[MultiSelect]"), A('[Label("Hobbys", "[Multiselect] sorgt für eine Mehrfachauswahl. Auch hier sind Vorgabewerte möglich.")]'), K("public HobbyEnum") + " Hobbys { " + K("get") + "; " + K("set") + "; }", "  = HobbyEnum.MTB | HobbyEnum.Reisen;"],
+   result: ["Key      = " + S("Hobbys"), "Label    = " + S("Hobbys"), "Type     = " + K("Multiselect"), "Options  = [" + S("Fußball") + ", " + S("MTB") + ", " + S("Tennis") + ",", "            " + S("Schwimmen") + ", " + S("Lesen") + ", " + S("Reisen") + "]", "Value    = " + S("MTB | Reisen"), "Required = " + K("true") + "  " + C("Enum ist Werttyp"), "Note     = " + S("[Multiselect] sorgt für eine Mehrfachauswahl. Auch hier sind Vorgabewerte möglich.")],
+   step: 1, route: ["CreateFormElement", "DetermineFieldType", "Schritt 1: [MultiSelect]", "Multiselect"],
+   why: "Die Annotation hat keine eigenen Optionen, darum kommen sie aus dem Flags-Enum. Der Wert wird zu den Namen aller gesetzten Flags."
+  },
+  Rating: {
+   code: [C("Kein Beispiel in Fragebogen.cs")],
+   result: [C("wird von diesem Parser nicht erzeugt")],
+   lit: [],
+   route: ["DetermineFieldType", "kein Prüfschritt liefert Rating"],
+   why: "Den Typ Rating erzeugt nur der MarkdownFormDSLParser mit [Rating]. Eine Zahl mit [Range] wird hier zum Schieberegler (Range)."
+  },
+  Range: {
+   code: [A('[Group("Ihre Kinder")]'), A('[Label("Kinder", "Ihre Kinder")]'), A("[Range(0, 10)]"), K("public int?") + " Kinder { " + K("get") + "; " + K("set") + "; }"],
+   result: ["Key      = " + S("Kinder"), "Label    = " + S("Kinder"), "Type     = " + K("Range"), "Min, Max = " + K("0") + ", " + K("10"), "Group    = " + S("Ihre Kinder"), "Required = " + K("false"), "Note     = " + S("Ihre Kinder")],
+   step: 7, route: ["CreateFormElement", "ApplyValidationAttributes", "DetermineFieldType", "Schritt 7: Zahl", "Range"],
+   why: "Eine Zahl mit [Range] wird zum Schieberegler. Ohne [Range] wäre es ein Zahlenfeld (Number). Den Typ Rating erzeugt dieser Parser nie."
+  },
+  Headline: {
+   code: [A('[Headline("Weitere Personendaten")]'), K("public string") + " WeiterePersonendatenText { " + K("get") + "; } =", ' ' + S("Bitte erlauben Sie uns, noch *etwas* mehr über Sie zu erfahren. Hierzu kommen weitere Felddatentypen zum Einsatz.") + ";"],
+   result: ["{ Key = " + S("headline_2") + ", Type = " + K("Headline") + ",", "  Label = " + S("Weitere Personendaten") + " }", "{ Key = " + S("WeiterePersonendatenText") + ", Type = " + K("Info") + ",", "  Label = " + S("Bitte erlauben Sie uns, noch *etwas* mehr über Sie zu erfahren. Hierzu kommen weitere Felddatentypen zum Einsatz.") + " }"],
+   lit: ["n1", "n2", "n3", "n-deco", "e-deco", "e1", "e2", "e3", "n4", "n-ro", "e-ro", "n7", "n8", "e7"],
+   route: ["AddDecorativeElements", "Headline", "CreateFormElement", "CanWrite == false", "Info"],
+   why: "[Headline] legt vor dem Property ein eigenes Element an. Im Renderer ist es eine einklappbare Zwischenüberschrift; alle Felder bis zur nächsten Headline klappen mit ein."
+  },
+  Chapter: {
+   code: [A('[Chapter("Benutzerkonto")]'), A("[Required]"), A('[Label("Kundennummer", "Validierung mit regulären Ausdruck: Die Kundennummer muss im Format K-xxxx sein (z.B. K-1234)")]'), A('[RegularExpression(@"K-([0-9]{4})")]'), K("public string?") + " Kundennummer { " + K("get") + "; " + K("set") + "; }"],
+   result: ["{ Key = " + S("chapter_3") + ", Type = " + K("Chapter") + ",", "  Label = " + S("Benutzerkonto") + " }", "{ Key = " + S("Kundennummer") + ", Type = " + K("Text") + ",", "  Required = " + K("true") + ", Regex = " + S("K-([0-9]{4})") + ",", "  Note = " + S("Validierung mit regulären Ausdruck: Die Kundennummer muss im Format K-xxxx sein (z.B. K-1234)") + " }"],
+   step: 11, extra: ["n-deco", "e-deco"], route: ["AddDecorativeElements", "Chapter", "CreateFormElement", "DetermineFieldType", "Schritt 11: Standard", "Text"],
+   why: "Jedes [Chapter] beginnt im Renderer eine neue Seite mit Fortschrittsanzeige. Das Feld selbst ist ein Textfeld, dessen Inhalt beim Absenden gegen den regulären Ausdruck geprüft wird."
+  },
+  Info: {
+   code: [A('[Chapter("Personendaten")]'), A('[Headline("Name der Person")]'), K("public string") + " PersonendatenText { " + K("get") + "; } =", ' ' + S("Wir beginnen damit, dass wir einige **elementare Personendaten** abfragen. Damit ist nur der **Name** ein Pflichteld.") + ";"],
+   result: ["{ Key = " + S("chapter_0") + ", Type = " + K("Chapter") + ",", "  Label = " + S("Personendaten") + " }", "{ Key = " + S("headline_1") + ", Type = " + K("Headline") + ",", "  Label = " + S("Name der Person") + " }", "{ Key = " + S("PersonendatenText") + ", Type = " + K("Info") + ",", "  Label = " + S("Wir beginnen damit, dass wir einige **elementare Personendaten** abfragen. Damit ist nur der **Name** ein Pflichteld.") + " }"],
+   lit: ["n1", "n2", "n3", "n-deco", "e-deco", "e1", "e2", "e3", "n4", "n-ro", "e-ro", "n7", "n8", "e7"],
+   route: ["AddDecorativeElements", "Chapter + Headline", "CreateFormElement", "CanWrite == false", "Info"],
+   why: "Ein Property erzeugt hier drei Elemente. Das Property hat nur einen Getter, sein Wert wird daher als Markdown-Infotext angezeigt. Chapter und Headline stehen davor, weil sie vor dem Property selbst angelegt werden."
+  },
+  "[Hidden]": {
    code: [C("Beispiel, nicht in Fragebogen.cs"), A("[Hidden]"), K("public string?") + " Intern { " + K("get") + "; " + K("set") + "; }"],
    result: [C("kein Element")],
    lit: ["n1", "n2", "n3", "n-hidden", "e-hidden", "e1", "e2", "n8"],
@@ -505,7 +537,7 @@ Type     = <span class="k">Range</span>  <span class="c">// Zahl + [Range]</span
   if (def.step) document.getElementById("step" + def.step).classList.add("lit");
  }
 
- let current = "Kinder";
+ let current = "Range";
  function draw() {
   const d = X[current];
   document.getElementById("x-code").innerHTML = d.code.join("\n");

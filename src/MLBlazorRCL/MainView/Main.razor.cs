@@ -449,8 +449,14 @@ public partial class Main : IAsyncDisposable
   BO.Category categoryUpdated;
 
   // TODO: hier gibt es ein Serialisierungs-StackOverflow-Problem, wenn man die Kategorie inklusive TaskList übermittelt per SignalR
-  if (t != null) { categoryUpdated = t.Category; }
+  // t.Category ist nicht immer geladen (z.B. bei neu angelegten Aufgaben) -> ueber CategoryID aufloesen
+  if (t != null) { categoryUpdated = t.Category ?? categorySet?.FirstOrDefault(c => c.CategoryID == t.CategoryID) ?? this.category; }
   else { categoryUpdated = this.category; }
+  if (categoryUpdated == null)
+  {
+   Util.Warn($"SignalR.{nameof(SendTaskListUpdate)}: keine Kategorie ermittelbar!", "");
+   return;
+  }
   Util.Log($"SignalR.{nameof(SendTaskListUpdate)}: {categoryUpdated.CategoryID}");
 
   if (IsConnected) await AppState.HubConnection.SendAsync(nameof(IMLHubV3.TaskListUpdate), AppState.Token, categoryUpdated);

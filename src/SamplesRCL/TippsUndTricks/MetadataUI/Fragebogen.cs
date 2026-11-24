@@ -1,10 +1,11 @@
 #nullable enable
 
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using ITVisions;
 
-namespace BO;
+namespace Samples.TippsUndTricks.MetadataUI;
 
 /// <summary>
 /// Klasse für den Fragebogen mit Personendaten, Benutzerkonto und Feedback

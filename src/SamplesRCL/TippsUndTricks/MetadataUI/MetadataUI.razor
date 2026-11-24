@@ -1,16 +1,13 @@
-@page "/ObjectFormDemo"
-@using ITVisions.Blazor.Controls
-@using BO
+@page "/Samples/MetadataUI"
+@layout MetadataUILayout
 @using ITVisions
 @using ITVisions.Metadata
-@using Web.Services
-@inject AppState AppState
 
-<PageTitle>www.IT-Visions.de FORMS</PageTitle>
+<PageTitle>Medatendatenbasierte Eingabeformulare</PageTitle>
 
 <div class="container mt-4">
- <h1>Fragebogen</h1>
- <p class="lead">Dieses Webformular wurde aus der mit Annotationen versehenen .NET-Klasse <code>@FragebogenModel.GetType().FullName</code> generiert.</p>
+	<h1>Medatendatenbasierte Eingabeformulare</h1>
+ <p class="lead">Dieses Webformular wurde komplett aus der mit Annotationen versehenen .NET-Klasse <code>@FragebogenModel.GetType().FullName</code> generiert.</p>
 
  <hr class="my-4" />
 
@@ -54,8 +51,7 @@
 
  protected override void OnInitialized()
  {
-  AppState.Headline = $"Metadatenbasierte Formulare";
-  AppState.Infotext = "In diesem Beispiel wird die Klasse Fragebogen verwendet, um ein Formular zu generieren. Die Klasse ist mit verschiedenen Annotationen (sowohl Standardannotation von .NET als auch eigenen) versehen, die die Darstellung und Validierung der Formularelemente steuern. Das Formular wird automatisch aus den Metadaten der Klasse erstellt, ohne dass manuell HTML oder Blazor-Komponenten geschrieben werden müssen.";
+
   // Fragebogen-Instanz mit Standardwerten erstellen
   FragebogenModel = new();
 

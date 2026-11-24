@@ -1,0 +1,94 @@
+@page "/ObjectFormDemo"
+@using ITVisions.Blazor.Controls
+@using BO
+@using ITVisions
+@using ITVisions.Metadata
+@using Web.Services
+@inject AppState AppState
+
+<PageTitle>www.IT-Visions.de FORMS</PageTitle>
+
+<div class="container mt-4">
+ <h1>Fragebogen</h1>
+ <p class="lead">Dieses Webformular wurde aus der mit Annotationen versehenen .NET-Klasse <code>@FragebogenModel.GetType().FullName</code> generiert.</p>
+
+ <hr class="my-4" />
+
+ @if (SubmitMessage.IsNullOrEmpty())
+ {
+  @if (FormElements != null)
+  {
+   <ITVisions.Blazor.Controls.FormElementRenderer FormElements="@FormElements"
+                                                  OnSubmitted="@HandleSubmit"
+                                                  ShowSubmitButton="true"
+                                                  SubmitButtonText="Absenden"
+                                                  Debug="true" />
+  }
+  else
+  {
+   <div class="alert alert-warning">
+    <i class="bi bi-exclamation-triangle"></i> Formular wird geladen...
+   </div>
+  }
+
+  @if (!string.IsNullOrEmpty(ValidationMessage))
+  {
+   <div class="alert alert-danger mt-4">
+    <i class="bi bi-x-circle"></i> @ValidationMessage
+   </div>
+  }
+ }
+ else
+ {
+  <div class="alert alert-success mt-4">
+   <i class="bi bi-check-circle"></i> @((MarkupString)SubmitMessage)
+  </div>
+ }
+</div>
+
+@code {
+ private FormElementList FormElements { get; set; }
+ private string SubmitMessage { get; set; }
+ private string ValidationMessage { get; set; }
+ private Fragebogen FragebogenModel { get; set; }
+
+ protected override void OnInitialized()
+ {
+  AppState.Headline = $"Metadatenbasierte Formulare";
+  AppState.Infotext = "In diesem Beispiel wird die Klasse Fragebogen verwendet, um ein Formular zu generieren. Die Klasse ist mit verschiedenen Annotationen (sowohl Standardannotation von .NET als auch eigenen) versehen, die die Darstellung und Validierung der Formularelemente steuern. Das Formular wird automatisch aus den Metadaten der Klasse erstellt, ohne dass manuell HTML oder Blazor-Komponenten geschrieben werden müssen.";
+  // Fragebogen-Instanz mit Standardwerten erstellen
+  FragebogenModel = new();
+
+  // Mit dem AnnotationFormParser in FormElementList konvertieren
+  FormElements = AnnotatedObjectParser.Parse(FragebogenModel, FormElementMode.Edit);
+ }
+
+ private void HandleSubmit(FormElementList submittedElements)
+ {
+  ValidationMessage = string.Empty;
+
+  try
+  {
+   // Hier könnten die Werte zurück ins Fragebogen-Objekt geschrieben werden
+   // oder direkt verarbeitet werden
+
+   var keyValuePairs = submittedElements
+       .Where(e => e.Type != FormElementType.Chapter &&
+                  e.Type != FormElementType.Headline &&
+                  e.Type != FormElementType.Info)
+       .Select(e => $"{e.Label}: {e.Value}");
+
+   SubmitMessage = $"Formular erfolgreich abgesendet! {submittedElements.Count} Felder empfangen.<br><br>";
+
+   // Werte ausgeben
+   foreach (var element in submittedElements)
+   {
+    SubmitMessage+=($"{element.Key} ({element.Type}): {element.Value}<br>");
+   }
+  }
+  catch (Exception ex)
+  {
+   ValidationMessage = $"Fehler beim Absenden: {ex.Message}";
+  }
+ }
+}
